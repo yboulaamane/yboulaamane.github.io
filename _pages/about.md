@@ -7,11 +7,17 @@ redirect_from:
   - /about/
   - /about.html
 ---
-Welcome! I am a Ph.D candidate in Computational Chemistry at the Laboratory of Innovative Technologies (LTI) at the [National School of Applied Sciences](http://ensat.ac.ma/Portail/), [Abdelmalek Essaadi University](http://www.uae.ma/website/), Tetouan, Morocco. My current research focuses on computational drug discovery of natural products as lead candidates for the management of neurodegenerative diseases, specifically Parkinson's disease.
+Hello! I am a Ph.D candidate in Computational Chemistry at the Laboratory of Innovative Technologies (LTI) at the [National School of Applied Sciences](http://ensat.ac.ma/Portail/), [Abdelmalek Essaadi University](http://www.uae.ma/website/), Tetouan, Morocco. My current research focuses on computational drug discovery of natural products as lead candidates for the management of neurodegenerative diseases, specifically Parkinson's disease.
 
-In my work, I am involved in the early stages of drug discovery development, which includes target identification, validation, and selection. I primarily work on multi-target-directed drugs, which involves finding drugs with potential simultaneous activity against multiple targets involved in a particular pathway, such as oxidative stress and neuroinflammation.
+I focus on the early stages of drug discovery, including identifying, validating, and selecting promising therapeutic targets. My primary interest lies in multi-target-directed drugs, designed to simultaneously address multiple targets implicated in specific disease pathways, such as oxidative stress and neuroinflammation.
 
-My expertise also includes high-throughput virtual screening using both ligand-based approaches (such as similarity search, pharmacophore modeling, quantitative structure-activity relationship, machine learning, and convolutional neural networks) and structure-based approaches (such as molecular docking, conformational sampling, binding affinities, and protein-ligand interactions). Additionally, I conduct molecular dynamics simulations to study the dynamics of the drug-target complex, including RMSD, RMSF, radius of gyration, solvent accessible surface, hydrogen bonds, per-residue energy decomposition, umbrella sampling, and free energy perturbations.
+My expertise encompasses a broad range of computational techniques:
+
+- Ligand-based virtual screening: similarity search, pharmacophore modeling, QSAR, machine learning, convolutional neural networks.
+- Structure-based virtual screening: molecular docking, conformational sampling, binding affinity calculations, protein-ligand interaction analysis.
+- Molecular dynamics simulations: RMSD, RMSF, radius of gyration, solvent accessible surface area, hydrogen bond analysis, per-residue energy decomposition, umbrella sampling, free energy perturbations.
+
+By leveraging these computational tools, I aim to uncover and optimize natural product-derived drug candidates with the potential to improve the lives of patients suffering from neurodegenerative diseases.
 
 **Programming language:** Python, Bash  
 **Libraries:** Pandas, Numpy, RDkit, Scikit-Learn, Matplotlib, Seaborn, Keras, Tensorflow  
@@ -20,4 +26,4 @@ My expertise also includes high-throughput virtual screening using both ligand-b
 **Free energy calculations:** g_mmpbsa  
 **DFT studies:** Gaussian09  
 
-![IBC2022_presentation pptx (1)](https://user-images.githubusercontent.com/7014404/225579901-e8bdafcf-7fd2-4c02-b08b-86572bceaed9.png)
+![image](https://github.com/yboulaamane/yboulaamane.github.io/assets/7014404/41eaba49-6644-4fa7-b0f4-352042b8394d)
