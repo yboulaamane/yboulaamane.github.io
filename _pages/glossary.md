@@ -5,8 +5,6 @@ permalink: /glossary/
 author_profile: true
 ---
 
-# Computational chemistry
-
 ### Ab initio calculations: 
 Calculations that are performed using basic principles of quantum mechanics, without any experimental data or assumptions.
 
