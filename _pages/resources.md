@@ -5,7 +5,34 @@ permalink: /resources/
 author_profile: true
 ---
 
-![image](https://github.com/yboulaamane/cdd-toolbox/assets/7014404/bb1efd1d-50b3-4e14-9e58-156089be738c)
+# ⌬ cdd-toolbox ⌬
+
+Welcome to the ***Computational Drug Discovery Toolbox*** repository! This curated collection provides a comprehensive set of resources for Computational Drug Discovery (CDD) and related fields. Whether you are a researcher, student, or professional in the field of computational chemistry, this toolbox aims to serve as a valuable resource.
+
+## Table of Contents
+
+1. [Natural Compounds Libraries](#natural-compounds-libraries)
+2. [Chemical Bioactivity Databases](#chemical-bioactivity-databases)
+3. [3D Protein Structures Databases](#3d-protein-structures-databases)
+4. [Protein Engineering](#protein-engineering)
+5. [Binding Site Detection](#binding-site-detection)
+6. [Pharmacophore Screening Tools](#pharmacophore-screening-tools)
+7. [Molecular docking](#molecular-docking)
+8. [ADMET Prediction](#admet-prediction)
+9. [QSAR modeling](#qsar-modeling)
+10. [Quantum chemistry](#quantum-chemistry)
+11. [Molecular dynamics simulations](#molecular-dynamics-simulations)
+12. [Topology Preparation](#topology-preparation)
+13. [Normal Mode Analysis for Predicting Protein Motions](#normal-mode-analysis-for-predicting-protein-motions)
+14. [Virtual Screening Server for Drug Repurposing](#virtual-screening-server-for-drug-repurposing)
+15. [Peptide Design Tools](#peptide-design-tools)
+16. [PROTAC Database and Ternary Complex Modelling](#protac-database-and-ternary-complex-modelling)
+17. [Machine learning for drug discovery](#machine-learning-for-drug-discovery)
+18. [Artificial intelligence for drug discovery](#artificial-intelligence-for-drug-discovery)
+19. [Retrosynthesis prediction](#retrosynthesis-prediction)
+20. [Miscellaneous tools](#miscellaneous-tools)
+21. [Cheminformatics Free Courses](#cheminformatics-free-courses)
+22. [Blogs](#blogs)
 
 ## Natural Compounds Libraries
 
@@ -41,7 +68,8 @@ author_profile: true
 - [DrugBank](https://go.drugbank.com/) - Provides comprehensive data on approved and investigational drugs, including details on chemical structures, pharmacology, and therapeutic indications.  
 - [ZINC](https://zinc.docking.org/) - A platform for researchers to explore and obtain compounds for various computational and experimental studies.  
 - [ChemSpider](http://www.chemspider.com/) - A free chemical database offering information on chemical structures, properties, and associated data.
-- [DrugSpaceX](https://drugspacex.simm.ac.cn/) - A database designed to explore chemical and biological spaces related to drug discovery.  
+- [DrugSpaceX](https://drugspacex.simm.ac.cn/) - A database designed to explore chemical and biological spaces related to drug discovery.
+- [Therapeutics Data Commons](https://tdcommons.ai/) - An AI foundation for therapeutic science, offering an intuitive interface for various learning tasks in the drug discovery field. 
 
 ## 3D protein structures databases  
 
@@ -62,13 +90,34 @@ author_profile: true
 - [ProteinsPlus](https://proteins.plus/) - A tool designed for the identification and analysis of protein binding sites. It facilitates the exploration of protein-ligand interactions.
 - [PrankWeb](https://prankweb.cz/) - A web-based platform specializing in the prediction and analysis of protein binding sites.   
 - [CASTp](http://sts.bioe.uic.edu/castp/index.html?2r7g) - A resource for the detection and characterization of protein binding sites. It offers insights into the volume and area of cavities on protein surfaces, contributing to the study of ligand binding and functional sites.  
-- [CavityPlus](http://www.pkumdl.cn:8000/cavityplus/index.php#/) - A web server designed for the identification and analysis of protein cavities and binding sites. It provides tools for the characterization of binding pockets, assisting researchers in studying protein-ligand interactions and structure-based drug design.  
+- [CavityPlus](http://www.pkumdl.cn:8000/cavityplus/index.php#/) - A web server designed for the identification and analysis of protein cavities and binding sites. It provides tools for the characterization of binding pockets, assisting researchers in studying protein-ligand interactions and structure-based drug design.
+- [CaverWeb: Identification of Tunnels and Channels in Proteins and Analysis of Ligand Transport](https://loschmidt.chemi.muni.cz/caverweb/) - A tool for identifying tunnels and channels in protein structures. It supports the analysis of ligand transport pathways.
+
 
 ## Pharmacophore screening tools  
 
 - [ZINCPharmer](http://zincpharmer.csb.pitt.edu/) - A web-based pharmacophore screening tool that facilitates the exploration of chemical databases. It aids researchers in identifying potential ligands based on pharmacophoric features.
 - [Pharmit](https://pharmit.csb.pitt.edu/) - A pharmacophore modeling and virtual screening platform. It enables users to define and search for pharmacophoric patterns within chemical databases, assisting in the identification of compounds with specific bioactive properties for drug development.
-- [PharmMapper](https://www.lilab-ecust.cn/pharmmapper/) - A web server designed for pharmacophore mapping with statistical methods.  
+- [PharmMapper](https://www.lilab-ecust.cn/pharmmapper/) - A web server designed for pharmacophore mapping with statistical methods.
+
+## Molecular docking
+
+- [OpenBabel](https://openbabel.org/index.html) - An open-source chemical toolbox designed for the interconversion of chemical file formats. Useful for batch preparing ligands for molecular docking.
+- [MGLTools](https://ccsb.scripps.edu/mgltools/) - A software package designed for visualization and analysis of molecular structures including preparation of protein and ligand structures. 
+- [AutoDockTools](https://autodocksuite.scripps.edu/adt/) - A GUI for setting up and analyzing molecular docking simulations using the AutoDock suite. It provides a user-friendly environment for preparing input files and visualizing docking results.
+- [AutoDock Vina](https://vina.scripps.edu/) - A molecular docking program that efficiently predicts the binding modes of small molecules to target proteins. It utilizes an advanced scoring function and optimization algorithm, making it widely used for virtual screening and drug discovery.
+- [EasyDockVina2](https://github.com/S3cr3t-SDN/EasyDockVina2) - A user-friendly tool built on top of AutoDock Vina, streamlining the molecular docking process. It simplifies the setup of docking simulations, making it accessible to users with varying levels of expertise.
+- [AutoDock Vina web server](https://durrantlab.pitt.edu/webina/) - A web-based interface for molecular docking simulations. It aids in predicting the binding modes of ligands to target proteins. 
+- [Smina](https://github.com/mwojcikowski/smina) - A fork of AutoDock Vina with additional features and optimizations. It focuses on improving scoring and minimization.
+- [Gnina](https://github.com/gnina/gnina) - A fork of Smina with integrated support for scoring and optimizing ligands using convolutional neural networks.
+- [EasyDock](https://github.com/ci-lab-cz/easydock) - A fully automated pipeline for molecular docking based on Vina with a full support of Smina and Gnina.
+- [HADDOCK](https://wenmr.science.uu.nl/haddock2.4/) - A platform used for all types of molecular docking including protein, ligand, peptide, and nucleic acid docking.  
+
+## Molecular interaction visualization
+
+- [PLIP - Protein ligand interaction profiler](https://plip-tool.biotec.tu-dresden.de/plip-web/plip/index) - A tool for profiling interactions between proteins and ligands. It helps analyze and visualize protein-ligand interactions, providing insights into molecular binding mechanisms.  
+- [LigPlot+](https://www.ebi.ac.uk/thornton-srv/software/LigPlus/) - A Java-based program that automatically generates  2D ligand-protein interaction diagrams.  
+- [Discovery Studio Visualizer](https://discover.3ds.com/discovery-studio-visualizer-download) - A powerful molecular visualization tool that allows users to explore and analyze complex biological and chemical information. It provides an intuitive interface for visualizing molecular structures, protein-ligand interactions, and conducting various analyses.  
 
 ## Pharmacokinetics parameters prediction tools 
 
@@ -85,18 +134,26 @@ author_profile: true
 - [ChemMaster](https://crescent-silico.com/chemmaster/) - A general cheminformatics software used to handle chemical data, in particular for drug design purposes including QSAR modeling.
 - [3D-QSAR](https://www.3d-qsar.com/) - A compilation of tools available online for 3D-QSAR modeling.
 
+## Quantum chemistry
+
+- [Gaussian](https://gaussian.com/) - A widely used software suite for electronic structure modeling and quantum chemistry calculations.
+- [ORCA](https://orcaforum.kofo.mpg.de/app.php/portal) - A popular computational chemistry software package that is widely used for electronic structure calculations, including Density Functional Theory (DFT) calculations. While it is not open source, it does offer a free version for academic and personal use.
+- [Quantum ESPRESSO](https://www.quantum-espresso.org/) - An integrated suite of Open-Source computer codes for electronic-structure calculations and materials modeling at the nanoscale.
+
+## Molecular dynamics simulations
+
+- [GROMACS](https://www.gromacs.org/) - A versatile package to perform molecular dynamics, scalable and efficient in performing large-scale simulations.
+- [LAMMPS](https://www.lammps.org/) - A classical molecular dynamics simulation code, designed to run efficiently on parallel computers.
+- [NAMD](https://www.ks.uiuc.edu/Research/namd/) - A parallel molecular dynamics code designed for high-performance simulation of large biomolecular systems.
+- [AMBER](https://ambermd.org/) - A suite of biomolecular simulation programs that includes several force fields for the simulation of proteins, nucleic acids, and carbohydrates.
+- [Desmond](https://www.deshawresearch.com/resources.html) - Developed by Schrödinger at D. E. Shaw Research, Desmond is a high-performance molecular dynamics simulation program with a focus on drug discovery.
+
 ## Topology preparation
 
 - [CGenFF](https://cgenff.umaryland.edu/) - Provides a force field parameterization platform for small organic molecules within the CHARMM force field. It assists researchers in preparing molecular topologies for use in molecular dynamics simulations.
 - [SwissParam](https://www.swissparam.ch/) - A tool for generating force field parameters for small molecules. 
 - [Automated Topology Builder](https://atb.uq.edu.au/) - A web-based tool for generating molecular topologies and force field parameters.
 - [CHARMM-GUI](https://www.charmm-gui.org/) - A user-friendly interface for CHARMM, providing tools for the generation of molecular topologies and input files for simulations.
-
-## Cheminformatics free courses
-
-- [Computational chemistry lectures by TMP Chem](https://youtube.com/playlist?list=PLm8ZSArAXicIWTHEWgHG5mDr8YbrdcN1K) -  A YouTube playlist offering computational chemistry lectures by TMP Chem. It covers various aspects of computational chemistry, providing valuable insights for learners interested in the field.
-- [Strasbourg Summer School in Chemoinformatics, 2022](https://youtube.com/playlist?list=PLhgURFExPmJsDuHevu5n8y0R41WsXfbnC) - A YouTube playlist featuring lectures from the Strasbourg Summer School in Chemoinformatics. The content covers topics related to cheminformatics.
-- [BIGCHEM](https://bigchem.eu/node/63) - The BIGCHEM project provides free courses on big data in chemistry. It offers online resources and training materials to explore the intersection of big data and chemistry, fostering understanding and skills in cheminformatics.  
 
 ## Normal mode analysis for predicting protein motions
 
@@ -118,17 +175,50 @@ author_profile: true
 - [PROTAC-db](http://cadd.zju.edu.cn/protacdb/) - A database focused on Proteolysis Targeting Chimeras (PROTACs). It provides a resource for researchers interested in PROTACs by offering information on their design, targets, and associated experimental data, aiding in the exploration of targeted protein degradation.  
 - [PROsettaC](https://prosettac.weizmann.ac.il/) - A platform for ternary complex modeling, specifically focusing on the structural modeling of protein-protein interactions. It provides tools for predicting the three-dimensional structures of protein complexes, contributing to the understanding of PROTAC-induced ternary complexes and their implications in drug discovery.
 
+## Machine learning for drug discovery
+
+- [RDKit](https://www.rdkit.org/) - An open-source toolkit for cheminformatics and medicinal chemistry, RDKit facilitates tasks like molecular structure representation, substructure searching, and descriptor calculation.
+- [Google Colab](https://colab.research.google.com/) - A cloud-based platform that provides free access to Jupyter notebooks along with GPU support. It allows users to run and share Python code collaboratively, making it particularly useful for data analysis, machine learning, and research projects.
+- [Anaconda](https://www.anaconda.com/) - A distribution platform for Python and R programming languages, designed for data science, machine learning, and scientific computing.
+- [Pandas](https://pandas.pydata.org/) - An open-source data manipulation and analysis library for Python. It provides easy-to-use data structures, such as dataframes, and a plethora of functions for data cleaning, exploration, and transformation.
+- [Numpy](https://numpy.org/) - A library for numerical computing in Python. It provides support for large, multi-dimensional arrays and matrices, along with a collection of mathematical functions to operate on these arrays.
+- [Scikit-Learn](https://scikit-learn.org/stable/) - An open-source machine learning library for Python. It offers a simple and efficient toolkit for various machine learning tasks, including classification, regression, clustering, and dimensionality reduction.
+- [Matplotlib](https://matplotlib.org/) - A popular 2D plotting library for Python.
+- [Seaborn](https://seaborn.pydata.org/) - A statistical data visualization library based on Matplotlib. It simplifies the creation of attractive and informative statistical graphics in Python.
+- [MoleculeNet](https://moleculenet.org/) - Offers datasets for benchmarking predictive models of various chemical drug properties.
+- [Kaggle](https://www.kaggle.com/) - A large ML and AI community. Can be useful for sourcing and sharing datasets and models related to drug discovery.
+- [Hugging Face](https://huggingface.co/) - A new growing AI community similar to Kaggle.
+- [Code Ocean](https://codeocean.com/) - A cloud-based platform designed to facilitate the sharing, collaboration, and reproducibility of research code and data.
+- [Zenodo](https://zenodo.org/) - An open-access repository for research outputs. It is an initiative developed by CERN to provide a platform for researchers to share and preserve various types of scholarly content, including datasets, software, publications, and other research-related materials.
+- [ChemML](https://hachmannlab.github.io/chemml/index.html) - ChemML empowers users to perform various data science tasks and ML workflows, making modern data science accessible in the broader chemistry and materials community.
+- [Datagrok]( https://datagrok.ai/cheminformatics) - Datagrok offers robust support for small molecules and popular building blocks in cheminformatics. It understands various chemical notations like SMILES and SMARTS. Users can visualize molecules in 2D or 3D, sketch them, and extract properties.
+
+## Artificial intelligence for drug discovery
+
+- [Keras](https://keras.io/) - An open-source high-level neural networks API written in Python. It provides a user-friendly interface for building and experimenting with deep learning models. 
+- [TensorFlow](https://www.tensorflow.org/) - An open-source machine learning framework developed by Google. It offers a comprehensive set of tools for building and deploying machine learning models, with a particular emphasis on deep learning. 
+- [DeepChem](https://deepchem.io/) -  An open-source library for deep learning in drug discovery and cheminformatics
+- [TorchDrug](https://torchdrug.ai/) - A cheminformatics toolkit based on PyTorch. It provides functionalities for molecular property prediction, compound screening, and deep learning-based analyses.  
+- [DEEPScreen](https://github.com/cansyl/DEEPScreen) - A Python-based tool for virtual screening studies with deep convolutional neural networks using compound images.  
+- [GraphINVENT](https://github.com/MolecularAI/GraphINVENT) - A Python-based platform deployed by the MolecularAI group at AstraZeneca, for molecular design based on graph generation models. It employs graph neural networks to generate molecular graphs with desired properties.
+
+## Retrosynthesis prediction
+
+- [Spaya AI-powered retrosynthesis platform](https://spaya.ai/app/search) - An AI-powered platform for retrosynthetic analysis. It assists chemists in designing synthetic routes for target compounds.
+- [AiZynthFinder](https://github.com/MolecularAI/aizynthfinder) - A tool based on Monte Carlo tree search, designed for retrosynthetic planning in organic chemistry. It aids chemists in generating synthetic routes by exploring reaction databases and proposing viable retrosynthetic steps.
+- [ASKCOS](https://askcos.mit.edu/) -  An AI-driven platform developed for computer-assisted organic synthesis planning. Utilizing machine learning algorithms, ASKCOS assists chemists in predicting viable reaction pathways and proposing synthetic routes for target molecules.
+- [IBM RoboRXN](https://rxn.res.ibm.com/rxn/robo-rxn/welcome) - An AI-driven platform for automated reaction prediction and planning. Using advanced machine learning models, it enables researchers to predict the outcomes of chemical reactions and design synthetic routes for desired products.
+
+
 ## Miscellaneous tools
 
 - [OPSIN: Open Parser for Systematic IUPAC nomenclature](https://opsin.ch.cam.ac.uk) - Useful for converting chemical names into structured representations.
 - [OSRA: Optical Structure Recognition](https://cactus.nci.nih.gov/cgi-bin/osra/index.cgi) - An Optical Structure Recognition tool that converts graphical representations of chemical structures, such as images, into connection tables. 
-- [PLIP - Protein ligand interaction profiler](https://plip-tool.biotec.tu-dresden.de/plip-web/plip/index) - A tool for profiling interactions between proteins and ligands. It helps analyze and visualize protein-ligand interactions, providing insights into molecular binding mechanisms.
 - [MetaPredict](http://metapredict.icoa.fr/) - A tool designed for predicting various molecular properties and activities. It supports computational chemistry by providing predictive models for diverse chemical entities.   
 - [RPBS Web Portal](https://mobyle.rpbs.univ-paris-diderot.fr/cgi-bin/portal.py#welcome) - A platform offering a range of tools for computational biology and chemistry.
 - [AI based scoring function platform](http://cadd.zju.edu.cn/asfp/?fbclid=IwAR0SlLlG6WxHVj7O3xvTufTWHdQR_heLefAWqGJXfY3z39-0sy3NxTd5X5E) - Employs artificial intelligence to develop scoring functions for evaluating molecular interactions. It aids in predicting binding affinities and guiding drug discovery efforts.
 - [ChemPlot: A Tool For Chemical Space Visualization](https://chemplot.streamlit.app/) - A tool dedicated to visualizing chemical space. 
 - [ChemDB Chemoinformatics Portal](http://cdb.ics.uci.edu/) - A chemoinformatics portal offering various tools for chemical data analysis. It supports tasks such as compound search, similarity analysis, and property prediction.  
-- [TorchDrug](https://torchdrug.ai/) - A cheminformatics toolkit based on PyTorch. It provides functionalities for molecular property prediction, compound screening, and deep learning-based analyses.  
 - [Open Targets Platform](https://platform.opentargets.org/) - The Open Targets Platform integrates genetic, genomic, and chemical data for target identification in drug discovery. 
 - [Screening Explorer](http://stats.drugdesign.fr/) - A tool designed for compound screening and analysis.
 - [LigRMSD](https://ligrmsd.appsbio.utalca.cl/) - A tool for calculating the root-mean-square deviation (RMSD) between ligand structures.  
@@ -138,54 +228,34 @@ author_profile: true
 - [NERDD New E-Resource for Drug Discovery](https://nerdd.univie.ac.at/) - A new e-resource focused on drug discovery. It provides information and tools to support researchers in the drug development process.
 - [MetaChemiBio](https://biochemia.uwm.edu.pl/metachemibio/) - A tool designed for predicting molecular properties and activities. 
 - [The Utrecht Biomolecular Interactions software portal](https://wenmr.science.uu.nl/) - This portal provides software tools for studying biomolecular interactions. 
-- [Spaya AI-powered retrosynthesis platform](https://spaya.ai/app/search) - An AI-powered platform for retrosynthetic analysis. It assists chemists in designing synthetic routes for target compounds.
-- [AutoDock Vina web server](https://durrantlab.pitt.edu/webina/) - A web-based interface for molecular docking simulations. It aids in predicting the binding modes of ligands to target proteins. 
-- [CaverWeb: Identification of Tunnels and Channels in Proteins and Analysis of Ligand Transport](https://loschmidt.chemi.muni.cz/caverweb/) - A tool for identifying tunnels and channels in protein structures. It supports the analysis of ligand transport pathways.
 - [LigBuilder3](http://www.pkumdl.cn:8080/ligbuilder3/) - A tool for building ligand structures and conducting virtual screening. 
 - [MolAiCal](https://molaical.github.io/) - Useful for binding free energy calculations.
 - [ChemMine Tools](https://chemminetools.ucr.edu/) - Provide a collection of cheminformatics and computational chemistry tools.
+- [MayaChemTools](http://www.mayachemtools.org/index.html) - A growing collection of Perl and Python scripts, modules, and classes designed to support diverse daily computational discovery needs.
+- [SCBDD](http://www.scbdd.com/) - An online platform containing a series of software and web servers that can assist in cheminformatics and drug discovery.
+- [Click2Drug](https://www.click2drug.org/) - Deployed by the Swiss Institute of Bioinformatics, presents an extensive compilation of CADD software, databases, and web services. This collection categorizes tools based on their application field, aiming to encompass the entire drug design pipeline.
+- [Galaxy Europe](https://usegalaxy-eu.github.io/index-cheminformatics.html) - A Galaxy instance focused on Cheminformatics.
+
+## Cheminformatics free courses
+
+- [Computational chemistry lectures by TMP Chem](https://youtube.com/playlist?list=PLm8ZSArAXicIWTHEWgHG5mDr8YbrdcN1K) -  A YouTube playlist offering computational chemistry lectures by TMP Chem. It covers various aspects of computational chemistry, providing valuable insights for learners interested in the field.
+- [Strasbourg Summer School in Chemoinformatics, 2022](https://youtube.com/playlist?list=PLhgURFExPmJsDuHevu5n8y0R41WsXfbnC) - A YouTube playlist featuring lectures from the Strasbourg Summer School in Chemoinformatics. The content covers topics related to cheminformatics.
+- [BIGCHEM](https://bigchem.eu/node/63) - The BIGCHEM project provides free courses on big data in chemistry. It offers online resources and training materials to explore the intersection of big data and chemistry, fostering understanding and skills in cheminformatics.
+- [Geometric Deep Learning Course](https://geometricdeeplearning.com/lectures/) - A course on Geometric Deep Learing delivered as part of the African Master’s in Machine Intelligence.
+- [Drug Discovery Course by StereoElectronics](https://www.stereoelectronics.org/webDD/DD_home.html) - Fundamentals and principles of methods used in the drug discovery pipeline.
+- [drugdesign.org](https://www.drugdesign.org/) - A collection of free courses on drug design, cheminformatics, molecular modeling, property prediction, and QSAR.
 
 ## Blogs
 
 - [Practical Fragments](http://practicalfragments.blogspot.com/) - A blog focusing on fragment-based drug discovery. It provides practical insights, case studies, and discussions on the use of small fragments in drug design.
 - [avrilomics](https://avrilomics.blogspot.com/) - A blog covering topics in genomics, bioinformatics, and related fields. It offers insights, updates, and discussions on advancements and practical applications in these areas.
-- [Practical Cheminformatics](http://practicalcheminformatics.blogspot.com/) - A blog dedicated to practical aspects of cheminformatics. It explores tools, techniques, and applications in the field of chemical informatics and computational chemistry. 
+- [Practical Cheminformatics](http://practicalcheminformatics.blogspot.com/) - A blog dedicated to practical aspects of cheminformatics. It explores tools, techniques, and applications in the field of chemical informatics and computational chemistry.
+- [Cheminformania](https://www.cheminformania.com/) - A compilation of articles focused on valuable insights and hands-on demonstrations detailing diverse cheminformatic tasks, delving progressively deeper into the realm of deep learning and AI applications.
+- [Daily Dose of Data Science](https://www.blog.dailydoseofds.com/) - A blog that consolidates captivating frameworks, libraries, technologies, and insights to streamline the entire process of a Data Science project.
+- [Machine Learning Mastery](https://machinelearningmastery.com/) - A valuable online resource that offers tutorials, guides, and practical insights into machine learning concepts, algorithms, and techniques. Authored by Jason Brownlee, a machine learning expert and educator, the site covers a wide range of topics, from fundamental concepts for beginners to advanced techniques for seasoned practitioners.
+- [Chem-Workflows](https://chem-workflows.com/index.html) - A collection of Jupyter Notebook-based tutorials written by Dr. Angel J. Ruiz Moreno for chemical data exploration and visualization.
+- [Structural Bioinformatics](https://proteinstructures.com/) - A guide to structural biology and structure-based drug design.
+- [Bioinformatics Answers](https://www.biostars.org/) - An online platform designed for bioinformatics researchers, computational biologists, and individuals involved in life sciences. It serves as a community-driven question and answer platform, where users can seek help, share knowledge, and engage in discussions related to bioinformatics and computational biology.
+- [McConnellsMedChem](https://mcconnellsmedchem.com/) - A Medicinal chemistry blog serving as a resource for professionals, researchers, or students involved in the field of medicinal chemistry.
+- [DrugDiscovery.NET](http://www.drugdiscovery.net/) - A blog about AI and machine learning in drug discovery.
 
-
-![image](https://github.com/yboulaamane/journal-list-cadd/assets/7014404/789c8c4a-0df5-4802-b3f3-b19c6c594ce5)
-
-
-| Journal Name                                      | Q Ranking | Impact Factor | Subscription | Publishing House                 | URL                                                                                   |
-|---------------------------------------------------|-----------|--------------|--------------|---------------------------------|---------------------------------------------------------------------------------------|
-| International Journal of Biological Macromolecules | Q1        | 8.2          | Yes          | Elsevier                        | [Link](https://www.sciencedirect.com/journal/international-journal-of-biological-macromolecules)                            |
-| Computers in Biology and Medicine                 | Q1        | 7.7          | Yes          | Elsevier                        | [Link](https://www.sciencedirect.com/journal/computers-in-biology-and-medicine)                                            |
-| Drug Discovery Today                              | Q1        | 7.4          | Yes          | Elsevier                        | [Link](https://www.journals.elsevier.com/drug-discovery-today)                                                                  |
-| Journal of Medicinal Chemistry                    | Q1        | 7.3          | Yes          | American Chemical Society       | [Link](https://pubs.acs.org/journal/jmcmar)                                                               |
-| Expert Opinion on Drug Discovery                  | Q1        | 7            | Yes          | Taylor & Francis                | [Link](https://www.tandfonline.com/action/journalInformation?show=journalMetrics&journalCode=iedc20)                             |
-| Archives of Pharmacal Research                    | Q1        | 6.7          | Yes          | Springer                        | [Link](https://www.springer.com/journal/12272)                                                                                        |
-| European Journal of Medicinal Chemistry           | Q1        | 6.7          | Yes          | Elsevier                        | [Link](https://www.sciencedirect.com/journal/european-journal-of-medicinal-chemistry)                                             |
-| Computational and Structural Biotechnology Journal | Q1        | 6            | No           | Elsevier                        | [Link](https://www.journals.elsevier.com/computational-and-structural-biotechnology-journal)                              |
-| Journal of Chemical Information and Modeling      | Q1        | 5.6          | Yes          | American Chemical Society       | [Link](https://pubs.acs.org/journal/jcisd8)                                                               |
-| Journal of Chemical Theory and Computation        | Q1        | 5.5          | Yes          | American Chemical Society       | [Link](https://pubs.acs.org/journal/jctcce)                                                               |
-| Journal of Biomolecular Structure and Dynamics    | Q2        | 5.2          | Yes          | Taylor & Francis                | [Link](https://www.tandfonline.com/toc/tbsd20/current)                                                                                 |
-| Journal of Cellular Biochemistry                  | Q2        | 4            | Yes          | Wiley                           | [Link](https://onlinelibrary.wiley.com/journal/10974644)                                                                                 |
-| Drug Development Research                          | Q2        | 3.8          | Yes          | Wiley                           | [Link](https://onlinelibrary.wiley.com/journal/10982299)                                                                                 |
-| Molecular Diversity                                | Q2        | 3.8          | Yes          | Springer                        | [Link](https://www.springer.com/journal/11030)                                                                                        |
-| Pharmaceutical Research                            | Q2        | 3.7          | Yes          | Springer                        | [Link](https://www.springer.com/journal/11095)                                                                                        |
-| Molecular Informatics                              | Q2        | 3.6          | Yes          | Wiley-VCH                       | [Link](https://onlinelibrary.wiley.com/journal/18681751)                                                                                |
-| ChemMedChem                                       | Q1        | 3.5          | Yes          | Wiley-VCH                       | [Link](https://chemistry-europe.onlinelibrary.wiley.com/journal/18607187)                                                              |
-| Bioorganic & Medicinal Chemistry                   | Q2        | 3.5          | Yes          | Elsevier                        | [Link](https://www.journals.elsevier.com/bioorganic-and-medicinal-chemistry)                                                           |
-| Journal of Computer-Aided Molecular Design        | Q2        | 3.5          | Yes          | Springer                        | [Link](https://www.springer.com/journal/10822)                                                                                         |
-| Current Topics in Medicinal Chemistry             | Q2        | 3.4          | Yes          | Bentham Science Publishers       | [Link](https://benthamscience.com/journals/current-topics-in-medicinal-chemistry/)                                                      |
-| Computational Biology and Chemistry               | Q2        | 3.1          | Yes          | Elsevier                        | [Link](https://www.sciencedirect.com/journal/computational-biology-and-chemistry)                                                      |
-| Current Pharmaceutical Design                      | Q2        | 3.1          | Yes          | Bentham Science Publishers       | [Link](https://benthamscience.com/journals/current-pharmaceutical-design/)                                                            |
-| Chemical Biology and Drug Design                   | Q2        | 3            | Yes          | Wiley                           | [Link](https://onlinelibrary.wiley.com/journal/17470285)                                                                                |
-| Journal of Molecular Graphics and Modeling        | Q2        | 2.9          | Yes          | Elsevier                        | [Link](https://www.sciencedirect.com/journal/journal-of-molecular-graphics-and-modelling)                                               |
-| Inorganica Chimica Acta                            | Q2        | 2.8          | Yes          | Elsevier                        | [Link](https://www.sciencedirect.com/journal/inorganica-chimica-acta)                                                                    |
-| Journal of Molecular Recognition                    | Q4        | 2.7          | Yes          | Wiley                           | [Link](https://onlinelibrary.wiley.com/journal/10991352)                                                                                |
-| Medicinal Chemistry Research                        | Q2        | 2.6          | Yes          | Springer                        | [Link](https://www.springer.com/journal/44)                                                                                           |
-| Current Drug Metabolism                            | Q2        | 2.3          | Yes          | Bentham Science Publishers       | [Link](https://benthamscience.com/journals/current-drug-metabolism/)                                                                    |
-| Molecular Simulation                                | Q2        | 2.3          | Yes          | Taylor & Francis                | [Link](https://www.tandfonline.com/toc/gmos20/current)                                                                                  |
-| Journal of Molecular Modeling                      | Q3        | 2.2          | Yes          | Springer                        | [Link](https://www.springer.com/journal/894)                                                                                          |
-| Structural Chemistry                                | Q3        | 1.7          | Yes          | Springer                        | [Link](https://www.springer.com/journal/11224)                                                                                         |
-| Current Computer-Aided Drug Design                 | Q3        | 1.6          | Yes          | Bentham Science Publishers       | [Link](https://benthamscience.com/journals/current-computer-aided-drug-design/)                                                         |
