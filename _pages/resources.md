@@ -1,10 +1,3 @@
----
-layout: archive
-title: "Resources"
-permalink: /resources/
-author_profile: true
----
-
 # ⌬ cdd-toolbox ⌬
 
 Welcome to the ***Computational Drug Discovery Toolbox*** repository! This curated collection provides a comprehensive set of resources for Computational Drug Discovery (CDD) and related fields. Whether you are a researcher, student, or professional in the field of computational chemistry, this toolbox aims to serve as a valuable resource.
@@ -52,7 +45,7 @@ Welcome to the ***Computational Drug Discovery Toolbox*** repository! This curat
 - [ArtemisiaDB](https://yboulaamane.github.io/ArtemisiaDB/) - A database dedicated to compounds from the genus Artemisia.  
 - [OTAVA Natural Product-Like Library](https://otavachemicals.com/products/compound-libraries-for-hts/natural-product-like-library) - A library of >1k natural product-like compounds designed for high-throughput screening in drug discovery.  
 - [BIAdb](https://webs.iiitd.edu.in/raghava/biadb/type.php?tp=natural) - A database providing information on bioactive peptides and proteins with potential therapeutic applications.  
-- [IMPPAT](https://cb.imsc.res.in/imppat/home) - A database focused on immunomodulatory peptides and proteins, supporting research in immunopharmacology.  
+- [IMPPAT](https://cb.imsc.res.in/imppat/home) - A comprehensive database developed through the digitization of data from over 100 traditional Indian medicine books, 7000+ research articles, and other sources. It stands as the most extensive digital repository of phytochemicals found in Indian medicinal plants, surpassing its predecessor IMPPAT 1.0 in scope and depth.
 - [NP-MRD](https://np-mrd.org/natural_products) - A natural product database with a focus on >280k NMR studies. 
 - [IBS Natural Compounds](https://www.ibscreen.com/natural-compounds) -  A database providing information on >60k natural compounds.
 - [Phytochemicals](https://www.phytochemicals.info/) - A comprehensive resource offering information on phytochemicals, supporting research in plant chemistry and pharmacology.  
@@ -258,4 +251,3 @@ Welcome to the ***Computational Drug Discovery Toolbox*** repository! This curat
 - [Bioinformatics Answers](https://www.biostars.org/) - An online platform designed for bioinformatics researchers, computational biologists, and individuals involved in life sciences. It serves as a community-driven question and answer platform, where users can seek help, share knowledge, and engage in discussions related to bioinformatics and computational biology.
 - [McConnellsMedChem](https://mcconnellsmedchem.com/) - A Medicinal chemistry blog serving as a resource for professionals, researchers, or students involved in the field of medicinal chemistry.
 - [DrugDiscovery.NET](http://www.drugdiscovery.net/) - A blog about AI and machine learning in drug discovery.
-
