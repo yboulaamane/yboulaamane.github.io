@@ -25,4 +25,4 @@ main:
     url: /ArtemisiaDB/
     
   - title: "EnsembleBBB"
-    url: /http://ensemblebbb.streamlit.app/
+    url: http://ensemblebbb.streamlit.app/
