@@ -1,0 +1,11 @@
+---
+title: "Antibiotic discovery with artificial intelligence for the treatment of Acinetobacter baumannii infections"
+collection: publications
+permalink: /publication/paper-8
+date: 2024-05-03
+journal: 'ASM mSystems'
+paperurl: '/files/paper-8.pdf'
+link: 'https://doi.org/10.1128/msystems.00325-24'
+citation: 'Boulaamane, Y., Molina Panadero, I., Hmadcha, A., Atalaya Rey, C., Baammi, S., El Allali, A., Maurady, A., & Smani, Y. (2024). Antibiotic discovery with artificial intelligence for the treatment of Acinetobacter baumannii infections. mSystems, e00325-24. https://doi.org/10.1128/msystems.00325-24'
+abstract: 'Global challenges presented by multidrug-resistant Acinetobacter baumannii infections have stimulated the development of new treatment strategies. We reported that outer membrane protein W (OmpW) is a potential therapeutic target in A. baumannii. Here, a library of 11,648 natural compounds was subjected to a primary screening using quantitative structure-activity relationship (QSAR) models generated from a ChEMBL data set with >7,000 compounds with their reported minimal inhibitory concentration (MIC) values against A. baumannii followed by a structure-based virtual screening against OmpW. In silico pharmacokinetic evaluation was conducted to assess the drug-likeness of these compounds. The ten highest-ranking compounds were found to bind with an energy score ranging from −7.8 to −7.0 kcal/mol where most of them belonged to curcuminoids. To validate these findings, one lead compound exhibiting promising binding stability as well as favorable pharmacokinetics properties, namely demethoxycurcumin, was tested against a panel of A. baumannii strains to determine its antibacterial activity using microdilution and time-kill curve assays. To validate whether the compound binds to the selected target, an OmpW-deficient mutant was studied and compared with the wild type. Our results demonstrate that demethoxycurcumin in monotherapy and in combination with colistin is active against all A. baumannii strains. Finally, the compound was found to significantly reduce the A. baumannii interaction with host cells, suggesting its anti-virulence properties. Collectively, this study demonstrates machine learning as a promising strategy for the discovery of curcuminoids as antimicrobial agents for combating A. baumannii infections.'
+---
