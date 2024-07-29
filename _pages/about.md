@@ -7,7 +7,7 @@ redirect_from:
   - /about/
   - /about.html
 ---
-Hello! I am a Ph.D candidate in Cheminformatics and Computational Chemistry at the Laboratory of Innovative Technologies (LTI) at the [National School of Applied Sciences](http://ensat.ac.ma/Portail/), [Abdelmalek Essaadi University](http://www.uae.ma/website/), Tetouan, Morocco. My current research focuses on employing computational approaches to accelerate the drug discovery of natural products as lead candidates for the treatment of neurodegenerative diseases and infectious diseases.
+With a PhD in Cheminformatics and Computational Chemistry at the Laboratory of Innovative Technologies, [National School of Applied Sciences](http://ensat.ac.ma/Portail/), [Abdelmalek Essaadi University](http://www.uae.ma/website/), Tetouan, Morocco. My current research focuses on employing computational approaches to accelerate the drug discovery of natural products as lead candidates for the treatment of neurodegenerative diseases and infectious diseases.
 
 I focus on the early stages of drug discovery, including identifying, validating, and selecting promising therapeutic targets. My primary interest lies in multi-target-directed drugs, designed to simultaneously address multiple targets implicated in specific disease pathways, such as oxidative stress and neuroinflammation.
 
