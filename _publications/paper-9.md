@@ -6,12 +6,7 @@ date: 2024-08-05
 journal: 'Pharmacological Research - Modern Chinese Medicine'
 paperurl: '/files/paper-9.pdf'
 link: 'https://doi.org/10.1016/j.prmcm.2024.100495'
-citation:
-  author: "Touati, I., Boulaamane, Y., Britel, M. R., & Maurady, A."
-  year: 2024
-  title: "Dendrobium nobile L. alkaloids modulate calcium dysregulation and neuroinflammation in Alzheimer's disease: a bioinformatic analysis"
-  journal: "Pharmacological Research-Modern Chinese Medicine"
-  doi: "100495"
+citation: "Touati, I., Boulaamane, Y., Britel, M. R., & Maurady, A. (2024). Dendrobium nobile L. alkaloids modulate calcium dysregulation and neuroinflammation in Alzheimer's disease: a bioinformatic analysis. Pharmacological Research-Modern Chinese Medicine, 100495."
 abstract: |
   Introduction Dendrobium nobile Lindl alkaloids, or DNLA for short, are the most active ingredients found in D.nobile, a top grade plant in Shen Nong Ben Cao Jing, with an extensive history of medicinal use in Chinese traditional medicine (TCM) as a multifunctional therapeutic agent. Recent evidence has emerged linking the neuroprotective and anti-aging effects of DNLA to their involvement in promoting autophagy of toxic amyloid-β (Aβ) plaques and modulation of key enzymes involved in the hyperphosphorylation of Tau proteins. Although amyloid buildup and the aggregation of Tau proteins are central to the onset of Alzheimer's disease (AD), evidence on how DNLA relate to other overlooked dysregulated AD-associated pathways is still lacking.
   
