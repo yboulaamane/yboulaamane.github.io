@@ -10,7 +10,7 @@ redirect_from:
 {% include base_path %}
 
 ## Education
-* **Ph.D in Computational Chemistry**, Facutly of Sciences and Techniques of Tangier, Abdelmalek Essaadi University, **2023** (expected)
+* **Ph.D. in Computational Chemistry**, Facutly of Sciences and Techniques of Tangier, Abdelmalek Essaadi University, **2024**
 * **M.S. in Biology and Biomaterials of the Oral Medium**, Faculty of Dentistry of Rabat, Mohammed V University, **2020**
 * **B.S. in Biology**, Faculty of Sciences of Rabat, Mohammed V University, **2017**
 
