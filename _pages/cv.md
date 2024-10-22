@@ -65,7 +65,7 @@ redirect_from:
 * **2022** \| Erasmus+ KA 107 Mobility for Studies
 * **2023** \| Erasmus+ Mobility for Traineeships
 
-## Talks
+## Conferences
   <ul>{% for post in site.talks %}
     {% include archive-single-talk-cv.html %}
   {% endfor %}</ul>
