@@ -15,6 +15,10 @@ redirect_from:
 * **B.S. in Biology**, Faculty of Sciences of Rabat, Mohammed V University, **2017**
 
 ## Work experience
+* October 2024 to Present: **Scientific and methodological supervisor**
+  * Al-Zahrawi International University of Health Sciences, Rabat, Morocco
+  * Duties included: Teaching scientific methodology and supervising medical students in their thesis writing, ensuring proper research design, data analysis, and adherence to academic standards
+
 * May 2023 to July 2023: **Visiting Ph.D student** 
   * Andalusian Center For Developmental Biology, University of Pablo de Olavide, Seville, Spain
   * Duties included: Minimal inhibitory concentration (MIC) calculation, time-kill curve assays, bacterial adhesion assays
