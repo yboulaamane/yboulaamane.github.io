@@ -62,8 +62,9 @@ redirect_from:
   
 ## Awards
 * **2021** \| Best Poster Award, [International Bioinforamtics Conference (IBC'2021)](https://sites.google.com/view/ibc2021/home)
+* **2022** \| Erasmus+ KA 107 Mobility for Studies
+* **2023** \| Erasmus+ Mobility for Traineeships
 
-  
 ## Talks
   <ul>{% for post in site.talks %}
     {% include archive-single-talk-cv.html %}
