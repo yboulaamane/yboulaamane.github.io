@@ -27,3 +27,9 @@ By leveraging these computational tools, I aim to uncover and optimize natural p
 **DFT studies:** Gaussian09  
 
 ![image](https://github.com/yboulaamane/yboulaamane.github.io/assets/7014404/41eaba49-6644-4fa7-b0f4-352042b8394d)
+
+## Featured publication (Best Poster Award ieHF2024 🏆)
+
+![Yassir_Boulaamane_ePoster](https://github.com/user-attachments/assets/2a4ae210-c4c9-467e-a1de-5ba5bed9420f)
+
+
