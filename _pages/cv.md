@@ -64,6 +64,7 @@ redirect_from:
 * **2021** \| Best Poster Award, [International Bioinforamtics Conference (IBC'2021)](https://sites.google.com/view/ibc2021/home)
 * **2022** \| Erasmus+ KA 107 Mobility for Studies
 * **2023** \| Erasmus+ Mobility for Traineeships
+* **2024** \| Best Poster Award, [International eHealth Forum - Morocco 2024](https://www.iehealthf.ma/#/CallForAbstracts?lang=en)
 
 ## Conferences
   <ul>{% for post in site.talks %}
