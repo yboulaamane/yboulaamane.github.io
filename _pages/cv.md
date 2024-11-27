@@ -10,50 +10,63 @@ redirect_from:
 {% include base_path %}
 
 ## Education
-* **Ph.D. in Computational Chemistry**, Facutly of Sciences and Techniques of Tangier, Abdelmalek Essaadi University, **2024**
-* **M.S. in Biology and Biomaterials of the Oral Medium**, Faculty of Dentistry of Rabat, Mohammed V University, **2020**
-* **B.S. in Biology**, Faculty of Sciences of Rabat, Mohammed V University, **2017**
+* **Ph.D. in Cheminformatics and Computational Chemistry**, National School of Applied Sciences of Tangier, Abdelmalek Essaadi University, Tetouan, Morocco, **2024**
+  * Thesis: *Data-driven discovery of bioactive natural products: Application to neurodegenerative and infectious diseases*
+* **M.S. in Biology and Biomaterials of the Oral Medium**, Faculty of Dentistry of Rabat, Mohammed V University, Rabat, Morocco, **2020**
+  * Thesis: [Add your thesis title or focus area]
+* **B.S. in Biology**, Faculty of Sciences of Rabat, Mohammed V University, Rabat, Morocco, **2017**
 
-## Work experience
-* October 2024 to Present: **Scientific and methodological supervisor**
-  * Al-Zahrawi International University of Health Sciences, Rabat, Morocco
-  * Duties included: Teaching scientific methodology and supervising medical students in their thesis writing, ensuring proper research design, data analysis, and adherence to academic standards
+## Work Experience
+* **Scientific Methodology Supervisor** (Oct 2024 to Nov 2024)  
+  Al-Zahrawi International University of Health Sciences, Rabat, Morocco  
+  * Taught scientific methodology and supervised medical students in thesis writing  
+  * Ensured proper research design, data analysis, and adherence to academic standards
 
-* May 2023 to July 2023: **Visiting Ph.D student** 
-  * Andalusian Center For Developmental Biology, University of Pablo de Olavide, Seville, Spain
-  * Duties included: Minimal inhibitory concentration (MIC) calculation, time-kill curve assays, bacterial adhesion assays
-  * Supervisor: Prof. Younes Smani
+* **Associate Researcher** (Jul 2024 to Present)  
+  * Led undergraduate lectures and seminars on cheminformatics and biochemistry  
+  * Assisted in biochemistry laboratory demonstrations  
+  * Supervised bachelor's and master’s thesis students  
 
-* May 2022 to October 2022: **Visiting Ph.D student** 
-  * Department of Environmental Engineering, University of Patras, Agrinio, Greece
-  * Duties included: DNA Extraction, 16S ribosomal RNA amplification, amplicon libary preparation for sequencing, NGS data analysis
-  * Supervisor: Prof. George Tsiamis
-  
-* Fall 2021: **Scientific content writing intern**
-  * [Uresearcher](https://uresearcher.com/)
-  * Duties included: Writing blog posts on data-driven drug discovery
-  * Supervisor: Dr. Pankaj Mishra 
+* **Visiting Ph.D. Student** (May 2023 to Jul 2023)  
+  Andalusian Center for Developmental Biology, University of Pablo de Olavide, Seville, Spain  
+  * Conducted minimal inhibitory concentration (MIC) calculations and time-kill curve assays  
+  * Performed bacterial adhesion assays under the supervision of Prof. Younes Smani  
 
-* Fall 2021: **Supervising Assistant**
-  * Facutly of Sciences and Techniques of Tangier, Abdelmalek Essaadi University
-  * Duties included: Teaching basic concepts of molecular modeling and chemical databases. 
-  * Supervisor: Prof. Amal Maurady
-  
+* **Visiting Ph.D. Student** (May 2022 to Oct 2022)  
+  Department of Environmental Engineering, University of Patras, Agrinio, Greece  
+  * Performed DNA extraction, 16S rRNA amplification, amplicon library preparation for sequencing, and NGS data analysis  
+  * Supervised by Prof. George Tsiamis  
+
+* **Scientific Content Writing Intern** (Fall 2021)  
+  [Uresearcher](https://uresearcher.com/)  
+  * Wrote blog posts on data-driven drug discovery  
+  * Supervisor: Dr. Pankaj Mishra  
+
+* **Scientific Content Writer** (Winter 2024)  
+  [Neovarsity](https://neovarsity.org/)  
+  * Authored articles on data-driven drug discovery  
+  * Supervisor: Dr. Pankaj Mishra  
+
+* **Supervising Assistant** (Fall 2021)  
+  Faculty of Sciences and Techniques of Tangier, Abdelmalek Essaadi University  
+  * Taught molecular modeling and chemical database concepts  
+  * Supervisor: Prof. Amal Maurady  
+
 ## Skills
-* Molecular biology
-  * DNA extraction
-  * PCR amplification
-  * PCR purification
-* Molecular modelling
-  * Molecular docking, molecular dynamics simulations, 3D-QSAR, pharmacophore modelling, virtual screening, free energy calculations
-* Chemoinformatics
-  * Machine learning for drug discovery
-  * Artificial intelligence for drug discovery
-  * Chemical data handling, curation and analysis
-* Bioinformatics
-  * Metagenomics data analysis
-  * Primer design
-  * In silico PCR
+### Laboratory Techniques
+* DNA extraction, PCR amplification, PCR purification
+* MIC calculations, bacterial adhesion assays
+
+### Computational Skills
+* Molecular modeling: Molecular docking, molecular dynamics simulations, 3D-QSAR, pharmacophore modeling, virtual screening, free energy calculations
+* Cheminformatics: Machine learning and AI for drug discovery, chemical data curation and analysis
+* Bioinformatics: Metagenomics data analysis, primer design, in silico PCR
+* Tools and software: GROMACS, AutoDock, PyMOL, scikit-learn, TensorFlow, R, Python
+
+### Professional Skills
+* Scientific writing and editing
+* Teaching and mentoring
+* Project management
 
 ## Publications
   <ul>{% for post in site.publications %}
@@ -61,10 +74,10 @@ redirect_from:
   {% endfor %}</ul>
   
 ## Awards
-* **2021** \| Best Poster Award, [International Bioinforamtics Conference (IBC'2021)](https://sites.google.com/view/ibc2021/home)
-* **2022** \| Erasmus+ KA 107 Mobility for Studies
-* **2023** \| Erasmus+ Mobility for Traineeships
-* **2024** \| Best Poster Award, [International eHealth Forum - Morocco 2024](https://www.iehealthf.ma/#/CallForAbstracts?lang=en)
+* **2021** \| Best Poster Award, [International Bioinformatics Conference (IBC'2021)](https://sites.google.com/view/ibc2021/home)  
+* **2022** \| Erasmus+ KA 107 Mobility for Studies  
+* **2023** \| Erasmus+ Mobility for Traineeships  
+* **2024** \| Best ePoster Award, [International eHealth Forum - Morocco 2024](https://www.iehealthf.ma/#/CallForAbstracts?lang=en)
 
 ## Conferences
   <ul>{% for post in site.talks %}
@@ -76,8 +89,8 @@ redirect_from:
     {% include archive-single-cv.html %}
   {% endfor %}</ul>
   
-## Hobbies and interests
-* Organising events in the community
+## Hobbies and Interests
+* Organizing community events
 * Maintaining a personal blog
-* Learning new skills
-* Travelling
+* Exploring AI tools and learning new skills
+* Traveling and cultural exchange
