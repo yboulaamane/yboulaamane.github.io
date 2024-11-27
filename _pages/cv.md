@@ -13,7 +13,6 @@ redirect_from:
 * **Ph.D. in Cheminformatics and Computational Chemistry**, National School of Applied Sciences of Tangier, Abdelmalek Essaadi University, Tetouan, Morocco, **2024**
   * Thesis: *Data-driven discovery of bioactive natural products: Application to neurodegenerative and infectious diseases*
 * **M.S. in Biology and Biomaterials of the Oral Medium**, Faculty of Dentistry of Rabat, Mohammed V University, Rabat, Morocco, **2020**
-  * Thesis: [Add your thesis title or focus area]
 * **B.S. in Biology**, Faculty of Sciences of Rabat, Mohammed V University, Rabat, Morocco, **2017**
 
 ## Work Experience
