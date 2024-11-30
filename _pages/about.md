@@ -19,12 +19,12 @@ I employ a wide range of computational techniques to drive innovation in drug di
 
 By integrating these advanced tools, my goal is to identify, optimize, and validate natural product-derived drug candidates with transformative potential for patient care.
 
-**Programming Languages:** Python, Bash
-**Libraries and Frameworks:** Pandas, NumPy, RDKit, Scikit-Learn, Matplotlib, Seaborn, Keras, TensorFlow
-**Molecular Docking Tools:** AutoDock Vina, Glide
-**Molecular Dynamics Simulations:** GROMACS, Desmond
-**Free Energy Calculations:** gmx_MMPBSA
-**DFT Studies:** Gaussian09
+**Programming Languages:** Python, Bash  
+**Libraries and Frameworks:** Pandas, NumPy, RDKit, Scikit-Learn, Matplotlib, Seaborn, Keras, TensorFlow  
+**Molecular Docking Tools:** AutoDock Vina, Glide  
+**Molecular Dynamics Simulations:** GROMACS, Desmond  
+**Free Energy Calculations:** gmx_MMPBSA  
+**DFT Studies:** Gaussian09  
 
 I am driven by the promise of computational approaches in addressing some of the most pressing challenges in drug discovery. By blending cheminformatics, molecular modeling, and machine learning, I aim to contribute to the development of innovative therapies that improve health outcomes and quality of life.
 
