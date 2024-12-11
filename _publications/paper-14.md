@@ -1,0 +1,11 @@
+---
+title: "Computational Investigation of Phytochemicals from Aloysia citriodora as Drug Targets for Parkinson’s Disease-Associated Proteins"
+collection: "publications"
+permalink: "/publication/paper-14"
+date: "2024-12-11"
+journal: "ChemistrySelect"
+paperurl: "/files/paper-14.pdf"
+link: "https://doi.org/10.1002/slct.202403473"
+citation: "Y. Boulaamane, M. Khedraoui, S. Chtita, I. Touati, B.-E. Sadoq, M. R. Britel, A. Maurady, Computational Investigation of Phytochemicals from Aloysia citriodora as Drug Targets for Parkinson's Disease-Associated Proteins. ChemistrySelect 2024, 9, e202403473."
+abstract: "The exact cause of Parkinson's disease is unknown, and there is currently no cure for the disease. However, there are several treatment options available to help manage its symptoms. The prevalence of PD has been increasing globally, including in Morocco. This study investigated the potential of Aloysia citriodora, also known as lemon verbena, for treating Parkinson's disease. Lemon verbena is a plant commonly used in Morocco for treating central nervous system related diseases. It has been traditionally used as a relaxant and sedative, and its antioxidant and antimicrobial properties have been documented. In this study, we employed molecular docking against multiple targets associated with PD to evaluate the binding affinities of the phytochemicals present in lemon verbena and elucidate their interaction profiles. Interestingly, catechin emerged as a promising bioactive molecule, outperforming reference drugs in interactions with four proteins. Pharmacokinetic/toxicity predictions were conducted to evaluate the drug-likeness of the phytocompounds. Finally, molecular dynamics simulations were performed to evaluate the stability of the protein-ligand complexes over time. By integrating computational methods, this investigation aimed to uncover the therapeutic potential of Aloysia citriodora compounds in Parkinson's disease management and provide valuable insights into their molecular interactions and pharmacokinetic properties. The findings of this study suggest that Aloysia citriodora, particularly its constituent catechin, has the potential to be a therapeutic agent for PD. Further research is needed to validate these findings in experimental and clinical settings."
+---
