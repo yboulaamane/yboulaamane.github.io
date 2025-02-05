@@ -31,7 +31,7 @@ I am driven by the promise of computational approaches in addressing some of the
 
 ![image](https://github.com/yboulaamane/yboulaamane.github.io/assets/7014404/41eaba49-6644-4fa7-b0f4-352042b8394d)
 
-## Featured publication (Best ePoster Award - International eHealth Forum 2024 🏆)
+## Featured publication (Best ePoster Award - ([International eHealth Forum 2024](https://www.iehealthf.ma/InternationaleHealthForum2024#/CallForAbstracts?lang=en) 🏆)
 
 ![Yassir_Boulaamane_ePoster](https://github.com/user-attachments/assets/2a4ae210-c4c9-467e-a1de-5ba5bed9420f)
 
