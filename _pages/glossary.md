@@ -161,6 +161,3 @@ Finding patterns in unlabeled molecular datasets (e.g., clustering).
 ### Validation set:  
 Data used to tune the model before final testing.  
 
-🚀 **Key takeaway:**  
-This glossary provides a **concise reference** for key terms in **computational chemistry, cheminformatics, and AI-driven drug discovery.** Proper understanding of these terms is essential for developing accurate, interpretable, and generalizable ML models in pharmaceutical research.  
-
