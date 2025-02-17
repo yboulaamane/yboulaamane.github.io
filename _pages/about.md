@@ -7,9 +7,11 @@ redirect_from:
   - /about/
   - /about.html
 ---
-Welcome to my academic page! I hold a Ph.D. in Cheminformatics and Computational Chemistry from the Laboratory of Innovative Technologies at the [National School of Applied Sciences](http://ensat.ac.ma/Portail/), [Abdelmalek Essaadi University](http://www.uae.ma/website/), Tetouan, Morocco. My research leverages computational methodologies to accelerate drug discovery, with a particular focus on natural products as lead candidates for treating neurodegenerative and infectious diseases.
+I hold a PhD in Computational Drug Discovery from the Laboratory of Innovative Technologies at the [National School of Applied Sciences](http://ensat.ac.ma/Portail/), [Abdelmalek Essaadi University](http://www.uae.ma/website/), Tetouan, Morocco. My research leverages computational methodologies to accelerate drug discovery, with a particular focus on natural products as lead candidates for treating neurodegenerative and infectious diseases.
 
-My work centers on the early stages of drug discovery, where I contribute to identifying, validating, and selecting promising therapeutic targets. A key area of my interest is the development of multi-target-directed drugs, which aim to tackle complex disease mechanisms, such as oxidative stress and neuroinflammation, by modulating multiple biological pathways simultaneously.
+My research integrates computational methodologies to advance drug discovery, particularly in the discovery of natural products as lead candidates for treating neurodegenerative and infectious diseases. I am also exploring deep learning models to improve molecular property predictions and enhance virtual screening approaches.
+
+My work spans multiple areas of early-stage drug discovery, including target identification, validation, and hit optimization. I have a keen interest in developing multi-target-directed drugs to address complex disease mechanisms such as oxidative stress, neuroinflammation, and antimicrobial resistance.
 
 I employ a wide range of computational techniques to drive innovation in drug discovery:
 
@@ -27,7 +29,6 @@ By integrating these advanced tools, my goal is to identify, optimize, and valid
 **DFT Studies:** Gaussian09  
 
 I am driven by the promise of computational approaches in addressing some of the most pressing challenges in drug discovery. By blending cheminformatics, molecular modeling, and machine learning, I aim to contribute to the development of innovative therapies that improve health outcomes and quality of life.
-
 
 ![image](https://github.com/yboulaamane/yboulaamane.github.io/assets/7014404/41eaba49-6644-4fa7-b0f4-352042b8394d)
 
