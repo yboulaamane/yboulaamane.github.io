@@ -1,12 +1,12 @@
 ---
-title: 'A Comprehensive Guide to Hybrid Assembly Pipeline for Genomic Sequencing'
+title: 'How to Validate AlphaFold Structures'
 date: 2024-03-28
-permalink: /blog/2024/01/a-comprehensive-guide-to-hybrid-assembly-pipeline-for-genomic-sequencing
+permalink: /blog/2024/03/how-to-validate-alphafold-structures
 excerpt_separator: <!--more-->
 toc: true
 tags:
-  - genomics
-  - bioinformatics
+  - drug discovery
+  - computational chemistry
 ---
 
 AlphaFold has revolutionized protein structure prediction, but **validating** its output is essential before using the model in downstream applications like docking or molecular dynamics. Here's a step-by-step guide to assess the quality and reliability of AlphaFold-predicted structures.
