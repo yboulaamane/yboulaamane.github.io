@@ -57,7 +57,7 @@ During visual inspection, **look for red flags** such as:
 
 Visual inspection is mostly qualitative, but it sets the stage for targeted questions. For instance, if you notice the model has an unexpected large cavity or an unusual domain orientation, you might plan specific validations (like docking a ligand into that cavity, or checking if domain orientation is supported by known data). At this stage, you should also decide if any segments of the model might be so low confidence that they should be treated separately (for example, you might exclude a floppy tail from further analysis if it’s not essential to the protein’s folded core).
 
-## Using Structural Validation Tools (MolProbity, PROCHECK, etc.)
+## Using Structural Validation Tools
 
 Automated structure-validation tools provide quantitative checks on your model’s stereochemistry and overall quality. Many of these tools were originally developed for validating experimentally determined structures, but they are equally applicable to predicted models. Here are some key validation tools and what they offer:
 
