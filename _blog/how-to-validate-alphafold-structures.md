@@ -10,11 +10,8 @@ tags:
 ---
 
 AlphaFold has revolutionized protein structure prediction by achieving unprecedented accuracy in many cases​ (1). However, even high-quality predicted models should be rigorously validated before use in research.
-<!--more-->
-
-# How to Validate AlphaFold Structures
-
-AlphaFold has revolutionized protein structure prediction by achieving unprecedented accuracy in many cases​ (1). However, even high-quality predicted models should be rigorously validated before use in research. Just as experimental structures undergo validation (geometry checks, reliability scores, etc.), **AlphaFold-predicted structures** require careful assessment of confidence, stereochemistry, and functional plausibility. In this comprehensive guide, we outline practical strategies to validate an AlphaFold model, from interpreting AlphaFold’s own confidence metrics to using external validation tools, comparing against known structures, and even testing the model’s behavior in silico. The goal is to ensure the predicted structure is trustworthy for drawing biological conclusions.
+<!--more--> 
+Just as experimental structures undergo validation (geometry checks, reliability scores, etc.), **AlphaFold-predicted structures** require careful assessment of confidence, stereochemistry, and functional plausibility. In this comprehensive guide, we outline practical strategies to validate an AlphaFold model, from interpreting AlphaFold’s own confidence metrics to using external validation tools, comparing against known structures, and even testing the model’s behavior in silico. The goal is to ensure the predicted structure is trustworthy for drawing biological conclusions.
 
 ## AlphaFold Confidence Metrics: pLDDT and PAE
 
