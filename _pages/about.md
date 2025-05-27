@@ -20,13 +20,13 @@ I employ a wide range of computational techniques to drive innovation in drug di
 
 Technical Skills & Tools
 
-**- Programming languages:** Python, Bash
-**- Libraries and Frameworks:** Pandas, NumPy, RDKit, Scikit-Learn, Matplotlib, Seaborn, Keras, TensorFlow
-**- Molecular docking:** AutoDock4, Vina, Smina
-**- Molecular dynamics simulations:** GROMACS, Desmond
-**- Free energy calculations:** gmx_MMPBSA
-**- Quantum chemistry:** ORCA
-**- Workflow automation and reproducibility:** Jupyter, Colab, Knime
+**- Programming languages:** Python, Bash  
+**- Libraries and Frameworks:** Pandas, NumPy, RDKit, Scikit-Learn, Matplotlib, Seaborn, Keras, TensorFlow  
+**- Molecular docking:** AutoDock4, Vina, Smina  
+**- Molecular dynamics simulations:** GROMACS, Desmond  
+**- Free energy calculations:** gmx_MMPBSA  
+**- Quantum chemistry:** ORCA  
+**- Workflow automation and reproducibility:** Jupyter, Colab, Knime  
 
 I am driven by the promise of computational approaches in addressing some of the most pressing challenges in drug discovery. By blending cheminformatics, molecular modelling, and machine learning, I aim to contribute to the development of innovative therapies that improve health outcomes and quality of life.
 
