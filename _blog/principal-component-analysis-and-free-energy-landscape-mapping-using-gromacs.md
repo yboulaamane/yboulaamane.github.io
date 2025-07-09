@@ -9,8 +9,6 @@ tags:
   - drug discovery
 ---
 
-# Principal Component Analysis and Free Energy Landscape Mapping Using GROMACS
-
 This guide outlines how to perform Principal Component Analysis (PCA) and compute Free Energy Landscapes (FEL) from molecular dynamics (MD) simulations using GROMACS. These analyses are useful to capture dominant motions and identify energetically favorable states in biomolecular systems.
 <!--more-->
 ---
