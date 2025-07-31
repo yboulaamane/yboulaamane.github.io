@@ -1,6 +1,6 @@
 ---
 title: 'Molecular Simulation in Drug Discovery: A Strategic Guide to Core Methods'
-date: 2025-08-10
+date: 2025-08-01
 permalink: /blog/2025/08/molecular-simulation-in-drug-discovery-a-strategic-guide-to-core-methods
 excerpt_separator: <!--more-->
 toc: true
