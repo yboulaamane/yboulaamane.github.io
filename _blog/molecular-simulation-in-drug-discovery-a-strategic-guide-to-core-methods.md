@@ -19,8 +19,6 @@ Molecular simulation has emerged as a cornerstone in modern drug discovery, enab
 This post offers a coherent overview of the most widely used molecular simulation methods in drug development. The aim is not only to clarify what each method does, but to provide insight into how and when they are best used — especially for early-career scientists and interdisciplinary teams navigating increasingly complex pipelines.
 
 ![Recap of Molecular Simulation Methods](https://raw.githubusercontent.com/yboulaamane/yboulaamane.github.io/refs/heads/master/images/posts/md.jpg)
-*Overview of key molecular simulation methods used in drug discovery.*
-
 
 ## 🔬 Quantum Mechanics: Precision at the Electronic Level
 
