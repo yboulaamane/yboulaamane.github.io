@@ -1,7 +1,7 @@
 ---
 title: 'Validating Molecular Docking Poses with DFT: A Quick Guide'
 date: 2025-07-03
-permalink: /blog/2025/07/a-quick-guide-to-temperature-replica-exchange-molecular-dynamics
+permalink: /blog/2025/07/validating-molecular-docking-poses-with-dft-a-quick-guide
 excerpt_separator: <!--more-->
 toc: true
 tags:
@@ -10,13 +10,13 @@ tags:
   - drug discovery
 ---
 
+Molecular docking is a cornerstone of computer-aided drug discovery. In docking studies, a small molecule (ligand) is computationally “fit” into a protein’s binding site to predict the preferred orientation (pose) and binding affinity. This approach allows researchers to screen large libraries of compounds rapidly and propose how a drug candidate might bind to its target. Docking is valued for generating hypotheses and guiding experiments in the early stages of drug design.
+
+<!--more-->
+
 ## Molecular Docking in Drug Discovery: Power and Pitfalls
 
-Molecular docking is a cornerstone of computer-aided drug discovery. In docking studies, a small molecule (ligand) is computationally “fit” into a protein’s binding site to predict the preferred orientation (pose) and binding affinity. This approach allows researchers to screen large libraries of compounds rapidly and propose how a drug candidate might bind to its target. Docking is valued for generating hypotheses and guiding experiments in the early stages of drug design.
-
-Molecular docking is a cornerstone of computer-aided drug discovery. In docking studies, a small molecule (ligand) is computationally “fit” into a protein’s binding site to predict the preferred orientation (pose) and binding affinity. This approach allows researchers to screen large libraries of compounds rapidly and propose how a drug candidate might bind to its target. Docking is valued for generating hypotheses and guiding experiments in the early stages of drug design.
-
-However, docking is not foolproof. The scoring functions used in most docking programs are simplifications – they account for basic interactions like van der Waals forces and electrostatics, but often ignore ligand strain and detailed quantum effects. Docking assumes a mostly rigid receptor and sometimes forces the ligand into conformations that real molecules might not adopt easily. As a result, the **top-ranked pose cannot always be trusted** – a high docking score doesn’t guarantee the pose is physically realistic. In practice, docking can produce **false positives**: poses that look good in silico but are unstable or energetically unfavorable in reality. This limitation creates a need for validation steps after docking, to filter out poses that are likely artifacts of the scoring function.
+Molecular docking is not foolproof. The scoring functions used in most docking programs are simplifications – they account for basic interactions like van der Waals forces and electrostatics, but often ignore ligand strain and detailed quantum effects. Docking assumes a mostly rigid receptor and sometimes forces the ligand into conformations that real molecules might not adopt easily. As a result, the **top-ranked pose cannot always be trusted** – a high docking score doesn’t guarantee the pose is physically realistic. In practice, docking can produce **false positives**: poses that look good in silico but are unstable or energetically unfavorable in reality. This limitation creates a need for validation steps after docking, to filter out poses that are likely artifacts of the scoring function.
 
 ## Validating Docking Poses with DFT Energy Calculations
 
