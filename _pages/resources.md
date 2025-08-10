@@ -1,10 +1,3 @@
----
-layout: archive
-title: "Resources"
-permalink: /resources/
-author_profile: true
----
-
 # ⌬ cdd-toolbox ⌬
 
 Welcome to the ***Computational Drug Discovery Toolbox*** repository! This curated collection provides a comprehensive set of resources for Computational Drug Discovery (CDD) and related fields. Whether you are a researcher, student, or professional in the field of computational chemistry, this toolbox aims to serve as a valuable resource.
@@ -33,33 +26,44 @@ Welcome to the ***Computational Drug Discovery Toolbox*** repository! This curat
 20. [Miscellaneous tools](#miscellaneous-tools)
 21. [Cheminformatics Free Courses](#cheminformatics-free-courses)
 22. [Blogs](#blogs)
+23. [Cheminformatics Instructional Notebooks](#cheminformatics-instructional-notebooks)
 
 ## Natural Compounds Libraries
 
-- [COCONUT Natural Products](https://coconut.naturalproducts.net/): A comprehensive database boasting over 400,000 natural products aggregated from more than 50 diverse sources.
-- [LOTUS Natural Products](https://lotus.naturalproducts.net/): Similar to COCONUT, LOTUS focuses on molecular annotations, making it an invaluable resource for sourcing organisms.
-- [ZINC15 Natural Products](https://zinc15.docking.org/substances/subsets/natural-products/): This repository contains a vast collection of over 200,000 commercially available natural compounds, primarily utilized for virtual screening purposes.
-- [Collective Molecular Activities of Useful Plants](http://bidd.group/CMAUP/): This database emphasizes the molecular activities of beneficial plants, aiding in the exploration of their pharmacological potential.
-- [Natural Product Activity & Species Source Database (NPASS)](http://bidd.group/NPASS/index.php): NPASS connects 94,000 natural product activities with their respective species sources, facilitating research in natural product discovery.
-- [Cannabis Compound Database](https://cannabisdatabase.ca/): A specialized database housing information on over 6,000 compounds found in cannabis plants, catering to cannabis-related research endeavors.
-- [SuperNatural III](https://bioinf-applied.charite.de/supernatural_3/): Offering insights into natural compounds and their biological activities, SuperNatural III serves as a valuable resource for researchers in various fields.
+- [COCONUT Natural Products](https://coconut.naturalproducts.net/) - A comprehensive database boasting over 400,000 natural products aggregated from more than 50 diverse sources.
+- [LOTUS Natural Products](https://lotus.naturalproducts.net/) - Similar to COCONUT, LOTUS focuses on molecular annotations, making it an invaluable resource for sourcing organisms.
+- [ZINC15 Natural Products](https://zinc15.docking.org/substances/subsets/natural-products/) - This repository contains a vast collection of over 200,000 commercially available natural compounds, primarily utilized for virtual screening purposes.
+- [Collective Molecular Activities of Useful Plants](http://bidd.group/CMAUP/) - This database emphasizes the molecular activities of beneficial plants, aiding in the exploration of their pharmacological potential.
+- [Natural Product Activity & Species Source Database (NPASS)](http://bidd.group/NPASS/index.php) - NPASS connects 94,000 natural product activities with their respective species sources, facilitating research in natural product discovery.
+- [Cannabis Compound Database](https://cannabisdatabase.ca/) - A specialized database housing information on over 6,000 compounds found in cannabis plants, catering to cannabis-related research endeavors.
+- [SuperNatural III](https://bioinf-applied.charite.de/supernatural_3/) - Offering insights into natural compounds and their biological activities, SuperNatural III serves as a valuable resource for researchers in various fields.
 - [FooDB](https://foodb.ca/): With a comprehensive compilation of over 70,000 food components, FooDB aids researchers in exploring the chemical composition of diverse foods.
-- [AfroDB](http://african-compounds.org/about/afrodb/): Highlighting more than 4,000 compounds sourced from African medicinal plants, AfroDB significantly contributes to ethnopharmacological studies and drug discovery efforts.
-- [Comprehensive Marine Natural Products Database](https://www.cmnpd.org/): This resource provides extensive information on over 31,000 marine-derived natural products, supporting marine biotechnology and pharmaceutical research.
-- [SistematX Secondary Metabolites Database](https://sistematx.ufpb.br/): Focused on over 8,000 secondary metabolites, SistematX serves as a valuable tool for researchers studying natural product chemistry.
-- [Eximed Natural-Product-Based Library](https://eximedlab.com/Screening-Compounds.html): With more than 5,000 natural product-like compounds tailored for high-throughput screening, this library aids in drug discovery efforts.
-- [CoumarinDB](https://yboulaamane.github.io/CoumarinDB/): Specifically targeting approximately 900 naturally occurring coumarin compounds, CoumarinDB is a specialized resource for researchers in this field.
-- [ArtemisiaDB](https://yboulaamane.github.io/ArtemisiaDB/): Dedicated to compounds from the genus Artemisia, this database offers valuable insights for researchers interested in this plant group.
-- [OTAVA Natural Product-Like Library](https://otavachemicals.com/products/compound-libraries-for-hts/natural-product-like-library): Housing over 1,000 natural product-like compounds designed for high-throughput screening, this library is a valuable resource in drug discovery.
-- [BIAdb](https://webs.iiitd.edu.in/raghava/biadb/type.php?tp=natural): Providing information on bioactive peptides and proteins with therapeutic potential, BIAdb supports research in biomedicine and pharmacology.
-- [IMPPAT](https://cb.imsc.res.in/imppat/home): This comprehensive database offers digitized data from over 100 traditional Indian medicine books, 7000+ research articles, and other sources, making it the most extensive repository of phytochemicals found in Indian medicinal plants.
-- [NP-MRD](https://np-mrd.org/natural_products): Focused on over 280,000 NMR studies, NP-MRD provides a detailed exploration of natural products through NMR spectroscopy.
-- [IBS Natural Compounds](https://www.ibscreen.com/natural-compounds): Offering information on over 60,000 natural compounds, IBS Natural Compounds is a valuable resource for researchers in natural product chemistry and drug discovery.
-- [Phytochemicals](https://www.phytochemicals.info/): This comprehensive resource provides extensive information on phytochemicals, supporting research in plant chemistry and pharmacology.
+- [AfroDB](http://african-compounds.org/about/afrodb/) - Highlighting more than 4,000 compounds sourced from African medicinal plants, AfroDB significantly contributes to ethnopharmacological studies and drug discovery efforts.
+- [Comprehensive Marine Natural Products Database](https://www.cmnpd.org/) - This resource provides extensive information on over 31,000 marine-derived natural products, supporting marine biotechnology and pharmaceutical research.
+- [SistematX Secondary Metabolites Database](https://sistematx.ufpb.br/) - Focused on over 8,000 secondary metabolites, SistematX serves as a valuable tool for researchers studying natural product chemistry.
+- [Eximed Natural-Product-Based Library](https://eximedlab.com/Screening-Compounds.html) - With more than 5,000 natural product-like compounds tailored for high-throughput screening, this library aids in drug discovery efforts.
+- [CoumarinDB](https://yboulaamane.github.io/CoumarinDB/) - Specifically targeting approximately 900 naturally occurring coumarin compounds, CoumarinDB is a specialized resource for researchers in this field.
+- [ArtemisiaDB](https://yboulaamane.github.io/ArtemisiaDB/) - Dedicated to compounds from the genus Artemisia, this database offers valuable insights for researchers interested in this plant group.
+- [OTAVA Natural Product-Like Library](https://otavachemicals.com/products/compound-libraries-for-hts/natural-product-like-library) - Housing over 1,000 natural product-like compounds designed for high-throughput screening, this library is a valuable resource in drug discovery.
+- [BIAdb](https://webs.iiitd.edu.in/raghava/biadb/type.php?tp=natural) - Providing information on bioactive peptides and proteins with therapeutic potential, BIAdb supports research in biomedicine and pharmacology.
+- [IMPPAT](https://cb.imsc.res.in/imppat/home) - This comprehensive database offers digitized data from over 100 traditional Indian medicine books, 7000+ research articles, and other sources, making it the most extensive repository of phytochemicals found in Indian medicinal plants.
+- [NP-MRD](https://np-mrd.org/natural_products) - Focused on over 280,000 NMR studies, NP-MRD provides a detailed exploration of natural products through NMR spectroscopy.
+- [IBS Natural Compounds](https://www.ibscreen.com/natural-compounds) - Offering information on over 60,000 natural compounds, IBS Natural Compounds is a valuable resource for researchers in natural product chemistry and drug discovery.
+- [Phytochemicals](https://www.phytochemicals.info/) - This comprehensive resource provides extensive information on phytochemicals, supporting research in plant chemistry and pharmacology.
+- [NPACT Database](https://webs.iiitd.edu.in/raghava/npact/index.html) - A database of naturally occurring plant-based anticancer compounds, their activities, and their targets.
+- [NaturAr](https://naturar.quimica.unlp.edu.ar/en/) - A natural products database dedicated to the cataloging of the rich biodiversity of Argentina.
+- [DiaNat-DB](http://rdu.iquimica.unam.mx/handle/20.500.12214/1186) - A molecular database of 795 antidiabetic compounds from medicinal plants.
+- [PhytoHub](https://phytohub.eu/) - A freely available electronic database containing detailed information about 1200 dietary phytochemicals and their human and animal metabolites.  
+- [Dr. Duke's Phytochemical and Ethnobotanical databases](https://phytochem.nal.usda.gov/) - It provides searchable access to plant-based compounds, bioactivities, and traditional uses. Ideal for pharma, nutrition, herbal, and biomedical research. Results can be downloaded as PDFs or spreadsheets.
+- [CyanoMetDB](https://zenodo.org/records/13854577) - A comprehensive database of more than 2,000 secondary metabolites from cyanobacteria manually curated from various sources from the literature.
+- [Seaweed Metabolite Database](https://www.swmd.co.in/) - A free, open-access resource that collects info on natural compounds found in marine algae.  
+- [Arabidopsis.org](https://www.arabidopsis.org/) - A collective database of genetic and molecular biology data for Arabidopsis thaliana, a widely used model plant.  
+
 
 ## Chemical bioactivity databases  
 
-- [ChEMBL database](https://www.ebi.ac.uk/chembl/) -  A large-scale bioactivity database that focuses on bioactive molecules and their targets. It contains information on the binding, functional, and ADMET  properties of drugs.  
+- [ChEMBL database](https://www.ebi.ac.uk/chembl/) - A large-scale bioactivity database that focuses on bioactive molecules and their targets. It contains information on the binding, functional, and ADMET  properties of drugs.
+- [SureChEMBL](https://www.surechembl.org/) - A patent chemistry database that allows searching for bioactive compounds and chemical structures extracted from patent literature.  
 - [BindingDB](https://www.bindingdb.org/) - A comprehensive database that provides information on the binding affinities of drugs to their target biomolecules.   
 - [PubChem database](https://pubchem.ncbi.nlm.nih.gov/) - Offers information on the biological activities of small molecules, including chemical structures, properties, and bioassay data.   
 - [PDBbind database](http://www.pdbbind.org.cn/index.php) - A database focusing on the experimentally measured binding affinities of biomolecular complexes. It includes data on protein-ligand complexes derived from the PDB, providing insights into the structures and energetics of protein-ligand interactions.
@@ -69,7 +73,10 @@ Welcome to the ***Computational Drug Discovery Toolbox*** repository! This curat
 - [ZINC](https://zinc.docking.org/) - A platform for researchers to explore and obtain compounds for various computational and experimental studies.  
 - [ChemSpider](http://www.chemspider.com/) - A free chemical database offering information on chemical structures, properties, and associated data.
 - [DrugSpaceX](https://drugspacex.simm.ac.cn/) - A database designed to explore chemical and biological spaces related to drug discovery.
-- [Therapeutics Data Commons](https://tdcommons.ai/) - An AI foundation for therapeutic science, offering an intuitive interface for various learning tasks in the drug discovery field. 
+- [Therapeutics Data Commons](https://tdcommons.ai/) - An AI foundation for therapeutic science, offering an intuitive interface for various learning tasks in the drug discovery field.  
+- [Otava Chemicals](https://www.otavachemicals.com/) - A supplier of screening compounds, building blocks, and custom synthesis services for drug discovery and chemical research.  
+- [Vitas-M Laboratory](https://vitasmlab.biz/) - A provider of diverse chemical libraries, including natural product derivatives and proprietary compounds, for high-throughput screening and lead discovery.
+- [Mcule](https://mcule.com/) - A online drug discovery platform that helps researchers identify, optimize, and order potential drug candidates. It combines a curated database of purchasable compounds with molecular modeling tools, all accessible through a user-friendly web interface.  
 
 ## 3D protein structures databases  
 
@@ -91,7 +98,8 @@ Welcome to the ***Computational Drug Discovery Toolbox*** repository! This curat
 - [PrankWeb](https://prankweb.cz/) - A web-based platform specializing in the prediction and analysis of protein binding sites.   
 - [CASTp](http://sts.bioe.uic.edu/castp/index.html?2r7g) - A resource for the detection and characterization of protein binding sites. It offers insights into the volume and area of cavities on protein surfaces, contributing to the study of ligand binding and functional sites.  
 - [CavityPlus](http://www.pkumdl.cn:8000/cavityplus/index.php#/) - A web server designed for the identification and analysis of protein cavities and binding sites. It provides tools for the characterization of binding pockets, assisting researchers in studying protein-ligand interactions and structure-based drug design.
-- [CaverWeb: Identification of Tunnels and Channels in Proteins and Analysis of Ligand Transport](https://loschmidt.chemi.muni.cz/caverweb/) - A tool for identifying tunnels and channels in protein structures. It supports the analysis of ligand transport pathways.
+- [CaverWeb: Identification of Tunnels and Channels in Proteins and Analysis of Ligand Transport](https://loschmidt.chemi.muni.cz/caverweb/) - A tool for identifying tunnels and channels in protein structures. It supports the analysis of ligand transport pathways.  
+- [PASSer: Protein Allosteric Sites Server](https://passer.smu.edu/) - ​PASSer is a web tool that uses machine learning to quickly predict allosteric sites in proteins, aiding in drug discovery. ​  
 
 
 ## Pharmacophore screening tools  
@@ -111,7 +119,14 @@ Welcome to the ***Computational Drug Discovery Toolbox*** repository! This curat
 - [Smina](https://github.com/mwojcikowski/smina) - A fork of AutoDock Vina with additional features and optimizations. It focuses on improving scoring and minimization.
 - [Gnina](https://github.com/gnina/gnina) - A fork of Smina with integrated support for scoring and optimizing ligands using convolutional neural networks.
 - [EasyDock](https://github.com/ci-lab-cz/easydock) - A fully automated pipeline for molecular docking based on Vina with a full support of Smina and Gnina.
-- [HADDOCK](https://wenmr.science.uu.nl/haddock2.4/) - A platform used for all types of molecular docking including protein, ligand, peptide, and nucleic acid docking.  
+- [HADDOCK](https://wenmr.science.uu.nl/haddock2.4/) - A platform used for all types of molecular docking including protein, ligand, peptide, and nucleic acid docking.
+- [PandaDock](https://github.com/pritampanda15/PandaDock) - A Python-based molecular docking tool for bioinformatics and drug design, offering features like flexible residue docking and GPU acceleration. It supports various scoring functions and search algorithms for efficient simulations.
+- [ZDOCK](https://zdock.wenglab.org/) - A web server that predicts protein–protein complex structures using a rigid-body docking algorithm.
+- [ClusPro 2.0](https://cluspro.org/) - A web-based tool for protein–protein docking. It performs rigid-body docking by sampling billions of conformations and clusters the results to identify the most probable complex structures.
+- [pyDockWEB](https://life.bsc.es/pid/pydockweb/) - A free web server for predicting protein–protein complex structures using rigid-body docking and scoring based on electrostatics and desolvation energy.
+- [SwissDock](https://www.swissdock.ch/) - A molecular docking web tool now powered by Attracting Cavities and AutoDock Vina engines, useful for training new students.
+- [MzDOCK](https://github.com/Muzatheking12/MzDOCK) - A free, automated graphical user interface (GUI) pipeline for molecular docking simulations.
+- [Uni-Mol Docking V2](https://www.bohrium.com/apps/unimoldockingv2/job?type=app) - A molecular docking application hosted on Bohrium, a diverse suite of AI-powered applications tailored for scientific research, especially in biomedicine, materials science, and computational chemistry.  
 
 ## Molecular interaction visualization
 
@@ -119,16 +134,20 @@ Welcome to the ***Computational Drug Discovery Toolbox*** repository! This curat
 - [LigPlot+](https://www.ebi.ac.uk/thornton-srv/software/LigPlus/) - A Java-based program that automatically generates  2D ligand-protein interaction diagrams.  
 - [Discovery Studio Visualizer](https://discover.3ds.com/discovery-studio-visualizer-download) - A powerful molecular visualization tool that allows users to explore and analyze complex biological and chemical information. It provides an intuitive interface for visualizing molecular structures, protein-ligand interactions, and conducting various analyses.  
 
-## Pharmacokinetics parameters prediction tools 
+## ADMET Prediction
 
 - [SwissADME](http://www.swissadme.ch/) - A web tool for predicting pharmacokinetic parameters and drug-like properties. It assists researchers in assessing the drug-likeness and pharmacokinetic profile of small molecules. Supports multiple instances.
 - [pkCSM](https://biosig.lab.uq.edu.au/pkcsm/) - A platform offering predictions for various physicochemical, pharmacokinetic and toxicity properties with the theory behind each prediction. Suitable for ADMET screening.
+- [DeepPK](https://biosig.lab.uq.edu.au/deeppk/) - A deep learning-based platform for predicting pharmacokinetics, focusing on drug absorption and metabolism.  
+- [admetSAR 2.0](https://lmmd.ecust.edu.cn/admetsar2/) - An updated version of admetSAR, providing comprehensive ADMET predictions with a user-friendly interface.  
 - [ADMETlab 2.0](https://admetmesh.scbdd.com/) - A comprehensive tool for predicting absorption, distribution, metabolism, excretion, and toxicity properties of chemical compounds.
 - [ProTox-II](https://tox-new.charite.de/protox_II/) - A predictive tool for assessing the toxicity endpoints of drugs.  
 - [PreADMET](https://preadmet.webservice.bmdrc.org/) - A web service providing predictions for pharmacokinetic properties. Does not support multiple instances.
 - [FAF-Drugs](https://bioserv.rpbs.univ-paris-diderot.fr/services.html) - A program designed to filter extensive compound libraries based on ADMET properties before in silico screening or modeling studies.
+- [Admetboost](https://ai-druglab.smu.edu/admet) - ​ADMETboost is a free online tool developed by the Tao Research Group at Southern Methodist University. It uses machine learning (XGBoost) to predict 22 ADMET properties of small molecules.   
 
 ## QSAR modeling
+
 - [QSAR Toolbox](https://qsartoolbox.org/) - The Toolbox is a free software for transparent chemical hazard assessment, offering tools for data retrieval, metabolism simulation, and property profiling. It aids in identifying analogues and chemical categories for read-across and trend analysis, filling data gaps.
 - [OCHEM](https://ochem.eu/home/show.do) - An online platform offering tools for building QSAR models for predictions of chemical properties.
 - [ChemMaster](https://crescent-silico.com/chemmaster/) - A general cheminformatics software used to handle chemical data, in particular for drug design purposes including QSAR modeling.
@@ -208,7 +227,7 @@ Welcome to the ***Computational Drug Discovery Toolbox*** repository! This curat
 - [AiZynthFinder](https://github.com/MolecularAI/aizynthfinder) - A tool based on Monte Carlo tree search, designed for retrosynthetic planning in organic chemistry. It aids chemists in generating synthetic routes by exploring reaction databases and proposing viable retrosynthetic steps.
 - [ASKCOS](https://askcos.mit.edu/) -  An AI-driven platform developed for computer-assisted organic synthesis planning. Utilizing machine learning algorithms, ASKCOS assists chemists in predicting viable reaction pathways and proposing synthetic routes for target molecules.
 - [IBM RoboRXN](https://rxn.res.ibm.com/rxn/robo-rxn/welcome) - An AI-driven platform for automated reaction prediction and planning. Using advanced machine learning models, it enables researchers to predict the outcomes of chemical reactions and design synthetic routes for desired products.
-
+- [MANIFOLD](https://app.postera.ai/manifold/) - Offers tools for synthesis planning, compound search, enabling rapid identification and production of high-quality, synthetically accessible compounds.  
 
 ## Miscellaneous tools
 
@@ -235,7 +254,9 @@ Welcome to the ***Computational Drug Discovery Toolbox*** repository! This curat
 - [SCBDD](http://www.scbdd.com/) - An online platform containing a series of software and web servers that can assist in cheminformatics and drug discovery.
 - [Click2Drug](https://www.click2drug.org/) - Deployed by the Swiss Institute of Bioinformatics, presents an extensive compilation of CADD software, databases, and web services. This collection categorizes tools based on their application field, aiming to encompass the entire drug design pipeline.
 - [Galaxy Europe](https://usegalaxy-eu.github.io/index-cheminformatics.html) - A Galaxy instance focused on Cheminformatics.
-
+- [CADD Vault](https://drugbud-suite.github.io/CADD_Vault/) - An open-source repository dedicated to sharing resources, tools, and knowledge in the field of computer-aided drug design.
+- [BioMoDes](https://abeebyekeen.com/biomodes-biomolecular-structure-prediction/) - A Repository of Tools for Biomolecular Modeling and Design.
+  
 ## Cheminformatics free courses
 
 - [Computational chemistry lectures by TMP Chem](https://youtube.com/playlist?list=PLm8ZSArAXicIWTHEWgHG5mDr8YbrdcN1K) -  A YouTube playlist offering computational chemistry lectures by TMP Chem. It covers various aspects of computational chemistry, providing valuable insights for learners interested in the field.
@@ -244,6 +265,7 @@ Welcome to the ***Computational Drug Discovery Toolbox*** repository! This curat
 - [Geometric Deep Learning Course](https://geometricdeeplearning.com/lectures/) - A course on Geometric Deep Learing delivered as part of the African Master’s in Machine Intelligence.
 - [Drug Discovery Course by StereoElectronics](https://www.stereoelectronics.org/webDD/DD_home.html) - Fundamentals and principles of methods used in the drug discovery pipeline.
 - [drugdesign.org](https://www.drugdesign.org/) - A collection of free courses on drug design, cheminformatics, molecular modeling, property prediction, and QSAR.
+- [PlayMolecule](https://open.playmolecule.org/landing) -  It focuses on drug discovery and molecular modeling, allowing users to simulate and visualize molecular interactions and properties efficiently.  
 
 ## Blogs
 
@@ -256,5 +278,15 @@ Welcome to the ***Computational Drug Discovery Toolbox*** repository! This curat
 - [Chem-Workflows](https://chem-workflows.com/index.html) - A collection of Jupyter Notebook-based tutorials written by Dr. Angel J. Ruiz Moreno for chemical data exploration and visualization.
 - [Structural Bioinformatics](https://proteinstructures.com/) - A guide to structural biology and structure-based drug design.
 - [Bioinformatics Answers](https://www.biostars.org/) - An online platform designed for bioinformatics researchers, computational biologists, and individuals involved in life sciences. It serves as a community-driven question and answer platform, where users can seek help, share knowledge, and engage in discussions related to bioinformatics and computational biology.
-- [McConnellsMedChem](https://mcconnellsmedchem.com/) - A Medicinal chemistry blog serving as a resource for professionals, researchers, or students involved in the field of medicinal chemistry.
-- [DrugDiscovery.NET](http://www.drugdiscovery.net/) - A blog about AI and machine learning in drug discovery.
+- [McConnellsMedChem](https://mcconnellsmedchem.com/) - A Medicinal chemistry blog serving as a resource for professionals, researchers, or students involved in the field of medicinal chemistry.  
+- [DrugDiscovery.NET](http://www.drugdiscovery.net/) - A blog about AI and machine learning in drug discovery.  
+- [MacinChem](https://macinchem.org/) - A blog covering computational chemistry, cheminformatics, and molecular modeling on macOS.
+- [Jeremy Monat, PhD](https://bertiewooster.github.io/) - ​Jeremy Monat's personal site showcasing his work in cheminformatics and scientific software development.
+- [Angelo Raymond Rossi](https://angeloraymondrossi.github.io/) - ​Angelo Raymond Rossi's personal site highlighting his work as a Research Professor in Chemistry at the University of Connecticut, focusing on high-performance computing and computational chemistry.
+
+## Cheminformatics Instructional Notebooks
+
+- [TeachOpenCADD](https://projects.volkamerlab.org/teachopencadd/all_talktorials.html) - A comprehensive list of interactive Jupyter Notebook tutorials, called "talktorials," covering various topics in computer-aided drug design (CADD).
+- [intro_pharma_ai](https://github.com/kochgroup/intro_pharma_ai) - A beginner-friendly GitHub repository introducing AI methods in pharmaceutical research. Covers cheminformatics, deep learning, and molecular property prediction with hands-on Jupyter notebooks.
+- [Introduction to artificial intelligence and deep learning using interactive electronic programming notebooks](https://onlinelibrary.wiley.com/doi/10.1002/ardp.202200628) - This study introduces a set of free, interactive Jupyter Notebooks designed to teach artificial intelligence and deep learning to life science students with no prior coding experience.  
+
