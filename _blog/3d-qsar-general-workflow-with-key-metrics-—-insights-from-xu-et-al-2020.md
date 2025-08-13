@@ -10,11 +10,10 @@ tags:
   - drug discovery
 ---
 
-
 Three-dimensional Quantitative Structure–Activity Relationship (3D-QSAR) modeling remains one of the most powerful ligand-based strategies for correlating molecular features with biological activity.  
 Here, we present a **comprehensive, metric-driven workflow** for building robust 3D-QSAR models, distilled from the methodology of **Xu et al., 2020**, and enriched with practical considerations from cheminformatics best practices.
+<!--more-->
 
----
 
 ## 🧪 1. Dataset Preparation
 
