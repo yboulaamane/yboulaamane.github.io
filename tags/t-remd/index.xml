@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>T-REMD | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/t-remd/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/t-remd/index.xml" rel="self" type="application/rss+xml" />
+    <description>T-REMD</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sun, 03 Aug 2025 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>T-REMD</title>
+      <link>https://yboulaamane.github.io/tags/t-remd/</link>
+    </image>
+    
+    <item>
+      <title>A Quick Guide to Temperature Replica Exchange Molecular Dynamics</title>
+      <link>https://yboulaamane.github.io/blog/a-quick-guide-to-temperature-replica-exchange-molecular-dynamics/</link>
+      <pubDate>Sun, 03 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/a-quick-guide-to-temperature-replica-exchange-molecular-dynamics/</guid>
+      <description>&lt;p&gt;Temperature Replica Exchange Molecular Dynamics (T-REMD) is an enhanced sampling method that improves conformational exploration in molecular simulations. Instead of running one simulation that may get trapped in local minima, T-REMD launches several copies—called replicas—of the same system, each running at a different temperature. These replicas periodically attempt to exchange configurations, allowing the system to more easily escape energy traps and explore relevant biological conformations.&lt;br&gt;
+This method is especially helpful for complex systems like proteins or protein-ligand complexes, where conformational flexibility and rare events play a big role in biological function and binding.&lt;/p&gt;
+&lt;h2 id=&#34;why-use-t-remd&#34;&gt;Why use T-REMD?&lt;/h2&gt;
+&lt;p&gt;Conventional molecular dynamics (MD) can struggle with systems that have rugged energy landscapes. If your simulation starts in a local minimum, it might stay there for millions of steps, never sampling other important conformations. T-REMD helps overcome this by running high-temperature simulations in parallel with your regular one. These high-temperature replicas can cross energy barriers more easily. By allowing swaps between replicas, lower-temperature simulations benefit from this broader exploration.&lt;/p&gt;
+&lt;p&gt;In drug discovery, where ligand binding, induced fit, or protein flexibility is critical, T-REMD gives you a better shot at capturing biologically meaningful states that you might miss with basic MD.&lt;/p&gt;
+&lt;h2 id=&#34;how-it-works&#34;&gt;How it works&lt;/h2&gt;
+&lt;p&gt;T-REMD runs &lt;strong&gt;N replicas&lt;/strong&gt; of your system, each at a different temperature. All replicas evolve independently via MD, but every few hundred or thousand steps, pairs of neighboring replicas attempt to exchange coordinates. These exchanges are accepted or rejected based on the Metropolis criterion, which preserves correct thermodynamic distributions.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Replica 1: 300K  —&amp;gt; Swap? —&amp;gt; 310K  
+Replica 2: 310K  —&amp;gt; Swap? —&amp;gt; 320K  
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The acceptance probability \( P \) for a swap between replica \( i \) and \( j \) is:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;P = min(1, exp[(1/Ti - 1/Tj) * (Ej - Ei)])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Where:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ti and Tj are the temperatures of the replicas&lt;/li&gt;
+&lt;li&gt;Ei and Ej are their potential energies&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This ensures that the ensemble at each temperature follows the correct Boltzmann distribution.&lt;/p&gt;
+&lt;h2 id=&#34;gromacs-example-setting-up-t-remd&#34;&gt;GROMACS Example: Setting Up T-REMD&lt;/h2&gt;
+&lt;p&gt;Let’s walk through a basic GROMACS setup for T-REMD. Suppose we want 8 replicas from 300K to 370K.&lt;/p&gt;
+&lt;h3 id=&#34;1-prepare-mdp-files-for-each-temperature&#34;&gt;1. Prepare &lt;code&gt;.mdp&lt;/code&gt; files for each temperature&lt;/h3&gt;
+&lt;p&gt;Create &lt;code&gt;md_300.mdp&lt;/code&gt;, &lt;code&gt;md_310.mdp&lt;/code&gt;, &amp;hellip;, &lt;code&gt;md_370.mdp&lt;/code&gt; with appropriate temperature settings.&lt;/p&gt;
+&lt;h3 id=&#34;2-generate-input-files&#34;&gt;2. Generate input files&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;gmx grompp -f md_300.mdp -o topol_300.tpr -c conf.gro -p topol.top -maxwarn 1
+gmx grompp -f md_310.mdp -o topol_310.tpr -c conf.gro -p topol.top -maxwarn 1
+...
+gmx grompp -f md_370.mdp -o topol_370.tpr -c conf.gro -p topol.top -maxwarn 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;3-run-t-remd&#34;&gt;3. Run T-REMD&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;mpirun -np 8 gmx_mpi mdrun -multi 8 -replex 1000 -s topol_.tpr -deffnm remd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-multi 8&lt;/code&gt;: run 8 parallel replicas&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-replex 1000&lt;/code&gt;: attempt replica exchanges every 1000 steps&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-deffnm remd&lt;/code&gt;: use common file prefix for outputs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;4-post-process&#34;&gt;4. Post-process&lt;/h3&gt;
+&lt;p&gt;Once your simulation is complete, you can analyze the trajectory from a specific temperature using demultiplexing.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx demux -f remd0.xtc -demux replica_index.xvg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then extract frames from the trajectory that corresponds to the replica at 300K (or whatever your target temp is).&lt;/p&gt;
+&lt;h2 id=&#34;tips-and-considerations&#34;&gt;Tips and Considerations&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Temperature spacing matters&lt;/strong&gt;: Too far apart, and swaps won’t be accepted; too close, and you’ll need many replicas. Aim for 20–30% acceptance rate.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Equilibration&lt;/strong&gt;: All replicas should be equilibrated well before starting T-REMD.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Analysis&lt;/strong&gt;: Usually, you only analyze the trajectory from the lowest temperature (e.g., 300K), which contains the best physical behavior.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Computational cost&lt;/strong&gt;: You’ll need multiple CPUs/GPUs—one per replica. This can be expensive but is highly parallelizable.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;when-to-use-t-remd&#34;&gt;When to use T-REMD&lt;/h2&gt;
+&lt;p&gt;Use T-REMD when:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;You&amp;rsquo;re studying systems with &lt;strong&gt;conformational flexibility&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;Your system gets &lt;strong&gt;trapped in local minima&lt;/strong&gt; during regular MD.&lt;/li&gt;
+&lt;li&gt;You want to enhance sampling around &lt;strong&gt;ligand binding sites&lt;/strong&gt; or &lt;strong&gt;allosteric regions&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;You&amp;rsquo;re exploring &lt;strong&gt;folding&lt;/strong&gt;, &lt;strong&gt;loop motions&lt;/strong&gt;, or &lt;strong&gt;cryptic pockets&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you&amp;rsquo;re just optimizing a small molecule or doing very short timescale dynamics, regular MD is often sufficient. But when you want to deeply explore your system’s energy landscape, especially for drug discovery or protein-ligand complexes, T-REMD can be a game-changer.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Temperature Replica Exchange MD is a powerful tool that brings smarter sampling to your simulations. It&amp;rsquo;s especially useful when standard MD isn’t enough to explore the full range of conformations your molecule can adopt. With tools like GROMACS, setting it up is fairly straightforward—and the scientific payoff can be huge.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
