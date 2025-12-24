@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Biotechnology | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/biotechnology/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/biotechnology/index.xml" rel="self" type="application/rss+xml" />
+    <description>Biotechnology</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sat, 22 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Biotechnology</title>
+      <link>https://yboulaamane.github.io/tags/biotechnology/</link>
+    </image>
+    
+    <item>
+      <title>Unlocking the Undruggable: How Biotechnology Is Rewriting Drug Discovery</title>
+      <link>https://yboulaamane.github.io/blog/unlocking-the-undruggable-how-biotechnology-is-rewriting-drug-discovery/</link>
+      <pubDate>Sat, 22 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/unlocking-the-undruggable-how-biotechnology-is-rewriting-drug-discovery/</guid>
+      <description>&lt;p&gt;For decades, drug discovery followed a familiar path: identify a disease-driving protein, locate a surface pocket, and design a molecule to fit. This strategy produced breakthroughs—from imatinib to dozens of kinase inhibitors—but also exposed a major limitation. Many crucial proteins &lt;strong&gt;lacked druggable pockets&lt;/strong&gt; or resisted traditional therapeutics.&lt;/p&gt;
+&lt;p&gt;Targets like &lt;strong&gt;KRAS, BCL-2, transcription factors, and intrinsically disordered proteins (IDPs)&lt;/strong&gt; were long considered &lt;em&gt;undruggable&lt;/em&gt;. Today, advances in biotechnology, structural biology, and computational modeling are revealing that these proteins are not undruggable—only difficult.&lt;/p&gt;
+&lt;p&gt;The wall is cracking.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;from-phenotypic-screening-to-targeted-therapy&#34;&gt;From Phenotypic Screening to Targeted Therapy&lt;/h2&gt;
+&lt;p&gt;Drug discovery began with &lt;strong&gt;phenotypic screens&lt;/strong&gt;: testing crude extracts and observing biological effects. With molecular biology, the field shifted toward &lt;strong&gt;target-based drug design&lt;/strong&gt;, enabling precise interventions against receptors, channels, and enzymes with clear pockets. Biologics expanded the toolbox further but still covered only &lt;strong&gt;~2% of the human proteome&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;The rest—transcription factors, flexible proteins, broad PPIs—remained inaccessible.&lt;/p&gt;
+&lt;p&gt;Now, computational methods, structural insights, and novel modalities are pushing the boundaries of what can be targeted.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;why-some-targets-resist&#34;&gt;Why Some Targets Resist&lt;/h2&gt;
+&lt;p&gt;So-called undruggable targets present specific challenges:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Selectivity problems:&lt;/strong&gt; Highly conserved active sites make avoiding off-target effects difficult.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Flexibility:&lt;/strong&gt; IDPs refuse to conform to traditional binding models.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Protein–protein interfaces:&lt;/strong&gt; Flat, diffuse surfaces lack obvious cavities.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Chemical constraints:&lt;/strong&gt; Polar, solvent-exposed surfaces clash with drug-like property requirements.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Despite this, drugs such as &lt;strong&gt;venetoclax (BCL-2 inhibitor)&lt;/strong&gt; and &lt;strong&gt;sotorasib (KRAS G12C)&lt;/strong&gt; prove these challenges can be overcome.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;repurposing-as-a-shortcut&#34;&gt;Repurposing as a Shortcut&lt;/h2&gt;
+&lt;p&gt;Drug repurposing offers a fast, cost-effective strategy:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Avoids early safety and manufacturing hurdles&lt;/li&gt;
+&lt;li&gt;Represents &lt;strong&gt;one-third of recent FDA approvals&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Generates &lt;strong&gt;~25% of pharmaceutical revenue&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Classic examples—&lt;strong&gt;sildenafil, propranolol, aspirin&lt;/strong&gt;—show the power of reinterpreting drug effects.&lt;br&gt;
+Today, AI-driven transcriptomic matching, EHR mining, and network pharmacology are transforming repurposing from luck into strategy.&lt;/p&gt;
+&lt;p&gt;Challenges remain (limited IP protection, restricted data access), but opportunities in rare diseases, pandemics, and personalized medicine keep repurposing at the center of innovation.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;expanding-the-toolbox-new-biotechnologies&#34;&gt;Expanding the Toolbox: New Biotechnologies&lt;/h2&gt;
+&lt;p&gt;What truly reshapes the undruggable landscape is the emergence of &lt;strong&gt;new therapeutic modalities&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;PROTACs (Protein Degraders):&lt;/strong&gt; Redirect the cell’s degradation machinery to eliminate disease-driving proteins.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Multispecific drugs:&lt;/strong&gt; Engineer hybrid molecules or antibodies with multiple targeting functions.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Nucleic acid therapeutics:&lt;/strong&gt; RNA, antisense, siRNA, and gene-editing tools that modulate expression directly.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Peptidomimetics:&lt;/strong&gt; Molecules mimicking protein structures to bind difficult PPIs or flat surfaces.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Breakthroughs highlight the potential:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Venetoclax&lt;/strong&gt; broke into BCL-2’s stubborn PPI interface.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Sotorasib&lt;/strong&gt; exploited a newly discovered KRAS pocket.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;HIF-2α inhibitors&lt;/strong&gt; targeted a transcription factor once deemed inaccessible.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Computational peptide design&lt;/strong&gt; (e.g., Peptilogics’ PLG0206) showcases the growing power of virtual design and optimization.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;industry-growing-pains&#34;&gt;Industry Growing Pains&lt;/h2&gt;
+&lt;p&gt;Despite technological leaps, the industry faces paradoxes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Drug approval rates stagnated in the 2000s (~12% from Phase I to approval).&lt;/li&gt;
+&lt;li&gt;Failures stem from &lt;strong&gt;lack of efficacy&lt;/strong&gt;, &lt;strong&gt;toxicity&lt;/strong&gt;, and &lt;strong&gt;poor pharmacology&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;Outsourcing and academia–industry partnerships help, but inefficiencies persist.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Modern drug discovery must address not only &lt;em&gt;what&lt;/em&gt; to target but &lt;em&gt;how&lt;/em&gt; to streamline the entire pipeline.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;streamlining-the-path-forward&#34;&gt;Streamlining the Path Forward&lt;/h2&gt;
+&lt;p&gt;New strategies aim to modernize clinical development:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Adaptive trial designs&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Biomarker-driven recruitment&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;AI-guided study planning&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Use of real-world evidence&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Network pharmacology for multi-target understanding&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Regulatory pathways like &lt;strong&gt;orphan drug&lt;/strong&gt;, &lt;strong&gt;fast-track&lt;/strong&gt;, and &lt;strong&gt;breakthrough therapy&lt;/strong&gt; designations further accelerate translation.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;a-new-era-for-the-undruggable&#34;&gt;A New Era for the “Undruggable”&lt;/h2&gt;
+&lt;p&gt;The frontier is shifting.&lt;/p&gt;
+&lt;p&gt;What used to be considered undruggable is now simply &lt;strong&gt;challenging&lt;/strong&gt;. With:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Repurposing&lt;/li&gt;
+&lt;li&gt;PROTACs&lt;/li&gt;
+&lt;li&gt;Multispecifics&lt;/li&gt;
+&lt;li&gt;Nucleic acid therapeutics&lt;/li&gt;
+&lt;li&gt;AI-designed peptides&lt;/li&gt;
+&lt;li&gt;High-resolution structural biology&lt;/li&gt;
+&lt;li&gt;Computational screening at scale&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;the drug-discovery world is steadily expanding into previously unreachable biology.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The age of the undruggable is ending.&lt;/strong&gt;&lt;br&gt;
+What follows is a landscape where creativity, computation, and biotechnology converge—and fewer targets remain truly out of reach.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Source:&lt;/strong&gt;&lt;br&gt;
+DrugBank. &lt;em&gt;Unlocking Undruggable Targets: Biotechnology’s Role in Expanding Drug Discovery&lt;/em&gt;. 2024.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

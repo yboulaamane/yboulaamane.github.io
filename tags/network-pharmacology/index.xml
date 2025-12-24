@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Network Pharmacology | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/network-pharmacology/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/network-pharmacology/index.xml" rel="self" type="application/rss+xml" />
+    <description>Network Pharmacology</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 23 Apr 2024 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Network Pharmacology</title>
+      <link>https://yboulaamane.github.io/tags/network-pharmacology/</link>
+    </image>
+    
+    <item>
+      <title>Computational Drug Repurposing with Multiscale Interactomes</title>
+      <link>https://yboulaamane.github.io/blog/computational-drug-repurposing-with-multiscale-interactomes/</link>
+      <pubDate>Tue, 23 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/computational-drug-repurposing-with-multiscale-interactomes/</guid>
+      <description>&lt;p&gt;Drug repurposing offers a rapid, cost-effective route to new therapies by identifying novel uses for existing compounds. When paired with &lt;strong&gt;multiscale interactome analysis&lt;/strong&gt;, it becomes possible to explore the complex molecular relationships between drugs, targets, pathways, and diseases at a systems level.&lt;br&gt;
+This workflow outlines how to construct, analyze, and exploit a heterogeneous biomedical network to identify repurposing candidates, combining graph-based learning with experimental prioritization.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-building-the-interactome&#34;&gt;&lt;strong&gt;1. Building the Interactome&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;The foundation of the approach is a &lt;strong&gt;heterogeneous graph&lt;/strong&gt; that integrates multiple layers of biological knowledge. Nodes can represent drugs, proteins, pathways, or diseases, while edges encode interactions—drug–target binding, protein–protein interactions, pathway memberships, and disease associations.&lt;/p&gt;
+&lt;p&gt;Sources like &lt;strong&gt;DrugBank&lt;/strong&gt; provide curated drug–protein relationships, while protein–protein interaction maps can be drawn from high-confidence databases. For disease biology, integrate experimentally validated or literature-reported links, such as host–pathogen PPIs for infectious diseases or α-synuclein interactors in Parkinson’s disease.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;2-anchoring-the-disease-context&#34;&gt;&lt;strong&gt;2. Anchoring the Disease Context&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Once the network is assembled, the specific disease of interest is added as a node and connected to known associated proteins or pathways. This grounding ensures that the graph captures both molecular interactions and the functional context of the disease.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;3-learning-from-network-structure&#34;&gt;&lt;strong&gt;3. Learning from Network Structure&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Graph embedding techniques transform the raw network into a form suitable for machine learning. A &lt;strong&gt;Node2Vec&lt;/strong&gt; pre-processing step captures both local neighborhoods and broader network context. These embeddings are then refined through a &lt;strong&gt;Graph Convolutional Network (GCN)&lt;/strong&gt;, trained with a diffusion-based loss function that clusters nodes according to their network proximity to the disease node.&lt;/p&gt;
+&lt;p&gt;The result is a set of optimized vector representations for every entity in the network—drugs, proteins, and pathways—enabling quantitative similarity searches.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;4-prioritizing-candidates&#34;&gt;&lt;strong&gt;4. Prioritizing Candidates&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;With embeddings in hand, candidate ranking is straightforward: compute cosine similarity between the disease node and other nodes. This yields:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Drug proximity scores&lt;/strong&gt; – for direct repurposing candidates.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Protein proximity scores&lt;/strong&gt; – highlighting potential new therapeutic targets.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;5-multiple-selection-strategies&#34;&gt;&lt;strong&gt;5. Multiple Selection Strategies&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Three complementary selection approaches can be applied:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Target-centric&lt;/strong&gt;: Choose drugs directly most similar to the disease node.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Protein-centric&lt;/strong&gt;: Identify top-ranked proteins, then retrieve predicted binders from platforms like &lt;strong&gt;PolypharmDB&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Polypharmacology-focused&lt;/strong&gt;: Prioritize drugs predicted to act on multiple high-value targets simultaneously.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;6-rational-filtering&#34;&gt;&lt;strong&gt;6. Rational Filtering&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;To refine the shortlist, apply pragmatic filters: retain only FDA-approved small molecules with drug-like properties, ensure scaffold diversity, and avoid redundancy in mechanism of action or target profile.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;7-from-prediction-to-validation&#34;&gt;&lt;strong&gt;7. From Prediction to Validation&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Predicted candidates move to experimental testing, starting with &lt;strong&gt;cell-based assays&lt;/strong&gt; tailored to the disease model—such as infection inhibition assays, pseudovirus entry tests, or phenotypic screens. Hits are further confirmed with orthogonal validation techniques, from qRT-PCR to targeted inhibition assays.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;By uniting &lt;strong&gt;network pharmacology&lt;/strong&gt;, &lt;strong&gt;graph machine learning&lt;/strong&gt;, and &lt;strong&gt;experimental feedback&lt;/strong&gt;, this interactome-driven strategy offers a scalable framework for uncovering repurposing opportunities across a broad range of diseases. Its strength lies in connecting molecular context with computational inference—transforming existing drugs into tomorrow’s targeted therapies.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
