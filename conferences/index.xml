@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Conferences | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/conferences/</link>
+      <atom:link href="https://yboulaamane.github.io/conferences/index.xml" rel="self" type="application/rss+xml" />
+    <description>Conferences</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Fri, 20 Dec 2024 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Conferences</title>
+      <link>https://yboulaamane.github.io/conferences/</link>
+    </image>
+    
+    <item>
+      <title>Computational screening of natural products as tryptophan 2,3-dioxygenase inhibitors: Insights from machine learning QSAR, molecular docking, ADMET, and molecular dynamics simulations</title>
+      <link>https://yboulaamane.github.io/conferences/2024-12-20-presentation-5/</link>
+      <pubDate>Fri, 20 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/conferences/2024-12-20-presentation-5/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Antibiotic discovery with artificial intelligence for the treatment of Acinetobacter baumannii infections</title>
+      <link>https://yboulaamane.github.io/conferences/2024-10-31-poster-2/</link>
+      <pubDate>Thu, 31 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/conferences/2024-10-31-poster-2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Enhanced accuracy in predicting drug blood-brain barrier permeability with a Machine Learning Ensemble model</title>
+      <link>https://yboulaamane.github.io/conferences/2023-10-06-presentation-4/</link>
+      <pubDate>Fri, 06 Oct 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/conferences/2023-10-06-presentation-4/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>QSAR and molecular modeling studies for the discovery of natural products as multi-target-directed drugs for Parkinson&#39;s disease</title>
+      <link>https://yboulaamane.github.io/conferences/2022-10-09-presentation-3/</link>
+      <pubDate>Sun, 09 Oct 2022 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/conferences/2022-10-09-presentation-3/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Computational studies of African Natural Products Databases to identify natural dual-target-directed antiparkinsonian drugs</title>
+      <link>https://yboulaamane.github.io/conferences/2021-12-27-presentation-2/</link>
+      <pubDate>Mon, 27 Dec 2021 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/conferences/2021-12-27-presentation-2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Machine Learning model to predict potential Monoamine Oxidase B inhibitors from Cannabis Compound Database</title>
+      <link>https://yboulaamane.github.io/conferences/2021-12-27-poster-1/</link>
+      <pubDate>Mon, 27 Dec 2021 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/conferences/2021-12-27-poster-1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Docking-based virtual screening and ADME evaluation of caffeine-based phytochemicals as inhibitors of Monoamine Oxidase B</title>
+      <link>https://yboulaamane.github.io/conferences/2021-06-23-presentation-1/</link>
+      <pubDate>Wed, 23 Jun 2021 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/conferences/2021-06-23-presentation-1/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

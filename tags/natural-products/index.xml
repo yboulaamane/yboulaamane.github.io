@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Natural Products | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/natural-products/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/natural-products/index.xml" rel="self" type="application/rss+xml" />
+    <description>Natural Products</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Thu, 25 Jan 2024 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Natural Products</title>
+      <link>https://yboulaamane.github.io/tags/natural-products/</link>
+    </image>
+    
+    <item>
+      <title>ArtemisiaDB</title>
+      <link>https://yboulaamane.github.io/project/artemisiadb/</link>
+      <pubDate>Thu, 25 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/artemisiadb/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

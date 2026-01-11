@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blood-Brain Barrier | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/blood-brain-barrier/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/blood-brain-barrier/index.xml" rel="self" type="application/rss+xml" />
+    <description>Blood-Brain Barrier</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 19 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Blood-Brain Barrier</title>
+      <link>https://yboulaamane.github.io/tags/blood-brain-barrier/</link>
+    </image>
+    
+    <item>
+      <title>EnsembleBBB</title>
+      <link>https://yboulaamane.github.io/project/ensemblebbb/</link>
+      <pubDate>Mon, 19 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/ensemblebbb/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

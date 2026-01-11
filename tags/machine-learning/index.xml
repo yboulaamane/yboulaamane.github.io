@@ -1,0 +1,1131 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Machine Learning | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/machine-learning/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
+    <description>Machine Learning</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 25 Aug 2025 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Machine Learning</title>
+      <link>https://yboulaamane.github.io/tags/machine-learning/</link>
+    </image>
+    
+    <item>
+      <title>Awesome Drug Discovery</title>
+      <link>https://yboulaamane.github.io/project/awesomedrugdiscovery/</link>
+      <pubDate>Mon, 25 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/awesomedrugdiscovery/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>QSARBioPred</title>
+      <link>https://yboulaamane.github.io/project/qsarbiopred/</link>
+      <pubDate>Tue, 07 May 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/qsarbiopred/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Computational Drug Repurposing with Multiscale Interactomes</title>
+      <link>https://yboulaamane.github.io/blog/computational-drug-repurposing-with-multiscale-interactomes/</link>
+      <pubDate>Tue, 23 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/computational-drug-repurposing-with-multiscale-interactomes/</guid>
+      <description>&lt;p&gt;Drug repurposing offers a rapid, cost-effective route to new therapies by identifying novel uses for existing compounds. When paired with &lt;strong&gt;multiscale interactome analysis&lt;/strong&gt;, it becomes possible to explore the complex molecular relationships between drugs, targets, pathways, and diseases at a systems level.&lt;br&gt;
+This workflow outlines how to construct, analyze, and exploit a heterogeneous biomedical network to identify repurposing candidates, combining graph-based learning with experimental prioritization.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-building-the-interactome&#34;&gt;&lt;strong&gt;1. Building the Interactome&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;The foundation of the approach is a &lt;strong&gt;heterogeneous graph&lt;/strong&gt; that integrates multiple layers of biological knowledge. Nodes can represent drugs, proteins, pathways, or diseases, while edges encode interactions—drug–target binding, protein–protein interactions, pathway memberships, and disease associations.&lt;/p&gt;
+&lt;p&gt;Sources like &lt;strong&gt;DrugBank&lt;/strong&gt; provide curated drug–protein relationships, while protein–protein interaction maps can be drawn from high-confidence databases. For disease biology, integrate experimentally validated or literature-reported links, such as host–pathogen PPIs for infectious diseases or α-synuclein interactors in Parkinson’s disease.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;2-anchoring-the-disease-context&#34;&gt;&lt;strong&gt;2. Anchoring the Disease Context&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Once the network is assembled, the specific disease of interest is added as a node and connected to known associated proteins or pathways. This grounding ensures that the graph captures both molecular interactions and the functional context of the disease.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;3-learning-from-network-structure&#34;&gt;&lt;strong&gt;3. Learning from Network Structure&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Graph embedding techniques transform the raw network into a form suitable for machine learning. A &lt;strong&gt;Node2Vec&lt;/strong&gt; pre-processing step captures both local neighborhoods and broader network context. These embeddings are then refined through a &lt;strong&gt;Graph Convolutional Network (GCN)&lt;/strong&gt;, trained with a diffusion-based loss function that clusters nodes according to their network proximity to the disease node.&lt;/p&gt;
+&lt;p&gt;The result is a set of optimized vector representations for every entity in the network—drugs, proteins, and pathways—enabling quantitative similarity searches.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;4-prioritizing-candidates&#34;&gt;&lt;strong&gt;4. Prioritizing Candidates&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;With embeddings in hand, candidate ranking is straightforward: compute cosine similarity between the disease node and other nodes. This yields:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Drug proximity scores&lt;/strong&gt; – for direct repurposing candidates.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Protein proximity scores&lt;/strong&gt; – highlighting potential new therapeutic targets.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;5-multiple-selection-strategies&#34;&gt;&lt;strong&gt;5. Multiple Selection Strategies&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Three complementary selection approaches can be applied:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Target-centric&lt;/strong&gt;: Choose drugs directly most similar to the disease node.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Protein-centric&lt;/strong&gt;: Identify top-ranked proteins, then retrieve predicted binders from platforms like &lt;strong&gt;PolypharmDB&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Polypharmacology-focused&lt;/strong&gt;: Prioritize drugs predicted to act on multiple high-value targets simultaneously.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;6-rational-filtering&#34;&gt;&lt;strong&gt;6. Rational Filtering&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;To refine the shortlist, apply pragmatic filters: retain only FDA-approved small molecules with drug-like properties, ensure scaffold diversity, and avoid redundancy in mechanism of action or target profile.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;7-from-prediction-to-validation&#34;&gt;&lt;strong&gt;7. From Prediction to Validation&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Predicted candidates move to experimental testing, starting with &lt;strong&gt;cell-based assays&lt;/strong&gt; tailored to the disease model—such as infection inhibition assays, pseudovirus entry tests, or phenotypic screens. Hits are further confirmed with orthogonal validation techniques, from qRT-PCR to targeted inhibition assays.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;By uniting &lt;strong&gt;network pharmacology&lt;/strong&gt;, &lt;strong&gt;graph machine learning&lt;/strong&gt;, and &lt;strong&gt;experimental feedback&lt;/strong&gt;, this interactome-driven strategy offers a scalable framework for uncovering repurposing opportunities across a broad range of diseases. Its strength lies in connecting molecular context with computational inference—transforming existing drugs into tomorrow’s targeted therapies.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>EnsembleBBB</title>
+      <link>https://yboulaamane.github.io/project/ensemblebbb/</link>
+      <pubDate>Mon, 19 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/ensemblebbb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CoumarinDB</title>
+      <link>https://yboulaamane.github.io/project/coumarindb/</link>
+      <pubDate>Thu, 25 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/coumarindb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Interpretable Machine Learning as a Key to Understanding BBB Permeability</title>
+      <link>https://yboulaamane.github.io/blog/interpretable-machine-learning-model-as-a-key-to-understanding-bbb-permeability/</link>
+      <pubDate>Tue, 23 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/interpretable-machine-learning-model-as-a-key-to-understanding-bbb-permeability/</guid>
+      <description>&lt;p&gt;The blood-brain barrier (BBB) is a vital selective barrier in the central nervous system. Assessing the permeability of compounds across the BBB is crucial for drug development targeting the brain. While clinical experiments are accurate, they are time-consuming and costly. Computational methods offer an alternative for predicting BBB permeability.&lt;/p&gt;
+&lt;h2 id=&#34;1-downloading-the-dataset&#34;&gt;1. Downloading the dataset&lt;/h2&gt;
+&lt;p&gt;In the first step of our tutorial, we initiate the process by downloading the essential dataset. This dataset, curated by Meng et al. in 2021, is a valuable resource comprising over 7000 compounds and 1613 chemical descriptors, calculated using Mordred fingerprints. To ensure a seamless experience, execute the provided command in your Python environment to obtain the dataset from the specified URL. This dataset serves as the foundation for our exploration into machine learning applications for predicting chemical drug properties, particularly focusing on aqueous water solubility and BBB permeability.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;!wget https://github.com/theochem/B3DB/raw/87240af2b4e585d56f9681a6426af6b7f2940e96/B3DB/B3DB_classification_extended.tsv.gz
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the subsequent code snippet, we unpack the compressed dataset file for ease of access and analysis. The Python script utilizes the gzip library to decompress the file named &amp;ldquo;B3DB_classification_extended.tsv.gz.&amp;rdquo; The decompressed file is then saved with the name &amp;ldquo;B3DB_classification_extended.tsv.&amp;rdquo; This extraction process ensures that the dataset is in a readable format for further exploration and manipulation. After running this code, a confirmation message will be displayed, indicating that the extraction was successful. This step is crucial in preparing the dataset for subsequent machine learning analyses, allowing us to delve into predicting chemical drug properties with enhanced clarity and convenience.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import gzip
+import shutil
+
+input_file_path = &amp;quot;B3DB_classification_extended.tsv.gz&amp;quot;
+output_file_path = &amp;quot;B3DB_classification_extended.tsv&amp;quot;
+
+with gzip.open(input_file_path, &#39;rb&#39;) as f_in:
+	with open(output_file_path, &#39;wb&#39;) as f_out:
+		shutil.copyfileobj(f_in, f_out)
+
+print(f&amp;quot;File &#39;{input_file_path}&#39; has been successfully extracted to &#39;{output_file_path}&#39;.&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the following code snippet, we leverage the power of the pandas library to seamlessly import the extracted dataset into a structured and manipulable DataFrame. The dataset, now stored as &amp;ldquo;B3DB_classification_extended.tsv,&amp;rdquo; is read into the variable &amp;lsquo;df&amp;rsquo; using the &amp;lsquo;read_csv&amp;rsquo; function from pandas. The &amp;lsquo;sep&amp;rsquo; parameter is set to &amp;lsquo;\t&amp;rsquo; to indicate that the data is tab-separated, ensuring proper parsing. By displaying the DataFrame &amp;lsquo;df,&amp;rsquo; we gain a preliminary glimpse into the dataset&amp;rsquo;s structure and content. This step marks a pivotal moment as we transition from data acquisition to data exploration, setting the stage for in-depth analyses and insights into the chemical properties encapsulated within the dataset. With the dataset loaded into memory, we are ready to unleash the capabilities of pandas for comprehensive data exploration and preprocessing, paving the way for subsequent machine learning applications.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;df = pd.read_csv(&amp;quot;B3DB_classification_extended.tsv&amp;quot;, sep=&#39;\t&#39;)
+df
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://github.com/yboulaamane/yboulaamane.github.io/assets/7014404/f5bbc971-d805-405b-91de-48dfd032de01&#34; alt=&#34;image&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;2-curating-the-dataset&#34;&gt;2. Curating the dataset&lt;/h2&gt;
+&lt;p&gt;Next, we use the &amp;lsquo;dropna&amp;rsquo; method from pandas to efficiently handle missing values within our DataFrame (&amp;lsquo;df&amp;rsquo;). The &amp;lsquo;axis=1&amp;rsquo; parameter signifies that the operation is applied along columns, effectively removing any columns containing NaN (Not a Number) values. This step is crucial for ensuring the cleanliness and completeness of our dataset, setting the foundation for accurate and robust machine learning analyses. By executing this line, we enhance the dataset&amp;rsquo;s quality and prepare it for subsequent feature selection, model training, and predictions.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;df = df.dropna(axis=1)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://github.com/yboulaamane/yboulaamane.github.io/assets/7014404/90e8705d-76be-4ddb-942c-ba7dcd71e5ee&#34; alt=&#34;image&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;3-labelling-the-dataset&#34;&gt;3. Labelling the dataset&lt;/h2&gt;
+&lt;p&gt;In this code snippet, a new column named &amp;rsquo;labels&amp;rsquo; is added to the DataFrame &amp;lsquo;df.&amp;rsquo; The values in this column are determined based on the &amp;lsquo;BBB+/BBB-&amp;rsquo; column. The &amp;lsquo;apply&amp;rsquo; function, combined with a lambda function, assigns a binary label: 0 if &amp;lsquo;BBB-&amp;rsquo; and 1 if &amp;lsquo;BBB+&amp;rsquo;. This line of code is instrumental in preparing the dataset for a supervised machine learning task, where we aim to predict the binary outcome of blood-brain barrier (BBB) permeability. The &amp;rsquo;labels&amp;rsquo; column now serves as the target variable, facilitating the training and evaluation of machine learning models for predicting BBB permeability.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;df[&#39;labels&#39;] = df[&#39;BBB+/BBB-&#39;].apply(lambda x: 0 if x == &#39;BBB-&#39; else 1)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;4-selecting-chemical-descriptors&#34;&gt;4. Selecting chemical descriptors&lt;/h2&gt;
+&lt;p&gt;In this code snippet, a subset of the DataFrame &amp;lsquo;df&amp;rsquo; is extracted to form the &amp;lsquo;features&amp;rsquo; DataFrame. The &amp;lsquo;iloc&amp;rsquo; method is employed to select columns within a specific index range, denoted by &amp;lsquo;abc_column_index&amp;rsquo; and &amp;lsquo;mZagreb2_column_index.&amp;rsquo; This operation isolates the columns containing the features used for machine learning analysis. By creating the &amp;lsquo;features&amp;rsquo; DataFrame, we focus on the relevant input variables necessary for training our machine learning models to predict blood-brain barrier (BBB) permeability. This step is pivotal in delineating the predictor variables from the target variable, facilitating streamlined model development and analysis.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;features = df.iloc[:, 6:738]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next, we extract the binary classification labels for blood-brain barrier (BBB) permeability from the &amp;ldquo;labels&amp;rdquo; column of the DataFrame &amp;lsquo;df&amp;rsquo; and assigns them to the variable &amp;rsquo;labels.&amp;rsquo;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;labels = df[&amp;quot;labels&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;5-building-the-model&#34;&gt;5. Building the model&lt;/h2&gt;
+&lt;p&gt;To build the ML model, we import essential modules from scikit-learn, a popular machine learning library in Python. The modules include RandomForestClassifier, svm, SVC, train_test_split for data splitting, cross_val_score, cross_val_predict for cross-validation, confusion_matrix for confusion matrix computation, roc_auc_score for ROC AUC score calculation, and classification_report for generating a classification report. These modules collectively provide a robust foundation for building, training, and evaluating machine learning models.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;from sklearn.ensemble import RandomForestClassifier
+from sklearn import svm
+from sklearn.svm import SVC
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score, cross_val_predict
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import roc_auc_score
+from sklearn.metrics import classification_report
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the next line of code, the dataset is split into training and testing sets using the &amp;rsquo;train_test_split&amp;rsquo; function from scikit-learn. The &amp;lsquo;features&amp;rsquo; and &amp;rsquo;labels&amp;rsquo; variables represent the input features and target labels, respectively. The &amp;rsquo;test_size&amp;rsquo; parameter is set to 0.3, allocating 30% of the data for testing. The &amp;lsquo;random_state&amp;rsquo; ensures reproducibility, and &amp;lsquo;shuffle=True&amp;rsquo; randomizes the data before splitting. The &amp;lsquo;stratify=labels&amp;rsquo; parameter ensures that the class distribution is maintained in both the training and testing sets, which is crucial for balanced model training and evaluation.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;X_train, X_test, y_train, y_test=train_test_split(features, labels, test_size=0.3, random_state=42, shuffle=True, stratify=labels)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then, a RandomForestClassifier model is instantiated using scikit-learn. The model is then trained on the training data (&amp;lsquo;X_train&amp;rsquo; for features and &amp;lsquo;y_train&amp;rsquo; for labels) using the &amp;lsquo;fit&amp;rsquo; method. This marks a crucial step in the machine learning workflow, where the algorithm learns patterns from the training data to make predictions on new, unseen data. The variable &amp;lsquo;rf&amp;rsquo; now holds the trained Random Forest Classifier ready for evaluation and prediction tasks.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;rf = RandomForestClassifier()
+rf = rf.fit(X_train, y_train)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next, we employ the trained Random Forest Classifier (&amp;lsquo;rf&amp;rsquo;) to make predictions on the testing data (&amp;lsquo;X_test&amp;rsquo;). The predicted values are stored in the variable &amp;lsquo;y_pred,&amp;rsquo; representing the model&amp;rsquo;s anticipated outcomes for the corresponding features in the testing set. This step allows us to assess the model&amp;rsquo;s performance by comparing its predictions against the actual labels in the testing data.&lt;/p&gt;
+&lt;h2 id=&#34;6-evaluating-the-models-performance&#34;&gt;6. Evaluating the model&amp;rsquo;s performance&lt;/h2&gt;
+&lt;p&gt;The trained Random Forest Classifier (&amp;lsquo;rf&amp;rsquo;) is then employed to make predictions on the testing data (&amp;lsquo;X_test&amp;rsquo;). The predicted values are stored in the variable &amp;lsquo;y_pred,&amp;rsquo; representing the model&amp;rsquo;s anticipated outcomes for the corresponding features in the testing set. This step allows us to assess the model&amp;rsquo;s performance by comparing its predictions against the actual labels in the testing data.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;y_pred = rf.predict(X_test)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The next line prints a concise classification report, summarizing the performance metrics of the Random Forest Classifier on the test set.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;print(classification_report(y_pred, y_test))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://github.com/yboulaamane/yboulaamane.github.io/assets/7014404/0b95329d-f1f8-4d30-8ad4-252a6bbb9337&#34; alt=&#34;image&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;Afterwards, we calculate the ROC AUC score, a key performance metric for binary classification models like the Random Forest Classifier. The &amp;lsquo;roc_auc_score&amp;rsquo; function from scikit-learn computes the area under the Receiver Operating Characteristic (ROC) curve, providing a single value to gauge the model&amp;rsquo;s ability to distinguish between the two classes. The resulting score is printed as &amp;ldquo;ROC AUC Score.&amp;rdquo;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;roc_auc = roc_auc_score(y_test, y_pred)
+print(&amp;quot;ROC AUC Score:&amp;quot;, roc_auc)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;7-calculating-the-most-important-features&#34;&gt;7. Calculating the most important features&lt;/h2&gt;
+&lt;p&gt;The line of code below retrieves the feature importances calculated by the trained Random Forest Classifier. The attribute &amp;lsquo;feature_importances_&amp;rsquo; provides insights into the contribution of each feature in making predictions. The resulting array contains importance scores corresponding to the features used in the model. Analyzing these scores can help identify the most influential features in predicting blood-brain barrier (BBB) permeability.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;rf.feature_importances_
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the next code snippet, a new DataFrame named &amp;lsquo;xfeatures&amp;rsquo; is created, consolidating information about the features and their respective importance values obtained from the Random Forest Classifier. The DataFrame consists of two columns: &amp;ldquo;features,&amp;rdquo; representing the feature names extracted from the original dataset, and &amp;ldquo;Imp_values,&amp;rdquo; containing the corresponding feature importances calculated by the model. This DataFrame provides a clear and structured summary, making it easy to analyze and interpret the significance of each feature in predicting blood-brain barrier (BBB) permeability.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;xfeatures=pd.DataFrame({&amp;quot;features&amp;quot;:features.columns, &amp;quot;Imp_values&amp;quot;:rf.feature_importances_})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We sort the &amp;lsquo;xfeatures&amp;rsquo; DataFrame in descending order based on the &amp;ldquo;Imp_values&amp;rdquo; column, providing a ranked view of feature importances. The resulting DataFrame showcases the features in decreasing order of importance, enabling a quick identification of the most influential factors in predicting blood-brain barrier (BBB) permeability according to the Random Forest Classifier.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;xfeatures=xfeatures.sort_values(&amp;quot;Imp_values&amp;quot;, ascending=False)
+xfeatures
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://github.com/yboulaamane/yboulaamane.github.io/assets/7014404/fb2c60dc-41dc-4048-8d34-82f2615c8be0&#34; alt=&#34;image&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;8-interpreting-the-model-using-shap-explainer&#34;&gt;8. Interpreting the model using SHAP explainer&lt;/h2&gt;
+&lt;p&gt;We&amp;rsquo;ll use the &amp;lsquo;pip&amp;rsquo; package manager to install the &amp;lsquo;shap&amp;rsquo; library. The &amp;lsquo;shap&amp;rsquo; library is often used for explaining the output of machine learning models, providing insights into the contribution of each feature to individual predictions. Once installed, the &amp;lsquo;shap&amp;rsquo; library can be imported and utilized in the analysis.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;!pip install shap
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &amp;lsquo;shap&amp;rsquo; library is employed to create an explainer (&amp;rsquo;explain&amp;rsquo;) for the trained Random Forest Classifier (&amp;lsquo;rf&amp;rsquo;). The explainer is then used to compute Shapley values (&amp;lsquo;shapvalues&amp;rsquo;) for the features in the testing set (&amp;lsquo;X_test&amp;rsquo;). Shapley values offer insights into the impact of each feature on individual predictions, providing a valuable tool for interpreting and understanding the model&amp;rsquo;s decision-making process.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import shap
+explain=shap.Explainer(rf)
+shapvalues=explain.shap_values(X_test)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then we generate a summary plot using the &amp;lsquo;shap&amp;rsquo; library, visualizing the Shapley values for each feature across the entire testing set (&amp;lsquo;X_test&amp;rsquo;). The plot provides a concise overview of feature importance and their impact on model predictions, aiding in the interpretation of the Random Forest Classifier&amp;rsquo;s decision-making process.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;shap.summary_plot(shapvalues,X_test)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://github.com/yboulaamane/yboulaamane.github.io/assets/7014404/d584b45b-c037-4594-9b2d-c8fcc5dce254&#34; alt=&#34;image&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;We can also create a summary plot using the &amp;lsquo;shap&amp;rsquo; library, specifically focusing on the Shapley values for the first class in the binary classification. The plot visualizes the impact of each feature on model predictions for this specific class across the testing set (&amp;lsquo;X_test&amp;rsquo;). This targeted summary aids in understanding the contributions of individual features to predictions related to the first class.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;shap.summary_plot(shapvalues[0], X_test)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://github.com/yboulaamane/yboulaamane.github.io/assets/7014404/cd1822f7-0384-476a-81c6-8081bb822991&#34; alt=&#34;image&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;Finally, we generate a dependence plot using the &amp;lsquo;shap&amp;rsquo; library. The plot focuses on the most important feature &amp;ldquo;TopoPSA&amp;rdquo; and illustrates how its values impact the Shapley values and, consequently, the model predictions for the first class in the binary classification. Dependence plots are valuable for visualizing the relationship between a specific feature and the model output, enhancing interpretability.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;shap.dependence_plot(&amp;quot;TopoPSA&amp;quot;, shapvalues[0], X_test)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://github.com/yboulaamane/yboulaamane.github.io/assets/7014404/9ef5df90-cfd1-48a6-9387-fa8a8bd9f70e&#34; alt=&#34;image&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;9-bottom-line&#34;&gt;9. Bottom line&lt;/h2&gt;
+&lt;p&gt;In conclusion, the significance of explainable machine learning (ML) becomes evident in unraveling complex models&amp;rsquo; decision-making processes. In our analysis of blood-brain barrier (BBB) permeability prediction, employing the &amp;lsquo;shap&amp;rsquo; library allowed us to interpret the Random Forest Classifier&amp;rsquo;s output. Notably, our findings highlight &amp;ldquo;TopoPSA&amp;rdquo; as the most crucial feature influencing the model&amp;rsquo;s predictions for BBB permeable compounds. This discovery aligns with existing literature, where molecular polar surface area (TopoPSA) has been consistently linked to BBB permeability. Our transparent and interpretable ML approach not only provides valuable insights into predictive features but also reinforces the importance of understanding model decisions for informed decision-making in drug development.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Data-Driven Chemistry: How Data Science Empowers Drug Discovery</title>
+      <link>https://yboulaamane.github.io/blog/data-driven-chemistry-how-data-science-empowers-drug-discovery/</link>
+      <pubDate>Wed, 08 Nov 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/data-driven-chemistry-how-data-science-empowers-drug-discovery/</guid>
+      <description>&lt;p&gt;In today&amp;rsquo;s digital era, the vast expanse of data permeates every aspect of our lives. From online interactions to industrial processes, we find ourselves immersed in an ever-growing sea of information. Yet, the true value of this data lies in the &lt;strong&gt;insights&lt;/strong&gt; it can provide. This is where &lt;strong&gt;data science&lt;/strong&gt; steps in – the art and science of extracting meaningful patterns and insights from data to drive innovation and solve complex problems. Nowhere is this more evident than in the realm of chemistry, where data science is revolutionizing how we understand and manipulate molecules.&lt;/p&gt;
+&lt;h2 id=&#34;understanding-data-science-in-chemistry&#34;&gt;Understanding Data Science in Chemistry&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Data Science&lt;/strong&gt;, an interdisciplinary field, employs mathematical and computational approaches to derive valuable insights from structured, semi-structured, or unstructured data. It encompasses skills such as &lt;strong&gt;statistics&lt;/strong&gt;, &lt;strong&gt;machine learning&lt;/strong&gt;, &lt;strong&gt;programming&lt;/strong&gt;, &lt;strong&gt;data visualization&lt;/strong&gt;, and domain expertise. This diverse toolkit empowers scientists to explore and extract knowledge from an array of chemical data, ranging from molecular structures to reaction kinetics and spectroscopic signatures.&lt;/p&gt;
+&lt;h2 id=&#34;the-data-science-process-in-chemistry&#34;&gt;The Data Science Process in Chemistry&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Problem Definition&lt;/strong&gt;: The cornerstone of any scientific endeavor is a clearly defined problem. In the context of chemistry, this involves identifying the goal of the analysis, be it predicting molecular properties or optimizing chemical reactions.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Data Collection and Cleaning&lt;/strong&gt;: Gathering and preparing data from various sources is crucial. This step ensures that the data is accurate, reliable, and ready for analysis.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Data Exploration&lt;/strong&gt;: Delving into the data reveals trends, patterns, and relationships, providing critical insights into molecular behavior.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Data Modeling&lt;/strong&gt;: Building mathematical models and algorithms is the heart of data science. In chemistry, this translates to creating predictive models for molecular properties or reaction outcomes.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Evaluation&lt;/strong&gt;: Rigorous assessment of model performance using appropriate metrics ensures the reliability of the results.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Deployment&lt;/strong&gt;: Bringing the model into a production environment enables real-world applications, from drug discovery to materials development.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Monitoring and Maintenance&lt;/strong&gt;: Continuous vigilance ensures the model&amp;rsquo;s accuracy over time, allowing for necessary updates and improvements.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;data-sciences-impact-on-chemistry-and-molecules&#34;&gt;Data Science&amp;rsquo;s Impact on Chemistry and Molecules&lt;/h2&gt;
+&lt;p&gt;The marriage of data science and chemistry has ushered in a new era of scientific inquiry. By applying statistical models and machine learning algorithms to vast quantities of chemical data, scientists can identify hidden patterns, make accurate predictions, and guide experimental design. This not only advances our fundamental understanding of chemistry but also opens doors to practical applications in drug discovery, materials development, and sustainable energy technologies.&lt;/p&gt;
+&lt;h2 id=&#34;looking-ahead&#34;&gt;Looking Ahead&lt;/h2&gt;
+&lt;p&gt;As the volume and complexity of chemical data continue to grow, the demand for professionals skilled in both chemistry and data science is set to rise. Embracing data-driven methodologies in chemical investigations will undoubtedly lead to remarkable advancements. The integration of these complementary disciplines holds the promise of enhancing scientific understanding and driving innovation in ways we once deemed unimaginable.&lt;/p&gt;
+&lt;p&gt;In conclusion, the convergence of data science and chemistry marks a transformative moment in scientific exploration. By leveraging the power of data, we unlock the true potential of molecules, paving the way for groundbreaking discoveries that will shape the future of chemistry and beyond.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Using PaDELPy to Generate Molecular Fingerprints for Machine Learning-Based QSAR</title>
+      <link>https://yboulaamane.github.io/blog/using-padelpy-generate-molecular-fingerprints-machine-learning-based-qsar/</link>
+      <pubDate>Wed, 15 Mar 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/using-padelpy-generate-molecular-fingerprints-machine-learning-based-qsar/</guid>
+      <description>&lt;p&gt;PaDELPy is a Python library that integrates the PaDEL-Descriptor molecular descriptor calculation software, allowing efficient generation of molecular fingerprints for machine learning-based quantitative structure-activity relationship (QSAR) models in drug discovery.&lt;/p&gt;
+&lt;p&gt;Machine learning models, created by training algorithms to recognize data patterns, can be either supervised or unsupervised, applied in classification, regression, and more. Here, we’ll explore using PaDELPy to generate fingerprints that are crucial in predictive QSAR modeling, specifically targeting molecular activity prediction within the HCV Drug dataset.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225259643-df0568cd-1cfe-4395-aa7e-980902108f25.png&#34; alt=&#34;Molecular Fingerprint&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;what-is-padelpy&#34;&gt;What Is PaDELPy?&lt;/h2&gt;
+&lt;p&gt;PaDELPy is a Python wrapper for the Java-based PaDEL-Descriptor software, streamlining molecular descriptor calculations. With PaDELPy, you can easily compute molecular fingerprints, avoiding the complexity of Java setup and reducing the time required for implementation.&lt;/p&gt;
+&lt;h2 id=&#34;getting-started-with-the-code&#34;&gt;Getting Started with the Code&lt;/h2&gt;
+&lt;p&gt;In this tutorial, we will create a machine learning model using Random Forest to predict molecular activity within the HCV Drug dataset. The dataset is available 
+.&lt;/p&gt;
+&lt;p&gt;To install the PaDELPy library, use the following:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Installing the library
+!pip install padelpy
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Download and configure XML data files required by PaDELPy:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Downloading XML data files
+!wget https://github.com/dataprofessor/padel/raw/main/fingerprints_xml.zip
+!unzip fingerprints_xml.zip
+
+
+# Listing and sorting downloaded files
+import glob
+xml_files = glob.glob(&amp;quot;*.xml&amp;quot;)
+xml_files.sort()
+xml_files
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Output:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[&#39;AtomPairs2DFingerprintCount.xml&#39;, &#39;AtomPairs2DFingerprinter.xml&#39;, &#39;EStateFingerprinter.xml&#39;, ...]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Create a list of available fingerprint types:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Creating a list of present files
+FP_list = [&#39;AtomPairs2DCount&#39;, &#39;AtomPairs2D&#39;, &#39;EState&#39;, &#39;CDKextended&#39;, &#39;CDK&#39;, &#39;CDKgraphonly&#39;, 
+		   &#39;KlekotaRothCount&#39;, &#39;KlekotaRoth&#39;, &#39;MACCS&#39;, &#39;PubChem&#39;, &#39;SubstructureCount&#39;, &#39;Substructure&#39;]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Create a data dictionary of file names for easy reference:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Creating Data Dictionary
+fp = dict(zip(FP_list, xml_files))
+fp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;After setting up, load the dataset:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Loading the dataset
+import pandas as pd
+df = pd.read_csv(&#39;https://raw.githubusercontent.com/dataprofessor/data/master/HCV_NS5B_Curated.csv&#39;)
+df.head()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Prepare the data by concatenating necessary columns:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Concatenating necessary columns
+df2 = pd.concat([df[&#39;CANONICAL_SMILES&#39;], df[&#39;CMPD_CHEMBLID&#39;]], axis=1)
+df2.to_csv(&#39;molecule.smi&#39;, sep=&#39;\t&#39;, index=False, header=False)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Select a fingerprint type and calculate descriptors:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Setting the fingerprint module
+from padelpy import padeldescriptor
+fingerprint = &#39;Substructure&#39;
+fingerprint_output_file = &#39;&#39;.join([fingerprint, &#39;.csv&#39;])  # Substructure.csv
+fingerprint_descriptortypes = fp[fingerprint]
+
+padeldescriptor(mol_dir=&#39;molecule.smi&#39;, 
+				d_file=fingerprint_output_file,
+				descriptortypes=fingerprint_descriptortypes,
+				detectaromaticity=True,
+				standardizenitro=True,
+				standardizetautomers=True,
+				threads=2,
+				removesalt=True,
+				log=True,
+				fingerprints=True)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Display calculated fingerprints:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;descriptors = pd.read_csv(fingerprint_output_file)
+descriptors.head()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Creating a Random Forest Model
+Using the processed data, create a Random Forest model for classification.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;X = descriptors.drop(&#39;Name&#39;, axis=1)
+y = df[&#39;Activity&#39;]  # Target variable
+
+# Removing low variance features
+from sklearn.feature_selection import VarianceThreshold
+
+def remove_low_variance(input_data, threshold=0.1):
+	selection = VarianceThreshold(threshold)
+	selection.fit(input_data)
+	return input_data[input_data.columns[selection.get_support(indices=True)]]
+
+X = remove_low_variance(X, threshold=0.1)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Split data into training and testing sets:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Splitting into Train and Test sets
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Train the Random Forest model:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;from sklearn.ensemble import RandomForestClassifier
+model = RandomForestClassifier(n_estimators=500, random_state=42)
+model.fit(X_train, y_train)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Evaluate model performance using Matthews Correlation Coefficient (MCC):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Making predictions
+y_train_pred = model.predict(X_train)
+y_test_pred = model.predict(X_test)
+
+
+# Calculating MCC for train and test
+from sklearn.metrics import matthews_corrcoef
+mcc_train = matthews_corrcoef(y_train, y_train_pred)
+mcc_test = matthews_corrcoef(y_test, y_test_pred)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Perform 5-fold cross-validation:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import pandas as pd
+performance_metrics = pd.DataFrame({
+	&#39;Model&#39;: [&#39;Random Forest&#39;],
+	&#39;MCC_Train&#39;: [mcc_train],
+	&#39;MCC_CV&#39;: [mcc_cv],
+	&#39;MCC_Test&#39;: [mcc_test]
+})
+performance_metrics
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Consolidate performance metrics into a single DataFrame:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import pandas as pd
+performance_metrics = pd.DataFrame({
+	&#39;Model&#39;: [&#39;Random Forest&#39;],
+	&#39;MCC_Train&#39;: [mcc_train],
+	&#39;MCC_CV&#39;: [mcc_cv],
+	&#39;MCC_Test&#39;: [mcc_test]
+})
+performance_metrics
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;In this tutorial, we explored using PaDELPy to calculate molecular fingerprints, then developed a Random Forest model to predict molecular drug activity. The high Matthews Correlation Coefficient values suggest that this model is effective on the current dataset, though other algorithms could also be evaluated for further optimization.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Supervised vs. Unsupervised Methods in Machine Learning</title>
+      <link>https://yboulaamane.github.io/blog/supervised-vs-unsupervised-methods-machine-learning/</link>
+      <pubDate>Sun, 16 Oct 2022 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/supervised-vs-unsupervised-methods-machine-learning/</guid>
+      <description>&lt;p&gt;The increasing volume of biomedical data in chemistry and life sciences requires development of new methods and approaches for their analysis. New approaches have proved to show improvement and accelerate the joint drug discovery and development processes.
+The accumulation of large datasets allows for better integration of machine learning and artificial intelligence to build and integrate more accurate models for predicting the bioactivity and the pharmacokinetics of new drugs in the pharmaceutical field.
+Machine learning approaches are divided into three broad categories, which correspond to learning patterns, depending on the nature of the &amp;ldquo;signal&amp;rdquo; or &amp;ldquo;feedback&amp;rdquo; available to the learning system.&lt;/p&gt;
+&lt;h2 id=&#34;1-supervised-learning&#34;&gt;1. Supervised learning&lt;/h2&gt;
+&lt;p&gt;Machine learning models are supervised by loading them with knowledge so that we can have it predict future instances. Teaching the model requires training it with some data from a labeled dataset.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225256631-3a7927f8-0f0e-4c3a-9220-70bc0496e4db.png&#34; alt=&#34;Figure1&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 1: Example of a chemical dataset viewed with Pandas.&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The names up here which are called: molecule_chembl_id and smiles are called attributes. Other names such as standard_value represents the numerical values for each sample, whereas the class name represents a categorical value which can be either 1 (active) or 0 (inactive). The columns are called features which include the data. If we plot this data, and look at a single data point on a plot, it&amp;rsquo;ll have all of these attributes that would make a row on this chart also referred to as an observation. Looking directly at the value of the data, you can have two kinds. The first is numerical, when dealing with machine learning, the most commonly used data is numeric. The second is categorical, that is its non-numeric because it contains characters rather than numbers. In this case, it&amp;rsquo;s categorical because this dataset is made for classification.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225256633-ae720fd3-3c21-4cc5-bda4-4c4e8bdea928.png&#34; alt=&#34;Figure2&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 2: Supervised learning.&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;There are two types of supervised learning techniques. They are classification, and regression. Classification is the process of predicting a discrete class label, or category. Wheras, regression is the process of predicting a continuous value as opposed to predicting a categorical value in classification.&lt;/p&gt;
+&lt;h2 id=&#34;2-unsupervised-learning&#34;&gt;2. Unsupervised learning&lt;/h2&gt;
+&lt;p&gt;Unsupervised models are exactly what they sound like, the models are left to work on their own to discover information that may not be visible to the human eye. It means, the unsupervised algorithm trains on the dataset, and draws conclusions on unlabeled data. Generally speaking, unsupervised learning has more difficult algorithms than supervised learning since we know little to no information about the data, or the outcomes that are to be expected. Dimension reduction, density estimation, market basket analysis, and clustering are the most widely used unsupervised machine learning techniques. Dimensionality reduction, and/or feature selection, play a large role in this by reducing redundant features to make the classification easier.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225256636-fbbe6ac3-8726-46ff-aad4-9025c25bd75a.png&#34; alt=&#34;Figure3&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 3: Unsupervised learning tasks. Image by Dmytro Nikolaiev (medium.com/@andimid).&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Market basket analysis, on the other hand, is a modeling technique based upon the theory that if you buy a certain group of items, you&amp;rsquo;re more likely to buy another group of items.
+Density estimation is a very simple concept that is mostly used to explore the data to find some structure within it.
+Finally, clustering is consired to be one of the most popular unsupervised machine learning techniques used for grouping data points, or objects that are somehow similar.
+Clustering analysis has many applications in different domains, whether it be a bank&amp;rsquo;s desire to segment his customers based on certain characteristics, or helping an individual to organize in-group his, or her favorite types of music. Broadly though, clustering is used mostly for discovering structure, summarization, and anamoly detection.&lt;/p&gt;
+&lt;h2 id=&#34;bottom-line&#34;&gt;Bottom line&lt;/h2&gt;
+&lt;p&gt;The biggest difference between supervised and unsupervised learning is that supervised learning deals with labeled data while unsupervised learning deals with unlabeled data. Supervised models employ machine learning algorithms for classification and regression, whereas in unsupervised learning, we have methods such as clustering. In comparison to supervised learning, unsupervised learning has fewer models and fewer evaludation methods that can be used to ensure the outcome of the model is accurate. As such, unsupervised learning creates a less controllable environment as the machine is creating outcomes for us.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Chemical Databases Every ML Scientist Should Know for Drug Discovery</title>
+      <link>https://yboulaamane.github.io/blog/chemical-databases-machine-learning-drug-discovery/</link>
+      <pubDate>Mon, 12 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/chemical-databases-machine-learning-drug-discovery/</guid>
+      <description>&lt;p&gt;The ever-increasing bioactivity data that are produced nowadays allow exhaustive data mining and knowledge discovery approaches that change chemical biology research.
+A wealth of cheminformatics tools, web services, and applications therefore exists that supports a careful evaluation and analysis of experimental data to draw conclusions that can influence the further development of chemical probes and potential lead structures.&lt;/p&gt;
+&lt;h2 id=&#34;1chembl-database&#34;&gt;1.	ChEMBL database&lt;/h2&gt;
+&lt;p&gt;ChEMBL is a manually curated database of bioactive molecules with drug-like properties. It brings together chemical and bioactivity data to aid the translation of information into effective new drugs.
+Bioactivity data is reported in Ki, Kd, IC50, % of inhibition and EC50. Data can be filtered and analyzed to develop compound screening libraries for lead identification during the drug discovery process.
+The availability of curated bioactivity data on small drug-like molecules opens new opportunities for data-driven drug discovery and makes it possible to apply machine learning methodologies to pharmaceutical research field.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225255287-ba98137b-11c2-44e2-8e2e-4f93c26210da.png&#34; alt=&#34;Figure1&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 1: Web interface of ChEMBL database (
+)&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;2-bindingdb&#34;&gt;2. BindingDB&lt;/h2&gt;
+&lt;p&gt;BindingDB is a public database of experimental binding affinities of interactions between macromolecules and small molecules. It contains more than 1.2 million binding data points for more than 6,400 protein targets and around 550,000 small molecules. Furthermore, affinities for protein-protein, protein-peptide as well as host-guest interactions are provided.
+BindingDB provides a wide range of searches, possible queries, tools and datasets.
+BindingDB also provides a virtual compound screening tool with which the user has the possibility to screen an external dataset of compounds for similar bioactivity.
+BindingDB also provides a virtual compound screening tool with which the user has the possibility to screen an external dataset of compounds for similar bioactivity. Access is given by a download option (SD-file, tab-separated value (TSV) or Oracle dump) or by programmatic access (RESTful API, structured URLs, or KNIME).&lt;/p&gt;
+&lt;h3 id=&#34;21find-my-compounds-target-tool&#34;&gt;2.1.	Find My Compound’s Target tool&lt;/h3&gt;
+&lt;p&gt;Find My Compound’s Target is a tool integrated in BindingDB that aims to predict the target of a small molecule of interest or possible off-targets. The query compound is first compared to other compounds in the database and targets of these compounds are selected if the compounds’ similarity is above the chosen cut-off and the affinity is respectively above a certain threshold.&lt;/p&gt;
+&lt;h3 id=&#34;22find-compounds-for-my-target&#34;&gt;2.2.	Find Compounds for My Target&lt;/h3&gt;
+&lt;p&gt;Find Compounds for My Target is another tool that tries to find compounds for a specific target. It features advanced search and extraction of curated information from various data sources such as ChEMBL database, PubChem bioassays, D3R, etc.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225255388-5fd0130e-4b2d-48e9-b3c8-891a32bc64d3.png&#34; alt=&#34;Figure2&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 2: Web interface of BindingDB (
+)&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;3pubchem-bioassays-database&#34;&gt;3.	Pubchem Bioassays Database&lt;/h2&gt;
+&lt;p&gt;PubChem is an American database of chemical molecules managed by the National Center for Biotechnology Information (NCBI), branch of the National Library of Medicine of the United States under the authority of the National Institutes of Health (NIH).
+PubChem lists several million compounds by putting a large amount of data of various kinds online for each substance free of charge: chemical, biochemical, pharmacological, production, toxicological, environmental, etc.
+PubChem BioAssay stores the activity data of small molecules or RNAi and contains curated parts of ChEMBL for which flags for active or inactive compounds are assigned depending on whether the IC50, EC50 or Ki is above 50 μM or not. The data can be accessed and analyzed via a broad range of provided web services and tools (Figure1). Besides using a name, a smiles code can be used or a structure can be drawn to search for an identical molecule, a similar molecule or a substructure. This
+leads to information about bioassay results or substance descriptions. Variations of assay results can be analyzed using detailed description of the performed experiments. The data is additionally clustered, e.g., according to the protein or gene target, the type of assay (e.g., cell-based, protein-protein interaction), an assay project or more complex kinds of relationships like target similarity or common active compounds.&lt;/p&gt;
+&lt;h3 id=&#34;31pubchempy&#34;&gt;3.1.	PubChemPy&lt;/h3&gt;
+&lt;p&gt;PubChemPy offers a way to use and interact with PubChem database directly with Python. It allows chemical searches by name, substructure and similarity, chemical standardization, conversion between chemical file formats, depiction and retrieval of chemical properties. For more information on installing and using PubChemPy package visit the official website (
+.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225255636-e925217b-46af-494e-ad91-aa9a0bce1c70.png&#34; alt=&#34;Figure3&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 3: PubChem web interface (
+)&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;4pdbbind-database&#34;&gt;4.	PDBbind Database&lt;/h2&gt;
+&lt;p&gt;The PDBbind database is a comprehensive collection of experimentally measured binding affinity data (Kd, Ki, and IC50) for the protein-ligand complexes deposited in the Protein Data Bank (PDB). It thus provides a link between energetic and structural information of protein-ligand complexes, which is of great value to various studies on molecular recognition occurred in biological systems.
+The basic information of each complex in PDBbind is totally open for browsing. Users are however required to register for access under a license agreement in order to utilize the full functions provided on this web site or to download the contents of PDBbind. The registration is free of charge to all academic and industrial users.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225255699-98f165ba-aa84-4e3b-a27b-59cfc8336670.png&#34; alt=&#34;Figure4&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 4: PDBbind web interface (
+)&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;5brenda-enzyme-database&#34;&gt;5.	BRENDA Enzyme Database&lt;/h2&gt;
+&lt;p&gt;BRENDA is an enzyme database. It is maintained and developed by the Institute of Biochemistry of the University of Cologne. Data on enzyme functions are taken directly from the primary literature. The database covers 40 entries, with information about enzyme nomenclature, reactions, specificity, structure, method of isolation or preparation, references in scientific literature and cross-references for the sequence or 3D structure.
+The database is accessible free of charge for academic and non-profit uses, commercial uses need to acquire a license. To use the database, it is necessary to register by email. The database can be searched by EC nomenclature, enzyme name, organism or an advanced search combining these entries.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225255851-4af4a174-320d-47a5-a9cb-9a7f04fdcba5.png&#34; alt=&#34;Figure5&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 5: Brenda Enzymes Database web interface (
+)&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;This article has sought to provide an overview of freely available chemical databases that can be readily used for machine learning approaches that support the major research trends in drug discovery. The ever-increasing amount of data and the improvement of analytical tools hold the potential to transform the drug development, leading to new treatments, improved patient outcomes, and lower costs.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>How to Perform Data Curation and Classify Bioactivity Data on ChEMBL Database</title>
+      <link>https://yboulaamane.github.io/blog/perform-data-curation-classify-bioactivity-data-chembl-database/</link>
+      <pubDate>Wed, 07 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/perform-data-curation-classify-bioactivity-data-chembl-database/</guid>
+      <description>&lt;p&gt;The ChEMBL database is a manually curated resource of bioactive molecules with drug-like properties, integrating chemical, bioactivity, and genomic data to facilitate the translation of genomic information into new drugs.
+As of February 2022, ChEMBL version 30 contains over 2.2 million compound records, 1.5 million assays, and spans 14,000 targets, 2,000 cells, and 43,000 indications. The database has continued to grow significantly in both scope and scale, with the most recent release, ChEMBL 33, in May 2023, containing 2,786,911 compound records. ChEMBL is an essential resource for the scientific community, enabling the investigation of various health-related and scientific questions [1-3].&lt;/p&gt;
+&lt;h2 id=&#34;1-data-search&#34;&gt;1. Data search&lt;/h2&gt;
+&lt;p&gt;The first step to use this database is to search the ChEMBL database using keywords of a target protein of interest, it is possible to run a search using other keywords related to diseases, compounds or assays. In this tutorial, we are going to search for Acetylcholinesterase as illustrated in Figure 1.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225256089-5c72e4cc-f77c-4ee8-90ea-f548343b5ac4.png&#34; alt=&#34;Figure1&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 1: ChEMBL search result example&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Notice that our search resulted on 24 targets, it is important to choose the right protein for the right organism of the study of interest. For this example, we are interested in human Acetylcholinesterase corresponding to the ID: CHEMBL220.
+After clicking on the target, we will be sent to another page containing all the data concerning the selected target such as: name and classification, drugs and clinical candidates, activity charts, etc.
+Scroll down to activity charts and notice the pie chart on the left concerning all the associated bioactivity data compiled from the literature and their distribution according to the activity type.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225256100-351cffcb-dc10-4d4a-949c-07397f6b4bb6.png&#34; alt=&#34;Figure2&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 2: Activity charts and distribution of activity types of the selected target, CHEMBL220&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Upon observation of the activity chart, we can quickly determine which activity type is the most reported in the literature, in this case it refers to half-maximal inhibitory concentrations (IC50) which have been reported 8205 times.
+Once we click on the desired activity type, we can download the entire dataset in CSV or TSV Format containing various informations such as ChEMBL ID for each compound, SMILES, Standard Type and Standard Value referring to the activity type and value respectively.##&lt;/p&gt;
+&lt;h2 id=&#34;2-data-curation&#34;&gt;2. Data curation&lt;/h2&gt;
+&lt;p&gt;Note that it is necessary to remove any unwanted data before proceeding with data curation. In this case, we are only interested in the compound’s IDs, Smiles, Standard Type and Standard Value. It is possible to perform this task with any CSV reader such as Google Sheets or Microsoft Excel.
+Once we have performed the primary cleaning on our data, we can import it on Google Colab or Jupyter Notebook using the code below:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Import necessary libraries&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import pandas as pd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Read the dataset&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x=pd.read_csv(&#39;ache.csv&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Display the dataset&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Output&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225256101-c4f9bfc6-652b-46da-af63-dbcab7c91255.png&#34; alt=&#34;Figure3&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 3: AChE curated dataset output.&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;21-remove-duplicate-compounds&#34;&gt;2.1. Remove duplicate compounds&lt;/h3&gt;
+&lt;p&gt;When dealing with a large dataset of compounds, it is very likely to find a great deal of duplicates with different reported activities due to different conditions of each laboratory. However, it is possible to deal with this issue by averaging all reported activity by calculating their mean values using the code below:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x[&amp;quot;mean_value&amp;quot;]=x[[&#39;Molecule ChEMBL ID&#39;, &#39;Smiles&#39;,&#39;Standard Type&#39;,&#39;Standard Value&#39;]].groupby([&#39;Molecule ChEMBL ID&#39;])[&#39;Standard Value&#39;].transform(&amp;quot;mean&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The next step is to merge all the duplicate compounds into one, for this reason we can use the code below to remove all duplicates while keeping only the first one.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x=x.drop_duplicates(&amp;quot;Molecule ChEMBL ID&amp;quot;, keep=&amp;quot;first&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Output:&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225256109-4ce6979f-0e42-469a-8191-459dc6530c3b.png&#34; alt=&#34;Figure4&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 4: Pandas output of AChE dataset after removing duplicate compounds.&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;It is possible to find some compounds on the dataset with no available activity, notice on the sheet above that some activities are marked with “NaN” which stands for “Not a Number” in computer science, it is therefore necessary to remove them before proceeding. We can simply run the code below:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x=x.dropna()
+x
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Output:&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225256112-91eb87c4-cbd7-424c-80fe-bb45ed014f31.png&#34; alt=&#34;Figure5&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 5: Final curated dataset.&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;3-data-classification&#34;&gt;3. Data classification&lt;/h2&gt;
+&lt;p&gt;Once we have curated our data, now it is possible to classify compounds in order to apply it for machine learning classification models. For this reason, we need to define an activity cutoff to define our active and inactive compounds. In the case of enzyme inhibition, the literature indicates that most potent enzyme inhibitors have activities in the nanomolar range. For this reason, we can proceed by setting a threshold of 1000 nM corresponding to 1 μM or lower for defining our active compounds.&lt;/p&gt;
+&lt;p&gt;Run the code below to create a variable with all active compounds:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;active=x.loc[x[&#39;mean_value&#39;]&amp;lt;=1000]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We do the same for inactive compounds by setting a cutoff of 10 000 nM (10 μM) or higher using the code below:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;inactive=x.loc[x[&#39;mean_value&#39;]&amp;gt;10000]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;4-data-labelling&#34;&gt;4. Data labelling&lt;/h2&gt;
+&lt;p&gt;Now that we have defined our active and inactive compounds, it is necessary to label the data in order to combine the entire dataset. We will simply refer to active compounds as “1” and inactive compounds as “0”.
+Run the code below:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;active[&amp;quot;Class&amp;quot;]=1
+inactive[&amp;quot;Class&amp;quot;]=0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we can proceed to combining the entire dataset.&lt;/p&gt;
+&lt;p&gt;Run the code below:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;combined=pd.concat([active,inactive],axis=0)
+combined
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Output:&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225256117-a1a5f883-f733-4679-9ac5-668d4a82e708.png&#34; alt=&#34;Figure6&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 6: Curated dataset with label column indicating whether the compound is active or inactive.&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Finally, we can save our dataset for further use.
+Run the code below:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;combined.to_csv(&amp;quot;ache_labelled.csv&amp;quot;, index=None)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;5-bottom-line&#34;&gt;5. Bottom line&lt;/h2&gt;
+&lt;p&gt;This article’s aim was to demonstrate an alternative way to retrieve bioactivity data from ChEMBL without using code. Furthermore, data curation and data classification was covered in detail as it is a necessary step and can highly impact the performance of machine learning models. If you found this article useful, follow the blog for more tutorials in the future.&lt;/p&gt;
+&lt;h2 id=&#34;6-references&#34;&gt;6. References&lt;/h2&gt;
+&lt;p&gt;[1] 
+&lt;/p&gt;
+&lt;p&gt;[2] 
+&lt;/p&gt;
+&lt;p&gt;[3] 
+&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

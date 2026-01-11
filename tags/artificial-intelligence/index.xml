@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Artificial Intelligence | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/artificial-intelligence/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/artificial-intelligence/index.xml" rel="self" type="application/rss+xml" />
+    <description>Artificial Intelligence</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 01 Jul 2025 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Artificial Intelligence</title>
+      <link>https://yboulaamane.github.io/tags/artificial-intelligence/</link>
+    </image>
+    
+    <item>
+      <title>AI &#43; Chemistry: Building Drug Discovery Pipelines with Free Tools</title>
+      <link>https://yboulaamane.github.io/blog/ai-chemistry-building-drug-discovery-pipelines-with-free-tools/</link>
+      <pubDate>Tue, 01 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/ai-chemistry-building-drug-discovery-pipelines-with-free-tools/</guid>
+      <description>&lt;p&gt;The future of drug discovery is open, smart, and community-driven. Gone are the days of relying solely on expensive, proprietary platforms, today’s open-source AI tools are transforming how we explore chemical space, and they’re accessible to all.&lt;br&gt;
+Whether you&amp;rsquo;re screening billions of compounds or predicting molecular properties, a rich ecosystem of open-source libraries and data is leveling the playing field for startups, academics, and even “indie” scientists. To illustrate this revolution, let’s walk through a drug discovery pipeline for a real target – the ABL kinase (the c-Abl tyrosine kinase, infamous as the target of the leukemia drug imatinib). We’ll see how open tools empower every step, from data to models to visualization, with code snippets showing these tools in action.&lt;/p&gt;
+&lt;h2 id=&#34;from-data-to-discovery-the-open-source-pipeline-case-study-abl-kinase&#34;&gt;From Data to Discovery: The Open-Source Pipeline (Case Study: ABL Kinase)&lt;/h2&gt;
+&lt;p&gt;To ground things, imagine we’re hunting for new inhibitors of the ABL kinase, a critical enzyme in cancer (Bcr-Abl causes chronic myeloid leukemia when mutated). We want to:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Gather known bioactivity data for ABL&lt;/li&gt;
+&lt;li&gt;Featurize and analyze molecules&lt;/li&gt;
+&lt;li&gt;Train an AI model to predict new inhibitors&lt;/li&gt;
+&lt;li&gt;Convert and prepare compounds for simulation&lt;/li&gt;
+&lt;li&gt;Visualize how they bind&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Open resources make this feasible:&lt;/p&gt;
+&lt;h3 id=&#34;open-data-chembl&#34;&gt;Open Data (ChEMBL)&lt;/h3&gt;
+&lt;p&gt;We can retrieve ABL bioactivity data from ChEMBL, a large open database of drug-like molecules and their biological activities. (ChEMBL contains millions of measured compound-target activities – over 5.4 million bioactivity data points for 1M+ compounds as of 2012, and it’s grown even larger since!). This gives us a training dataset of known ABL inhibitors and non-inhibitors without any paywalls. We can use ChEMBL’s web services or downloads to get, say, all compounds tested against ABL (IC50, Ki values, etc.), then use Pandas to filter and tabulate the data.&lt;/p&gt;
+&lt;h3 id=&#34;data-handling-pandas--numpy&#34;&gt;Data Handling (Pandas &amp;amp; NumPy)&lt;/h3&gt;
+&lt;p&gt;With our ABL dataset in hand (e.g. as a CSV of SMILES and activity labels), we use Pandas to clean and manipulate it and NumPy for any numerical computing. These “classics” form the backbone of any custom pipeline – e.g., grouping data, normalizing values, splitting into train/test sets. They might not be drug discovery-specific, but their flexibility is indispensable. We might do:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import pandas as pd
+df = pd.read_csv(&amp;quot;ABL_bioactivity.csv&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;rdkit--the-unsung-hero-of-cheminformatics&#34;&gt;RDKit – The Unsung Hero of Cheminformatics&lt;/h2&gt;
+&lt;p&gt;If you&amp;rsquo;re doing anything with molecules in Python, chances are RDKit is working behind the scenes. RDKit is an open-source cheminformatics toolkit widely used for tasks like generating molecular fingerprints, performing substructure searches, computing descriptors, and manipulating chemical structures.&lt;/p&gt;
+&lt;p&gt;In our ABL example, we use RDKit to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Generate Morgan fingerprints&lt;/li&gt;
+&lt;li&gt;Perform substructure searches&lt;/li&gt;
+&lt;li&gt;Compute molecular descriptors&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;code-example&#34;&gt;Code Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;from rdkit import Chem, DataStructs
+from rdkit.Chem import AllChem
+
+imatinib_smiles = &amp;quot;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)NC(=O)c4ccc(cc4)CN5CCN(CC5)C&amp;quot;
+nilotinib_smiles = &amp;quot;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)C(=O)Nc4cc(cc(c4)n5cc(nc5)C)C(F)(F)F&amp;quot;
+
+mol1 = Chem.MolFromSmiles(imatinib_smiles)
+mol2 = Chem.MolFromSmiles(nilotinib_smiles)
+
+fp1 = AllChem.GetMorganFingerprintAsBitVect(mol1, radius=2, nBits=2048)
+fp2 = AllChem.GetMorganFingerprintAsBitVect(mol2, radius=2, nBits=2048)
+
+sim = DataStructs.TanimotoSimilarity(fp1, fp2)
+print(f&amp;quot;Tanimoto similarity: {sim:.2f}&amp;quot;)
+
+query = Chem.MolFromSmarts(&amp;quot;c1ccc(cc1)Nc2nccc(n2)&amp;quot;)
+match = mol1.HasSubstructMatch(query)
+print(&amp;quot;Substructure match:&amp;quot;, match)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;deepchem--ai-made-beautifully-simple&#34;&gt;DeepChem – AI Made Beautifully Simple&lt;/h2&gt;
+&lt;p&gt;DeepChem is an open-source library that brings advanced models like GCNs and multitask networks to your fingertips. It’s built on TensorFlow/PyTorch but hides the complexity.&lt;/p&gt;
+&lt;h3 id=&#34;code-example-1&#34;&gt;Code Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;import deepchem as dc
+import numpy as np
+
+smiles_list = [
+&amp;quot;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)NC(=O)c4ccc(cc4)CN5CCN(CC5)C&amp;quot;,  # active
+&amp;quot;CCOC(=O)c1ccc(cc1)N&amp;quot;,  # inactive
+]
+labels = np.array([1, 0])
+
+featurizer = dc.feat.MolGraphConvFeaturizer()
+X = featurizer.featurize(smiles_list)
+y = labels
+
+dataset = dc.data.NumpyDataset(X, y)
+
+model = dc.models.GraphConvModel(n_tasks=1, mode=&#39;classification&#39;, metrics=[dc.metrics.Metric(dc.metrics.roc_auc_score)])
+model.fit(dataset, nb_epoch=20)
+
+pred_probs = model.predict(dataset)
+print(pred_probs)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;open-babel--convert-like-a-pro&#34;&gt;Open Babel – Convert Like a Pro&lt;/h2&gt;
+&lt;p&gt;Open Babel helps switch between formats like SMILES, SDF, PDB, etc.&lt;/p&gt;
+&lt;h3 id=&#34;code-example-2&#34;&gt;Code Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;from openbabel import pybel
+
+smiles = &amp;quot;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)NC(=O)c4ccc(cc4)CN5CCN(CC5)C&amp;quot;
+mol = pybel.readstring(&amp;quot;smi&amp;quot;, smiles)
+mol.addh()
+mol.make3D()
+mol.write(&amp;quot;sdf&amp;quot;, &amp;quot;imatinib_3D.sdf&amp;quot;, overwrite=True)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;pymol--visualize-what-ai-discovers&#34;&gt;PyMOL – Visualize What AI Discovers&lt;/h2&gt;
+&lt;p&gt;PyMOL is great for inspecting protein–ligand complexes and generating publication-quality figures.&lt;/p&gt;
+&lt;h3 id=&#34;code-example-3&#34;&gt;Code Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;import pymol2
+
+with pymol2.PyMOL() as pymol:
+	cmd = pymol.cmd
+	cmd.load(&amp;quot;ABL_kinase.pdb&amp;quot;, &amp;quot;protein&amp;quot;)
+	cmd.load(&amp;quot;imatinib_3D.sdf&amp;quot;, &amp;quot;ligand&amp;quot;)
+	cmd.hide(&amp;quot;everything&amp;quot;)
+	cmd.show(&amp;quot;cartoon&amp;quot;, &amp;quot;protein&amp;quot;)
+	cmd.show(&amp;quot;sticks&amp;quot;, &amp;quot;ligand&amp;quot;)
+	cmd.zoom(&amp;quot;ligand&amp;quot;, 5)
+	cmd.png(&amp;quot;abl_imatinib.png&amp;quot;, width=800, height=600, ray=1)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;chemprop--graph-neural-networks-made-easy&#34;&gt;Chemprop – Graph Neural Networks Made Easy&lt;/h2&gt;
+&lt;p&gt;Chemprop offers fast training of MPNNs for tasks like QSAR and virtual screening.&lt;/p&gt;
+&lt;h3 id=&#34;cli-example&#34;&gt;CLI Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;chemprop_train --data_path abl_activity.csv --smiles_column smiles --target_columns active \
+           --dataset_type classification --save_dir abl_model
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;python-example&#34;&gt;Python Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;from chemprop.train import run_training
+
+params = {
+&amp;quot;data_path&amp;quot;: &amp;quot;abl_activity.csv&amp;quot;,
+&amp;quot;smiles_column&amp;quot;: &amp;quot;smiles&amp;quot;,
+&amp;quot;target_columns&amp;quot;: [&amp;quot;active&amp;quot;],
+&amp;quot;dataset_type&amp;quot;: &amp;quot;classification&amp;quot;,
+&amp;quot;save_dir&amp;quot;: &amp;quot;abl_model&amp;quot;,
+&amp;quot;epochs&amp;quot;: 30
+}
+run_training(params)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-classics-pandas-numpy-scikit-learn--data-science-backbone&#34;&gt;The Classics: Pandas, NumPy, Scikit-Learn – Data Science Backbone&lt;/h2&gt;
+&lt;p&gt;These libraries handle everything from preprocessing to baseline models.&lt;/p&gt;
+&lt;h3 id=&#34;example-random-forest&#34;&gt;Example Random Forest:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+
+X = [list(map(int, fp.ToBitString())) for fp in [fp1, fp2]]
+y = labels
+
+X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=0)
+model = RandomForestClassifier(n_estimators=100).fit(X_train, y_train)
+print(&amp;quot;Validation accuracy:&amp;quot;, model.score(X_val, y_val))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-open-source-revolution-in-action&#34;&gt;The Open-Source Revolution in Action&lt;/h2&gt;
+&lt;p&gt;As we’ve seen, an end-to-end drug discovery pipeline can now be constructed with open-source tools at every step, with each tool excelling in its domain:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Data acquisition from open databases (ChEMBL, PubChem, etc.) provides the fuel.&lt;/li&gt;
+&lt;li&gt;RDKit ensures we can manipulate and understand chemical structures easily.&lt;/li&gt;
+&lt;li&gt;DeepChem and Chemprop bring powerful AI models to make predictions or generate new hypotheses.&lt;/li&gt;
+&lt;li&gt;Open Babel makes sure our data can move anywhere it needs to (no format silos).&lt;/li&gt;
+&lt;li&gt;PyMOL lets us visualize and validate the AI’s suggestions in the context of 3D biology.&lt;/li&gt;
+&lt;li&gt;Pandas/NumPy/Sci-kit tie everything together with data handling and auxiliary analyses.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Importantly, all of these are free and open. There are no license fees or onerous contracts – you can install them on your laptop right now and get to work. This open-source ecosystem is accelerating innovation by putting incredible power in the hands of anyone with an idea and a bit of coding knowledge. It lowers the barrier to entry for drug discovery projects: a small startup or an academic lab can now deploy workflows that rival those in big pharma, without spending a fortune on software.&lt;/p&gt;
+&lt;p&gt;The open-source revolution is not just about cost savings; it’s about community and collaboration. These tools are constantly improving through contributions from users worldwide. For example, new algorithms and best practices in chemoinformatics are often rapidly integrated into RDKit or DeepChem by community members. If a feature is missing, you can add it or request it. This fosters an environment where researchers share not just data, but also the methods to analyze that data – leading to more reproducible and transparent science.&lt;/p&gt;
+&lt;p&gt;What’s in your AI drug discovery toolkit? Chances are, if you start exploring, you’ll end up with many of the open-source tools above in your repertoire. And you’ll be joining a movement that is driving the future of pharmaceutical innovation. No paywalls, no red tape – just raw potential and a community eager to push the boundaries of what AI can do for medicine. The open-source revolution in drug discovery is here, and it’s incredibly exciting. Get involved, experiment with these tools, and who knows – you might discover the next Halicin or imatinib, and you’ll have the open-source community cheering you on every step of the way.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Research | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/research/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/research/index.xml" rel="self" type="application/rss+xml" />
+    <description>Research</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 23 Jan 2024 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Research</title>
+      <link>https://yboulaamane.github.io/tags/research/</link>
+    </image>
+    
+    <item>
+      <title>A Comprehensive Guide to Scientific Writing and Publishing</title>
+      <link>https://yboulaamane.github.io/blog/a-comprehensive-guide-to-scientific-writing-and-publishing/</link>
+      <pubDate>Tue, 23 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/a-comprehensive-guide-to-scientific-writing-and-publishing/</guid>
+      <description>&lt;p&gt;Writing a scientific paper is both an art and a process. Beyond simply reporting results, effective writing ensures your research &lt;strong&gt;connects with the right audience&lt;/strong&gt;, &lt;strong&gt;contributes to the literature&lt;/strong&gt;, and &lt;strong&gt;stands up to peer review&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;This guide compiles &lt;strong&gt;frameworks, examples, and checklists&lt;/strong&gt; to help researchers—from graduate students to seasoned scientists—communicate their work clearly, concisely, and convincingly.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;finding-the-right-words--expressions&#34;&gt;Finding the Right Words &amp;amp; Expressions&lt;/h2&gt;
+&lt;p&gt;Clarity often comes from using the right connectors. These words shape the &lt;em&gt;flow&lt;/em&gt; of your arguments.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Purpose&lt;/th&gt;
+          &lt;th&gt;Useful Expressions&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Adding to an idea&lt;/td&gt;
+          &lt;td&gt;Additionally, Furthermore, Moreover, In addition&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Showing consequence&lt;/td&gt;
+          &lt;td&gt;Therefore, Thus, As a result, Hence&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Emphasizing&lt;/td&gt;
+          &lt;td&gt;Especially, Of course, Certainly, Indeed&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Giving a reason&lt;/td&gt;
+          &lt;td&gt;Because, Due to, Owing to, Since&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Showing contrast&lt;/td&gt;
+          &lt;td&gt;However, Although, Whereas, In contrast, Nevertheless&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Summarizing&lt;/td&gt;
+          &lt;td&gt;In summary, To conclude, In short, In brief&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Providing examples&lt;/td&gt;
+          &lt;td&gt;For instance, Such as, Namely, In particular&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;👉 &lt;em&gt;Tip&lt;/em&gt;: Avoid overusing “However” and “Therefore.” Varying transitions makes your writing smoother.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;structuring-the-discussion--conclusion&#34;&gt;Structuring the Discussion &amp;amp; Conclusion&lt;/h2&gt;
+&lt;p&gt;The discussion is where you “sell” the value of your work. A logical flow makes it compelling:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Answer the research question&lt;/strong&gt; – restate your hypothesis and findings.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Support the answer&lt;/strong&gt; – integrate with key studies, highlight novelty.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Defend the answer&lt;/strong&gt; – address potential criticisms or alternative explanations.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Strengths &amp;amp; limitations&lt;/strong&gt; – show awareness of your study’s scope.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Conclude&lt;/strong&gt; – state the broader implications, practical applications, or next steps.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;👉 &lt;em&gt;Engaging twist&lt;/em&gt;: End with a forward-looking statement, e.g. &lt;em&gt;“This framework opens the door for clinical validation in larger patient cohorts.”&lt;/em&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;writing-a-literature-review&#34;&gt;Writing a Literature Review&lt;/h2&gt;
+&lt;p&gt;A strong literature review goes beyond summary—it &lt;strong&gt;creates a story&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Synthesize&lt;/strong&gt; across studies, not just list them.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Position&lt;/strong&gt; your work: what’s been done, and where you fit.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Identify gaps&lt;/strong&gt; that justify your research.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Suggest directions&lt;/strong&gt; for others to follow.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;purposes-of-a-literature-review&#34;&gt;Purposes of a literature review&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Show relationships between studies.&lt;/li&gt;
+&lt;li&gt;Provide context for your question.&lt;/li&gt;
+&lt;li&gt;Highlight methods that work (and those that don’t).&lt;/li&gt;
+&lt;li&gt;Spot contradictions and unresolved debates.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;👉 &lt;em&gt;Pro tip&lt;/em&gt;: Use &lt;strong&gt;concept maps&lt;/strong&gt; or tables to visualize clusters of related work.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;materials--methods-checklist&#34;&gt;Materials &amp;amp; Methods Checklist&lt;/h2&gt;
+&lt;p&gt;A reproducible methods section is a &lt;strong&gt;hallmark of good science&lt;/strong&gt;. Include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Detailed experimental procedures.&lt;/li&gt;
+&lt;li&gt;Quantities, timings, parameters.&lt;/li&gt;
+&lt;li&gt;Software, datasets, equipment versions.&lt;/li&gt;
+&lt;li&gt;Statistical tests and significance levels.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Writing tips&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Use &lt;strong&gt;past tense&lt;/strong&gt; and &lt;strong&gt;passive voice&lt;/strong&gt; (“Samples were analyzed…”).&lt;/li&gt;
+&lt;li&gt;Organize under &lt;strong&gt;Materials&lt;/strong&gt;, &lt;strong&gt;Instrumentation&lt;/strong&gt;, &lt;strong&gt;Procedures&lt;/strong&gt;, &lt;strong&gt;Statistics&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;Provide supplementary material for lengthy protocols.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;research-paper-vs-review-paper&#34;&gt;Research Paper vs Review Paper&lt;/h2&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Feature&lt;/th&gt;
+          &lt;th&gt;Research Paper&lt;/th&gt;
+          &lt;th&gt;Review Paper&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Purpose&lt;/td&gt;
+          &lt;td&gt;Present original findings&lt;/td&gt;
+          &lt;td&gt;Critically analyze existing literature&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Source type&lt;/td&gt;
+          &lt;td&gt;Primary data&lt;/td&gt;
+          &lt;td&gt;Secondary sources&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Structure&lt;/td&gt;
+          &lt;td&gt;IMRaD (Intro, Methods, Results, Discussion)&lt;/td&gt;
+          &lt;td&gt;Thematic or chronological&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Typical length&lt;/td&gt;
+          &lt;td&gt;3,000–12,000 words&lt;/td&gt;
+          &lt;td&gt;3,000–5,000 words&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;writing-key-sections&#34;&gt;Writing Key Sections&lt;/h2&gt;
+&lt;h3 id=&#34;abstract&#34;&gt;Abstract&lt;/h3&gt;
+&lt;p&gt;Think of the abstract as the &lt;strong&gt;elevator pitch&lt;/strong&gt; for your paper:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Introduce the field.&lt;/li&gt;
+&lt;li&gt;State the gap/problem.&lt;/li&gt;
+&lt;li&gt;Describe what you did.&lt;/li&gt;
+&lt;li&gt;Highlight the main result.&lt;/li&gt;
+&lt;li&gt;Interpret its meaning.&lt;/li&gt;
+&lt;li&gt;Broaden to impact/significance.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;results&#34;&gt;Results&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Present each figure in order.&lt;/li&gt;
+&lt;li&gt;One key takeaway per figure.&lt;/li&gt;
+&lt;li&gt;Save extended interpretation for the discussion.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;discussion&#34;&gt;Discussion&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Lead with your &lt;strong&gt;main finding&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;Compare with past studies.&lt;/li&gt;
+&lt;li&gt;Discuss implications and limitations.&lt;/li&gt;
+&lt;li&gt;End on how this work moves the field forward.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;research-workflow-overview&#34;&gt;Research Workflow Overview&lt;/h2&gt;
+&lt;p&gt;A simple roadmap to keep your writing organized:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Introduction&lt;/strong&gt; – What’s the problem, why does it matter?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Literature Review&lt;/strong&gt; – What’s known and what’s missing.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Methods&lt;/strong&gt; – How you addressed the gap.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Results&lt;/strong&gt; – What you found.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Limitations&lt;/strong&gt; – What’s uncertain or needs caution.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Conclusion&lt;/strong&gt; – Why it matters, and where to go next.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;writing-tips-for-impact&#34;&gt;Writing Tips for Impact&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Keep the &lt;strong&gt;introduction short&lt;/strong&gt; and hook the reader.&lt;/li&gt;
+&lt;li&gt;Use &lt;strong&gt;figures and tables&lt;/strong&gt; to reduce text.&lt;/li&gt;
+&lt;li&gt;Draft the &lt;strong&gt;results section first&lt;/strong&gt;, intro last.&lt;/li&gt;
+&lt;li&gt;Revise in cycles: clarity → conciseness → polish.&lt;/li&gt;
+&lt;li&gt;Share with peers: fresh eyes catch unclear logic.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;👉 &lt;em&gt;Reader-friendly idea&lt;/em&gt;: End each draft session by writing a &lt;strong&gt;one-sentence summary&lt;/strong&gt; of your paper. If it’s unclear, refine your message.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;final-thoughts&#34;&gt;Final Thoughts&lt;/h2&gt;
+&lt;p&gt;Scientific writing is not only about transmitting facts—it’s about &lt;strong&gt;building trust&lt;/strong&gt; with your readers and reviewers. A well-structured, transparent, and engaging manuscript increases your chances of publication and ensures your contribution has real impact.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Credit:&lt;/strong&gt; Adapted from OpenAcademics, &lt;em&gt;Nature&lt;/em&gt;, &lt;em&gt;Science Translational Medicine&lt;/em&gt;, the MIT Biological Engineering Communication Lab, and other writing guides.&lt;/p&gt;&lt;/blockquote&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Understanding Molecular Dynamics Simulations</title>
+      <link>https://yboulaamane.github.io/blog/understanding-molecular-dynamics-simulations/</link>
+      <pubDate>Sun, 12 Mar 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/understanding-molecular-dynamics-simulations/</guid>
+      <description>&lt;p&gt;Hey there! Today, let&amp;rsquo;s talk about Molecular Dynamics (MD) simulation and how it can help us understand the behavior of complex molecular systems.
+MD simulation works by creating an initial configuration of a system, including the positions, velocities, and masses of all atoms or molecules. The simulation then calculates the forces acting on each particle based on their interactions with other particles in the system.&lt;/p&gt;
+&lt;p&gt;These forces are used to update the positions and velocities of each particle over a small time step, typically in the femtosecond to picosecond range. The simulation is repeated for many time steps, allowing the system to evolve over time.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://raw.githubusercontent.com/yboulaamane/yboulaamane.github.io/615fbbb664d302cce6cb72ed92b1e228ca3f45ec/_blog/5post-1.png&#34; alt=&#34;Figure1&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 1:  Example MD simulation output plots&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;One of the coolest things about MD simulation is its ability to provide insights into the behavior of complex molecular systems that are difficult or impossible to study experimentally. For example, it can be used to study the behavior of proteins, which are crucial for many biological processes. By simulating the motion of individual atoms and molecules, researchers can gain insights into the structure and function of proteins, including how they interact with other molecules and how their structure changes over time.&lt;/p&gt;
+&lt;p&gt;MD simulation is also widely used in the field of materials science. It can model the behavior of polymers, ceramics, metals, and other materials, providing insight into their mechanical properties, stability, and behavior under different conditions. By simulating the behavior of materials at the atomic scale, researchers can develop a deeper understanding of how they behave and how they can be optimized for specific applications.&lt;/p&gt;
+&lt;p&gt;One of the strengths of MD simulation is its ability to model complex systems that have a large number of particles. Proteins, for example, are made up of thousands of atoms, making them difficult to study experimentally. However, by using MD simulation, researchers can study the behavior of these systems in detail, gaining insights into their structure, function, and behavior.&lt;/p&gt;
+&lt;p&gt;Another advantage of MD simulation is its ability to simulate systems under a wide range of conditions, including different temperatures, pressures, and chemical environments. This makes it a powerful tool for studying how systems behave under different conditions and how they respond to changes in their environment.&lt;/p&gt;
+&lt;p&gt;While MD simulation has its limitations, such as accurately modeling the interactions between particles and the computational cost, advances in computing technology have made it more accessible. Researchers are constantly developing new algorithms and techniques to improve the accuracy and efficiency of simulations.&lt;/p&gt;
+&lt;p&gt;So, what are some common visualizations used in MD simulations? Trajectories show the positions of particles in a system over time, energy plots show the total energy of a system over time, radial distribution functions measure how particles are distributed around a central particle, and density plots show the density of particles in a system as a function of position.&lt;/p&gt;
+&lt;p&gt;In conclusion, MD simulation is a powerful tool for studying the behavior of complex molecular systems, from proteins to materials. It has the potential to provide new insights into a wide range of scientific and technological applications, from drug design to energy storage. If you&amp;rsquo;re interested in learning more about MD simulation, be sure to check out the different types of simulations and visualizations used in the field.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

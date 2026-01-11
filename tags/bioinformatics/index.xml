@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bioinformatics | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/bioinformatics/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/bioinformatics/index.xml" rel="self" type="application/rss+xml" />
+    <description>Bioinformatics</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 23 Apr 2024 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Bioinformatics</title>
+      <link>https://yboulaamane.github.io/tags/bioinformatics/</link>
+    </image>
+    
+    <item>
+      <title>Computational Drug Repurposing with Multiscale Interactomes</title>
+      <link>https://yboulaamane.github.io/blog/computational-drug-repurposing-with-multiscale-interactomes/</link>
+      <pubDate>Tue, 23 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/computational-drug-repurposing-with-multiscale-interactomes/</guid>
+      <description>&lt;p&gt;Drug repurposing offers a rapid, cost-effective route to new therapies by identifying novel uses for existing compounds. When paired with &lt;strong&gt;multiscale interactome analysis&lt;/strong&gt;, it becomes possible to explore the complex molecular relationships between drugs, targets, pathways, and diseases at a systems level.&lt;br&gt;
+This workflow outlines how to construct, analyze, and exploit a heterogeneous biomedical network to identify repurposing candidates, combining graph-based learning with experimental prioritization.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-building-the-interactome&#34;&gt;&lt;strong&gt;1. Building the Interactome&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;The foundation of the approach is a &lt;strong&gt;heterogeneous graph&lt;/strong&gt; that integrates multiple layers of biological knowledge. Nodes can represent drugs, proteins, pathways, or diseases, while edges encode interactions—drug–target binding, protein–protein interactions, pathway memberships, and disease associations.&lt;/p&gt;
+&lt;p&gt;Sources like &lt;strong&gt;DrugBank&lt;/strong&gt; provide curated drug–protein relationships, while protein–protein interaction maps can be drawn from high-confidence databases. For disease biology, integrate experimentally validated or literature-reported links, such as host–pathogen PPIs for infectious diseases or α-synuclein interactors in Parkinson’s disease.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;2-anchoring-the-disease-context&#34;&gt;&lt;strong&gt;2. Anchoring the Disease Context&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Once the network is assembled, the specific disease of interest is added as a node and connected to known associated proteins or pathways. This grounding ensures that the graph captures both molecular interactions and the functional context of the disease.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;3-learning-from-network-structure&#34;&gt;&lt;strong&gt;3. Learning from Network Structure&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Graph embedding techniques transform the raw network into a form suitable for machine learning. A &lt;strong&gt;Node2Vec&lt;/strong&gt; pre-processing step captures both local neighborhoods and broader network context. These embeddings are then refined through a &lt;strong&gt;Graph Convolutional Network (GCN)&lt;/strong&gt;, trained with a diffusion-based loss function that clusters nodes according to their network proximity to the disease node.&lt;/p&gt;
+&lt;p&gt;The result is a set of optimized vector representations for every entity in the network—drugs, proteins, and pathways—enabling quantitative similarity searches.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;4-prioritizing-candidates&#34;&gt;&lt;strong&gt;4. Prioritizing Candidates&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;With embeddings in hand, candidate ranking is straightforward: compute cosine similarity between the disease node and other nodes. This yields:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Drug proximity scores&lt;/strong&gt; – for direct repurposing candidates.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Protein proximity scores&lt;/strong&gt; – highlighting potential new therapeutic targets.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;5-multiple-selection-strategies&#34;&gt;&lt;strong&gt;5. Multiple Selection Strategies&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Three complementary selection approaches can be applied:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Target-centric&lt;/strong&gt;: Choose drugs directly most similar to the disease node.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Protein-centric&lt;/strong&gt;: Identify top-ranked proteins, then retrieve predicted binders from platforms like &lt;strong&gt;PolypharmDB&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Polypharmacology-focused&lt;/strong&gt;: Prioritize drugs predicted to act on multiple high-value targets simultaneously.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;6-rational-filtering&#34;&gt;&lt;strong&gt;6. Rational Filtering&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;To refine the shortlist, apply pragmatic filters: retain only FDA-approved small molecules with drug-like properties, ensure scaffold diversity, and avoid redundancy in mechanism of action or target profile.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;7-from-prediction-to-validation&#34;&gt;&lt;strong&gt;7. From Prediction to Validation&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Predicted candidates move to experimental testing, starting with &lt;strong&gt;cell-based assays&lt;/strong&gt; tailored to the disease model—such as infection inhibition assays, pseudovirus entry tests, or phenotypic screens. Hits are further confirmed with orthogonal validation techniques, from qRT-PCR to targeted inhibition assays.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;By uniting &lt;strong&gt;network pharmacology&lt;/strong&gt;, &lt;strong&gt;graph machine learning&lt;/strong&gt;, and &lt;strong&gt;experimental feedback&lt;/strong&gt;, this interactome-driven strategy offers a scalable framework for uncovering repurposing opportunities across a broad range of diseases. Its strength lies in connecting molecular context with computational inference—transforming existing drugs into tomorrow’s targeted therapies.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>A Comprehensive Guide to Hybrid Assembly Pipeline for Genomic Sequencing</title>
+      <link>https://yboulaamane.github.io/blog/a-comprehensive-guide-to-hybrid-assembly-pipeline-for-genomic-sequencing/</link>
+      <pubDate>Thu, 11 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/a-comprehensive-guide-to-hybrid-assembly-pipeline-for-genomic-sequencing/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Microbes, life&amp;rsquo;s unseen workhorses, hold immense potential for bioremediation, medicine, and understanding our planet. Yet, their intricate workings remain largely a mystery. This is where microbial genomics steps in, offering a powerful tool to decode their genetic language. Genomic sequencing has revolutionized our understanding of microbial diversity and function.&lt;/p&gt;
+&lt;p&gt;In this guide, we&amp;rsquo;ll walk through a &lt;strong&gt;hybrid assembly pipeline&lt;/strong&gt;, combining long reads (ONT) and short reads (Illumina), using tools for quality control, assembly, polishing, and assessment.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;requirements&#34;&gt;Requirements&lt;/h2&gt;
+&lt;h3 id=&#34;using-anaconda-for-package-management&#34;&gt;Using Anaconda for Package Management&lt;/h3&gt;
+&lt;p&gt;
+ - simplifies installing and managing bioinformatics tools.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;conda create --name myenv
+conda activate myenv
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;quality-control-tools&#34;&gt;Quality Control Tools&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+ - visualize quality metrics of long reads (ONT/PacBio).&lt;/li&gt;
+&lt;li&gt;
+ - generate quality reports for short reads (Illumina).&lt;/li&gt;
+&lt;li&gt;
+ - filter and trim long reads by quality and length.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;assembly&#34;&gt;Assembly&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+ - long-read assembler optimized for ONT and PacBio data.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;polishing&#34;&gt;Polishing&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+ - ONT neural-network-based polishing tool.&lt;/li&gt;
+&lt;li&gt;
+ - short-read aligner for mapping Illumina reads to assemblies.&lt;/li&gt;
+&lt;li&gt;
+ - polishing tool that uses short-read alignments to correct assembly errors.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;assembly-assessment&#34;&gt;Assembly Assessment&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+ - assess genome completeness using universal single-copy orthologs.&lt;/li&gt;
+&lt;li&gt;
+ - evaluate assembly quality with metrics like N50, misassemblies, and GC content.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;hybrid-assembly-pipeline&#34;&gt;Hybrid Assembly Pipeline&lt;/h2&gt;
+&lt;h3 id=&#34;quality-control&#34;&gt;Quality Control&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;For Long Reads (ONT):&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mkdir -p nanoplot_lr_raw
+NanoPlot --fastq LR_input.fastq --N50 --verbose --outdir nanoplot_lr_raw/ -t 8
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;For Short Reads (Illumina):&lt;/strong&gt;
+mkdir -p fastqc_reports
+fastqc SR_input_1.fastq SR_input_2.fastq -o fastqc_reports/ -t 8&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;filter-long-reads&#34;&gt;Filter Long Reads&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;filtlong -1 SR_input_1.fastq -2 SR_input_2.fastq --min_length 1000 --keep_percent 90 LR_input.fastq &amp;gt; LR_filtered.fastq
+mkdir -p nanoplot_lr_filtered
+NanoPlot --fastq LR_filtered.fastq --N50 --verbose --outdir nanoplot_lr_filtered/ -t 8
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;long-reads-assembly-flye&#34;&gt;Long Reads Assembly (Flye)&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;flye --nano-raw LR_filtered.fastq --out-dir Flye/ --threads 8 --scaffold -g 6m
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;first-polishing-medaka&#34;&gt;First Polishing (Medaka)&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;conda activate medaka
+medaka_consensus -i LR_filtered.fastq -d Flye/assembly.fasta -o Polish1/ -m r941_min_fast_g303 -t 8
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;second-polishing-polypolish&#34;&gt;Second Polishing (Polypolish)&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;mkdir -p Polish2
+bwa index Polish1/consensus.fasta
+bwa mem -t 8 -a Polish1/consensus.fasta SR_input_1.fastq &amp;gt; Polish2/alignments_1.sam
+bwa mem -t 8 -a Polish1/consensus.fasta SR_input_2.fastq &amp;gt; Polish2/alignments_2.sam
+
+polypolish_insert_filter.py   --in1 Polish2/alignments_1.sam   --in2 Polish2/alignments_2.sam   --out1 Polish2/filtered_1.sam   --out2 Polish2/filtered_2.sam
+
+polypolish Polish1/consensus.fasta   Polish2/filtered_1.sam   Polish2/filtered_2.sam &amp;gt; final_assembly.fasta
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;assembly-quality-assessment&#34;&gt;Assembly Quality Assessment&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;conda activate busco
+busco -i final_assembly.fasta -l bacteria_odb10 -m genome -o busco_final_assembly
+
+quast -o quast_final_assembly -t 8 final_assembly.fasta
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;annotation-for-16s-rrna&#34;&gt;Annotation for 16S rRNA&lt;/h2&gt;
+&lt;h3 id=&#34;prokka&#34;&gt;Prokka&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;conda install -c conda-forge -c bioconda prokka
+prokka --outdir prokka_annotation --prefix final_assembly final_assembly.fasta
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;rast&#34;&gt;RAST&lt;/h3&gt;
+&lt;p&gt;Submit the genome via the 
+ for functional annotation.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;bottom-line&#34;&gt;Bottom Line&lt;/h2&gt;
+&lt;p&gt;This hybrid assembly pipeline, coupled with annotation tools like Prokka and RAST, empowers researchers to unravel microbial genomes. Combining long and short reads with rigorous QC and assessment ensures a reliable, accurate representation of genomic information.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

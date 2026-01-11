@@ -1,0 +1,1284 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Computational Chemistry | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/computational-chemistry/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/computational-chemistry/index.xml" rel="self" type="application/rss+xml" />
+    <description>Computational Chemistry</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 24 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Computational Chemistry</title>
+      <link>https://yboulaamane.github.io/tags/computational-chemistry/</link>
+    </image>
+    
+    <item>
+      <title>Stop Using B3LYP/6-31G*: Critical Pitfalls in Modern DFT Calculations and How to Avoid Them</title>
+      <link>https://yboulaamane.github.io/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/</link>
+      <pubDate>Wed, 24 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/</guid>
+      <description>&lt;p&gt;Density Functional Theory (DFT) has become the workhorse of computational chemistry, enabling routine access to molecular structures, reaction mechanisms, and noncovalent interactions at a reasonable computational cost. However, as with molecular dynamics simulations, DFT is not a black-box technique. Seemingly minor methodological choices can introduce systematic errors that quietly undermine the physical validity of the results.&lt;/p&gt;
+&lt;p&gt;One of the most persistent problems in the field is the continued use of outdated protocols—most notably &lt;strong&gt;B3LYP/6-31G&lt;/strong&gt;*—long after their limitations have been clearly demonstrated. These calculations rarely fail numerically. Instead, they produce results that appear reasonable while being quantitatively wrong.&lt;/p&gt;
+&lt;p&gt;This article outlines the most critical pitfalls in modern DFT calculations and provides best-practice strategies to ensure accuracy, robustness, and reproducibility.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-treating-b3lyp6-31g-as-a-safe-default&#34;&gt;1. Treating B3LYP/6-31G* as a Safe Default&lt;/h2&gt;
+&lt;p&gt;For many years, B3LYP/6-31G* was considered an acceptable compromise between accuracy and efficiency. Today, this assumption is no longer valid. This protocol lacks an explicit description of London dispersion interactions and suffers from severe basis set limitations, leading to artificial error cancellation.&lt;/p&gt;
+&lt;p&gt;As a result, reaction energies, conformational preferences, and intermolecular interactions are often misrepresented, with errors frequently exceeding chemical accuracy.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;br&gt;
+B3LYP/6-31G* should be avoided for production calculations. Modern alternatives such as &lt;strong&gt;r²SCAN-3c&lt;/strong&gt; or dispersion-corrected functionals with appropriate basis sets provide substantially improved accuracy at comparable computational cost.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;2-ignoring-london-dispersion-interactions&#34;&gt;2. Ignoring London Dispersion Interactions&lt;/h2&gt;
+&lt;p&gt;Standard DFT functionals do not account for long-range electron correlation. Without explicit correction, dispersion interactions are entirely absent, leading to overly repulsive potential energy surfaces.&lt;/p&gt;
+&lt;p&gt;This omission severely affects noncovalent interactions, conformational equilibria, and binding energies.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;br&gt;
+Dispersion corrections are mandatory in modern DFT. Always include schemes such as &lt;strong&gt;D3(BJ)&lt;/strong&gt; or &lt;strong&gt;D4&lt;/strong&gt;, or use functionals with built-in nonlocal correlation. The additional cost is negligible compared to the improvement in physical realism.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;3-using-inadequate-basis-sets-without-correction&#34;&gt;3. Using Inadequate Basis Sets Without Correction&lt;/h2&gt;
+&lt;p&gt;Small basis sets such as 6-31G* suffer from &lt;strong&gt;basis set superposition error (BSSE)&lt;/strong&gt;. This artifact artificially stabilizes interacting fragments by allowing them to borrow basis functions from each other.&lt;/p&gt;
+&lt;p&gt;In many cases, BSSE leads to misleading agreement with experiment due to compensating errors.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;br&gt;
+Use &lt;strong&gt;triple-zeta or larger basis sets&lt;/strong&gt; for energetic quantities whenever possible. If smaller basis sets must be used, apply &lt;strong&gt;geometric counterpoise corrections (gCP)&lt;/strong&gt; or use composite methods that correct BSSE by construction.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;4-applying-a-single-level-of-theory-to-all-properties&#34;&gt;4. Applying a Single Level of Theory to All Properties&lt;/h2&gt;
+&lt;p&gt;A common misconception is that one functional and basis set combination is equally suitable for geometries, reaction energies, and barrier heights. In practice, different properties have very different sensitivities to the electronic structure method.&lt;/p&gt;
+&lt;p&gt;Methods that perform well for structures may fail badly for kinetics.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;br&gt;
+Choose the method based on the target property. Efficient composite methods are ideal for geometry optimization, while reaction energies and barrier heights require higher-rung functionals and larger basis sets.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;5-underestimating-self-interaction-error-in-barrier-heights&#34;&gt;5. Underestimating Self-Interaction Error in Barrier Heights&lt;/h2&gt;
+&lt;p&gt;Transition states are particularly sensitive to &lt;strong&gt;self-interaction error (SIE)&lt;/strong&gt;. Many (meta-)GGA functionals systematically underestimate activation barriers, leading to incorrect kinetic predictions and flawed mechanistic conclusions.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;br&gt;
+Barrier height calculations should include &lt;strong&gt;Fock exchange&lt;/strong&gt;. Range-separated hybrid functionals are especially effective at reducing SIE while maintaining balanced energetics.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;6-neglecting-solvation-effects&#34;&gt;6. Neglecting Solvation Effects&lt;/h2&gt;
+&lt;p&gt;Gas-phase calculations are frequently compared to experimental data obtained in solution. For polar or charged systems, this mismatch can dominate the total error.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;br&gt;
+Include solvation effects routinely when modeling condensed-phase chemistry. Modern implicit models such as &lt;strong&gt;SMD&lt;/strong&gt; or &lt;strong&gt;COSMO-RS&lt;/strong&gt; provide a physically meaningful description beyond simple electrostatics.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;7-relying-on-a-single-conformer-for-flexible-molecules&#34;&gt;7. Relying on a Single Conformer for Flexible Molecules&lt;/h2&gt;
+&lt;p&gt;Many molecules populate multiple conformations at ambient temperature. Evaluating only a single optimized structure can lead to incorrect thermodynamic and kinetic predictions.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;br&gt;
+Perform conformational sampling and compute &lt;strong&gt;Boltzmann-weighted averages&lt;/strong&gt; for relevant properties. Automated tools now make this feasible even for moderately large systems.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;8-overinterpreting-numerical-agreement-with-experiment&#34;&gt;8. Overinterpreting Numerical Agreement with Experiment&lt;/h2&gt;
+&lt;p&gt;Agreement between calculated and experimental values does not guarantee correctness. Apparent accuracy can arise from compensating errors, particularly when outdated methods are used.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;br&gt;
+Prioritize methodological robustness over coincidence. Use approaches that perform consistently across diverse chemical problems rather than relying on fortuitous agreement.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;final-takeaway&#34;&gt;Final Takeaway&lt;/h2&gt;
+&lt;p&gt;Modern DFT best practice is not about increasing computational cost—it is about avoiding known failure modes. Legacy protocols persist largely due to familiarity, not reliability.&lt;/p&gt;
+&lt;p&gt;Replacing B3LYP/6-31G* with contemporary, well-validated methods significantly improves accuracy at little to no additional cost and aligns computational results with physical reality.&lt;/p&gt;
+&lt;p&gt;A calculation that runs smoothly is not necessarily correct. In DFT, as in molecular dynamics, methodological rigor is essential for meaningful scientific insight.&lt;/p&gt;
+&lt;h2 id=&#34;reference-paper&#34;&gt;Reference Paper&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Bursch, M., Mewes, J.-M., Hansen, A., &amp;amp; Grimme, S.&lt;/strong&gt; (2022). Best-Practice DFT Protocols for Basic Molecular Computational Chemistry. &lt;em&gt;Angewandte Chemie International Edition&lt;/em&gt;, 61, e202205735.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ten Critical Pitfalls in Molecular Dynamics Simulations and Strategies for Mitigation</title>
+      <link>https://yboulaamane.github.io/blog/ten-critical-pitfalls-in-molecular-dynamics-simulations-and-strategies-for-mitigation/</link>
+      <pubDate>Sun, 21 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/ten-critical-pitfalls-in-molecular-dynamics-simulations-and-strategies-for-mitigation/</guid>
+      <description>&lt;p&gt;Molecular dynamics (MD) serves as a powerful computational microscope, offering atomistic insights often unattainable through experimental methods alone. With the increasing accessibility of user-friendly software and comprehensive tutorials, the barrier to entry for new researchers has lowered significantly. However, MD is not merely a procedural task; it is a rigorous physics simulation where minor methodological errors can lead to scientifically inaccurate results.&lt;/p&gt;
+&lt;p&gt;For early-stage researchers, the challenge often lies in subtle errors—mistakes that do not cause the simulation to crash but instead yield misleading trajectories. These errors often remain undetected until the peer-review stage, potentially invalidating months of computational effort.&lt;/p&gt;
+&lt;p&gt;This article outlines ten of the most frequent methodological errors in molecular dynamics and provides best practices to ensure simulation reliability and reproducibility.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-inadequate-preparation-of-initial-structures&#34;&gt;1. Inadequate Preparation of Initial Structures&lt;/h2&gt;
+&lt;p&gt;The validity of a simulation is strictly limited by the quality of the starting model. A common oversight is assuming that a structure downloaded from the Protein Data Bank (PDB) is immediately ready for simulation. Raw PDB files often contain experimental artifacts, such as missing atoms, unresolved residues, or crystal packing contacts that are not relevant in solution.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; Rigorous structure preparation is mandatory. This includes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Modeling missing loops.&lt;/li&gt;
+&lt;li&gt;Resolving steric clashes.&lt;/li&gt;
+&lt;li&gt;Crucially, assigning correct protonation states (e.g., Histidine tautomers) based on the specific pH of the environment rather than default settings.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Tools such as &lt;strong&gt;pdbfixer&lt;/strong&gt;, &lt;strong&gt;H++&lt;/strong&gt;, or &lt;strong&gt;PropKa&lt;/strong&gt; are essential for this standardization.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;2-incompatible-or-inappropriate-force-field-selection&#34;&gt;2. Incompatible or Inappropriate Force Field Selection&lt;/h2&gt;
+&lt;p&gt;A force field represents the mathematical parameter set governing atomic interactions. A significant error involves selecting a force field based on popularity rather than its suitability for the specific molecular system (e.g., using a protein-centric force field for a complex membrane system without validation). Furthermore, combining parameters from different force fields—such as mixing CHARMM protein parameters with OPLS ligand parameters—can introduce severe imbalances in potential energy functions.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; Select a force field explicitly validated for your molecule class. If a complex system requires multiple parameter sets, ensure they share compatible functional forms and Lennard-Jones combination rules.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;3-mismatching-water-models&#34;&gt;3. Mismatching Water Models&lt;/h2&gt;
+&lt;p&gt;Force fields are generally parameterized in conjunction with specific water models. Using a force field designed for TIP3P water with a more modern 4-point model (like OPC), or vice versa, is a frequent technical error.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; Verify the primary literature for your chosen force field to identify the water model used during its parameterization. Using a mismatched water model can fundamentally alter solution density, protein-solvent interactions, and diffusion rates, rendering thermodynamic properties inaccurate.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;4-uncritical-acceptance-of-automated-ligand-topologies&#34;&gt;4. Uncritical Acceptance of Automated Ligand Topologies&lt;/h2&gt;
+&lt;p&gt;When simulating non-standard residues or ligands, researchers often rely on automated servers (e.g., CGenFF, PRODRG, or MCPB) to generate topology files. Treating these servers as &amp;ldquo;black boxes&amp;rdquo; is dangerous, as automated algorithms often approximate partial charges and bond parameters incorrectly for complex chemical groups.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; Automated output should be treated as a draft.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Always inspect the log files for high &amp;ldquo;penalty scores&amp;rdquo; or confidence warnings.&lt;/li&gt;
+&lt;li&gt;For rigorous work, validate partial charges using Quantum Mechanics (QM) calculations and verify bonded parameters against experimental data or higher-level theory.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;5-insufficient-minimization-and-equilibration&#34;&gt;5. Insufficient Minimization and Equilibration&lt;/h2&gt;
+&lt;p&gt;Initiating the production run (data collection) before the system has thermodynamically relaxed is a primary cause of instability. If high-energy contacts are not resolved, the system may exhibit unrealistic structural distortions or numerical instability.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Minimization:&lt;/strong&gt; Continue until the maximum force on any atom falls below a strict threshold (e.g., 1000 kJ/mol/nm).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Equilibration:&lt;/strong&gt; Monitor temperature (NVT) and pressure (NPT) phases carefully. Production should only commence once system density and potential energy have converged to a stable plateau.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;6-incorrect-time-step-selection&#34;&gt;6. Incorrect Time Step Selection&lt;/h2&gt;
+&lt;p&gt;The integration time step dictates the frequency at which the equations of motion are solved. Selecting a time step that is too large causes numerical instability (integration errors), while a time step that is too small results in computational inefficiency.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; For standard biological simulations, a &lt;strong&gt;2 femtosecond (fs)&lt;/strong&gt; time step is appropriate, provided that bonds involving hydrogen atoms are constrained using algorithms such as LINCS or SHAKE. Larger time steps (e.g., 4 fs) should only be used if Hydrogen Mass Repartitioning (HMR) is applied.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;7-neglecting-periodic-boundary-condition-pbc-artifacts&#34;&gt;7. Neglecting Periodic Boundary Condition (PBC) Artifacts&lt;/h2&gt;
+&lt;p&gt;Periodic Boundary Conditions are essential for simulating bulk systems, but they introduce visual and analytical artifacts, such as molecules appearing to split across simulation box boundaries.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; Raw trajectories must be post-processed prior to analysis. Metrics such as Radius of Gyration ($R_g$) or RMSD will yield erroneous results if calculated on &amp;ldquo;broken&amp;rdquo; molecules. Use trajectory processing tools (e.g., &lt;code&gt;gmx trjconv&lt;/code&gt; in GROMACS or &lt;code&gt;cpptraj&lt;/code&gt; in AMBER) to re-center the protein and &amp;ldquo;unwrap&amp;rdquo; molecules across the periodic boundaries.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;8-insufficient-sampling-and-lack-of-replicates&#34;&gt;8. Insufficient Sampling and Lack of Replicates&lt;/h2&gt;
+&lt;p&gt;Molecular dynamics is inherently stochastic; a single trajectory represents only one probabilistic pathway of the system. Relying on a single simulation run can lead to the &amp;ldquo;Anecdotal Evidence&amp;rdquo; fallacy, where a rare event is mistaken for a general property of the system.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; Conduct replicate simulations. Ideally, run the same system &lt;strong&gt;3 to 5 times&lt;/strong&gt; with different initial velocity distributions (random seeds). Conclusions should be drawn from statistical trends observed across multiple independent replicates, not a single isolated run.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;9-over-reliance-on-rmsd-as-a-stability-metric&#34;&gt;9. Over-reliance on RMSD as a Stability Metric&lt;/h2&gt;
+&lt;p&gt;Root Mean Square Deviation (RMSD) is the most common metric for assessing structural stability, but it is insufficient on its own. A plateauing RMSD indicates only that the global structure is not deviating further from the reference; it does not rule out local distortions, broken hydrogen bond networks, or incorrect energetic behavior.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; Employ a multidimensional analysis strategy. Combine RMSD with:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Root Mean Square Fluctuation (RMSF)&lt;/li&gt;
+&lt;li&gt;Radius of Gyration ($R_g$)&lt;/li&gt;
+&lt;li&gt;Solvent Accessible Surface Area (SASA)&lt;/li&gt;
+&lt;li&gt;Clustering analysis&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This provides a comprehensive view of system stability and dynamics.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;10-lack-of-experimental-validation&#34;&gt;10. Lack of Experimental Validation&lt;/h2&gt;
+&lt;p&gt;A simulation that runs without errors is not necessarily physically accurate. A major pitfall is failing to benchmark simulation results against known experimental observables.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; Always attempt to correlate simulation data with experimental results. Comparing calculated B-factors with X-ray crystallography data, or comparing NMR observables (such as chemical shifts or NOEs) with simulated values, provides the necessary validation to ensure the simulation reflects physical reality.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How to Use DataWarrior for Drug Discovery: Key Workflows From the Villoutreix Tutorials</title>
+      <link>https://yboulaamane.github.io/blog/how-to-use-datawarrior-for-drug-discovery-key-workflows-from-the-villoutreix-tutorials/</link>
+      <pubDate>Sat, 15 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/how-to-use-datawarrior-for-drug-discovery-key-workflows-from-the-villoutreix-tutorials/</guid>
+      <description>&lt;h2 id=&#34;why-datawarrior-matters&#34;&gt;Why DataWarrior Matters&lt;/h2&gt;
+&lt;p&gt;If you work in drug discovery or cheminformatics, you frequently handle &lt;strong&gt;large chemical datasets&lt;/strong&gt; that require cleaning, filtering, visualization, and export.&lt;br&gt;
+&lt;strong&gt;DataWarrior&lt;/strong&gt; is designed exactly for this: an open-source, chemistry-aware data workbench that is free for academic and commercial use.&lt;/p&gt;
+&lt;p&gt;Key advantages include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Chemistry-aware filtering and visualization&lt;/li&gt;
+&lt;li&gt;2D/3D plots and interactive exploration&lt;/li&gt;
+&lt;li&gt;Substructure search and chemical intelligence&lt;/li&gt;
+&lt;li&gt;Property calculation, combinatorial libraries, PCA/t-SNE&lt;/li&gt;
+&lt;li&gt;Docking inside a protein pocket&lt;/li&gt;
+&lt;li&gt;Support for SMILES, SDF, CSV, tab-delimited text&lt;/li&gt;
+&lt;li&gt;Cross-platform (Windows, macOS, Linux)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Bruno Villoutreix’s tutorial series provides an excellent guided introduction. This post summarizes &lt;strong&gt;Part 1&lt;/strong&gt; and connects it to practical drug-discovery workflows.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;core-capabilities-covered-in-part-1&#34;&gt;Core Capabilities Covered in Part 1&lt;/h2&gt;
+&lt;h3 id=&#34;a-versatile-workbench&#34;&gt;A Versatile Workbench&lt;/h3&gt;
+&lt;p&gt;DataWarrior is more than a viewer — it is a &lt;strong&gt;chemometrics and data-analysis environment&lt;/strong&gt; with dynamic plots, smart filtering, and chemical intelligence.&lt;/p&gt;
+&lt;h3 id=&#34;key-features&#34;&gt;Key Features&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Real-time text, numeric, and chemical filtering&lt;/li&gt;
+&lt;li&gt;2D / 3D visualization modules&lt;/li&gt;
+&lt;li&gt;Molecular property prediction&lt;/li&gt;
+&lt;li&gt;Combinatorial library enumeration&lt;/li&gt;
+&lt;li&gt;PCA and t-SNE&lt;/li&gt;
+&lt;li&gt;Docking and non-chemical data support&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;data-import--formats&#34;&gt;Data Import &amp;amp; Formats&lt;/h3&gt;
+&lt;p&gt;DataWarrior handles common cheminformatics formats:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;SMILES&lt;/strong&gt;, &lt;strong&gt;SDF (v2/v3)&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CSV&lt;/strong&gt;, &lt;strong&gt;tab-delimited text&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Native &lt;strong&gt;DWIR&lt;/strong&gt; project files&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This makes it ideal as a front-end before passing data to docking, QSAR, MD, or ML workflows.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;interface-overview&#34;&gt;Interface Overview&lt;/h2&gt;
+&lt;p&gt;The interface is flexible and powerful:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Many options are accessible via &lt;strong&gt;right-click menus&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Layouts can be customized with sub-windows&lt;/li&gt;
+&lt;li&gt;Some tools are hidden behind pop-ups&lt;/li&gt;
+&lt;li&gt;Learning curve exists, but productivity increases quickly&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Think of it as a &lt;strong&gt;chemistry-smart Excel&lt;/strong&gt; designed specifically for cheminformatics.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;external-data-wikipedia-molecule-import&#34;&gt;External Data: Wikipedia Molecule Import&lt;/h2&gt;
+&lt;p&gt;Part 1 demonstrates an impressive feature:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;DataWarrior can download all &lt;strong&gt;chemical structures from Wikipedia&lt;/strong&gt; (~22,000+ molecules depending on version).&lt;/li&gt;
+&lt;li&gt;You can filter, visualize, and explore the full set offline.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This dataset is perfect for practicing workflows before loading your own project data.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;practical-filtering-workflow-name--substructure&#34;&gt;Practical Filtering Workflow (Name + Substructure)&lt;/h2&gt;
+&lt;p&gt;Villoutreix demonstrates a realistic medicinal-chemistry filtering pipeline:&lt;/p&gt;
+&lt;h3 id=&#34;1-name-based-filtering&#34;&gt;1. Name-Based Filtering&lt;/h3&gt;
+&lt;p&gt;Use &lt;strong&gt;regular expressions&lt;/strong&gt; to identify drug classes by name suffix:&lt;br&gt;
+Examples:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;.*ib&lt;/code&gt; (kinase inhibitors)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.*sartan&lt;/code&gt; (angiotensin receptor blockers)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.*azole&lt;/code&gt; (antifungals)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Filtering Wikipedia’s 22k molecules yields a much smaller, focused set.&lt;/p&gt;
+&lt;h3 id=&#34;2-substructure-filtering&#34;&gt;2. Substructure Filtering&lt;/h3&gt;
+&lt;p&gt;Draw a functional group (e.g., &lt;strong&gt;piperazine/piperidine&lt;/strong&gt;) in the structure filter window.&lt;br&gt;
+DataWarrior keeps molecules containing the substructure &lt;strong&gt;and&lt;/strong&gt; matching the name rule.&lt;br&gt;
+Matching fragments appear highlighted in &lt;strong&gt;red&lt;/strong&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;3-create-a-row-list--export&#34;&gt;3. Create a Row List &amp;amp; Export&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a custom list (e.g., &lt;code&gt;cancer&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Add &lt;strong&gt;SMILES code&lt;/strong&gt; for each molecule.&lt;/li&gt;
+&lt;li&gt;Remove unnecessary columns (formula, MW, structure).&lt;/li&gt;
+&lt;li&gt;Save as a &lt;strong&gt;tab-delimited text file&lt;/strong&gt; (&lt;code&gt;cancer.txt&lt;/code&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Repeat the workflow for other suffixes, such as &lt;strong&gt;“-azole”&lt;/strong&gt;, to build an antifungal set.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;integrating-datawarrior-into-your-workflow&#34;&gt;Integrating DataWarrior Into Your Workflow&lt;/h2&gt;
+&lt;h3 id=&#34;1-import-your-data&#34;&gt;1. Import Your Data&lt;/h3&gt;
+&lt;p&gt;Load SDF/SMILES and merge with ADMET, assay, or physicochemical tables.&lt;/p&gt;
+&lt;h3 id=&#34;2-smart-filtering&#34;&gt;2. Smart Filtering&lt;/h3&gt;
+&lt;p&gt;Use both:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Name patterns&lt;/strong&gt; (series, suffixes, pharmacological classes)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Substructure filters&lt;/strong&gt; (scaffolds, R-groups, functional motifs)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-visualization&#34;&gt;3. Visualization&lt;/h3&gt;
+&lt;p&gt;Quickly inspect:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Activity distributions&lt;/li&gt;
+&lt;li&gt;Scatter plots&lt;/li&gt;
+&lt;li&gt;PCA/t-SNE chemical space&lt;/li&gt;
+&lt;li&gt;Outliers and series clusters&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;4-export-for-modelling&#34;&gt;4. Export for Modelling&lt;/h3&gt;
+&lt;p&gt;Save clean SMILES + metadata for:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;QSAR / ML&lt;/li&gt;
+&lt;li&gt;Docking&lt;/li&gt;
+&lt;li&gt;MD setup&lt;/li&gt;
+&lt;li&gt;Library design&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;DataWarrior becomes the &lt;strong&gt;interactive triage layer&lt;/strong&gt; before computational modeling.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;why-villoutreixs-series-is-worth-watching&#34;&gt;Why Villoutreix’s Series Is Worth Watching&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Short and dense: ~85 minutes across 9 videos&lt;/li&gt;
+&lt;li&gt;Realistic medicinal chemistry examples&lt;/li&gt;
+&lt;li&gt;Shows &lt;strong&gt;where to click&lt;/strong&gt; and how features connect&lt;/li&gt;
+&lt;li&gt;Useful even for intermediate users — many hidden features become obvious after watching&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;getting-started-today&#34;&gt;Getting Started Today&lt;/h2&gt;
+&lt;p&gt;You can reproduce Part 1 in minutes:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Install &lt;strong&gt;DataWarrior&lt;/strong&gt; from the official website.&lt;/li&gt;
+&lt;li&gt;Import the &lt;strong&gt;Wikipedia dataset&lt;/strong&gt; directly from within the software.&lt;/li&gt;
+&lt;li&gt;Apply regular expression filtering (e.g., &lt;code&gt;.*ib&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Add a substructure filter.&lt;/li&gt;
+&lt;li&gt;Create a row list → add SMILES → export your filtered set.&lt;/li&gt;
+&lt;li&gt;Repeat with another suffix (e.g., &lt;code&gt;.*azole&lt;/code&gt;).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This prepares you to bring in your own datasets and use DataWarrior as your daily workbench.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;final-thoughts&#34;&gt;Final Thoughts&lt;/h2&gt;
+&lt;p&gt;DataWarrior is a powerful, free, and chemistry-aware tool that helps you:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Explore large datasets interactively&lt;/li&gt;
+&lt;li&gt;Build focused libraries rapidly&lt;/li&gt;
+&lt;li&gt;Clean data before modeling&lt;/li&gt;
+&lt;li&gt;Visualize chemical space&lt;/li&gt;
+&lt;li&gt;Export ready-to-use hit lists&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Paired with the Villoutreix tutorial series, it becomes a &lt;strong&gt;practical, everyday companion&lt;/strong&gt; for drug-discovery and cheminformatics work.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Energy Minimization with Open Babel: Practical Guide for Ligand Preparation</title>
+      <link>https://yboulaamane.github.io/blog/energy-minimization-with-open-babel-practical-guide-for-ligand-preparation/</link>
+      <pubDate>Tue, 23 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/energy-minimization-with-open-babel-practical-guide-for-ligand-preparation/</guid>
+      <description>&lt;h1 id=&#34;energy-minimization-with-open-babel-a-practical-guide-for-computational-chemists&#34;&gt;Energy Minimization with Open Babel: A Practical Guide for Computational Chemists&lt;/h1&gt;
+&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Before any molecular docking or molecular dynamics simulation, &lt;strong&gt;energy minimization&lt;/strong&gt; is a crucial preprocessing step. It helps relax the structure, remove steric clashes, and bring the molecule closer to a physically meaningful conformation. While commercial tools like Chem3D are often used, &lt;strong&gt;Open Babel&lt;/strong&gt; offers a free and versatile alternative.&lt;/p&gt;
+&lt;p&gt;In this post, I’ll walk through how to perform energy minimization in Open Babel, discuss the available force fields and algorithms, and highlight best practices from the perspective of computational chemistry.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;why-energy-minimization-matters&#34;&gt;Why Energy Minimization Matters&lt;/h2&gt;
+&lt;p&gt;Ligand structures downloaded from databases or drawn manually often contain unrealistic bond lengths, angles, or steric overlaps. Docking such conformations may bias results or even prevent convergence. Energy minimization ensures:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;More realistic starting geometry&lt;/li&gt;
+&lt;li&gt;Reduced steric clashes&lt;/li&gt;
+&lt;li&gt;Improved stability in docking and MD workflows&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;open-babels-obminimize-command&#34;&gt;Open Babel’s &lt;code&gt;obminimize&lt;/code&gt; Command&lt;/h2&gt;
+&lt;p&gt;The &lt;strong&gt;&lt;code&gt;obminimize&lt;/code&gt;&lt;/strong&gt; tool in Open Babel performs energy minimization directly from the command line. Its general syntax is:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;obminimize [options] input_file
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Key options include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-ff&lt;/code&gt;	: Choose force field&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-sd&lt;/code&gt;	: Steepest descent algorithm&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-cg&lt;/code&gt;	: Conjugate gradient algorithm (default)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-h&lt;/code&gt;	: Add hydrogens&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-n&lt;/code&gt;	: Maximum steps (default: 2500)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-o&lt;/code&gt;	: Output format (PDB, MOL2, SDF, etc.)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;comparing-force-fields-in-open-babel&#34;&gt;Comparing Force Fields in Open Babel&lt;/h2&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Force Field&lt;/th&gt;
+          &lt;th&gt;Typical Use&lt;/th&gt;
+          &lt;th&gt;Strengths&lt;/th&gt;
+          &lt;th&gt;Weaknesses&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;GAFF&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;General drug-like molecules&lt;/td&gt;
+          &lt;td&gt;AMBER-compatible&lt;/td&gt;
+          &lt;td&gt;Less optimized for small ligands alone&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Ghemical&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Education, small molecules&lt;/td&gt;
+          &lt;td&gt;Lightweight&lt;/td&gt;
+          &lt;td&gt;Limited accuracy&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;MMFF94&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Small organic ligands&lt;/td&gt;
+          &lt;td&gt;Well-validated, reliable&lt;/td&gt;
+          &lt;td&gt;Slightly heavier computationally&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;MMFF94s&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Variant of MMFF94&lt;/td&gt;
+          &lt;td&gt;Better torsion handling&lt;/td&gt;
+          &lt;td&gt;Similar cost to MMFF94&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;UFF&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Broad coverage (organics, inorganics, metals)&lt;/td&gt;
+          &lt;td&gt;Universal element support&lt;/td&gt;
+          &lt;td&gt;Less accurate for organics&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Recommendation:&lt;/strong&gt; For drug-like ligands, &lt;strong&gt;MMFF94&lt;/strong&gt; (or MMFF94s) is the best choice.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;minimization-algorithms-sd-vs-cg&#34;&gt;Minimization Algorithms: SD vs CG&lt;/h2&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Algorithm&lt;/th&gt;
+          &lt;th&gt;Principle&lt;/th&gt;
+          &lt;th&gt;Pros&lt;/th&gt;
+          &lt;th&gt;Cons&lt;/th&gt;
+          &lt;th&gt;Use Case&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Steepest Descent (SD)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Moves along steepest energy gradient&lt;/td&gt;
+          &lt;td&gt;Robust, removes high-energy clashes quickly&lt;/td&gt;
+          &lt;td&gt;Slow near convergence&lt;/td&gt;
+          &lt;td&gt;First relaxation&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Conjugate Gradient (CG)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Uses gradient + past directions for efficiency&lt;/td&gt;
+          &lt;td&gt;Fast near minimum, fewer steps needed&lt;/td&gt;
+          &lt;td&gt;Can fail if starting far from minimum&lt;/td&gt;
+          &lt;td&gt;Fine minimization (default)&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Best practice:&lt;/strong&gt; Start with &lt;strong&gt;SD&lt;/strong&gt; to resolve bad geometries, then switch to &lt;strong&gt;CG&lt;/strong&gt; for efficient convergence.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;example-workflows&#34;&gt;Example Workflows&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Basic minimization with MMFF94 + SD:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;obminimize -sd -ff MMFF94 -h ligand.mol2 -o pdb ligand_min.pdb&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Longer minimization with more steps:&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Alternative force field (UFF) for metal complexes:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;obminimize -cg -ff UFF metal_complex.mol2 -o sdf metal_min.sdf&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Energy minimization is a foundational step in computational chemistry pipelines. Open Babel’s &lt;code&gt;obminimize&lt;/code&gt; provides a free, flexible, and reliable solution to prepare ligands for docking and MD simulations. By choosing the right &lt;strong&gt;force field&lt;/strong&gt; and &lt;strong&gt;algorithm&lt;/strong&gt;, researchers can ensure accurate starting geometries and reduce artifacts in downstream analyses.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Awesome Drug Discovery</title>
+      <link>https://yboulaamane.github.io/project/awesomedrugdiscovery/</link>
+      <pubDate>Mon, 25 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/awesomedrugdiscovery/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Principal Component Analysis and Free Energy Landscape Mapping Using GROMACS</title>
+      <link>https://yboulaamane.github.io/blog/principal-component-analysis-and-free-energy-landscape-mapping-using-gromacs/</link>
+      <pubDate>Wed, 09 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/principal-component-analysis-and-free-energy-landscape-mapping-using-gromacs/</guid>
+      <description>&lt;p&gt;This guide outlines how to perform Principal Component Analysis (PCA) and compute Free Energy Landscapes (FEL) from molecular dynamics (MD) simulations using GROMACS. These analyses are useful to capture dominant motions and identify energetically favorable states in biomolecular systems.&lt;/p&gt;
+&lt;h2 id=&#34;part-1-principal-component-analysis-pca&#34;&gt;Part 1: Principal Component Analysis (PCA)&lt;/h2&gt;
+&lt;h3 id=&#34;step-1-covariance-matrix-and-eigenvector-calculation&#34;&gt;Step 1: Covariance Matrix and Eigenvector Calculation&lt;/h3&gt;
+&lt;p&gt;Run the following command to compute the covariance matrix and extract eigenvectors:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx covar -s md_0_100.tpr -f md_0_100.xtc -o eigenvalues.xvg -v eigenvectors.trr -xpma covar.xpm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Note: If the command fails using &lt;code&gt;md_0_100.gro&lt;/code&gt;, use &lt;code&gt;md_0_100.tpr&lt;/code&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;Select &lt;strong&gt;protein&lt;/strong&gt; and &lt;strong&gt;ligand&lt;/strong&gt; when prompted.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;step-2-determine-the-number-of-principal-components&#34;&gt;Step 2: Determine the Number of Principal Components&lt;/h3&gt;
+&lt;p&gt;Analyze &lt;code&gt;eigenvalues.xvg&lt;/code&gt; to compute:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Total Variance&lt;/strong&gt;&lt;br&gt;
+&lt;code&gt;Total Variance = Σ λᵢ&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Explained Variance (%)&lt;/strong&gt;&lt;br&gt;
+&lt;code&gt;Explained Variance (%) = (λᵢ / Σ λᵢ) × 100&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Cumulative Variance&lt;/strong&gt;&lt;br&gt;
+&lt;code&gt;Cumulative Variance = Σ (λᵢ / Σ λᵢ) × 100&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Select the minimum number of components that cumulatively explain more than &lt;strong&gt;50%&lt;/strong&gt; of the total variance.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;step-3-plot-principal-component-projections&#34;&gt;Step 3: Plot Principal Component Projections&lt;/h3&gt;
+&lt;p&gt;For projecting motion along PC1 to PC5, run:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx anaeig -f md_0_100.xtc -s md_0_100.tpr -v eigenvectors.trr -first 1 -last 5 \
+-proj pc15_lovastatina.xvg -2d project2d_s100_lovastatina.xvg -tu ns
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-proj&lt;/code&gt;: 1D projection along each selected eigenvector&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-2d&lt;/code&gt;: Combined 2D projection using the first 5 components&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;part-2-free-energy-landscape-fel-calculation&#34;&gt;Part 2: Free Energy Landscape (FEL) Calculation&lt;/h2&gt;
+&lt;h3 id=&#34;step-1-generate-principal-component-projections&#34;&gt;Step 1: Generate Principal Component Projections&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;gmx anaeig -f md_0_100.xtc -s md_0_100.tpr -v eigenvectors.trr -last 1 -proj pc1.xvg
+gmx anaeig -f md_0_100.xtc -s md_0_100.tpr -v eigenvectors.trr -first 2 -last 2 -proj pc2.xvg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Merge PC1 and PC2 into a single file:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;paste pc1.xvg pc2.xvg | awk &#39;{print $1, $2, $4}&#39; &amp;gt; PC1PC2.xvg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;step-2-compute-free-energy-surface&#34;&gt;Step 2: Compute Free Energy Surface&lt;/h3&gt;
+&lt;p&gt;Use GROMACS SHAM module:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx sham -f PC1PC2.xvg -ls FES.xpm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Convert &lt;code&gt;.xpm&lt;/code&gt; to &lt;code&gt;.dat&lt;/code&gt; using a Python script:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;python2.7 xpm2txt.py -f FES.xpm -o fel.dat
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;Python script &lt;code&gt;xpm2txt.py&lt;/code&gt; converts the XPM matrix to a 3-column text file (X, Y, Energy).&lt;/em&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;step-3-extract-minimum-energy-conformation&#34;&gt;Step 3: Extract Minimum Energy Conformation&lt;/h3&gt;
+&lt;p&gt;After plotting &lt;code&gt;fel.dat&lt;/code&gt;, identify the time of the minimum energy, then extract the conformation:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx trjconv -s md_0_100.tpr -f md_0_100.xtc -o min_energy.pdb -dump 520
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Replace &lt;code&gt;520&lt;/code&gt; with the appropriate time (in ps) corresponding to the energy minimum.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+&lt;p&gt;This workflow provides a systematic approach to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Identify dominant motions in your trajectory via PCA&lt;/li&gt;
+&lt;li&gt;Visualize structural variation through projection plots&lt;/li&gt;
+&lt;li&gt;Map the free energy landscape based on PC space&lt;/li&gt;
+&lt;li&gt;Extract the most stable conformations for further analysis&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These methods are widely used for post-simulation analysis in structural biology and drug discovery.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Validating Molecular Docking Poses with DFT: A Quick Guide</title>
+      <link>https://yboulaamane.github.io/blog/validating-molecular-docking-poses-with-dft-a-quick-guide/</link>
+      <pubDate>Thu, 03 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/validating-molecular-docking-poses-with-dft-a-quick-guide/</guid>
+      <description>&lt;p&gt;Molecular docking is a cornerstone of computer-aided drug discovery. In docking studies, a small molecule (ligand) is computationally “fit” into a protein’s binding site to predict the preferred orientation (pose) and binding affinity. This approach allows researchers to screen large libraries of compounds rapidly and propose how a drug candidate might bind to its target. Docking is valued for generating hypotheses and guiding experiments in the early stages of drug design.&lt;/p&gt;
+&lt;h2 id=&#34;molecular-docking-in-drug-discovery-power-and-pitfalls&#34;&gt;Molecular Docking in Drug Discovery: Power and Pitfalls&lt;/h2&gt;
+&lt;p&gt;Molecular docking is not foolproof. The scoring functions used in most docking programs are simplifications – they account for basic interactions like van der Waals forces and electrostatics, but often ignore ligand strain and detailed quantum effects. Docking assumes a mostly rigid receptor and sometimes forces the ligand into conformations that real molecules might not adopt easily. As a result, the &lt;strong&gt;top-ranked pose cannot always be trusted&lt;/strong&gt; – a high docking score doesn’t guarantee the pose is physically realistic. In practice, docking can produce &lt;strong&gt;false positives&lt;/strong&gt;: poses that look good in silico but are unstable or energetically unfavorable in reality. This limitation creates a need for validation steps after docking, to filter out poses that are likely artifacts of the scoring function.&lt;/p&gt;
+&lt;h2 id=&#34;validating-docking-poses-with-dft-energy-calculations&#34;&gt;Validating Docking Poses with DFT Energy Calculations&lt;/h2&gt;
+&lt;p&gt;This is where &lt;strong&gt;Density Functional Theory (DFT)&lt;/strong&gt; comes into play as a powerful validation tool. DFT is a quantum mechanical method that can provide a more accurate calculation of a molecule’s energy and properties by explicitly considering its electron distribution. Unlike docking’s empirical scoring, DFT is physics-based and can evaluate how “comfortable” a ligand is in a given conformation by computing its electronic energy.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The core idea for pose validation&lt;/strong&gt; is simple: use DFT to optimize the ligand’s geometry starting from the docked pose, and compare the energies of the two structures (docked vs. DFT-relaxed). If the docked pose was realistic, the DFT geometry optimization should not drastically alter the ligand’s structure or energy. But if the docking pose was strained or artificially stabilized by the scoring function, the ligand will likely relax to a very different geometry and &lt;strong&gt;release a lot of energy&lt;/strong&gt; in the process. The energy difference between the initial docked structure and the optimized structure is essentially the &lt;strong&gt;strain energy&lt;/strong&gt; that was needed to force the ligand into the docked pose.&lt;/p&gt;
+&lt;p&gt;In practice, the validation workflow might look like this:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Take the Docked Pose:&lt;/strong&gt; After docking, extract the coordinates of the top-ranked ligand pose.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Single-Point Energy (Optional):&lt;/strong&gt; Compute the DFT energy of the ligand &lt;em&gt;in the docked conformation&lt;/em&gt; (without relaxing it) to have a reference energy.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Geometry Optimization:&lt;/strong&gt; Perform a DFT geometry optimization of the ligand (in isolation or in the binding pocket, see below). This yields a relaxed structure and its energy, representing a more &lt;em&gt;unstrained&lt;/em&gt; conformation.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Compare Energies:&lt;/strong&gt; Calculate the difference in energy between the docked pose and the DFT-optimized pose. A small difference (e.g. a few kcal/mol) suggests the docking pose was already near an energy minimum (plausible). A large difference means the docked pose was high-energy and thus likely unstable.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Why does this help? Imagine a ligand that the docking algorithm contorted to fit the protein. If that contorted shape lies, say, &lt;strong&gt;10 kcal/mol&lt;/strong&gt; higher in energy than the ligand’s preferred shape, it’s improbable that the ligand would actually bind that way – the protein would have to compensate by providing at least 10 kcal/mol of extra favorable interactions, which is quite significant. Empirical evidence and advanced workflows reflect this: if the energy gap is above a certain threshold (commonly cited around 8–10 kcal/mol), the pose is likely a false positive. In other words, a &lt;strong&gt;&amp;gt;8 kcal/mol strain&lt;/strong&gt; in the ligand often indicates an unrealistic binding mode.&lt;/p&gt;
+&lt;p&gt;It’s important to note that this validation via DFT focuses on the ligand’s &lt;strong&gt;internal energy&lt;/strong&gt;. Docking scores try to estimate binding free energy (which is ligand–protein interactions minus strain and entropy costs). By using DFT, we isolate one component of that: how much strain energy the ligand must bear in that pose. An ideal binder has a low strain energy (the ligand can adopt its binding conformation easily) and strong intermolecular interactions. If strain energy is high, the binding affinity prediction from docking is overly optimistic because in reality the ligand would prefer to change shape (or not bind at all).&lt;/p&gt;
+&lt;h2 id=&#34;key-dft-concepts-homo-lumo-and-energy-gaps-in-ligand-binding&#34;&gt;Key DFT Concepts: HOMO, LUMO, and Energy Gaps in Ligand Binding&lt;/h2&gt;
+&lt;p&gt;When you perform DFT calculations, you gain insights beyond just geometry and total energy. DFT will provide information on the molecule’s molecular orbitals, including the &lt;strong&gt;HOMO&lt;/strong&gt; (Highest Occupied Molecular Orbital) and &lt;strong&gt;LUMO&lt;/strong&gt; (Lowest Unoccupied Molecular Orbital). These are often called the &lt;em&gt;frontier molecular orbitals&lt;/em&gt; because they represent the frontier between filled and empty electron states. The HOMO is the highest-energy orbital that contains electrons, and the LUMO is the lowest-energy orbital that is empty.&lt;/p&gt;
+&lt;p&gt;Why do these matter in the context of ligand binding? The characteristics of the HOMO and LUMO can hint at how the ligand might interact electronically with the protein:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;HOMO&lt;/strong&gt; – The HOMO can be thought of as the electron-donating ability of the ligand. A high-energy (less negative) HOMO means the ligand’s outermost electrons are relatively easy to donate. For example, if a ligand has a high HOMO and the protein has a region of low electron density (or a metal ion), the ligand could donate electron density into the protein’s LUMO or metal orbitals, facilitating binding. In frontier orbital theory terms, often a ligand’s HOMO will interact with the protein’s LUMO (for instance, π electrons of a ligand interacting with empty orbitals of a metal center in an enzyme).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;LUMO&lt;/strong&gt; – The LUMO represents the ligand’s capacity to accept electrons. A low-energy (more negative) LUMO indicates the ligand is easily reduced or can accept electron density. If the protein has electron-rich sites (like an electron-donating amino acid side chain), a ligand with a low LUMO might accept electron density from the protein’s HOMO. One theoretical model even posits that effective binding involves the protein’s HOMO interacting with the ligand’s LUMO and &lt;em&gt;vice versa&lt;/em&gt;, aligning with classical donor–acceptor concepts in chemistry.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;HOMO–LUMO Gap&lt;/strong&gt; – The difference in energy between the HOMO and LUMO (the band gap for the molecule) is a measure of the molecule’s electronic stability and reactivity. Generally, a &lt;strong&gt;small HOMO-LUMO gap&lt;/strong&gt; means the molecule is more polarizable and reactive (lower “hardness”), whereas a &lt;strong&gt;large gap&lt;/strong&gt; implies a more inert, stable molecule
+. In binding terms, a highly reactive ligand (small gap) might form covalent bonds or undergo chemical reactions in the binding site, whereas a large-gap ligand is more chemically stable (it will bind through non-covalent interactions without undergoing changes). For most non-covalent docking scenarios, the HOMO-LUMO gap won’t change dramatically upon binding, but it’s a useful concept for understanding if a ligand is prone to electronic interactions. A ligand with a very small gap might require special consideration (for example, it could auto-ionize or be reactive). Conversely, if docking a very stable molecule (large gap), one might expect purely shape/steric-driven binding.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For early-career researchers, it’s not critical to master frontier orbital theory immediately, but being aware of these concepts adds depth to your analysis. For instance, if your DFT results show the ligand has a HOMO centered on a particular functional group, that group might be the one donating electron density to form a hydrogen bond or coordinate a metal in the protein. Likewise, the magnitude of the HOMO-LUMO gap can qualitatively indicate if the ligand is likely to be chemically flexible or if it might require a lot of energy to excite or change – which plays into how it might behave in a binding site.&lt;/p&gt;
+&lt;h2 id=&#34;geometry-optimization-vs-docked-pose-an-orca-example&#34;&gt;Geometry Optimization vs. Docked Pose: An ORCA Example&lt;/h2&gt;
+&lt;p&gt;Let’s walk through how you would actually perform a DFT geometry optimization on a docked pose, using the &lt;strong&gt;ORCA&lt;/strong&gt; quantum chemistry software as a tool of choice. ORCA is a powerful and user-friendly quantum chemistry package that is free for academic use. It can perform DFT calculations (among many other methods) and is well-suited for geometry optimizations of small molecules.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step 1: Preparing the Structure.&lt;/strong&gt; After docking (using AutoDock, Glide, or any other docking software), you will have a ligand pose, often saved in a file format like PDB or MOL2. The first task is to extract that ligand’s coordinates for a DFT program. You can use a molecule editor or converter (like OpenBabel or Avogadro) to get the coordinates in XYZ format or directly paste them into an ORCA input file. Ensure you have the correct atom types and that the geometry corresponds to the docked conformation you want to test.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step 2: Creating the ORCA Input File.&lt;/strong&gt; ORCA input files are simple text files. Below is an example of what an ORCA input might look like for optimizing a ligand geometry:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;! B3LYP-D3 def2-SVP Opt TightSCF  
+&amp;lt;br/&amp;gt;%pal nprocs 4 end # Use 4 CPU cores (adjust as available)  
+&amp;lt;br/&amp;gt;\* xyz 0 1  
+C 0.127 1.265 0.000 # (Example coordinates for the ligand)  
+N -0.769 0.352 0.000 # Replace with your ligand&#39;s atoms...  
+C 0.127 -0.961 0.000  
+O 1.288 -1.414 0.000  
+... (rest of ligand atoms)  
+\*
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s break down this input:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The first line beginning with ! lists the &lt;strong&gt;method and options&lt;/strong&gt;. In this example, we use B3LYP-D3 def2-SVP Opt TightSCF. This specifies the DFT functional B3LYP with D3 dispersion correction, a moderate basis set (def2-SVP), and requests a geometry optimization (Opt). TightSCF is a keyword to tighten the convergence criteria of the self-consistent field (which leads to more accurate energy determination, albeit slightly longer computation). These settings are a reasonable starting point for an organic molecule optimization.&lt;/li&gt;
+&lt;li&gt;The %pal section is optional; it requests parallel processing (here 4 cores). If you have access to multiple CPUs, ORCA can parallelize many tasks, speeding up the calculation.&lt;/li&gt;
+&lt;li&gt;The * xyz 0 1 line begins the coordinate block. The format here is * xyz \[charge\] \[multiplicity\], followed by the atomic coordinates. In our example, 0 1 means the molecule has neutral charge and a singlet multiplicity (no unpaired electrons). Adjust these if your ligand is an ion or radical (e.g., * xyz -1 1 for a -1 charged anion, or * xyz 0 2 for a neutral doublet radical).&lt;/li&gt;
+&lt;li&gt;The subsequent lines list each atom: atomic symbol and its X, Y, Z coordinates (in Angstroms). You would insert the coordinates of your ligand as obtained from the docking output.&lt;/li&gt;
+&lt;li&gt;The coordinate block is closed by a line with just *.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Save this text as, for example, ligand_opt.inp. To run the calculation, you would execute ORCA from the command line (e.g., orca ligand_opt.inp &amp;gt; ligand_opt.out). ORCA will then carry out the DFT calculation, iteratively adjusting the geometry to find a minimum energy structure. After completion, you should check the output file for the results. If the optimization was successful, ORCA will report &amp;ldquo;&lt;strong&gt;OPTIMIZATION RUN DONE&lt;/strong&gt;&amp;rdquo; and provide the final coordinates and energies.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step 3: Analyzing the Optimized Geometry and Energy.&lt;/strong&gt; Compare the final coordinates from ORCA’s output (ligand_opt.out) to the initial docked coordinates. Did the ligand change shape significantly? Often, you can visualize both the docked pose and the DFT-optimized pose in a molecular viewer (PyMOL, Chimera, or even Avogadro) to see any structural shifts. If the ligand only moved slightly, that suggests the docked pose was close to a true minimum. But if the ligand rearranged notably (e.g., flipping a ring, straightening a torsion, etc.), that indicates the docking pose might have been a high-energy conformation that the DFT relaxation corrected.&lt;/p&gt;
+&lt;p&gt;From the output, note the final single-point energy of the optimized structure. Let’s say ORCA reports the optimized energy as &lt;strong&gt;E_opt&lt;/strong&gt; (in atomic units, Hartrees, which you can convert to kcal/mol if needed by multiplying the difference by 627.5). If you also computed the single-point energy of the initial structure (call it &lt;strong&gt;E_initial&lt;/strong&gt;), you can quantify the energy difference: &lt;strong&gt;ΔE = E_initial – E_opt&lt;/strong&gt;. A positive ΔE (when converted to kcal/mol) means the initial structure was that many kcal/mol higher in energy than the optimized structure.&lt;/p&gt;
+&lt;p&gt;For example, if ΔE comes out to be +10.5 kcal/mol, it means the docked pose had ~10.5 kcal/mol of strain relative to the relaxed state. Such a large strain is a red flag. In contrast, if ΔE is only +2 kcal/mol, the pose is probably fine (a 2 kcal strain is quite tolerable and could easily be offset by protein–ligand interactions).&lt;/p&gt;
+&lt;h2 id=&#34;transition-state-search-for-pose-validation-advanced&#34;&gt;Transition State Search for Pose Validation (Advanced)&lt;/h2&gt;
+&lt;p&gt;In some cases, researchers may go a step further and perform a &lt;strong&gt;transition state (TS) search&lt;/strong&gt; related to the conformational change between the docked pose and the optimized geometry. This is a more advanced technique and not always necessary for routine docking validation, but it’s conceptually interesting. The idea is to identify the &lt;em&gt;energy barrier&lt;/em&gt; that separates the docked conformation from the optimized conformation on the potential energy surface. In other words, if the ligand must distort from shape A (optimized) to shape B (docked), what is the highest-energy point (transition state) along that path?&lt;/p&gt;
+&lt;p&gt;Finding a transition state for a conformational change can be tricky, but ORCA does offer tools for this. One approach is to perform a constrained scan or use the &lt;strong&gt;eigenvector-following TS search&lt;/strong&gt; algorithm. For example, ORCA’s keyword OptTS turns on a transition state optimization using a variant of the geometry optimizer that searches for a saddle point (a maximum along one coordinate, minimum along others). To use it, you typically need a decent initial guess geometry that is partway between the two conformations or an initial guess of the normal mode that leads to the distortion.&lt;/p&gt;
+&lt;p&gt;An ORCA input snippet for a transition state search might look like:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;! B3LYP-D3 def2-SVP OptTS TightSCF  
+&amp;lt;br/&amp;gt;%geom  
+TS_Mode {M 0} # follow the lowest-frequency mode (mode 0) uphill to find TS  
+end  
+&amp;lt;br/&amp;gt;\* xyz 0 1  
+... (coordinates of a guess structure near the anticipated transition state) ...  
+\*
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In this input, we replaced Opt with OptTS to request a transition state optimization. We also included a %geom block to specify the TS search mode. {M 0} tells ORCA to follow the eigenvector with the lowest eigenvalue (the softest vibrational mode) uphill – we assume that mode corresponds to the distortion between the two conformers. In practice, you might first do a relaxed scan of a dihedral angle or some coordinate from the docked to the optimized structure to generate an intermediate geometry, then use that as a starting point for OptTS. If ORCA succeeds, it will locate a saddle point, evidenced by one imaginary frequency in the vibrational analysis (if you request a frequency calculation).&lt;/p&gt;
+&lt;p&gt;For validating docking poses, a full TS search is usually &lt;strong&gt;optional&lt;/strong&gt;. Most of the time, simply comparing energies ΔE is enough to flag problematic poses. But the concept of an “energy barrier” is useful: if the pose is &lt;strong&gt;so&lt;/strong&gt; strained that the ligand would need to overcome, say, an 8+ kcal/mol barrier to reach a stable conformation, it’s unlikely that binding is real – the protein isn’t a magical force field that can freeze the ligand in a high-energy shape without paying the price in binding affinity.&lt;/p&gt;
+&lt;h2 id=&#34;interpreting-the-dft-results-when-is-a-pose-unreasonable&#34;&gt;Interpreting the DFT Results: When is a Pose Unreasonable?&lt;/h2&gt;
+&lt;p&gt;After running the DFT calculations, you will have quantitative data to make a call on your docking poses. The rule of thumb mentioned earlier bears repeating: &lt;strong&gt;if the energy difference between the docked pose and the optimized geometry exceeds about 8 kcal/mol, be very skeptical of that docking pose&lt;/strong&gt;. This threshold isn’t absolute, but it comes from studies and expert recommendations that examine how much strain real protein-bound ligands typically have. Most experimentally observed ligand conformations in crystal structures don’t carry more than ~5 kcal/mol of strain energy. Thus, if your pose is demanding 10+ kcal/mol just to hold that conformation, it likely wouldn’t survive in a real biological system – the ligand would either bind in a different conformation or not bind at all.&lt;/p&gt;
+&lt;p&gt;On the other hand, if ΔE is small (for example, 0–3 kcal/mol), the pose is probably physically plausible. The ligand doesn’t mind being in that conformation, and any small strain could potentially be offset by binding interactions. Gray areas are in between – e.g., a 5–7 kcal/mol strain might be borderline. In those cases, consider the context: does the protein provide exceptionally strong interactions (like multiple salt bridges or a covalent bond) that could compensate? If not, you might still doubt a 6 kcal/mol-strained pose, but it’s not as clear-cut as a 12 kcal/mol strain which is almost certainly artifactual.&lt;/p&gt;
+&lt;p&gt;It’s also enlightening to look at &lt;em&gt;what parts&lt;/em&gt; of the ligand changed upon optimization. Perhaps a particular ring system flipped – that could indicate that in the docked pose, that ring was forced into an awkward orientation to make a protein contact. If the DFT opt shows it flipping 180°, it means the docking algorithm’s scoring perhaps overestimated the benefit of that contact or ignored a torsional penalty. This gives you insight into how to refine your docking: you might impose a torsion constraint in docking next time, or simply be aware that pose might need re-evaluation with induced fit or molecular dynamics.&lt;/p&gt;
+&lt;p&gt;Another thing to glean from DFT output: the &lt;strong&gt;HOMO/LUMO energies&lt;/strong&gt; of the optimized ligand. While not directly telling you about the pose stability, they can hint if the ligand gained or lost any conjugation or planarity. For example, if the docked pose had a certain π–π stacking and the ligand optimized away from that planarity, its HOMO-LUMO gap might increase (less conjugation). This is more of a niche consideration, but as you grow more comfortable with DFT data, you’ll start to connect these dots.&lt;/p&gt;
+&lt;h2 id=&#34;practical-advice-for-integrating-dft-into-docking-workflows&#34;&gt;Practical Advice for Integrating DFT into Docking Workflows&lt;/h2&gt;
+&lt;p&gt;For early-career researchers with limited computational chemistry experience, integrating DFT checks into your docking workflow might seem daunting at first. Here are some practical tips to help you get started:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Use DFT selectively:&lt;/strong&gt; You don’t need to DFT-optimize every single docking result (that could be thousands of compounds!). Prioritize a small set of top-scoring poses or any pose that looks chemically suspicious. For instance, if a docking pose shows a ligand in an unusual contortion or with strained bond angles just to fit the pocket, that’s a prime candidate for DFT validation.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Choose the right level of theory:&lt;/strong&gt; Aim for a balance between accuracy and speed. Methods like B3LYP (a popular DFT functional) with at least a double-zeta basis set (e.g., def2-SVP or 6-31G**) are a common starting point for organic molecules. Include dispersion corrections (e.g., the D3 or D4 dispersion in ORCA, invoked by adding -D3 or similar in the functional line) because dispersion can affect conformational energies. You can often get good results with these settings without the calculation taking too long. If your ligand contains metal atoms or is very large, you may need to use effective core potentials or a smaller basis set respectively, or consider semi-empirical methods as a preliminary filter.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Leverage faster methods for initial screening:&lt;/strong&gt; If full DFT is too slow for the number of poses you want to check, consider using a semi-empirical QM method or a fast approximate DFT like &lt;strong&gt;GFN2-xTB&lt;/strong&gt; or &lt;strong&gt;PM6&lt;/strong&gt; just to weed out obviously high-strain poses. ORCA can run semi-empirical calculations as well (e.g., using the GFN2-xTB keyword). These methods are less accurate than DFT but much faster – a reasonable compromise for initial strain assessment.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Optimize in context if possible:&lt;/strong&gt; The simplest DFT check is to optimize the ligand in vacuum (or implicit solvent) as we described. This tells you the ligand’s intrinsic strain. In reality, the protein might stabilize some strained conformations. For a more nuanced check, you can do a &lt;strong&gt;QM/MM optimization&lt;/strong&gt; – where the ligand is treated with DFT and the protein with a molecular mechanics force field. ORCA supports QM/MM calculations, though setting them up is more complex. Alternatively, you could constrain key interaction distances during the ligand optimization to mimic the protein’s hold. These advanced approaches can be considered if a vacuum-phase optimization suggests strain, but you suspect the protein’s environment might significantly alter the picture.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Check for convergence and errors:&lt;/strong&gt; When running ORCA (or any QM software), always verify that the calculation converged properly. In ORCA, if the geometry optimizer failed (e.g., due to a bad initial geometry or insufficient iterations), the results won’t be reliable. You might need to increase MaxIter in the %geom settings or tweak the initial structure. Similarly, watch out for any error messages in the output (like SCF not converged, which you can address by adding SlowConv or other SCF convergence aids).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Interpret results conservatively:&lt;/strong&gt; Remember that computed energies have some error bars. A ~2 kcal/mol difference is probably within the “noise” of method accuracy – it means essentially no significant strain. A &amp;gt;10 kcal/mol difference is huge and almost certainly meaningful. Middle values (e.g., 4–7 kcal/mol) might depend on method, so consider doing a sanity check: perhaps re-optimize using a different functional (like M06-2X or PBE0) or a higher basis set for a single-point energy on the optimized geometry to see if the gap persists. If all methods agree that a pose is high-strain, you can be confident in flagging it.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Use visualization and intuition:&lt;/strong&gt; DFT numbers are great, but always circle back to the chemistry. Visualize the DFT-relaxed pose overlaid with the docked pose. Which bonds rotated? Which angles opened up? Does that make chemical sense (e.g., a steric clash was resolved, an eclipsed conformation went to staggered)? This can teach you &lt;em&gt;why&lt;/em&gt; a pose was unstable and improve your docking criteria next time (for example, you might realize a particular functional group prefers to be planar but the docking forced it non-planar).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Time and resource management:&lt;/strong&gt; DFT calculations can be time-consuming, especially for larger molecules. If you’re working on a laptop, start with very small tests. Perhaps try optimizing just a piece of the ligand or a single pose and see how long it takes. Make use of any high-performance computing resources your institution provides for larger jobs. And be mindful of ORCA’s memory and disk usage settings if your system is large (these can be controlled via %maxcore and other inputs).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Learn from community examples:&lt;/strong&gt; Many researchers have shared tutorials and benchmarks on docking and QM. Don’t hesitate to look up examples (including the ORCA forum and manual) for similar use-cases. For instance, searching for “ligand strain DFT docking” might lead you to studies where they did exactly this kind of validation, giving you a sense of typical values and pitfalls to watch out for.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;By incorporating DFT into your workflow, you add a layer of rigor that can save you from chasing false leads. It trains your chemical intuition as well – after a few such exercises, you’ll start to anticipate which poses are likely strained without even computing them, simply by recognizing telltale geometrical quirks.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion-a-stronger-docking-workflow-with-quantum-insights&#34;&gt;Conclusion: A Stronger Docking Workflow with Quantum Insights&lt;/h2&gt;
+&lt;p&gt;In summary, molecular docking is a powerful technique for generating hypotheses in drug discovery, but it has well-known limitations in accuracy. DFT provides a complementary approach to &lt;strong&gt;double-check and validate docking poses&lt;/strong&gt; by focusing on the fundamental question: Is this pose physically reasonable for the ligand molecule? By optimizing the ligand geometry and examining energies, DFT can expose cases where the docking solution is riding on unrealistically high internal strain. Early-career researchers can greatly benefit from this approach, as it not only improves the reliability of computational predictions but also deepens one’s understanding of molecular behavior.&lt;/p&gt;
+&lt;p&gt;Using ORCA or similar quantum chemistry tools to perform these validations might seem like extra work, but it pays off by preventing wasted effort on false positives. Moreover, it offers a learning opportunity to become familiar with quantum chemical concepts like HOMOs, LUMOs, and energy landscapes in a very practical context. Over time, these skills will strengthen your ability to critically evaluate computational results and make you a more effective researcher in computational chemistry and drug design.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Integrating DFT into docking workflows doesn’t mean abandoning speed or simplicity – it means knowing when to switch from a fast, heuristic method to a detailed, first-principles check.&lt;/strong&gt; With the tips and examples provided, you should be well on your way to applying DFT validation in your own projects. Happy docking, and may your binding poses be ever in your favor (and physically plausible)!&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;References:&lt;/strong&gt; The concepts and strategies discussed here are informed by both practical computational experience and literature. The idea of using DFT to optimize ligand geometries and flag strained poses is highlighted in advanced docking validation workflows. The limitations of docking scoring functions in accounting for ligand strain have been noted in the literature, leading to recommendations for post-docking refinement. Definitions of HOMO/LUMO and their relevance to chemical reactivity are well-established in molecular orbital theory
+, and even in the context of protein–ligand interactions the frontier orbital alignment can play a role. ORCA, as a chosen tool in our examples, is a widely used quantum chemistry package available to academics, and its manual provides details on techniques like transition state searches. These sources and the accumulated knowledge from them reinforce the practices recommended in this guide.&lt;/p&gt;
+&lt;p&gt;
+ HOMO, LUMO, gap, hardness, and softness of all compounds.&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Step-by-Step MD Simulation of a Protein–Ligand Complex with GROMACS</title>
+      <link>https://yboulaamane.github.io/blog/an-in-depth-guide-to-md-simulation-and-analysis-of-a-proteinligand-complex/</link>
+      <pubDate>Fri, 04 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/an-in-depth-guide-to-md-simulation-and-analysis-of-a-proteinligand-complex/</guid>
+      <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This post walks through the &lt;strong&gt;complete setup of a protein–ligand MD simulation&lt;/strong&gt; with GROMACS.&lt;br&gt;
+We use &lt;strong&gt;CHARMM36&lt;/strong&gt; for proteins, &lt;strong&gt;CGenFF&lt;/strong&gt; for ligands, and the &lt;strong&gt;TIP3P water model&lt;/strong&gt;.&lt;br&gt;
+Each step is explained briefly before showing the corresponding command.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-0-pdbfixer&#34;&gt;Step 0: PDBFixer&lt;/h2&gt;
+&lt;p&gt;We begin by repairing the input PDB file (adding missing atoms, hydrogens, etc.). This ensures the protein structure is suitable for simulations.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;conda activate pdbfixer
+pdbfixer protein.pdb --output=protein_fixed.pdb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-1-extract-and-clean-the-protein&#34;&gt;Step 1: Extract and clean the protein&lt;/h2&gt;
+&lt;p&gt;Next, we separate the ligand (UNK or cofactors like FAD) and clean the protein file.&lt;br&gt;
+This avoids force field issues caused by unknown residues.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;grep UNK protein.pdb &amp;gt; unk.pdb
+grep -v &amp;quot;UNK&amp;quot; protein.pdb &amp;gt; clean.pdb
+
+grep -v -e &amp;quot;UNK&amp;quot; -e &amp;quot;FAD&amp;quot; protein_fixed.pdb &amp;gt; clean.pdb
+
+conda activate pdbfixer
+pdbfixer clean.pdb --output=clean.pdb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-2-generate-protein-topology&#34;&gt;Step 2: Generate protein topology&lt;/h2&gt;
+&lt;p&gt;We use &lt;code&gt;pdb2gmx&lt;/code&gt; to generate the topology of the clean protein with CHARMM36.&lt;br&gt;
+Here we also choose protonation states interactively.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx pdb2gmx -f clean.pdb -o processed.gro -ter -ignh &amp;lt;&amp;lt; EOF
+1
+1
+0
+0
+0
+0
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-3-convert-ligand-to-mol2-format&#34;&gt;Step 3: Convert ligand to MOL2 format&lt;/h2&gt;
+&lt;p&gt;The ligand is converted to &lt;code&gt;.mol2&lt;/code&gt; format with hydrogens added and atom typing corrected.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;obabel unk.pdb -O unk.mol2 --addh --gen3d
+sed -i &#39;2s/.*/UNK/; s/UNK1/UNK/g&#39; unk.mol2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-4-sort-ligand-bonds&#34;&gt;Step 4: Sort ligand bonds&lt;/h2&gt;
+&lt;p&gt;We ensure the bond ordering in the MOL2 file is consistent using a Perl script.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;perl sort_mol2_bonds.pl unk.mol2 unk_fix.mol2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-5-parameterize-the-ligand-with-cgenff&#34;&gt;Step 5: Parameterize the ligand with CGenFF&lt;/h2&gt;
+&lt;p&gt;The ligand is parameterized using &lt;strong&gt;CGenFF&lt;/strong&gt;, and converted to a GROMACS-compatible format.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;~/mdrun/silcsbio.2024.1/cgenff/cgenff unk_fix.mol2 -f unk.str
+chmod +x cgenff_charmm2gmx.py
+
+conda activate cgenff
+python cgenff_charmm2gmx.py UNK unk_fix.mol2 unk.str charmm36-jul2022.ff
+
+rm cgenff_charmm2gmx.py
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-6-convert-ligandcofactor-to-gromacs-format&#34;&gt;Step 6: Convert ligand/cofactor to GROMACS format&lt;/h2&gt;
+&lt;p&gt;We now generate &lt;code&gt;.gro&lt;/code&gt; files for both the ligand and cofactor (if present).&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx editconf -f unk_ini.pdb -o unk.gro
+gmx editconf -f fad_ini.pdb -o fad.gro
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-7-merge-protein-and-ligands&#34;&gt;Step 7: Merge protein and ligands&lt;/h2&gt;
+&lt;p&gt;We merge the protein, ligand, and optional cofactors into one structure file.&lt;br&gt;
+Atom counts are updated to reflect the combined system.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cp processed.gro complex.gro &amp;amp;&amp;amp; sed -i &#39;$d&#39; complex.gro &amp;amp;&amp;amp; tail -n +3 unk.gro &amp;gt;&amp;gt; complex.gro &amp;amp;&amp;amp; echo &amp;quot;   &amp;quot; &amp;gt;&amp;gt; complex.gro
+
+num1=$(sed -n &#39;2p&#39; complex.gro)
+num2=$(sed -n &#39;2p&#39; unk.gro)
+sum=$((num1 + num2))
+sed -i &amp;quot;2s/.*/ $sum/&amp;quot; complex.gro
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For protein + FAD + UNK:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cp processed.gro complex.gro &amp;amp;&amp;amp; \
+sed -i &#39;$d&#39; complex.gro &amp;amp;&amp;amp; \
+tail -n +3 fad.gro &amp;gt;&amp;gt; complex.gro &amp;amp;&amp;amp; \
+tail -n +3 unk.gro &amp;gt;&amp;gt; complex.gro &amp;amp;&amp;amp; \
+echo &amp;quot;   &amp;quot; &amp;gt;&amp;gt; complex.gro
+
+num1=$(sed -n &#39;2p&#39; processed.gro)
+num2=$(sed -n &#39;2p&#39; fad.gro)
+num3=$(sed -n &#39;2p&#39; unk.gro)
+sum=$((num1 + num2 + num3))
+sed -i &amp;quot;2s/.*/ $sum/&amp;quot; complex.gro
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-8-update-topology-file&#34;&gt;Step 8: Update topology file&lt;/h2&gt;
+&lt;p&gt;We edit &lt;code&gt;topol.top&lt;/code&gt; to include the ligand topologies and parameters.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sed -i &#39;/; Include Position restraint file/{:a;N;/#endif/!ba;s/\n#endif\n/\n#endif/;s/#endif/#endif\n\n; Include ligand topology\n#include &amp;quot;unk.itp&amp;quot;/}&#39; topol.top
+
+sed -i &#39;/; Include forcefield parameters/{:a;N;/#include &amp;quot;.\/charmm36-jul2022.ff\/forcefield.itp&amp;quot;/!ba;s/#include &amp;quot;.\/charmm36-jul2022.ff\/forcefield.itp&amp;quot;/&amp;amp;\n\n; Include ligand parameters\n#include &amp;quot;unk.prm&amp;quot;/}&#39; topol.top
+
+sed -i &#39;/\[ molecules \]/,/Protein_chain_A/ {/Protein_chain_A/ a\\nUNK                 1\n}&#39; topol.top
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For FAD + UNK:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sed -i &#39;/; Include Position restraint file/{:a;N;/#endif/!ba;s/#endif/#endif\n\n; Include ligand topologies\n#include &amp;quot;fad.itp&amp;quot;\n#include &amp;quot;unk.itp&amp;quot;/}&#39; topol.top
+
+sed -i &#39;/; Include forcefield parameters/{:a;N;/#include &amp;quot;.\/charmm36-jul2022.ff\/forcefield.itp&amp;quot;/!ba;s|#include &amp;quot;.\/charmm36-jul2022.ff\/forcefield.itp&amp;quot;|&amp;amp;\n\n; Include ligand parameters\n#include &amp;quot;fad.prm&amp;quot;\n#include &amp;quot;unk.prm&amp;quot;|}&#39; topol.top
+
+sed -i &#39;/\[ molecules \]/,/Protein_chain_A/ {/Protein_chain_A/ a\\nFAD                 1\\nUNK                 1\n}&#39; topol.top
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-9-define-box-and-solvate&#34;&gt;Step 9: Define box and solvate&lt;/h2&gt;
+&lt;p&gt;We place the system in a cubic box with a 1.4 nm buffer and solvate with TIP3P water.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx editconf -f complex.gro -o newbox.gro -bt cubic -c -d 1.4
+gmx solvate -cp newbox.gro -cs spc216.gro -p topol.top -o solv.gro
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-10-add-ions&#34;&gt;Step 10: Add ions&lt;/h2&gt;
+&lt;p&gt;We neutralize the system and add physiological salt concentration (0.15 M NaCl).&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cat &amp;lt;&amp;lt;EOF &amp;gt; ions.mdp
+integrator     = steep
+emtol          = 1000.0
+nsteps         = 50000
+cutoff-scheme  = Verlet
+coulombtype    = PME
+rcoulomb       = 1.0
+rvdw           = 1.0
+constraints    = none
+EOF
+
+gmx grompp -f ions.mdp -c solv.gro -p topol.top -o ions.tpr -maxwarn 3
+gmx genion -s ions.tpr -o solv_ions.gro -p topol.top -pname NA -nname CL -neutral -conc 0.15 &amp;lt;&amp;lt;EOF
+15
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-11-energy-minimization&#34;&gt;Step 11: Energy minimization&lt;/h2&gt;
+&lt;p&gt;We relax steric clashes by running a steepest descent minimization.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx grompp -f em.mdp -c solv_ions.gro -p topol.top -o em.tpr
+gmx mdrun -v -deffnm em
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-12-generate-ligand-restraints&#34;&gt;Step 12: Generate ligand restraints&lt;/h2&gt;
+&lt;p&gt;Ligand restraints are generated for equilibration to avoid large displacements.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx make_ndx -f unk.gro -o index_unk.ndx &amp;lt;&amp;lt; EOF
+0 &amp;amp; ! a H*
+q
+EOF
+
+gmx genrestr -f unk.gro -n index_unk.ndx -o posre_unk.itp -fc 1000 1000 1000 &amp;lt;&amp;lt;EOF
+3
+EOF
+
+sed -i &#39;/; Include water topology/{x;s/.*/\n; Ligand position restraints\n#ifdef POSRES\n#include &amp;quot;posre_unk.itp&amp;quot;\n#endif\n/;G}&#39; topol.top
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-13-create-index-for-complex&#34;&gt;Step 13: Create index for complex&lt;/h2&gt;
+&lt;p&gt;We define a custom index file including protein and ligand groups.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx make_ndx -f solv_ions.gro -o index.ndx &amp;lt;&amp;lt; EOF
+1 | 13
+q
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-14-nvt-equilibration&#34;&gt;Step 14: NVT equilibration&lt;/h2&gt;
+&lt;p&gt;We equilibrate temperature at 300 K with position restraints.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx grompp -f nvt.mdp -c solv_ions.gro -r solv_ions.gro -p topol.top -n index.ndx -o nvt.tpr
+gmx mdrun -deffnm nvt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-15-npt-equilibration&#34;&gt;Step 15: NPT equilibration&lt;/h2&gt;
+&lt;p&gt;We equilibrate pressure at 1 bar using the Parrinello-Rahman barostat.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx grompp -f npt.mdp -c nvt.gro -t nvt.cpt -r nvt.gro -p topol.top -n index.ndx -o npt.tpr
+gmx mdrun -deffnm npt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-16-production-md&#34;&gt;Step 16: Production MD&lt;/h2&gt;
+&lt;p&gt;Finally, we run a 100 ns production simulation in the NPT ensemble.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -n index.ndx -o md_0_100.tpr
+gmx mdrun -deffnm md_0_100
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;notes&#34;&gt;Notes&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Always &lt;strong&gt;fix PBC&lt;/strong&gt; before analysis.&lt;/li&gt;
+&lt;li&gt;Discard the first &lt;strong&gt;5–10 ns&lt;/strong&gt; of equilibration before data collection.&lt;/li&gt;
+&lt;li&gt;Stable &lt;strong&gt;RMSD, Rg, SASA&lt;/strong&gt; values indicate good simulation behavior.&lt;/li&gt;
+&lt;li&gt;Use &lt;strong&gt;PCA/FEL&lt;/strong&gt; to explore large-scale motions and free energy landscapes.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Molecular Simulation in Drug Discovery: A Strategic Guide to Core Methods</title>
+      <link>https://yboulaamane.github.io/blog/molecular-simulation-in-drug-discovery-a-strategic-guide-to-core-methods/</link>
+      <pubDate>Wed, 08 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/molecular-simulation-in-drug-discovery-a-strategic-guide-to-core-methods/</guid>
+      <description>&lt;p&gt;Molecular simulation has emerged as a cornerstone in modern drug discovery, enabling researchers to predict and understand molecular behavior across scales. From the atomic resolution of quantum mechanical models to the mesoscale insights of coarse-grained systems, the range of available techniques is vast. Each method offers unique capabilities, making them invaluable tools when applied judiciously to specific drug discovery problems.
+This post offers a coherent overview of the most widely used molecular simulation methods in drug development. The aim is not only to clarify what each method does, but to provide insight into how and when they are best used — especially for early-career scientists and interdisciplinary teams navigating increasingly complex pipelines.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://raw.githubusercontent.com/yboulaamane/yboulaamane.github.io/refs/heads/master/images/posts/md.jpg&#34; alt=&#34;Recap of Molecular Simulation Methods&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;-quantum-mechanics-precision-at-the-electronic-level&#34;&gt;🔬 Quantum Mechanics: Precision at the Electronic Level&lt;/h2&gt;
+&lt;p&gt;Quantum mechanical (QM) methods are the most fundamental level of simulation, solving the Schrödinger equation to describe the behavior of electrons within molecules. In drug discovery, their primary utility lies in modeling chemical reactivity, enzymatic mechanisms, and molecular properties that depend on electronic structure. QM calculations are routinely used to characterize transition states, derive force field parameters, and evaluate the electronic distribution in drug–target complexes, particularly when metal ions or covalent interactions are involved.&lt;/p&gt;
+&lt;p&gt;However, QM simulations are computationally intensive, restricting their application to relatively small systems or localized regions of interest, such as enzyme active sites. To address this, hybrid approaches like QM/MM (quantum mechanics/molecular mechanics) allow the detailed modeling of a reactive center within a broader biological system, balancing accuracy and feasibility.&lt;/p&gt;
+&lt;h2 id=&#34;-molecular-dynamics-tracking-molecular-motion-over-time&#34;&gt;🧪 Molecular Dynamics: Tracking Molecular Motion Over Time&lt;/h2&gt;
+&lt;p&gt;Molecular dynamics (MD) simulations occupy the center of the simulation spectrum, offering atomistic insights into molecular behavior over time by solving Newton’s equations of motion. MD is widely used to investigate protein dynamics, ligand binding, solvent effects, and structural stability. Its primary strength lies in providing time-resolved information about molecular conformations, which is essential for validating docking poses, studying induced fit mechanisms, and calculating thermodynamic properties such as binding free energies.&lt;/p&gt;
+&lt;p&gt;The major challenge in MD is sampling — simulations can become trapped in local minima, failing to explore relevant conformational states. To overcome this, enhanced sampling techniques such as metadynamics, accelerated MD, and replica exchange MD have been developed, allowing for more efficient exploration of energy landscapes. When combined with robust force fields and explicit solvent models, MD becomes a powerful tool for validating hypotheses, predicting structure–function relationships, and guiding lead optimization.&lt;/p&gt;
+&lt;h2 id=&#34;-coarse-grained-md-scaling-up-without-losing-insight&#34;&gt;⚙️ Coarse-Grained MD: Scaling Up Without Losing Insight&lt;/h2&gt;
+&lt;p&gt;While all-atom MD provides detailed information, it becomes prohibitively expensive for large or complex systems. Coarse-grained molecular dynamics (CGMD) addresses this by simplifying the representation of molecules — grouping atoms into larger “beads” — thereby reducing computational overhead and smoothing the energy landscape. This abstraction allows the simulation of mesoscale phenomena such as membrane remodeling, vesicle formation, and nanoparticle self-assembly.&lt;/p&gt;
+&lt;p&gt;In drug discovery, CGMD is especially useful for studying processes that occur over long timescales or involve large supramolecular assemblies, such as the behavior of drug delivery systems and the formation of lipid rafts. Although it lacks atomic detail, CGMD provides qualitative and semi-quantitative insights into the dynamics and organization of biological membranes and nanocarriers, helping to optimize formulations and delivery strategies.&lt;/p&gt;
+&lt;h2 id=&#34;-monte-carlo-methods-efficient-sampling-and-free-energy-estimation&#34;&gt;🎲 Monte Carlo Methods: Efficient Sampling and Free Energy Estimation&lt;/h2&gt;
+&lt;p&gt;Monte Carlo (MC) simulations take a different approach by using random sampling to explore a system’s phase space. Rather than evolving a system over time, MC simulations generate configurations based on probability, making them efficient for systems with rugged energy landscapes. In drug discovery, MC is widely used for conformational sampling, protein side-chain modeling, and free energy calculations, particularly in docking workflows.&lt;/p&gt;
+&lt;p&gt;Grand canonical Monte Carlo (GCMC) techniques extend this framework by allowing the insertion and deletion of molecules — such as water — in a simulation box, which is useful for identifying binding hotspots and hydration sites in protein structures. This capability is particularly valuable during the lead optimization phase, where understanding solvation effects can inform the design of more potent ligands.&lt;/p&gt;
+&lt;h2 id=&#34;-brownian-dynamics-capturing-long-timescale-diffusion&#34;&gt;🌊 Brownian Dynamics: Capturing Long-Timescale Diffusion&lt;/h2&gt;
+&lt;p&gt;Brownian dynamics (BD) simplifies the simulation of molecular motion by neglecting inertia and focusing on diffusion-driven behavior under thermal noise. This allows for the simulation of much longer timescales than MD, albeit at the cost of structural and energetic detail. BD is particularly useful for modeling molecular recognition events, such as the initial encounter between a ligand and a target protein.&lt;/p&gt;
+&lt;p&gt;In the context of drug discovery, BD is often used to estimate association rate constants (kon) or to model how molecules diffuse through crowded environments, such as cellular compartments. By focusing on diffusive behavior, BD complements atomistic MD, enabling a multiscale view of binding events.&lt;/p&gt;
+&lt;h2 id=&#34;-langevin-dynamics-bridging-time-and-temperature-control&#34;&gt;💧 Langevin Dynamics: Bridging Time and Temperature Control&lt;/h2&gt;
+&lt;p&gt;Langevin dynamics (LD) enhances traditional MD by introducing friction and random forces to mimic solvent effects and maintain temperature control. This stochastic approach is especially useful for simulations in implicit solvent models, or when a simple thermostat is needed to stabilize the system.&lt;/p&gt;
+&lt;p&gt;LD is often used in systems where damping effects — such as those found in intracellular environments — play a role in modulating dynamics. It provides a smoother simulation trajectory and can accelerate equilibration, making it a practical tool for early-stage explorations of ligand binding or conformational changes.&lt;/p&gt;
+&lt;h2 id=&#34;-dissipative-particle-dynamics-modeling-soft-matter-systems&#34;&gt;🌀 Dissipative Particle Dynamics: Modeling Soft Matter Systems&lt;/h2&gt;
+&lt;p&gt;Dissipative particle dynamics (DPD) is a mesoscale simulation technique tailored for soft matter systems, such as polymers, lipids, and surfactants. Like CGMD, DPD uses coarse-grained particles, but adds hydrodynamic interactions via dissipative and random forces that preserve momentum. This makes it especially suitable for modeling flow, self-assembly, and large-scale organization in complex fluids.&lt;/p&gt;
+&lt;p&gt;In drug discovery, DPD is increasingly applied to the study of drug delivery systems — from nanoparticle encapsulation to vesicle formation and drug release. It allows researchers to simulate phenomena that are difficult to capture with more detailed methods, making it an essential tool in pharmaceutical formulation and nanomedicine research.&lt;/p&gt;
+&lt;h2 id=&#34;-hybrid-and-multiscale-approaches-the-future-of-simulation&#34;&gt;🔁 Hybrid and Multiscale Approaches: The Future of Simulation&lt;/h2&gt;
+&lt;p&gt;As biological questions grow more complex, so does the need for simulation approaches that integrate different levels of theory. Hybrid methods — such as QM/MM — combine the strengths of high-resolution QM with the scalability of classical MD. Multiscale pipelines also pair BD with MD, or CGMD with atomistic refinement, to explore phenomena across spatial and temporal scales.&lt;/p&gt;
+&lt;p&gt;These approaches are not only more realistic but increasingly necessary. Whether it’s using BD to guide a ligand to its target, MD to refine the binding pose, and QM to compute the final interaction energy — multiscale strategies provide a comprehensive view of drug–target interactions that would be inaccessible with a single method.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Each molecular simulation method offers a distinct window into the behavior of biomolecules and drug candidates. By understanding the strengths and limitations of each technique — from the quantum accuracy of QM to the system-wide insights of DPD — researchers can better design studies, interpret results, and make informed decisions in the drug discovery process.&lt;/p&gt;
+&lt;p&gt;Ultimately, the power of molecular simulation lies in using the right tool for the right question — and, increasingly, in combining those tools into coherent, multiscale workflows. As computational power and algorithms continue to improve, these simulations will only become more predictive, more accessible, and more central to the future of drug discovery.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How to Validate AlphaFold Structures</title>
+      <link>https://yboulaamane.github.io/blog/how-to-validate-alphafold-structures/</link>
+      <pubDate>Thu, 28 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/how-to-validate-alphafold-structures/</guid>
+      <description>&lt;p&gt;AlphaFold has revolutionized protein structure prediction by achieving unprecedented accuracy in many cases​ (1). However, even high-quality predicted models should be rigorously validated before use in research.
+Just as experimental structures undergo validation (geometry checks, reliability scores, etc.), &lt;strong&gt;AlphaFold-predicted structures&lt;/strong&gt; require careful assessment of confidence, stereochemistry, and functional plausibility. In this comprehensive guide, we outline practical strategies to validate an AlphaFold model, from interpreting AlphaFold’s own confidence metrics to using external validation tools, comparing against known structures, and even testing the model’s behavior in silico. The goal is to ensure the predicted structure is trustworthy for drawing biological conclusions.&lt;/p&gt;
+&lt;h2 id=&#34;alphafold-confidence-metrics-plddt-and-pae&#34;&gt;AlphaFold Confidence Metrics: pLDDT and PAE&lt;/h2&gt;
+&lt;p&gt;AlphaFold provides intrinsic confidence measures that are the first step in validation. &lt;strong&gt;pLDDT (predicted Local Distance Difference Test)&lt;/strong&gt; is a per-residue confidence score ranging from 0 to 100. Higher pLDDT means the model is more confident that the local structure around that residue is accurate​ (2). This metric is based on the lDDT-Cα score, which assesses local structural accuracy without requiring a global superposition​ (3). In practice, AlphaFold classifies residues into confidence bands:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;pLDDT ≥ 90&lt;/strong&gt;: Very high confidence (high accuracy for backbone and side chains)​.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;70 ≤ pLDDT &amp;lt; 90&lt;/strong&gt;: Confident – backbone likely correct, though side chains may have some error​.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;50 ≤ pLDDT &amp;lt; 70&lt;/strong&gt;: Low confidence – the region is less reliable, possibly mis-modeled.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;pLDDT &amp;lt; 50&lt;/strong&gt;: Very low confidence – often indicates disordered or flexible regions​, which AlphaFold expects might not adopt a single stable structure in reality.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;AlphaFold typically &lt;strong&gt;encodes pLDDT in the B-factor field&lt;/strong&gt; of the output PDB/mmCIF file​ (4). This means visualization programs can color the structure by B-factor to see confidence per residue. For example, in PyMOL you can load the model and run a command to color by B-factor (pLDDT):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# In PyMOL, after loading the AlphaFold model:
+spectrum b, red_white_blue, minimum=0, maximum=100
+# This colors residues from red (low pLDDT) to blue (high pLDDT).
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;AlphaFold’s second key metric is the &lt;strong&gt;PAE (Predicted Aligned Error)&lt;/strong&gt;. PAE is a measure of the model’s confidence in the relative positions of two residues​ (5). More formally, &lt;em&gt;PAE(x, y)&lt;/em&gt; is the expected error (in Å) at residue &lt;em&gt;x&lt;/em&gt;’s position &lt;strong&gt;if&lt;/strong&gt; the predicted structure were aligned to the (unknown) true structure on residue _y_​ (6). In simpler terms, &lt;strong&gt;PAE tells us how well the model thinks region &lt;em&gt;x&lt;/em&gt; and region &lt;em&gt;y&lt;/em&gt; are positioned relative to each other&lt;/strong&gt;. A low PAE between two residues (or domains) implies the model is confident about their relative arrangement, whereas a high PAE means the relative placement is uncertain​ (7). For example, if two domains have consistently high PAE with each other, the model is essentially saying &lt;em&gt;“these domains might move relative to each other, so don’t trust the exact orientation.”&lt;/em&gt; By contrast, low PAE between two domains suggests a well-defined domain packing​ (8).&lt;/p&gt;
+&lt;p&gt;PAE is often visualized as a heatmap (matrix) where each axis is residue index. AlphaFold’s structure database provides an interactive PAE plot alongside each model​ (9,10). In a PAE heatmap, the diagonal is always dark (zero error when a residue is aligned on itself) and can be ignored​ (10). Off-diagonal blocks indicate inter-residue or inter-domain confidence: &lt;strong&gt;dark green/blue regions = low error (high confidence)&lt;/strong&gt;, and **light colors = high error (low confidence)**​. For instance, a multi-domain protein often shows clear dark blocks along the diagonal (each domain internally high confidence) separated by lighter regions (uncertain relative domain orientation). &lt;strong&gt;Interpreting PAE&lt;/strong&gt; in validation is crucial: even if each domain has high pLDDT, a high PAE between domains means you should not assume the domain arrangement is correct​ (10). In such cases, additional validation (or experimental data) is needed to confirm domain orientations.&lt;/p&gt;
+&lt;p&gt;In summary, &lt;strong&gt;check pLDDT and PAE first&lt;/strong&gt;. These tell you which parts of the model are likely reliable and whether the overall fold (especially multi-domain architecture) is predicted with confidence. Regions with low pLDDT or very high PAE should be treated with caution – they might be disordered in reality or simply modeled inaccurately. Often, those regions may require further analysis or may be trimmed out if you only need the stable core of the structure.&lt;/p&gt;
+&lt;h2 id=&#34;visual-inspection-of-the-model&#34;&gt;Visual Inspection of the Model&lt;/h2&gt;
+&lt;p&gt;After reviewing AlphaFold’s confidence metrics, the next validation step is a &lt;strong&gt;careful visual inspection&lt;/strong&gt; of the model. This is a straightforward but powerful way to catch obvious issues. Tools such as &lt;strong&gt;PyMOL&lt;/strong&gt;, &lt;strong&gt;UCSF ChimeraX&lt;/strong&gt;, and &lt;strong&gt;Mol*&lt;/strong&gt; (MolStar) are invaluable for this task:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;PyMOL&lt;/strong&gt; – A widely-used molecular graphics tool. Load the AlphaFold PDB, and visualize secondary structure (cartoon view) to see if helices and strands look well-formed. Color the model by pLDDT (as described above) to highlight low-confidence segments. Pay attention to any steric clashes or oddly twisted geometries. For example, check if any side chains deeply penetrate other parts of the protein (which might indicate a clash or error). PyMOL’s distance measurement can help verify if supposed disulfide bonds or salt bridges are geometrically plausible. If you have a known motif (e.g., a catalytic triad), inspect whether those residues align in the expected geometry.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;UCSF ChimeraX&lt;/strong&gt; – A modern visualization tool that can directly fetch AlphaFold models from the AlphaFold DB by UniProt ID, and it has built-in presets for AlphaFold confidence coloring. In ChimeraX, one can simply use the command color bfactor palette alphafold to apply the standard pLDDT color scheme (blue = high confidence, orange/red = low)​. Use ChimeraX’s structure analysis features to examine hydrogen bonds, contacts, and clashes. Chimera(X) also allows viewing the PAE map if you have it, or you can segment the model by domains to see how they interact. If the model has flexible termini (often glowing red/orange from low pLDDT), you might visualize those separately – they could be flopping around and not relevant to the stable core.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Mol&lt;/strong&gt;* – This is the web-based 3D viewer used by the AlphaFold Protein Structure Database​ (11). If you obtained your model from AlphaFold DB, you can use the online Mol* viewer to instantly see the structure colored by confidence and the PAE plot side-by-side. Mol* is great for a quick look without installing software. Through Mol*, you can rotate the model, identify secondary structure elements, and even select a region on the PAE plot to highlight which parts of the 3D structure are uncertain​ (12). While not as feature-rich as desktop tools, it’s convenient for an initial overview.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;During visual inspection, &lt;strong&gt;look for red flags&lt;/strong&gt; such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Unphysical bond lengths or angles&lt;/strong&gt;: AlphaFold generally produces chemically sensible structures, but extremely distorted geometries (e.g., a peptide bond angle that looks abnormal) could appear in low-confidence regions. These are rare, but if present, they’ll likely be flagged by subsequent validation tools as well.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Clashes&lt;/strong&gt;: Overlapping atoms or very tightly packed regions. Our eyes might miss slight clashes, so after visual review you’ll use tools like MolProbity to quantify this. But obvious clashes (like two side chains on top of each other) can sometimes be spotted visually.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Chain breaks or gaps&lt;/strong&gt;: Check if the protein backbone is continuous. If AlphaFold was unsure in a region, it might produce an unphysical loop. Usually AlphaFold does not literally break the chain (except maybe at extreme low confidence segments, it still gives a continuous but perhaps highly extended or tangled loop). If you do see a gap (missing residues), it could be because the input sequence had a region AlphaFold couldn’t model confidently or was omitted – though in normal operation AlphaFold predicts all residues provided.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Secondary structure mismatches&lt;/strong&gt;: Does the model’s secondary structure make sense given the sequence? If you have prior knowledge (say from sequence analysis, you expect three transmembrane helices or a beta-sheet in a certain region), see if the model matches that. If AlphaFold predicts a region to be helical (and with high confidence), it likely is. But if you see something like a beta-strand contorted oddly, or a helix with a kink, note those for further scrutiny.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Active site or binding site conformation&lt;/strong&gt;: If the protein’s function is known and certain residues are critical (e.g., enzyme active site), inspect that region. Are the catalytic residues oriented in a plausible way? Is there a cavity where a substrate could bind? Sometimes AlphaFold might predict a side chain orientation that blocks a known binding cleft (especially if no ligand was present during prediction). Visualizing this early can hint if the model is consistent with function or if something might be off.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Visual inspection is mostly qualitative, but it sets the stage for targeted questions. For instance, if you notice the model has an unexpected large cavity or an unusual domain orientation, you might plan specific validations (like docking a ligand into that cavity, or checking if domain orientation is supported by known data). At this stage, you should also decide if any segments of the model might be so low confidence that they should be treated separately (for example, you might exclude a floppy tail from further analysis if it’s not essential to the protein’s folded core).&lt;/p&gt;
+&lt;h2 id=&#34;using-structural-validation-tools&#34;&gt;Using Structural Validation Tools&lt;/h2&gt;
+&lt;p&gt;Automated structure-validation tools provide quantitative checks on your model’s stereochemistry and overall quality. Many of these tools were originally developed for validating experimentally determined structures, but they are equally applicable to predicted models. Here are some key validation tools and what they offer:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;MolProbity&lt;/strong&gt; – A comprehensive &lt;strong&gt;all-atom structure validation&lt;/strong&gt; server (13). 
+ checks for steric clashes by adding hydrogens to the structure and finding all-atom overlaps. It also evaluates bond angles and dihedrals, highlighting &lt;strong&gt;Ramachandran outliers&lt;/strong&gt; (phi/psi angles that fall in disallowed regions of the Ramachandran plot) and &lt;strong&gt;rotamer outliers&lt;/strong&gt; (unusual side chain conformations). MolProbity provides an overall score (the “MolProbity score”) and specific metrics like &lt;strong&gt;clashscore&lt;/strong&gt; (number of serious clashes per 1000 atoms), percentage of Ramachandran favored/allowed/outlier residues, and more ​(14,15). A good AlphaFold model should have low clashscore and few (if any) Ramachandran outliers. However, it’s not uncommon for some &lt;strong&gt;low-pLDDT loops&lt;/strong&gt; in AlphaFold models to show outliers or clashes, since the model wasn’t physics-refined. MolProbity can guide you to those problematic spots; you can then consider refining them (e.g., via energy minimization or rebuilding). &lt;strong&gt;Tip:&lt;/strong&gt; If MolProbity reports many clashes or poor geometry in a high-pLDDT region, that’s a red flag – the model might be locally strained, and further investigation is needed.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;PROCHECK&lt;/strong&gt; – A classic tool (from 1993) that checks the &lt;strong&gt;stereochemical quality&lt;/strong&gt; of a protein structure​ (16). 
+ generates a number of outputs, the most famous being the Ramachandran plot. It will tell you what fraction of residues lie in favored, allowed, and disallowed regions of Ramachandran space. It also checks other parameters: peptide bond planarity, bond length deviations, Cβ deviations, and backbone torsion angle quality. In essence, PROCHECK ensures your model’s geometry is within typical bounds seen in crystallographic structures. For an AlphaFold model, you’d like to see the vast majority of residues in the favored regions of the Ramachandran plot (ideally &amp;gt;90% favored, &amp;lt;1% outliers, similar to high-resolution crystal structures). AlphaFold models generally fare well here, especially in well-defined regions, but if you have an outlier, PROCHECK will pinpoint it. You can run PROCHECK via the command-line (it’s part of the CCP4 suite) or conveniently through web servers like PDBsum (which can generate PROCHECK analysis for any uploaded structure)​.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;WHAT_CHECK&lt;/strong&gt; – Part of the &lt;strong&gt;WHAT IF&lt;/strong&gt; software suite, 
+ is an extensive consistency check for protein structures. It examines a wide range of criteria: geometry, van der Waals contacts, environment of residues, and more. For example, it will check if buried polar groups have hydrogen-bonding partners, if side chain torsions are consistent with electron density (for experimental structures), etc. With a predicted model, some checks (like comparison to electron density) don’t apply, but WHAT_CHECK’s geometrical and empirical rules can still flag issues. It’s quite thorough – sometimes producing a long report. If you have access to the WHAT IF web interface or servers, running WHAT_CHECK can complement PROCHECK/MolProbity by catching subtle issues. However, if you’re already using MolProbity and PROCHECK, you may get sufficient info; use WHAT_CHECK if you want an extra layer of scrutiny.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Verify3D&lt;/strong&gt; – A &lt;strong&gt;3D-1D profile&lt;/strong&gt; method that checks &lt;strong&gt;residue environment compatibility&lt;/strong&gt;​ (17). Essentially, 
+ evaluates each residue in the model to see if its environment (surface vs buried, secondary structure context, etc.) is consistent with what one would expect for that amino acid. It returns a score for each residue and an overall percentage of residues that pass a threshold. Typically, you want a Verify3D result where &amp;gt;80% of residues have a score above the cutoff (0.2 in the original scoring scheme)​ (18). If Verify3D flags certain residues, it means those amino acids are in an environment that is unusual (e.g., a polar residue buried without contacts, or a hydrophobic residue exposed to solvent) – potentially indicating a modeling error or an unusual but real feature. When validating an AlphaFold model, a &lt;strong&gt;low Verify3D percentage (significantly below 80%) is a warning&lt;/strong&gt;. It could be due to a genuine peculiarity of the protein, but often it suggests some regions of the model are not structurally sound. Verify3D is available via the 
+ server (which bundles several validation tools).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ERRAT&lt;/strong&gt; – A program that analyzes &lt;strong&gt;non-bonded atom-atom interactions&lt;/strong&gt; in the model and identifies regions that deviate from expected patterns​ (19). 
+ essentially plots a quality score across the protein and gives an overall quality factor (as a percentage). High-quality structures tend to have an ERRAT overall quality score in the high 80s or 90s (out of 100), whereas a significantly lower score might indicate problems. For example, an ERRAT score of ~79% (as seen in some homology models) is marginal, and one would try to improve the model (20). ERRAT is also available via the UCLA SAVES server. If ERRAT flags a specific region (say residues 50–60) as problematic, that region likely has odd interatomic distances (perhaps a mis-packed helix or something). Cross-check such regions with what pLDDT said – often they coincide with low pLDDT stretches.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SwissModel Structure Assessment (QMEAN)&lt;/strong&gt; – The 
+ server provides a &lt;strong&gt;model quality assessment&lt;/strong&gt; tool that includes the QMEAN scoring function. &lt;strong&gt;QMEAN&lt;/strong&gt; (Qualitative Model Energy ANalysis) is a composite score evaluating various geometrical aspects (e.g., torsion angles, solvation, secondary structure packing) to estimate how “protein-like” a model is​ (21). When you submit a model to SwissModel’s Assessment, you receive a QMEAN score and a &lt;strong&gt;QMEAN Z-score&lt;/strong&gt; which compares your model to a baseline of experimental structures of similar size. A QMEAN Z-score around 0 is good (meaning your model is in the range of normal structures); a score significantly below -4.0 indicates a model of low quality (likely incorrect)​ (22). QMEAN also provides per-residue scores, so you can see which regions contribute to lowering the score. For AlphaFold models, QMEAN often yields scores consistent with high accuracy for high-pLDDT regions, but may penalize the low-confidence regions. Use this as an overall “sanity check” – if even QMEAN (which is trained on typical protein statistics) finds your entire model to be an outlier, you should be cautious. SwissModel will also report other descriptors like predicted secondary structure vs model secondary structure agreement, and possible buriedness mismatches.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;All these tools provide &lt;strong&gt;complementary views of model quality&lt;/strong&gt;. In practice, you don’t have to use every single one for every model; but it’s wise to use at least one geometry-focused tool (MolProbity/PROCHECK) and one environment-focused tool (Verify3D/ERRAT/QMEAN). Many of these can be run easily via web servers. For instance, the &lt;strong&gt;UCLA SAVES&lt;/strong&gt; web server allows you to upload a PDB and get results from PROCHECK, Verify3D, and ERRAT together. MolProbity has its own web server (as part of Phenix or standalone). SwissModel’s assessment is another one-stop option for QMEAN and additional analyses.&lt;/p&gt;
+&lt;p&gt;When you get the results, pay attention to consistent signals: e.g., if &lt;strong&gt;MolProbity and PROCHECK both say the same residue is an outlier&lt;/strong&gt; (bad geometry) and &lt;strong&gt;Verify3D also flags that region&lt;/strong&gt;, that part of the model is definitely suspect. You might then decide to remodel that segment or simply note that it’s unreliable. On the other hand, if all tools give you largely clean reports (few clashes, good Ramachandran stats, high Verify3D percentage, high ERRAT score), you can be more confident the model is reasonable.&lt;/p&gt;
+&lt;h2 id=&#34;comparison-with-experimental-structures&#34;&gt;Comparison with Experimental Structures&lt;/h2&gt;
+&lt;p&gt;If a related experimental structure is available, comparing your AlphaFold model to it is one of the most telling validations. Such comparisons can &lt;strong&gt;quantify the accuracy&lt;/strong&gt; of the prediction and highlight any differences that might be important.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Finding a reference structure:&lt;/strong&gt; First, determine if the same protein (or a homolog with significant sequence identity) has a known structure in the Protein Data Bank (PDB). You might have done this prior to running AlphaFold, but it’s worth doing a BLAST or HHPred search of your sequence against PDB. Even if an exact match isn’t found, perhaps a homologous domain or a partial structure exists. Any high-resolution structure (X-ray, cryo-EM, NMR) of a similar sequence can serve as a reference to validate fold correctness.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Structural alignment tools:&lt;/strong&gt; To compare the 3D structures, you can use alignment programs like &lt;strong&gt;TM-align&lt;/strong&gt; or built-in tools in PyMOL/Chimera.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;TM-align&lt;/strong&gt; – A command-line tool that superimposes two protein structures and calculates the TM-score and RMSD. The &lt;strong&gt;TM-score&lt;/strong&gt; is particularly useful; it ranges from 0 to 1, where 1 indicates an identical structure. Importantly, TM-score is designed to be length-independent and sensitive to overall fold​ (23,24). A TM-score &amp;gt; 0.5 generally indicates the two structures share the same fold​ (25) (and &amp;gt;0.9 would mean almost identical). Scores &amp;lt; 0.2 indicate essentially unrelated structures (random similarity) (26). RMSD (root-mean-square deviation) in Å is also output, but RMSD can be misleading for large proteins or ones with flexible termini, so TM-score is the better metric for global accuracy. To use TM-align, download it from the Zhang Lab website and run it on your model and the reference PDB:&lt;/p&gt;
+&lt;h1 id=&#34;example-usage-of-tm-align&#34;&gt;Example usage of TM-align&lt;/h1&gt;
+&lt;p&gt;TMalign model.pdb reference.pdb &amp;gt; tmalign_output.txt&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The output will list aligned length, RMSD, and TM-scores. Check the TM-score first. For instance, if you get TM-score = 0.65, that’s a strong confirmation the fold is correct (assuming the reference covers the full length). You might also get a per-residue alignment which can identify where differences occur (e.g., a loop in the model that deviates from the crystal structure).&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;PyMOL or Chimera(X) alignment&lt;/strong&gt; – In PyMOL, you can use the align or cealign commands to superimpose two structures (if sequences are identical or very similar, a straightforward align model, reference works; for more distantly related, PyMOL’s built-in alignment might struggle, so TM-align is better). UCSF Chimera has a tool called MatchMaker which can align structures based on sequences and secondary structure. After superposition, you can visually inspect differences and also measure RMSD over aligned regions. Look at the &lt;strong&gt;alpha carbon trace&lt;/strong&gt;: do the helices and strands overlap well? Are there specific regions where the model deviates? Often, you’ll find that high-pLDDT regions of the AlphaFold model align closely with the experimental structure (perhaps within 1–2 Å RMSD), whereas low-confidence loops might be displaced or completely different (AlphaFold might have modeled a loop arbitrarily if there was no template or signal for it).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Interpreting differences:&lt;/strong&gt; If your model aligns well (high TM-score, low RMSD) with an experimental structure, that’s great validation. Minor differences in side chain conformations are expected and not usually concerning, especially if the experimental structure was determined at moderate resolution or is in a different environment (AlphaFold predictions are effectively in isolation, whereas a crystal structure might have bound ligands or lattice contacts that shift things). Focus on larger deviations:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Domain shifts:&lt;/strong&gt; Perhaps the model predicted a closed conformation whereas the crystal is open (or vice versa). Check the PAE from AlphaFold; it might have indicated uncertainty between domains, and indeed the experimental structure shows a different orientation. This doesn’t mean the model is “wrong” per se, but that the protein might be dynamic or the model chose one plausible state. You might then need to verify which state is relevant biologically (through experiments or further modeling).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Loop conformations:&lt;/strong&gt; A common scenario is that AlphaFold modeled a loop one way (especially if low confidence, it might even be a nonsense loop), and the crystal structure shows a different loop conformation. If the loop is functionally important (e.g., part of an active site), you’d want to trust the experimental structure more. If it’s surface-exposed, it might be flexible in reality; AlphaFold’s guess is just one of many conformations it could take. In such cases, don’t over-interpret that part of the model.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Secondary structure errors:&lt;/strong&gt; Rarely, AlphaFold might predict a helix where the actual structure has a strand, or vice versa. This usually happens in lower confidence regions or if the sequence had an unusual pattern. If you find such a discrepancy, that region of the model is likely incorrect. Use the experimental structure’s assignment as the truth. It’s worth noting if the pLDDT was low there (likely yes); AlphaFold was unsure and picked one possibility. Knowing the correct secondary structure, you might rebuild that segment or simply note the model’s limitation.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If no experimental structure is available for the exact protein, you can still do &lt;strong&gt;remote validations&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Align the model to the closest known structure (even if only part of it aligns). For example, maybe one domain matches a known protein family structure. Validate that portion – a good alignment (say TM-score &amp;gt;0.5 for that domain) gives confidence that domain is correct. The other parts of your model that have no benchmark will rely on the internal metrics and other validations we discuss.&lt;/li&gt;
+&lt;li&gt;Use multiple structure prediction approaches and compare (e.g., if there’s an older homology model or a Rosetta model for the protein). Consistency between different models can be somewhat validating, though remember they might all be wrong in the same way if based on the same inputs. Still, if AlphaFold and, say, Rosetta both produce a similar fold for a novel protein, that convergence is encouraging.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Overall, &lt;strong&gt;structural comparison is the gold standard&lt;/strong&gt; when you have an experimental reference. It can confirm that AlphaFold got it right, or pinpoint exactly where it differs. In favorable cases (AlphaFold’s high-accuracy predictions), you might find your model is virtually identical to the crystal structure of a homolog, with perhaps a TM-score ~0.9 and main-chain RMSD ~1 Å​. That level of agreement would give you great confidence moving forward. On the other hand, if the model and experiment differ significantly (low TM-score), you should trust the experiment more – and treat the model with skepticism or use it only for qualitative insights in regions that do align well.&lt;/p&gt;
+&lt;h2 id=&#34;functional-validation-ligand-binding-and-dynamics&#34;&gt;Functional Validation: Ligand Binding and Dynamics&lt;/h2&gt;
+&lt;p&gt;The ultimate purpose of a protein structure is often to investigate function – e.g., how it binds to a ligand, catalyzes a reaction, or interacts with other molecules. Thus, validating an AlphaFold model also involves asking: &lt;em&gt;Does this structure make sense functionally?&lt;/em&gt; There are a few approaches to explore this:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1. Checking Binding Sites and Docking Ligands:&lt;/strong&gt; If your protein is known (or suspected) to bind a small-molecule ligand, cofactor, or substrate, examine the predicted structure for the binding site. AlphaFold might not explicitly indicate pockets, but you can use tools or visual cues:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Use a pocket detection tool like &lt;strong&gt;CASTp&lt;/strong&gt; or &lt;strong&gt;Fpocket&lt;/strong&gt; to identify cavities on the model. These tools will list pockets by volume and residues lining them. Check if a known active site corresponds to one of the top pockets.&lt;/li&gt;
+&lt;li&gt;If you have a known ligand (say, the substrate of an enzyme or a cofactor like NADH), try &lt;strong&gt;docking&lt;/strong&gt; it into the model. Software like &lt;strong&gt;AutoDock Vina&lt;/strong&gt; (open source) or &lt;strong&gt;SwissDock&lt;/strong&gt;, &lt;strong&gt;Glide&lt;/strong&gt; (commercial) can take your model (treated as the receptor) and the ligand structure and attempt to find plausible binding poses. Before docking, prepare the protein: add hydrogens (especially if using AutoDock, you’d prepare a PDBQT file with charges), and consider making the protein rigid for the initial docking. A successful dock would show the ligand fitting well into a pocket, with key interactions (hydrogen bonds to the right residues, hydrophobics nestled in hydrophobic patches, etc.) similar to what you’d expect. If docking suggests a reasonable pose and binding energy, it &lt;strong&gt;supports the validity of the binding site conformation&lt;/strong&gt; in the model. If the ligand cannot dock or only docks in a bizarre way (or with a very poor score), that might indicate the binding site in the model is not accurately formed. Perhaps a side chain that should move is blocking the pocket, or a loop is mis-modeled.&lt;/li&gt;
+&lt;li&gt;For enzymes, check the geometry of catalytic residues. Do they form the correct arrangement? For example, a catalytic triad (Ser-His-Asp) should be in the right orientation to form hydrogen bonds. If the model’s active site residues are far apart or oriented incorrectly, the model might represent an inactive conformation, or it might be wrong in that region. Sometimes, energy-minimizing that region or running a short MD (see below) can relax the structure into a more favorable active-site geometry.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;2. Protein-Protein Interactions:&lt;/strong&gt; If your protein’s function involves other macromolecules (another protein, DNA/RNA, etc.), consider validating those interfaces. AlphaFold-Multimer (a version of AlphaFold for complexes) might predict complexes, but if you only have a monomeric model, you can still simulate docking:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Use a protein-protein docking server (e.g., &lt;strong&gt;HADDOCK&lt;/strong&gt; or &lt;strong&gt;ClusPro&lt;/strong&gt;) to see if your model can interact with its partner in a way that’s consistent with known data. This is more advanced, but if an interface is known experimentally (like mutagenesis showed certain residues are important), check if those residues are surface-exposed and clustered, as they should be if an interface is there.&lt;/li&gt;
+&lt;li&gt;If the model is of a single chain that normally oligomerizes (dimer, etc.), you might superpose multiple copies or use symmetry to see if a plausible dimer can form. Again, low PAE between chains in an AlphaFold-Multimer prediction would signal a confident multimer interface​ (27), but for a single-chain prediction you have to manually inspect.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;3. Molecular Dynamics (MD) Simulations:&lt;/strong&gt; This is a powerful way to &lt;strong&gt;test the stability&lt;/strong&gt; of the predicted structure and to possibly refine it. In MD, you treat the model with physical force fields and see if it holds up under simulation (e.g., in water at 300 K). MD can reveal if the structure wants to &lt;strong&gt;unfold or change&lt;/strong&gt; and can also relieve any residual strain by nudging the model into a more favorable state.&lt;/p&gt;
+&lt;p&gt;Common MD packages include &lt;strong&gt;GROMACS&lt;/strong&gt; (free, open-source), &lt;strong&gt;AMBER&lt;/strong&gt; (academic, partly free tools), and &lt;strong&gt;NAMD&lt;/strong&gt; (free, optimized for large systems). An example workflow using GROMACS will be covered in another blog post.&lt;/p&gt;
+&lt;p&gt;During the simulation, monitor:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;RMSD over time:&lt;/strong&gt; Does the protein rapidly drift away from the starting structure, or does it stabilize? A stable RMSD (plateauing after some fluctuation) suggests the structure is in a favourable energy well (likely a correct fold). If RMSD keeps increasing or the protein partially unfolds, that indicates the model had instabilities (perhaps that region was incorrect or inherently flexible).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Secondary structure retention:&lt;/strong&gt; You can use tools (like DSSP on each frame) to see if helices and strands remain intact. If a predicted helix quickly unravels in MD, maybe that segment wasn’t truly helical.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Key interactions:&lt;/strong&gt; Check if critical hydrogen bonds or salt bridges persist. For example, if the model suggested a salt bridge that’s important for stability, does MD maintain it or does it break?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Refinement:&lt;/strong&gt; MD often causes side chains to adjust, sometimes resolving minor clashes automatically. You might take an &lt;strong&gt;average or low-energy structure from the simulation&lt;/strong&gt; as a refined model. Many researchers use short MD refinement to improve homology models​ (28); the same can be done for AlphaFold models, especially to relax strained loops. As one approach, you could restrain the well-defined parts of the structure (to prevent them from moving too much) and let a loop of interest move freely; this can relieve local strain​ (28).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;MD simulation essentially serves as a &lt;strong&gt;reality check&lt;/strong&gt;: AlphaFold’s neural network prediction isn’t guaranteed to be at an energy minimum. If the model is good, it should withstand simulation in a realistic environment. If it’s not, you might see it start to collapse or drift, which tells you that at least some interactions in the model were not favorable. Of course, MD itself is an approximation (dependent on the force field, etc.), but it’s a well-established method to refine and validate structures.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;After MD analysis:&lt;/strong&gt; If the structure proved stable, you gain confidence. You might also use the MD trajectory to estimate the flexibility of different regions (e.g., high B-factor regions in a crystal often correspond to mobile loops in MD). If the structure was unstable, identify what broke down – was it the interface between two domains? Was it a particular loop that kept swinging out? This can pinpoint the weak spots of the model that might need revision or cautious interpretation.&lt;/p&gt;
+&lt;p&gt;Lastly, &lt;strong&gt;tie back to experiments whenever possible&lt;/strong&gt;. If you have biochemical data (e.g., mutation effects, binding assays), see if the model’s features align with them. For example, if a mutation is known to disrupt function and your model places that residue in the core of the active site, that’s consistent and supports the model. If instead the model has that residue on the surface away from any obvious functional site, maybe the model is missing something (like maybe it’s actually part of a protein-protein interface that wasn’t modeled).&lt;/p&gt;
+&lt;p&gt;By this point, you have examined the model from every angle: intrinsic confidence (AlphaFold metrics), overall geometry and quality (validation tools), comparison to known structures, and functional plausibility (docking, pockets, MD). Based on all these, you can form a judgment on how &lt;strong&gt;reliable each part of the model is&lt;/strong&gt;. It’s often useful to summarize this in a &lt;strong&gt;table or checklist&lt;/strong&gt;, as we do below.&lt;/p&gt;
+&lt;h2 id=&#34;summary-of-validation-steps&#34;&gt;Summary of Validation Steps&lt;/h2&gt;
+&lt;p&gt;The following table summarizes key validation steps for an AlphaFold model and why each step is important:&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;&lt;strong&gt;Validation Step&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;Purpose and Importance&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;AlphaFold Confidence (pLDDT &amp;amp; PAE)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Identify which regions of the model are predicted with high confidence and which are uncertain. pLDDT highlights local reliability (e.g., core vs. floppy tail) and PAE indicates confidence in domain orientation​ (29). This guides where to focus further validation – low pLDDT or high PAE regions are likely error-prone or flexible.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Visual Inspection (PyMOL/ChimeraX/Mol)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Catch obvious structural anomalies and get an intuitive feel for the model. By coloring the structure by confidence and examining secondary structure, one can see if the fold makes sense. Visual checks can reveal steric clashes, weird loops, or missing pockets early on. It’s a simple sanity check before delving into metrics.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Geometric Validation (MolProbity, PROCHECK, WHAT_CHECK)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Ensure the model’s geometry is physically plausible. These tools check bond lengths, angles, dihedral angles (Ramachandran plot) and detect atomic clashes​ (29). Good geometry (few outliers, low clashscore) means the model is stereochemically sound, while many violations indicate errors or regions that may need refinement.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Residue Environment Validation (Verify3D, ERRAT, QMEAN)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Assess whether each residue is in a realistic environment and the model has protein-like statistical features. Verify3D and ERRAT compare the structure to empirical rules derived from real proteins​ (19). A high Verify3D score or ERRAT quality factor, and a QMEAN Z-score near 0, suggest the model is globally consistent with known protein structures. Poor scores flag unlikely regions (e.g., a hydrophobic residue exposed, or an odd packing) for further scrutiny.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Comparison to Known Structures (TM-align, structural superposition)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Quantify accuracy by comparing to experimental data. If a PDB structure exists, a high TM-score (≈0.5–1.0) and low RMSD confirm the model’s correctness​. Even partial matches validate domains or motifs. Discrepancies pinpoint specific errors or alternative conformations. This step effectively benchmarks the model against reality.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Functional Site Check (Docking &amp;amp; Pockets)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Verify that the model supports the protein’s known function. Checking for expected pockets and docking ligands tests if the active or binding site is correctly formed. Successful docking (reasonable poses &amp;amp; scores) means the geometry allows the interaction, while failures could mean the site is modeled incorrectly. This links structure to biochemical function, an essential validation for usability in studies (e.g., drug design).&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Molecular Dynamics Simulation (GROMACS/AMBER/NAMD)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Test the model’s stability and refine it in a physics-based environment. A stable trajectory (little deviation) indicates the model sits in an energy minimum (likely correct fold), whereas structural unraveling signals problems. MD can also relieve minor clashes and adjust the model to be more realistic. In sum, MD validation ensures the model’s behavior is consistent with a real protein in solvent over time.&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Each step adds a layer of confidence to your AlphaFold-predicted structure. By the end of this process, you should have a detailed understanding of your model’s strengths and weaknesses: which parts you can trust, which parts should be treated as hypotheses, and what further experiments or refinements might be necessary. Validating computational models is crucial for &lt;strong&gt;responsible use of AlphaFold predictions&lt;/strong&gt; in research – it separates the cases where the model is as good as a crystal structure from those where it might mislead if taken at face value​ (30). With the strategies outlined above, researchers and students can robustly assess their AlphaFold structures and proceed with confidence in subsequent analyses.&lt;/p&gt;
+&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+&lt;p&gt;1- Jumper, J., Evans, R., Pritzel, A., et al. (2021). Highly accurate protein structure prediction with AlphaFold. &lt;em&gt;Nature&lt;/em&gt;, 596(7873), 583–589. 
+&lt;/p&gt;
+&lt;p&gt;2- European Bioinformatics Institute. (n.d.). &lt;em&gt;pLDDT: Understanding local confidence&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;3- European Bioinformatics Institute. (n.d.). &lt;em&gt;pLDDT measures confidence in the predicted position of residues&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;4- Jumper et al., 2021 – (lDDT, pLDDT also reflects local geometry) 
+&lt;/p&gt;
+&lt;p&gt;5- European Bioinformatics Institute. (n.d.). &lt;em&gt;Predicted aligned error (PAE) – Explanation&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;6- European Bioinformatics Institute. (n.d.). &lt;em&gt;Low PAE score implies confident relative positions&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;7- European Bioinformatics Institute. (n.d.). &lt;em&gt;PAE visualisation explanation&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;8- EBI (n.d.). &lt;em&gt;Image: Figure 18 – PAE plot&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;9- EBI (n.d.). &lt;em&gt;Explanation of diagonal PAE plot&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;10- EBI (n.d.). &lt;em&gt;Comparison of pLDDT and PAE&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;11- Jumper et al., 2021 – (residue confidence metric pLDDT) 
+&lt;/p&gt;
+&lt;p&gt;12- EBI (n.d.). &lt;em&gt;How to view PAE plots in structure viewer&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;13- Chen, V. B., Arendall, W. B., Headd, J. J., et al. (2010). MolProbity: All-atom structure validation for macromolecular crystallography. &lt;em&gt;Acta Crystallographica Section D: Biological Crystallography&lt;/em&gt;, 66(1), 12–21. 
+&lt;/p&gt;
+&lt;p&gt;14- Chen et al., 2010 – (integration with other resources) 
+&lt;/p&gt;
+&lt;p&gt;15- Laskowski, R. A., MacArthur, M. W., Moss, D. S., &amp;amp; Thornton, J. M. (1993). PROCHECK: A program to check the stereochemical quality of protein structures. &lt;em&gt;Journal of Applied Crystallography&lt;/em&gt;, 26(2), 283–291. 
+&lt;/p&gt;
+&lt;p&gt;16- EBI (n.d.). &lt;em&gt;PROCHECK hand menu image&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;17- SAVES. (n.d.). &lt;em&gt;VERIFY 3D&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;18- ResearchGate. (n.d.). &lt;em&gt;Interpreting ERRAT, Verify3D and PROCHECK scores&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;19- SAVES. (n.d.). &lt;em&gt;ERRAT&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;20- BioStars. (n.d.). &lt;em&gt;Verify3D result discussion&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;21- Benkert, P., Tosatto, S. C., &amp;amp; Schwede, T. (2009). QMEAN: A comprehensive scoring function for model quality assessment. &lt;em&gt;Proteins: Structure, Function, and Bioinformatics&lt;/em&gt;, 71(1), 261–277. 
+&lt;/p&gt;
+&lt;p&gt;22- Bonvin Lab. (n.d.). &lt;em&gt;QMEAN Z-score&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;23- Zhang, Y., &amp;amp; Skolnick, J. (2005). TM-align: A protein structure alignment algorithm based on the TM-score. &lt;em&gt;Nucleic Acids Research&lt;/em&gt;, 33(7), 2302–2309. 
+&lt;/p&gt;
+&lt;p&gt;24- ZhangGroup. (n.d.). &lt;em&gt;TM-score info&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;25- Varadi, M., Anyango, S., Deshpande, M., et al. (2022). AlphaFold Protein Structure Database: Massively expanding the structural coverage of protein-sequence space with high-accuracy models. &lt;em&gt;Nucleic Acids Research&lt;/em&gt;, 50(D1), D439–D444. 
+&lt;/p&gt;
+&lt;p&gt;26- EBI (n.d.). &lt;em&gt;Residue confidence within structure prediction&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;27- EBI (n.d.). &lt;em&gt;pLDDT: More accurate structures&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;28- BioStars. (n.d.). &lt;em&gt;Simulations and MD prep&lt;/em&gt;. 
+&lt;/p&gt;
+&lt;p&gt;29- Jumper et al., 2021 – (Predicted Aligned Error detail) 
+&lt;/p&gt;
+&lt;p&gt;30- EBI (n.d.). &lt;em&gt;PAE score importance for AlphaFold ID&lt;/em&gt;. 
+&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CoumarinDB</title>
+      <link>https://yboulaamane.github.io/project/coumarindb/</link>
+      <pubDate>Thu, 25 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/coumarindb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>How to build and validate 3D-QSAR models - Insights from Xu et al., 2020</title>
+      <link>https://yboulaamane.github.io/blog/3d-qsar-general-workflow-with-key-metrics-insights-from-xu-et-al-2020/</link>
+      <pubDate>Sat, 13 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/3d-qsar-general-workflow-with-key-metrics-insights-from-xu-et-al-2020/</guid>
+      <description>&lt;h2 id=&#34;dataset-preparation&#34;&gt;Dataset Preparation&lt;/h2&gt;
+&lt;p&gt;A high-quality dataset is the cornerstone of any QSAR study.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Collect experimental bioactivity data&lt;/strong&gt; — typically IC₅₀ values from reliable sources.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Normalize the activity scale&lt;/strong&gt; — convert IC₅₀ to pIC₅₀:&lt;br&gt;
+$$
+\text{pIC}_{50} = -\log_{10}(\text{IC}_{50} \, \text{in molar})
+$$&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Data partitioning&lt;/strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Training set&lt;/strong&gt;: ~75–80% of compounds for model development.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Test set&lt;/strong&gt;: ~20–25% of compounds for external validation.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;A balanced chemical space between sets is critical to avoid extrapolation during prediction.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;molecular-docking--alignment&#34;&gt;Molecular Docking &amp;amp; Alignment&lt;/h2&gt;
+&lt;p&gt;Accurate alignment of molecules is pivotal in 3D-QSAR since descriptor calculation is &lt;strong&gt;spatially dependent&lt;/strong&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Protein structure selection&lt;/strong&gt;: Obtain the target’s crystallographic structure from the &lt;strong&gt;Protein Data Bank (PDB)&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Docking&lt;/strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;Use software such as &lt;strong&gt;SYBYL&lt;/strong&gt;, &lt;strong&gt;AutoDock&lt;/strong&gt;, or other docking engines.&lt;/li&gt;
+&lt;li&gt;Perform &lt;em&gt;redocking&lt;/em&gt; to verify reliability — &lt;strong&gt;RMSD ≤ 2.0 Å&lt;/strong&gt; is generally considered acceptable.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Alignment strategy&lt;/strong&gt;: Select the &lt;strong&gt;best-scoring pose&lt;/strong&gt; as the reference for aligning all ligands.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;descriptor-calculation&#34;&gt;Descriptor Calculation&lt;/h2&gt;
+&lt;p&gt;Two classical methods dominate 3D-QSAR descriptor generation:&lt;/p&gt;
+&lt;h3 id=&#34;comparative-molecular-field-analysis-comfa&#34;&gt;Comparative Molecular Field Analysis (CoMFA)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Fields: &lt;strong&gt;Steric&lt;/strong&gt; + &lt;strong&gt;Electrostatic&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Grid spacing: &lt;strong&gt;2.0 Å&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Probe: sp³ carbon atom with +1 charge&lt;/li&gt;
+&lt;li&gt;Energy cutoff: &lt;strong&gt;30 kcal/mol&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;comparative-molecular-similarity-indices-analysis-comsia&#34;&gt;Comparative Molecular Similarity Indices Analysis (CoMSIA)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Fields: Steric, Electrostatic, Hydrophobic, H-bond Donor, H-bond Acceptor&lt;/li&gt;
+&lt;li&gt;Attenuation factor: &lt;strong&gt;0.3&lt;/strong&gt; — controls the exponential distance dependence.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;model-building-with-partial-least-squares-pls&#34;&gt;Model Building with Partial Least Squares (PLS)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;PLS regression&lt;/strong&gt; is the workhorse for 3D-QSAR, capable of handling collinear and noisy descriptors.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Internal validation&lt;/strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;Perform &lt;strong&gt;Leave-One-Out Cross-Validation (LOO-CV)&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;Record:
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;q²&lt;/strong&gt;: cross-validated \( R^2 \), internal predictive power.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ONC&lt;/strong&gt;: Optimal Number of Components.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Final model construction&lt;/strong&gt; (using ONC):
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;r²&lt;/strong&gt;: Goodness-of-fit to training set.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SEE&lt;/strong&gt;: Standard Error of Estimate.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;F-statistic&lt;/strong&gt;: Statistical significance of the regression.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;model-validation&#34;&gt;Model Validation&lt;/h2&gt;
+&lt;p&gt;Validation ensures the model is &lt;strong&gt;predictive, robust, and not the result of chance correlations&lt;/strong&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;external-validation&#34;&gt;External Validation&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Predict &lt;strong&gt;pIC₅₀&lt;/strong&gt; for the test set.&lt;/li&gt;
+&lt;li&gt;Calculate &lt;strong&gt;r²ₚᵣₑd&lt;/strong&gt; for predictive performance.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;tropshas-criteria&#34;&gt;Tropsha’s Criteria&lt;/h3&gt;
+&lt;p&gt;A set of diagnostic metrics assessing external predictivity:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;\( r^2_0 \), \( k \), \( k&#39; \), \( r_m^2 \), \( \Delta r_m^2 \)&lt;/li&gt;
+&lt;li&gt;Good predictive models: \( k \approx 1 \), \( r_m^2 &gt; 0.5 \)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;y-randomization&#34;&gt;Y-Randomization&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Randomize biological activities and rebuild the model.&lt;/li&gt;
+&lt;li&gt;A valid QSAR will show &lt;strong&gt;low q² and r²&lt;/strong&gt; for randomized trials.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;contour-map-interpretation&#34;&gt;Contour Map Interpretation&lt;/h2&gt;
+&lt;p&gt;CoMFA and CoMSIA produce &lt;strong&gt;contour maps&lt;/strong&gt; that visually indicate where modifications may enhance or reduce activity.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Steric maps&lt;/strong&gt;: Green = bulk-favorable; Yellow = bulk-unfavorable.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Electrostatic maps&lt;/strong&gt;: Blue = electropositive-favorable; Red = electronegative-favorable.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Hydrophobic &amp;amp; H-bond maps&lt;/strong&gt;: Guide lipophilicity and hydrogen bonding optimization.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These maps serve as &lt;strong&gt;structure–activity roadmaps&lt;/strong&gt; for rational ligand design.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;summary-of-key-metrics&#34;&gt;Summary of Key Metrics&lt;/h2&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Metric&lt;/th&gt;
+          &lt;th&gt;Purpose&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;q²&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Internal predictivity (LOO-CV)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;r²&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Fit to training data&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;r²ₚᵣₑd&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;External predictive power&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;SEE&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Estimate of prediction error&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;F-statistic&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Significance of model&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;rₘ²&lt;/strong&gt;, Δrₘ²&lt;/td&gt;
+          &lt;td&gt;Robustness (Tropsha criteria)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;RMSD&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Docking pose validation&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Y-randomization&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Protection against chance correlation&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Final Note:&lt;/strong&gt;&lt;br&gt;
+A robust 3D-QSAR workflow is not solely about generating good statistical values — it is about building &lt;em&gt;interpretable models&lt;/em&gt; that reliably guide the design of novel, potent ligands.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;references&#34;&gt;References&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Xu, Y., He, Z., Liu, H., Chen, Y., Gao, Y., Zhang, S., &amp;hellip; &amp;amp; Yang, M. (2020). 3D-QSAR, molecular docking, and molecular dynamics simulation study of thieno [3, 2-b] pyrrole-5-carboxamide derivatives as LSD1 inhibitors. RSC advances, 10(12), 6927-6943.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How Long Should Molecular Dynamics Simulations Run? A Practical Guide</title>
+      <link>https://yboulaamane.github.io/blog/determining-the-appropriate-length-for-proteinligand-md-simulations/</link>
+      <pubDate>Mon, 09 Jan 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/determining-the-appropriate-length-for-proteinligand-md-simulations/</guid>
+      <description>&lt;p&gt;Molecular dynamics (MD) simulations are a central technique in computational drug discovery, offering atomistic insights into the behavior of protein-ligand complexes. One of the most common practical questions when setting up such simulations is: &lt;em&gt;How long should they run?&lt;/em&gt; The answer depends heavily on the complexity of the system, the research question, and the type of molecular events you aim to observe.&lt;/p&gt;
+&lt;h2 id=&#34;general-timeframes-for-proteinligand-simulations&#34;&gt;General Timeframes for Protein–Ligand Simulations&lt;/h2&gt;
+&lt;p&gt;There is no one-size-fits-all answer, but several time ranges have become standard based on prior experience and published studies:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;50–100 nanoseconds&lt;/strong&gt;: Typically sufficient for analyzing initial binding stability, particularly with small, rigid ligands and relatively stable protein structures.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;100–200 nanoseconds&lt;/strong&gt;: Useful for exploring ligand flexibility, side-chain reorganization, or early conformational transitions within the binding pocket.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;200–500 nanoseconds&lt;/strong&gt;: Recommended for studying slower events, such as partial unbinding, induced fit mechanisms, or domain-level conformational shifts.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;500 nanoseconds to 1 microsecond (or more)&lt;/strong&gt;: Required when investigating long-timescale processes, such as allosteric communication, full ligand unbinding, or global protein rearrangements.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These are only guidelines. The required simulation time may vary considerably depending on the nature of the system and the endpoints of interest.&lt;/p&gt;
+&lt;h2 id=&#34;assessing-convergence-when-can-you-trust-the-results&#34;&gt;Assessing Convergence: When Can You Trust the Results?&lt;/h2&gt;
+&lt;p&gt;In MD simulations, convergence refers to the point at which key structural and energetic properties stabilize. If your system hasn&amp;rsquo;t converged, any conclusions drawn—no matter how long the simulation—may be unreliable.&lt;/p&gt;
+&lt;h3 id=&#34;key-convergence-metrics&#34;&gt;Key Convergence Metrics&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;1. Root Mean Square Deviation (RMSD)&lt;/strong&gt;&lt;br&gt;
+Tracks the structural deviation of atoms (commonly the protein backbone) over time. A stable RMSD plateau suggests that the structure has equilibrated. A continually rising RMSD implies ongoing rearrangement or instability.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. Root Mean Square Fluctuation (RMSF)&lt;/strong&gt;&lt;br&gt;
+Measures per-residue flexibility across the simulation. Once the system is stable, RMSF profiles tend to show consistent patterns across time windows. Large fluctuations may signal that equilibrium has not been achieved.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3. Energy Stability&lt;/strong&gt;&lt;br&gt;
+Monitoring total, potential, and kinetic energy can help confirm that the system has reached thermodynamic equilibrium. Sharp energy fluctuations or long-term drift suggest insufficient equilibration.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;4. Secondary Structure Content&lt;/strong&gt;&lt;br&gt;
+For proteins, consistent secondary structure (e.g., helices, sheets) is a good indicator of folding stability. If secondary structures shift frequently, especially after the initial equilibration period, further simulation may be needed.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;5. Interaction Fingerprint Stability&lt;/strong&gt;&lt;br&gt;
+The persistence of key protein-ligand contacts—hydrogen bonds, salt bridges, π–π stacking, etc.—is critical. Stable interaction profiles across the trajectory indicate that the binding pose is likely valid.&lt;/p&gt;
+&lt;h2 id=&#34;an-illustrative-scenario&#34;&gt;An Illustrative Scenario&lt;/h2&gt;
+&lt;p&gt;Consider a protein-ligand system where the RMSD increases during the first 50 nanoseconds as the complex settles into a favorable binding mode. Around 100 nanoseconds, the RMSD plateaus, interaction fingerprints become consistent, and total energy stabilizes. These indicators suggest the system has likely converged, and extending the simulation might not yield significantly different results.&lt;/p&gt;
+&lt;p&gt;On the other hand, if the ligand continues to shift within the binding pocket or protein domains undergo progressive rearrangement, longer simulations or enhanced sampling approaches may be required.&lt;/p&gt;
+&lt;h2 id=&#34;factors-influencing-simulation-time&#34;&gt;Factors Influencing Simulation Time&lt;/h2&gt;
+&lt;p&gt;Several variables determine how long your simulation should run:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;System size and flexibility&lt;/strong&gt;: Larger and more flexible proteins typically require longer simulations to sample relevant conformational space.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Ligand dynamics&lt;/strong&gt;: Flexible or highly rotatable ligands may explore multiple poses, requiring more time to identify dominant binding modes.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Scientific objective&lt;/strong&gt;: Short simulations may suffice for pose validation, while mechanistic studies (e.g., unbinding) demand longer runs.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Replicates&lt;/strong&gt;: Multiple shorter runs can often provide better statistical reliability than a single long trajectory.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Convergence monitoring&lt;/strong&gt;: Regularly assess key observables (RMSD, energy, interactions) to determine whether additional sampling is necessary.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;final-thoughts&#34;&gt;Final Thoughts&lt;/h2&gt;
+&lt;p&gt;For most protein-ligand MD simulations, a range of 50 to 200 nanoseconds is typically sufficient for analyzing pose stability and interaction patterns. However, in cases where you’re studying complex events—such as ligand unbinding, allosteric modulation, or major conformational shifts—longer simulations may be warranted. Ultimately, simulation length should be guided not by arbitrary cutoffs, but by careful monitoring of convergence and system behavior over time.&lt;/p&gt;
+&lt;p&gt;Be cautious when interpreting results from under-converged simulations. Without evidence of structural or energetic stability, conclusions about binding modes or molecular mechanisms may be premature.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

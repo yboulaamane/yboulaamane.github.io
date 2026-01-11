@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>DataWarrior | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/datawarrior/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/datawarrior/index.xml" rel="self" type="application/rss+xml" />
+    <description>DataWarrior</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sat, 15 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>DataWarrior</title>
+      <link>https://yboulaamane.github.io/tags/datawarrior/</link>
+    </image>
+    
+    <item>
+      <title>How to Use DataWarrior for Drug Discovery: Key Workflows From the Villoutreix Tutorials</title>
+      <link>https://yboulaamane.github.io/blog/how-to-use-datawarrior-for-drug-discovery-key-workflows-from-the-villoutreix-tutorials/</link>
+      <pubDate>Sat, 15 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/how-to-use-datawarrior-for-drug-discovery-key-workflows-from-the-villoutreix-tutorials/</guid>
+      <description>&lt;h2 id=&#34;why-datawarrior-matters&#34;&gt;Why DataWarrior Matters&lt;/h2&gt;
+&lt;p&gt;If you work in drug discovery or cheminformatics, you frequently handle &lt;strong&gt;large chemical datasets&lt;/strong&gt; that require cleaning, filtering, visualization, and export.&lt;br&gt;
+&lt;strong&gt;DataWarrior&lt;/strong&gt; is designed exactly for this: an open-source, chemistry-aware data workbench that is free for academic and commercial use.&lt;/p&gt;
+&lt;p&gt;Key advantages include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Chemistry-aware filtering and visualization&lt;/li&gt;
+&lt;li&gt;2D/3D plots and interactive exploration&lt;/li&gt;
+&lt;li&gt;Substructure search and chemical intelligence&lt;/li&gt;
+&lt;li&gt;Property calculation, combinatorial libraries, PCA/t-SNE&lt;/li&gt;
+&lt;li&gt;Docking inside a protein pocket&lt;/li&gt;
+&lt;li&gt;Support for SMILES, SDF, CSV, tab-delimited text&lt;/li&gt;
+&lt;li&gt;Cross-platform (Windows, macOS, Linux)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Bruno Villoutreix’s tutorial series provides an excellent guided introduction. This post summarizes &lt;strong&gt;Part 1&lt;/strong&gt; and connects it to practical drug-discovery workflows.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;core-capabilities-covered-in-part-1&#34;&gt;Core Capabilities Covered in Part 1&lt;/h2&gt;
+&lt;h3 id=&#34;a-versatile-workbench&#34;&gt;A Versatile Workbench&lt;/h3&gt;
+&lt;p&gt;DataWarrior is more than a viewer — it is a &lt;strong&gt;chemometrics and data-analysis environment&lt;/strong&gt; with dynamic plots, smart filtering, and chemical intelligence.&lt;/p&gt;
+&lt;h3 id=&#34;key-features&#34;&gt;Key Features&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Real-time text, numeric, and chemical filtering&lt;/li&gt;
+&lt;li&gt;2D / 3D visualization modules&lt;/li&gt;
+&lt;li&gt;Molecular property prediction&lt;/li&gt;
+&lt;li&gt;Combinatorial library enumeration&lt;/li&gt;
+&lt;li&gt;PCA and t-SNE&lt;/li&gt;
+&lt;li&gt;Docking and non-chemical data support&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;data-import--formats&#34;&gt;Data Import &amp;amp; Formats&lt;/h3&gt;
+&lt;p&gt;DataWarrior handles common cheminformatics formats:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;SMILES&lt;/strong&gt;, &lt;strong&gt;SDF (v2/v3)&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CSV&lt;/strong&gt;, &lt;strong&gt;tab-delimited text&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Native &lt;strong&gt;DWIR&lt;/strong&gt; project files&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This makes it ideal as a front-end before passing data to docking, QSAR, MD, or ML workflows.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;interface-overview&#34;&gt;Interface Overview&lt;/h2&gt;
+&lt;p&gt;The interface is flexible and powerful:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Many options are accessible via &lt;strong&gt;right-click menus&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Layouts can be customized with sub-windows&lt;/li&gt;
+&lt;li&gt;Some tools are hidden behind pop-ups&lt;/li&gt;
+&lt;li&gt;Learning curve exists, but productivity increases quickly&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Think of it as a &lt;strong&gt;chemistry-smart Excel&lt;/strong&gt; designed specifically for cheminformatics.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;external-data-wikipedia-molecule-import&#34;&gt;External Data: Wikipedia Molecule Import&lt;/h2&gt;
+&lt;p&gt;Part 1 demonstrates an impressive feature:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;DataWarrior can download all &lt;strong&gt;chemical structures from Wikipedia&lt;/strong&gt; (~22,000+ molecules depending on version).&lt;/li&gt;
+&lt;li&gt;You can filter, visualize, and explore the full set offline.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This dataset is perfect for practicing workflows before loading your own project data.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;practical-filtering-workflow-name--substructure&#34;&gt;Practical Filtering Workflow (Name + Substructure)&lt;/h2&gt;
+&lt;p&gt;Villoutreix demonstrates a realistic medicinal-chemistry filtering pipeline:&lt;/p&gt;
+&lt;h3 id=&#34;1-name-based-filtering&#34;&gt;1. Name-Based Filtering&lt;/h3&gt;
+&lt;p&gt;Use &lt;strong&gt;regular expressions&lt;/strong&gt; to identify drug classes by name suffix:&lt;br&gt;
+Examples:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;.*ib&lt;/code&gt; (kinase inhibitors)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.*sartan&lt;/code&gt; (angiotensin receptor blockers)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.*azole&lt;/code&gt; (antifungals)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Filtering Wikipedia’s 22k molecules yields a much smaller, focused set.&lt;/p&gt;
+&lt;h3 id=&#34;2-substructure-filtering&#34;&gt;2. Substructure Filtering&lt;/h3&gt;
+&lt;p&gt;Draw a functional group (e.g., &lt;strong&gt;piperazine/piperidine&lt;/strong&gt;) in the structure filter window.&lt;br&gt;
+DataWarrior keeps molecules containing the substructure &lt;strong&gt;and&lt;/strong&gt; matching the name rule.&lt;br&gt;
+Matching fragments appear highlighted in &lt;strong&gt;red&lt;/strong&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;3-create-a-row-list--export&#34;&gt;3. Create a Row List &amp;amp; Export&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a custom list (e.g., &lt;code&gt;cancer&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Add &lt;strong&gt;SMILES code&lt;/strong&gt; for each molecule.&lt;/li&gt;
+&lt;li&gt;Remove unnecessary columns (formula, MW, structure).&lt;/li&gt;
+&lt;li&gt;Save as a &lt;strong&gt;tab-delimited text file&lt;/strong&gt; (&lt;code&gt;cancer.txt&lt;/code&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Repeat the workflow for other suffixes, such as &lt;strong&gt;“-azole”&lt;/strong&gt;, to build an antifungal set.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;integrating-datawarrior-into-your-workflow&#34;&gt;Integrating DataWarrior Into Your Workflow&lt;/h2&gt;
+&lt;h3 id=&#34;1-import-your-data&#34;&gt;1. Import Your Data&lt;/h3&gt;
+&lt;p&gt;Load SDF/SMILES and merge with ADMET, assay, or physicochemical tables.&lt;/p&gt;
+&lt;h3 id=&#34;2-smart-filtering&#34;&gt;2. Smart Filtering&lt;/h3&gt;
+&lt;p&gt;Use both:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Name patterns&lt;/strong&gt; (series, suffixes, pharmacological classes)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Substructure filters&lt;/strong&gt; (scaffolds, R-groups, functional motifs)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-visualization&#34;&gt;3. Visualization&lt;/h3&gt;
+&lt;p&gt;Quickly inspect:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Activity distributions&lt;/li&gt;
+&lt;li&gt;Scatter plots&lt;/li&gt;
+&lt;li&gt;PCA/t-SNE chemical space&lt;/li&gt;
+&lt;li&gt;Outliers and series clusters&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;4-export-for-modelling&#34;&gt;4. Export for Modelling&lt;/h3&gt;
+&lt;p&gt;Save clean SMILES + metadata for:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;QSAR / ML&lt;/li&gt;
+&lt;li&gt;Docking&lt;/li&gt;
+&lt;li&gt;MD setup&lt;/li&gt;
+&lt;li&gt;Library design&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;DataWarrior becomes the &lt;strong&gt;interactive triage layer&lt;/strong&gt; before computational modeling.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;why-villoutreixs-series-is-worth-watching&#34;&gt;Why Villoutreix’s Series Is Worth Watching&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Short and dense: ~85 minutes across 9 videos&lt;/li&gt;
+&lt;li&gt;Realistic medicinal chemistry examples&lt;/li&gt;
+&lt;li&gt;Shows &lt;strong&gt;where to click&lt;/strong&gt; and how features connect&lt;/li&gt;
+&lt;li&gt;Useful even for intermediate users — many hidden features become obvious after watching&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;getting-started-today&#34;&gt;Getting Started Today&lt;/h2&gt;
+&lt;p&gt;You can reproduce Part 1 in minutes:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Install &lt;strong&gt;DataWarrior&lt;/strong&gt; from the official website.&lt;/li&gt;
+&lt;li&gt;Import the &lt;strong&gt;Wikipedia dataset&lt;/strong&gt; directly from within the software.&lt;/li&gt;
+&lt;li&gt;Apply regular expression filtering (e.g., &lt;code&gt;.*ib&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Add a substructure filter.&lt;/li&gt;
+&lt;li&gt;Create a row list → add SMILES → export your filtered set.&lt;/li&gt;
+&lt;li&gt;Repeat with another suffix (e.g., &lt;code&gt;.*azole&lt;/code&gt;).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This prepares you to bring in your own datasets and use DataWarrior as your daily workbench.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;final-thoughts&#34;&gt;Final Thoughts&lt;/h2&gt;
+&lt;p&gt;DataWarrior is a powerful, free, and chemistry-aware tool that helps you:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Explore large datasets interactively&lt;/li&gt;
+&lt;li&gt;Build focused libraries rapidly&lt;/li&gt;
+&lt;li&gt;Clean data before modeling&lt;/li&gt;
+&lt;li&gt;Visualize chemical space&lt;/li&gt;
+&lt;li&gt;Export ready-to-use hit lists&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Paired with the Villoutreix tutorial series, it becomes a &lt;strong&gt;practical, everyday companion&lt;/strong&gt; for drug-discovery and cheminformatics work.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

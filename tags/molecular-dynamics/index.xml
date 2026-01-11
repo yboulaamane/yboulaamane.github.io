@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Molecular Dynamics | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/molecular-dynamics/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/molecular-dynamics/index.xml" rel="self" type="application/rss+xml" />
+    <description>Molecular Dynamics</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sun, 21 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Molecular Dynamics</title>
+      <link>https://yboulaamane.github.io/tags/molecular-dynamics/</link>
+    </image>
+    
+    <item>
+      <title>Ten Critical Pitfalls in Molecular Dynamics Simulations and Strategies for Mitigation</title>
+      <link>https://yboulaamane.github.io/blog/ten-critical-pitfalls-in-molecular-dynamics-simulations-and-strategies-for-mitigation/</link>
+      <pubDate>Sun, 21 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/ten-critical-pitfalls-in-molecular-dynamics-simulations-and-strategies-for-mitigation/</guid>
+      <description>&lt;p&gt;Molecular dynamics (MD) serves as a powerful computational microscope, offering atomistic insights often unattainable through experimental methods alone. With the increasing accessibility of user-friendly software and comprehensive tutorials, the barrier to entry for new researchers has lowered significantly. However, MD is not merely a procedural task; it is a rigorous physics simulation where minor methodological errors can lead to scientifically inaccurate results.&lt;/p&gt;
+&lt;p&gt;For early-stage researchers, the challenge often lies in subtle errors—mistakes that do not cause the simulation to crash but instead yield misleading trajectories. These errors often remain undetected until the peer-review stage, potentially invalidating months of computational effort.&lt;/p&gt;
+&lt;p&gt;This article outlines ten of the most frequent methodological errors in molecular dynamics and provides best practices to ensure simulation reliability and reproducibility.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-inadequate-preparation-of-initial-structures&#34;&gt;1. Inadequate Preparation of Initial Structures&lt;/h2&gt;
+&lt;p&gt;The validity of a simulation is strictly limited by the quality of the starting model. A common oversight is assuming that a structure downloaded from the Protein Data Bank (PDB) is immediately ready for simulation. Raw PDB files often contain experimental artifacts, such as missing atoms, unresolved residues, or crystal packing contacts that are not relevant in solution.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; Rigorous structure preparation is mandatory. This includes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Modeling missing loops.&lt;/li&gt;
+&lt;li&gt;Resolving steric clashes.&lt;/li&gt;
+&lt;li&gt;Crucially, assigning correct protonation states (e.g., Histidine tautomers) based on the specific pH of the environment rather than default settings.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Tools such as &lt;strong&gt;pdbfixer&lt;/strong&gt;, &lt;strong&gt;H++&lt;/strong&gt;, or &lt;strong&gt;PropKa&lt;/strong&gt; are essential for this standardization.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;2-incompatible-or-inappropriate-force-field-selection&#34;&gt;2. Incompatible or Inappropriate Force Field Selection&lt;/h2&gt;
+&lt;p&gt;A force field represents the mathematical parameter set governing atomic interactions. A significant error involves selecting a force field based on popularity rather than its suitability for the specific molecular system (e.g., using a protein-centric force field for a complex membrane system without validation). Furthermore, combining parameters from different force fields—such as mixing CHARMM protein parameters with OPLS ligand parameters—can introduce severe imbalances in potential energy functions.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; Select a force field explicitly validated for your molecule class. If a complex system requires multiple parameter sets, ensure they share compatible functional forms and Lennard-Jones combination rules.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;3-mismatching-water-models&#34;&gt;3. Mismatching Water Models&lt;/h2&gt;
+&lt;p&gt;Force fields are generally parameterized in conjunction with specific water models. Using a force field designed for TIP3P water with a more modern 4-point model (like OPC), or vice versa, is a frequent technical error.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; Verify the primary literature for your chosen force field to identify the water model used during its parameterization. Using a mismatched water model can fundamentally alter solution density, protein-solvent interactions, and diffusion rates, rendering thermodynamic properties inaccurate.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;4-uncritical-acceptance-of-automated-ligand-topologies&#34;&gt;4. Uncritical Acceptance of Automated Ligand Topologies&lt;/h2&gt;
+&lt;p&gt;When simulating non-standard residues or ligands, researchers often rely on automated servers (e.g., CGenFF, PRODRG, or MCPB) to generate topology files. Treating these servers as &amp;ldquo;black boxes&amp;rdquo; is dangerous, as automated algorithms often approximate partial charges and bond parameters incorrectly for complex chemical groups.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; Automated output should be treated as a draft.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Always inspect the log files for high &amp;ldquo;penalty scores&amp;rdquo; or confidence warnings.&lt;/li&gt;
+&lt;li&gt;For rigorous work, validate partial charges using Quantum Mechanics (QM) calculations and verify bonded parameters against experimental data or higher-level theory.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;5-insufficient-minimization-and-equilibration&#34;&gt;5. Insufficient Minimization and Equilibration&lt;/h2&gt;
+&lt;p&gt;Initiating the production run (data collection) before the system has thermodynamically relaxed is a primary cause of instability. If high-energy contacts are not resolved, the system may exhibit unrealistic structural distortions or numerical instability.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Minimization:&lt;/strong&gt; Continue until the maximum force on any atom falls below a strict threshold (e.g., 1000 kJ/mol/nm).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Equilibration:&lt;/strong&gt; Monitor temperature (NVT) and pressure (NPT) phases carefully. Production should only commence once system density and potential energy have converged to a stable plateau.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;6-incorrect-time-step-selection&#34;&gt;6. Incorrect Time Step Selection&lt;/h2&gt;
+&lt;p&gt;The integration time step dictates the frequency at which the equations of motion are solved. Selecting a time step that is too large causes numerical instability (integration errors), while a time step that is too small results in computational inefficiency.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; For standard biological simulations, a &lt;strong&gt;2 femtosecond (fs)&lt;/strong&gt; time step is appropriate, provided that bonds involving hydrogen atoms are constrained using algorithms such as LINCS or SHAKE. Larger time steps (e.g., 4 fs) should only be used if Hydrogen Mass Repartitioning (HMR) is applied.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;7-neglecting-periodic-boundary-condition-pbc-artifacts&#34;&gt;7. Neglecting Periodic Boundary Condition (PBC) Artifacts&lt;/h2&gt;
+&lt;p&gt;Periodic Boundary Conditions are essential for simulating bulk systems, but they introduce visual and analytical artifacts, such as molecules appearing to split across simulation box boundaries.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; Raw trajectories must be post-processed prior to analysis. Metrics such as Radius of Gyration ($R_g$) or RMSD will yield erroneous results if calculated on &amp;ldquo;broken&amp;rdquo; molecules. Use trajectory processing tools (e.g., &lt;code&gt;gmx trjconv&lt;/code&gt; in GROMACS or &lt;code&gt;cpptraj&lt;/code&gt; in AMBER) to re-center the protein and &amp;ldquo;unwrap&amp;rdquo; molecules across the periodic boundaries.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;8-insufficient-sampling-and-lack-of-replicates&#34;&gt;8. Insufficient Sampling and Lack of Replicates&lt;/h2&gt;
+&lt;p&gt;Molecular dynamics is inherently stochastic; a single trajectory represents only one probabilistic pathway of the system. Relying on a single simulation run can lead to the &amp;ldquo;Anecdotal Evidence&amp;rdquo; fallacy, where a rare event is mistaken for a general property of the system.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; Conduct replicate simulations. Ideally, run the same system &lt;strong&gt;3 to 5 times&lt;/strong&gt; with different initial velocity distributions (random seeds). Conclusions should be drawn from statistical trends observed across multiple independent replicates, not a single isolated run.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;9-over-reliance-on-rmsd-as-a-stability-metric&#34;&gt;9. Over-reliance on RMSD as a Stability Metric&lt;/h2&gt;
+&lt;p&gt;Root Mean Square Deviation (RMSD) is the most common metric for assessing structural stability, but it is insufficient on its own. A plateauing RMSD indicates only that the global structure is not deviating further from the reference; it does not rule out local distortions, broken hydrogen bond networks, or incorrect energetic behavior.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; Employ a multidimensional analysis strategy. Combine RMSD with:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Root Mean Square Fluctuation (RMSF)&lt;/li&gt;
+&lt;li&gt;Radius of Gyration ($R_g$)&lt;/li&gt;
+&lt;li&gt;Solvent Accessible Surface Area (SASA)&lt;/li&gt;
+&lt;li&gt;Clustering analysis&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This provides a comprehensive view of system stability and dynamics.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;10-lack-of-experimental-validation&#34;&gt;10. Lack of Experimental Validation&lt;/h2&gt;
+&lt;p&gt;A simulation that runs without errors is not necessarily physically accurate. A major pitfall is failing to benchmark simulation results against known experimental observables.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt; Always attempt to correlate simulation data with experimental results. Comparing calculated B-factors with X-ray crystallography data, or comparing NMR observables (such as chemical shifts or NOEs) with simulated values, provides the necessary validation to ensure the simulation reflects physical reality.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>A Quick Guide to Temperature Replica Exchange Molecular Dynamics</title>
+      <link>https://yboulaamane.github.io/blog/a-quick-guide-to-temperature-replica-exchange-molecular-dynamics/</link>
+      <pubDate>Sun, 03 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/a-quick-guide-to-temperature-replica-exchange-molecular-dynamics/</guid>
+      <description>&lt;p&gt;Temperature Replica Exchange Molecular Dynamics (T-REMD) is an enhanced sampling method that improves conformational exploration in molecular simulations. Instead of running one simulation that may get trapped in local minima, T-REMD launches several copies—called replicas—of the same system, each running at a different temperature. These replicas periodically attempt to exchange configurations, allowing the system to more easily escape energy traps and explore relevant biological conformations.&lt;br&gt;
+This method is especially helpful for complex systems like proteins or protein-ligand complexes, where conformational flexibility and rare events play a big role in biological function and binding.&lt;/p&gt;
+&lt;h2 id=&#34;why-use-t-remd&#34;&gt;Why use T-REMD?&lt;/h2&gt;
+&lt;p&gt;Conventional molecular dynamics (MD) can struggle with systems that have rugged energy landscapes. If your simulation starts in a local minimum, it might stay there for millions of steps, never sampling other important conformations. T-REMD helps overcome this by running high-temperature simulations in parallel with your regular one. These high-temperature replicas can cross energy barriers more easily. By allowing swaps between replicas, lower-temperature simulations benefit from this broader exploration.&lt;/p&gt;
+&lt;p&gt;In drug discovery, where ligand binding, induced fit, or protein flexibility is critical, T-REMD gives you a better shot at capturing biologically meaningful states that you might miss with basic MD.&lt;/p&gt;
+&lt;h2 id=&#34;how-it-works&#34;&gt;How it works&lt;/h2&gt;
+&lt;p&gt;T-REMD runs &lt;strong&gt;N replicas&lt;/strong&gt; of your system, each at a different temperature. All replicas evolve independently via MD, but every few hundred or thousand steps, pairs of neighboring replicas attempt to exchange coordinates. These exchanges are accepted or rejected based on the Metropolis criterion, which preserves correct thermodynamic distributions.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Replica 1: 300K  —&amp;gt; Swap? —&amp;gt; 310K  
+Replica 2: 310K  —&amp;gt; Swap? —&amp;gt; 320K  
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The acceptance probability \( P \) for a swap between replica \( i \) and \( j \) is:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;P = min(1, exp[(1/Ti - 1/Tj) * (Ej - Ei)])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Where:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ti and Tj are the temperatures of the replicas&lt;/li&gt;
+&lt;li&gt;Ei and Ej are their potential energies&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This ensures that the ensemble at each temperature follows the correct Boltzmann distribution.&lt;/p&gt;
+&lt;h2 id=&#34;gromacs-example-setting-up-t-remd&#34;&gt;GROMACS Example: Setting Up T-REMD&lt;/h2&gt;
+&lt;p&gt;Let’s walk through a basic GROMACS setup for T-REMD. Suppose we want 8 replicas from 300K to 370K.&lt;/p&gt;
+&lt;h3 id=&#34;1-prepare-mdp-files-for-each-temperature&#34;&gt;1. Prepare &lt;code&gt;.mdp&lt;/code&gt; files for each temperature&lt;/h3&gt;
+&lt;p&gt;Create &lt;code&gt;md_300.mdp&lt;/code&gt;, &lt;code&gt;md_310.mdp&lt;/code&gt;, &amp;hellip;, &lt;code&gt;md_370.mdp&lt;/code&gt; with appropriate temperature settings.&lt;/p&gt;
+&lt;h3 id=&#34;2-generate-input-files&#34;&gt;2. Generate input files&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;gmx grompp -f md_300.mdp -o topol_300.tpr -c conf.gro -p topol.top -maxwarn 1
+gmx grompp -f md_310.mdp -o topol_310.tpr -c conf.gro -p topol.top -maxwarn 1
+...
+gmx grompp -f md_370.mdp -o topol_370.tpr -c conf.gro -p topol.top -maxwarn 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;3-run-t-remd&#34;&gt;3. Run T-REMD&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;mpirun -np 8 gmx_mpi mdrun -multi 8 -replex 1000 -s topol_.tpr -deffnm remd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-multi 8&lt;/code&gt;: run 8 parallel replicas&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-replex 1000&lt;/code&gt;: attempt replica exchanges every 1000 steps&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-deffnm remd&lt;/code&gt;: use common file prefix for outputs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;4-post-process&#34;&gt;4. Post-process&lt;/h3&gt;
+&lt;p&gt;Once your simulation is complete, you can analyze the trajectory from a specific temperature using demultiplexing.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx demux -f remd0.xtc -demux replica_index.xvg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then extract frames from the trajectory that corresponds to the replica at 300K (or whatever your target temp is).&lt;/p&gt;
+&lt;h2 id=&#34;tips-and-considerations&#34;&gt;Tips and Considerations&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Temperature spacing matters&lt;/strong&gt;: Too far apart, and swaps won’t be accepted; too close, and you’ll need many replicas. Aim for 20–30% acceptance rate.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Equilibration&lt;/strong&gt;: All replicas should be equilibrated well before starting T-REMD.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Analysis&lt;/strong&gt;: Usually, you only analyze the trajectory from the lowest temperature (e.g., 300K), which contains the best physical behavior.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Computational cost&lt;/strong&gt;: You’ll need multiple CPUs/GPUs—one per replica. This can be expensive but is highly parallelizable.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;when-to-use-t-remd&#34;&gt;When to use T-REMD&lt;/h2&gt;
+&lt;p&gt;Use T-REMD when:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;You&amp;rsquo;re studying systems with &lt;strong&gt;conformational flexibility&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;Your system gets &lt;strong&gt;trapped in local minima&lt;/strong&gt; during regular MD.&lt;/li&gt;
+&lt;li&gt;You want to enhance sampling around &lt;strong&gt;ligand binding sites&lt;/strong&gt; or &lt;strong&gt;allosteric regions&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;You&amp;rsquo;re exploring &lt;strong&gt;folding&lt;/strong&gt;, &lt;strong&gt;loop motions&lt;/strong&gt;, or &lt;strong&gt;cryptic pockets&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you&amp;rsquo;re just optimizing a small molecule or doing very short timescale dynamics, regular MD is often sufficient. But when you want to deeply explore your system’s energy landscape, especially for drug discovery or protein-ligand complexes, T-REMD can be a game-changer.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Temperature Replica Exchange MD is a powerful tool that brings smarter sampling to your simulations. It&amp;rsquo;s especially useful when standard MD isn’t enough to explore the full range of conformations your molecule can adopt. With tools like GROMACS, setting it up is fairly straightforward—and the scientific payoff can be huge.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Principal Component Analysis and Free Energy Landscape Mapping Using GROMACS</title>
+      <link>https://yboulaamane.github.io/blog/principal-component-analysis-and-free-energy-landscape-mapping-using-gromacs/</link>
+      <pubDate>Wed, 09 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/principal-component-analysis-and-free-energy-landscape-mapping-using-gromacs/</guid>
+      <description>&lt;p&gt;This guide outlines how to perform Principal Component Analysis (PCA) and compute Free Energy Landscapes (FEL) from molecular dynamics (MD) simulations using GROMACS. These analyses are useful to capture dominant motions and identify energetically favorable states in biomolecular systems.&lt;/p&gt;
+&lt;h2 id=&#34;part-1-principal-component-analysis-pca&#34;&gt;Part 1: Principal Component Analysis (PCA)&lt;/h2&gt;
+&lt;h3 id=&#34;step-1-covariance-matrix-and-eigenvector-calculation&#34;&gt;Step 1: Covariance Matrix and Eigenvector Calculation&lt;/h3&gt;
+&lt;p&gt;Run the following command to compute the covariance matrix and extract eigenvectors:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx covar -s md_0_100.tpr -f md_0_100.xtc -o eigenvalues.xvg -v eigenvectors.trr -xpma covar.xpm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Note: If the command fails using &lt;code&gt;md_0_100.gro&lt;/code&gt;, use &lt;code&gt;md_0_100.tpr&lt;/code&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;Select &lt;strong&gt;protein&lt;/strong&gt; and &lt;strong&gt;ligand&lt;/strong&gt; when prompted.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;step-2-determine-the-number-of-principal-components&#34;&gt;Step 2: Determine the Number of Principal Components&lt;/h3&gt;
+&lt;p&gt;Analyze &lt;code&gt;eigenvalues.xvg&lt;/code&gt; to compute:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Total Variance&lt;/strong&gt;&lt;br&gt;
+&lt;code&gt;Total Variance = Σ λᵢ&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Explained Variance (%)&lt;/strong&gt;&lt;br&gt;
+&lt;code&gt;Explained Variance (%) = (λᵢ / Σ λᵢ) × 100&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Cumulative Variance&lt;/strong&gt;&lt;br&gt;
+&lt;code&gt;Cumulative Variance = Σ (λᵢ / Σ λᵢ) × 100&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Select the minimum number of components that cumulatively explain more than &lt;strong&gt;50%&lt;/strong&gt; of the total variance.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;step-3-plot-principal-component-projections&#34;&gt;Step 3: Plot Principal Component Projections&lt;/h3&gt;
+&lt;p&gt;For projecting motion along PC1 to PC5, run:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx anaeig -f md_0_100.xtc -s md_0_100.tpr -v eigenvectors.trr -first 1 -last 5 \
+-proj pc15_lovastatina.xvg -2d project2d_s100_lovastatina.xvg -tu ns
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-proj&lt;/code&gt;: 1D projection along each selected eigenvector&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-2d&lt;/code&gt;: Combined 2D projection using the first 5 components&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;part-2-free-energy-landscape-fel-calculation&#34;&gt;Part 2: Free Energy Landscape (FEL) Calculation&lt;/h2&gt;
+&lt;h3 id=&#34;step-1-generate-principal-component-projections&#34;&gt;Step 1: Generate Principal Component Projections&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;gmx anaeig -f md_0_100.xtc -s md_0_100.tpr -v eigenvectors.trr -last 1 -proj pc1.xvg
+gmx anaeig -f md_0_100.xtc -s md_0_100.tpr -v eigenvectors.trr -first 2 -last 2 -proj pc2.xvg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Merge PC1 and PC2 into a single file:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;paste pc1.xvg pc2.xvg | awk &#39;{print $1, $2, $4}&#39; &amp;gt; PC1PC2.xvg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;step-2-compute-free-energy-surface&#34;&gt;Step 2: Compute Free Energy Surface&lt;/h3&gt;
+&lt;p&gt;Use GROMACS SHAM module:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx sham -f PC1PC2.xvg -ls FES.xpm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Convert &lt;code&gt;.xpm&lt;/code&gt; to &lt;code&gt;.dat&lt;/code&gt; using a Python script:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;python2.7 xpm2txt.py -f FES.xpm -o fel.dat
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;Python script &lt;code&gt;xpm2txt.py&lt;/code&gt; converts the XPM matrix to a 3-column text file (X, Y, Energy).&lt;/em&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;step-3-extract-minimum-energy-conformation&#34;&gt;Step 3: Extract Minimum Energy Conformation&lt;/h3&gt;
+&lt;p&gt;After plotting &lt;code&gt;fel.dat&lt;/code&gt;, identify the time of the minimum energy, then extract the conformation:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx trjconv -s md_0_100.tpr -f md_0_100.xtc -o min_energy.pdb -dump 520
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Replace &lt;code&gt;520&lt;/code&gt; with the appropriate time (in ps) corresponding to the energy minimum.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+&lt;p&gt;This workflow provides a systematic approach to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Identify dominant motions in your trajectory via PCA&lt;/li&gt;
+&lt;li&gt;Visualize structural variation through projection plots&lt;/li&gt;
+&lt;li&gt;Map the free energy landscape based on PC space&lt;/li&gt;
+&lt;li&gt;Extract the most stable conformations for further analysis&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These methods are widely used for post-simulation analysis in structural biology and drug discovery.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Step-by-Step MD Simulation of a Protein–Ligand Complex with GROMACS</title>
+      <link>https://yboulaamane.github.io/blog/an-in-depth-guide-to-md-simulation-and-analysis-of-a-proteinligand-complex/</link>
+      <pubDate>Fri, 04 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/an-in-depth-guide-to-md-simulation-and-analysis-of-a-proteinligand-complex/</guid>
+      <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This post walks through the &lt;strong&gt;complete setup of a protein–ligand MD simulation&lt;/strong&gt; with GROMACS.&lt;br&gt;
+We use &lt;strong&gt;CHARMM36&lt;/strong&gt; for proteins, &lt;strong&gt;CGenFF&lt;/strong&gt; for ligands, and the &lt;strong&gt;TIP3P water model&lt;/strong&gt;.&lt;br&gt;
+Each step is explained briefly before showing the corresponding command.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-0-pdbfixer&#34;&gt;Step 0: PDBFixer&lt;/h2&gt;
+&lt;p&gt;We begin by repairing the input PDB file (adding missing atoms, hydrogens, etc.). This ensures the protein structure is suitable for simulations.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;conda activate pdbfixer
+pdbfixer protein.pdb --output=protein_fixed.pdb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-1-extract-and-clean-the-protein&#34;&gt;Step 1: Extract and clean the protein&lt;/h2&gt;
+&lt;p&gt;Next, we separate the ligand (UNK or cofactors like FAD) and clean the protein file.&lt;br&gt;
+This avoids force field issues caused by unknown residues.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;grep UNK protein.pdb &amp;gt; unk.pdb
+grep -v &amp;quot;UNK&amp;quot; protein.pdb &amp;gt; clean.pdb
+
+grep -v -e &amp;quot;UNK&amp;quot; -e &amp;quot;FAD&amp;quot; protein_fixed.pdb &amp;gt; clean.pdb
+
+conda activate pdbfixer
+pdbfixer clean.pdb --output=clean.pdb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-2-generate-protein-topology&#34;&gt;Step 2: Generate protein topology&lt;/h2&gt;
+&lt;p&gt;We use &lt;code&gt;pdb2gmx&lt;/code&gt; to generate the topology of the clean protein with CHARMM36.&lt;br&gt;
+Here we also choose protonation states interactively.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx pdb2gmx -f clean.pdb -o processed.gro -ter -ignh &amp;lt;&amp;lt; EOF
+1
+1
+0
+0
+0
+0
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-3-convert-ligand-to-mol2-format&#34;&gt;Step 3: Convert ligand to MOL2 format&lt;/h2&gt;
+&lt;p&gt;The ligand is converted to &lt;code&gt;.mol2&lt;/code&gt; format with hydrogens added and atom typing corrected.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;obabel unk.pdb -O unk.mol2 --addh --gen3d
+sed -i &#39;2s/.*/UNK/; s/UNK1/UNK/g&#39; unk.mol2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-4-sort-ligand-bonds&#34;&gt;Step 4: Sort ligand bonds&lt;/h2&gt;
+&lt;p&gt;We ensure the bond ordering in the MOL2 file is consistent using a Perl script.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;perl sort_mol2_bonds.pl unk.mol2 unk_fix.mol2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-5-parameterize-the-ligand-with-cgenff&#34;&gt;Step 5: Parameterize the ligand with CGenFF&lt;/h2&gt;
+&lt;p&gt;The ligand is parameterized using &lt;strong&gt;CGenFF&lt;/strong&gt;, and converted to a GROMACS-compatible format.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;~/mdrun/silcsbio.2024.1/cgenff/cgenff unk_fix.mol2 -f unk.str
+chmod +x cgenff_charmm2gmx.py
+
+conda activate cgenff
+python cgenff_charmm2gmx.py UNK unk_fix.mol2 unk.str charmm36-jul2022.ff
+
+rm cgenff_charmm2gmx.py
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-6-convert-ligandcofactor-to-gromacs-format&#34;&gt;Step 6: Convert ligand/cofactor to GROMACS format&lt;/h2&gt;
+&lt;p&gt;We now generate &lt;code&gt;.gro&lt;/code&gt; files for both the ligand and cofactor (if present).&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx editconf -f unk_ini.pdb -o unk.gro
+gmx editconf -f fad_ini.pdb -o fad.gro
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-7-merge-protein-and-ligands&#34;&gt;Step 7: Merge protein and ligands&lt;/h2&gt;
+&lt;p&gt;We merge the protein, ligand, and optional cofactors into one structure file.&lt;br&gt;
+Atom counts are updated to reflect the combined system.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cp processed.gro complex.gro &amp;amp;&amp;amp; sed -i &#39;$d&#39; complex.gro &amp;amp;&amp;amp; tail -n +3 unk.gro &amp;gt;&amp;gt; complex.gro &amp;amp;&amp;amp; echo &amp;quot;   &amp;quot; &amp;gt;&amp;gt; complex.gro
+
+num1=$(sed -n &#39;2p&#39; complex.gro)
+num2=$(sed -n &#39;2p&#39; unk.gro)
+sum=$((num1 + num2))
+sed -i &amp;quot;2s/.*/ $sum/&amp;quot; complex.gro
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For protein + FAD + UNK:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cp processed.gro complex.gro &amp;amp;&amp;amp; \
+sed -i &#39;$d&#39; complex.gro &amp;amp;&amp;amp; \
+tail -n +3 fad.gro &amp;gt;&amp;gt; complex.gro &amp;amp;&amp;amp; \
+tail -n +3 unk.gro &amp;gt;&amp;gt; complex.gro &amp;amp;&amp;amp; \
+echo &amp;quot;   &amp;quot; &amp;gt;&amp;gt; complex.gro
+
+num1=$(sed -n &#39;2p&#39; processed.gro)
+num2=$(sed -n &#39;2p&#39; fad.gro)
+num3=$(sed -n &#39;2p&#39; unk.gro)
+sum=$((num1 + num2 + num3))
+sed -i &amp;quot;2s/.*/ $sum/&amp;quot; complex.gro
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-8-update-topology-file&#34;&gt;Step 8: Update topology file&lt;/h2&gt;
+&lt;p&gt;We edit &lt;code&gt;topol.top&lt;/code&gt; to include the ligand topologies and parameters.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sed -i &#39;/; Include Position restraint file/{:a;N;/#endif/!ba;s/\n#endif\n/\n#endif/;s/#endif/#endif\n\n; Include ligand topology\n#include &amp;quot;unk.itp&amp;quot;/}&#39; topol.top
+
+sed -i &#39;/; Include forcefield parameters/{:a;N;/#include &amp;quot;.\/charmm36-jul2022.ff\/forcefield.itp&amp;quot;/!ba;s/#include &amp;quot;.\/charmm36-jul2022.ff\/forcefield.itp&amp;quot;/&amp;amp;\n\n; Include ligand parameters\n#include &amp;quot;unk.prm&amp;quot;/}&#39; topol.top
+
+sed -i &#39;/\[ molecules \]/,/Protein_chain_A/ {/Protein_chain_A/ a\\nUNK                 1\n}&#39; topol.top
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For FAD + UNK:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sed -i &#39;/; Include Position restraint file/{:a;N;/#endif/!ba;s/#endif/#endif\n\n; Include ligand topologies\n#include &amp;quot;fad.itp&amp;quot;\n#include &amp;quot;unk.itp&amp;quot;/}&#39; topol.top
+
+sed -i &#39;/; Include forcefield parameters/{:a;N;/#include &amp;quot;.\/charmm36-jul2022.ff\/forcefield.itp&amp;quot;/!ba;s|#include &amp;quot;.\/charmm36-jul2022.ff\/forcefield.itp&amp;quot;|&amp;amp;\n\n; Include ligand parameters\n#include &amp;quot;fad.prm&amp;quot;\n#include &amp;quot;unk.prm&amp;quot;|}&#39; topol.top
+
+sed -i &#39;/\[ molecules \]/,/Protein_chain_A/ {/Protein_chain_A/ a\\nFAD                 1\\nUNK                 1\n}&#39; topol.top
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-9-define-box-and-solvate&#34;&gt;Step 9: Define box and solvate&lt;/h2&gt;
+&lt;p&gt;We place the system in a cubic box with a 1.4 nm buffer and solvate with TIP3P water.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx editconf -f complex.gro -o newbox.gro -bt cubic -c -d 1.4
+gmx solvate -cp newbox.gro -cs spc216.gro -p topol.top -o solv.gro
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-10-add-ions&#34;&gt;Step 10: Add ions&lt;/h2&gt;
+&lt;p&gt;We neutralize the system and add physiological salt concentration (0.15 M NaCl).&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cat &amp;lt;&amp;lt;EOF &amp;gt; ions.mdp
+integrator     = steep
+emtol          = 1000.0
+nsteps         = 50000
+cutoff-scheme  = Verlet
+coulombtype    = PME
+rcoulomb       = 1.0
+rvdw           = 1.0
+constraints    = none
+EOF
+
+gmx grompp -f ions.mdp -c solv.gro -p topol.top -o ions.tpr -maxwarn 3
+gmx genion -s ions.tpr -o solv_ions.gro -p topol.top -pname NA -nname CL -neutral -conc 0.15 &amp;lt;&amp;lt;EOF
+15
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-11-energy-minimization&#34;&gt;Step 11: Energy minimization&lt;/h2&gt;
+&lt;p&gt;We relax steric clashes by running a steepest descent minimization.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx grompp -f em.mdp -c solv_ions.gro -p topol.top -o em.tpr
+gmx mdrun -v -deffnm em
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-12-generate-ligand-restraints&#34;&gt;Step 12: Generate ligand restraints&lt;/h2&gt;
+&lt;p&gt;Ligand restraints are generated for equilibration to avoid large displacements.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx make_ndx -f unk.gro -o index_unk.ndx &amp;lt;&amp;lt; EOF
+0 &amp;amp; ! a H*
+q
+EOF
+
+gmx genrestr -f unk.gro -n index_unk.ndx -o posre_unk.itp -fc 1000 1000 1000 &amp;lt;&amp;lt;EOF
+3
+EOF
+
+sed -i &#39;/; Include water topology/{x;s/.*/\n; Ligand position restraints\n#ifdef POSRES\n#include &amp;quot;posre_unk.itp&amp;quot;\n#endif\n/;G}&#39; topol.top
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-13-create-index-for-complex&#34;&gt;Step 13: Create index for complex&lt;/h2&gt;
+&lt;p&gt;We define a custom index file including protein and ligand groups.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx make_ndx -f solv_ions.gro -o index.ndx &amp;lt;&amp;lt; EOF
+1 | 13
+q
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-14-nvt-equilibration&#34;&gt;Step 14: NVT equilibration&lt;/h2&gt;
+&lt;p&gt;We equilibrate temperature at 300 K with position restraints.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx grompp -f nvt.mdp -c solv_ions.gro -r solv_ions.gro -p topol.top -n index.ndx -o nvt.tpr
+gmx mdrun -deffnm nvt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-15-npt-equilibration&#34;&gt;Step 15: NPT equilibration&lt;/h2&gt;
+&lt;p&gt;We equilibrate pressure at 1 bar using the Parrinello-Rahman barostat.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx grompp -f npt.mdp -c nvt.gro -t nvt.cpt -r nvt.gro -p topol.top -n index.ndx -o npt.tpr
+gmx mdrun -deffnm npt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-16-production-md&#34;&gt;Step 16: Production MD&lt;/h2&gt;
+&lt;p&gt;Finally, we run a 100 ns production simulation in the NPT ensemble.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -n index.ndx -o md_0_100.tpr
+gmx mdrun -deffnm md_0_100
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;notes&#34;&gt;Notes&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Always &lt;strong&gt;fix PBC&lt;/strong&gt; before analysis.&lt;/li&gt;
+&lt;li&gt;Discard the first &lt;strong&gt;5–10 ns&lt;/strong&gt; of equilibration before data collection.&lt;/li&gt;
+&lt;li&gt;Stable &lt;strong&gt;RMSD, Rg, SASA&lt;/strong&gt; values indicate good simulation behavior.&lt;/li&gt;
+&lt;li&gt;Use &lt;strong&gt;PCA/FEL&lt;/strong&gt; to explore large-scale motions and free energy landscapes.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Molecular Simulation in Drug Discovery: A Strategic Guide to Core Methods</title>
+      <link>https://yboulaamane.github.io/blog/molecular-simulation-in-drug-discovery-a-strategic-guide-to-core-methods/</link>
+      <pubDate>Wed, 08 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/molecular-simulation-in-drug-discovery-a-strategic-guide-to-core-methods/</guid>
+      <description>&lt;p&gt;Molecular simulation has emerged as a cornerstone in modern drug discovery, enabling researchers to predict and understand molecular behavior across scales. From the atomic resolution of quantum mechanical models to the mesoscale insights of coarse-grained systems, the range of available techniques is vast. Each method offers unique capabilities, making them invaluable tools when applied judiciously to specific drug discovery problems.
+This post offers a coherent overview of the most widely used molecular simulation methods in drug development. The aim is not only to clarify what each method does, but to provide insight into how and when they are best used — especially for early-career scientists and interdisciplinary teams navigating increasingly complex pipelines.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://raw.githubusercontent.com/yboulaamane/yboulaamane.github.io/refs/heads/master/images/posts/md.jpg&#34; alt=&#34;Recap of Molecular Simulation Methods&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;-quantum-mechanics-precision-at-the-electronic-level&#34;&gt;🔬 Quantum Mechanics: Precision at the Electronic Level&lt;/h2&gt;
+&lt;p&gt;Quantum mechanical (QM) methods are the most fundamental level of simulation, solving the Schrödinger equation to describe the behavior of electrons within molecules. In drug discovery, their primary utility lies in modeling chemical reactivity, enzymatic mechanisms, and molecular properties that depend on electronic structure. QM calculations are routinely used to characterize transition states, derive force field parameters, and evaluate the electronic distribution in drug–target complexes, particularly when metal ions or covalent interactions are involved.&lt;/p&gt;
+&lt;p&gt;However, QM simulations are computationally intensive, restricting their application to relatively small systems or localized regions of interest, such as enzyme active sites. To address this, hybrid approaches like QM/MM (quantum mechanics/molecular mechanics) allow the detailed modeling of a reactive center within a broader biological system, balancing accuracy and feasibility.&lt;/p&gt;
+&lt;h2 id=&#34;-molecular-dynamics-tracking-molecular-motion-over-time&#34;&gt;🧪 Molecular Dynamics: Tracking Molecular Motion Over Time&lt;/h2&gt;
+&lt;p&gt;Molecular dynamics (MD) simulations occupy the center of the simulation spectrum, offering atomistic insights into molecular behavior over time by solving Newton’s equations of motion. MD is widely used to investigate protein dynamics, ligand binding, solvent effects, and structural stability. Its primary strength lies in providing time-resolved information about molecular conformations, which is essential for validating docking poses, studying induced fit mechanisms, and calculating thermodynamic properties such as binding free energies.&lt;/p&gt;
+&lt;p&gt;The major challenge in MD is sampling — simulations can become trapped in local minima, failing to explore relevant conformational states. To overcome this, enhanced sampling techniques such as metadynamics, accelerated MD, and replica exchange MD have been developed, allowing for more efficient exploration of energy landscapes. When combined with robust force fields and explicit solvent models, MD becomes a powerful tool for validating hypotheses, predicting structure–function relationships, and guiding lead optimization.&lt;/p&gt;
+&lt;h2 id=&#34;-coarse-grained-md-scaling-up-without-losing-insight&#34;&gt;⚙️ Coarse-Grained MD: Scaling Up Without Losing Insight&lt;/h2&gt;
+&lt;p&gt;While all-atom MD provides detailed information, it becomes prohibitively expensive for large or complex systems. Coarse-grained molecular dynamics (CGMD) addresses this by simplifying the representation of molecules — grouping atoms into larger “beads” — thereby reducing computational overhead and smoothing the energy landscape. This abstraction allows the simulation of mesoscale phenomena such as membrane remodeling, vesicle formation, and nanoparticle self-assembly.&lt;/p&gt;
+&lt;p&gt;In drug discovery, CGMD is especially useful for studying processes that occur over long timescales or involve large supramolecular assemblies, such as the behavior of drug delivery systems and the formation of lipid rafts. Although it lacks atomic detail, CGMD provides qualitative and semi-quantitative insights into the dynamics and organization of biological membranes and nanocarriers, helping to optimize formulations and delivery strategies.&lt;/p&gt;
+&lt;h2 id=&#34;-monte-carlo-methods-efficient-sampling-and-free-energy-estimation&#34;&gt;🎲 Monte Carlo Methods: Efficient Sampling and Free Energy Estimation&lt;/h2&gt;
+&lt;p&gt;Monte Carlo (MC) simulations take a different approach by using random sampling to explore a system’s phase space. Rather than evolving a system over time, MC simulations generate configurations based on probability, making them efficient for systems with rugged energy landscapes. In drug discovery, MC is widely used for conformational sampling, protein side-chain modeling, and free energy calculations, particularly in docking workflows.&lt;/p&gt;
+&lt;p&gt;Grand canonical Monte Carlo (GCMC) techniques extend this framework by allowing the insertion and deletion of molecules — such as water — in a simulation box, which is useful for identifying binding hotspots and hydration sites in protein structures. This capability is particularly valuable during the lead optimization phase, where understanding solvation effects can inform the design of more potent ligands.&lt;/p&gt;
+&lt;h2 id=&#34;-brownian-dynamics-capturing-long-timescale-diffusion&#34;&gt;🌊 Brownian Dynamics: Capturing Long-Timescale Diffusion&lt;/h2&gt;
+&lt;p&gt;Brownian dynamics (BD) simplifies the simulation of molecular motion by neglecting inertia and focusing on diffusion-driven behavior under thermal noise. This allows for the simulation of much longer timescales than MD, albeit at the cost of structural and energetic detail. BD is particularly useful for modeling molecular recognition events, such as the initial encounter between a ligand and a target protein.&lt;/p&gt;
+&lt;p&gt;In the context of drug discovery, BD is often used to estimate association rate constants (kon) or to model how molecules diffuse through crowded environments, such as cellular compartments. By focusing on diffusive behavior, BD complements atomistic MD, enabling a multiscale view of binding events.&lt;/p&gt;
+&lt;h2 id=&#34;-langevin-dynamics-bridging-time-and-temperature-control&#34;&gt;💧 Langevin Dynamics: Bridging Time and Temperature Control&lt;/h2&gt;
+&lt;p&gt;Langevin dynamics (LD) enhances traditional MD by introducing friction and random forces to mimic solvent effects and maintain temperature control. This stochastic approach is especially useful for simulations in implicit solvent models, or when a simple thermostat is needed to stabilize the system.&lt;/p&gt;
+&lt;p&gt;LD is often used in systems where damping effects — such as those found in intracellular environments — play a role in modulating dynamics. It provides a smoother simulation trajectory and can accelerate equilibration, making it a practical tool for early-stage explorations of ligand binding or conformational changes.&lt;/p&gt;
+&lt;h2 id=&#34;-dissipative-particle-dynamics-modeling-soft-matter-systems&#34;&gt;🌀 Dissipative Particle Dynamics: Modeling Soft Matter Systems&lt;/h2&gt;
+&lt;p&gt;Dissipative particle dynamics (DPD) is a mesoscale simulation technique tailored for soft matter systems, such as polymers, lipids, and surfactants. Like CGMD, DPD uses coarse-grained particles, but adds hydrodynamic interactions via dissipative and random forces that preserve momentum. This makes it especially suitable for modeling flow, self-assembly, and large-scale organization in complex fluids.&lt;/p&gt;
+&lt;p&gt;In drug discovery, DPD is increasingly applied to the study of drug delivery systems — from nanoparticle encapsulation to vesicle formation and drug release. It allows researchers to simulate phenomena that are difficult to capture with more detailed methods, making it an essential tool in pharmaceutical formulation and nanomedicine research.&lt;/p&gt;
+&lt;h2 id=&#34;-hybrid-and-multiscale-approaches-the-future-of-simulation&#34;&gt;🔁 Hybrid and Multiscale Approaches: The Future of Simulation&lt;/h2&gt;
+&lt;p&gt;As biological questions grow more complex, so does the need for simulation approaches that integrate different levels of theory. Hybrid methods — such as QM/MM — combine the strengths of high-resolution QM with the scalability of classical MD. Multiscale pipelines also pair BD with MD, or CGMD with atomistic refinement, to explore phenomena across spatial and temporal scales.&lt;/p&gt;
+&lt;p&gt;These approaches are not only more realistic but increasingly necessary. Whether it’s using BD to guide a ligand to its target, MD to refine the binding pose, and QM to compute the final interaction energy — multiscale strategies provide a comprehensive view of drug–target interactions that would be inaccessible with a single method.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Each molecular simulation method offers a distinct window into the behavior of biomolecules and drug candidates. By understanding the strengths and limitations of each technique — from the quantum accuracy of QM to the system-wide insights of DPD — researchers can better design studies, interpret results, and make informed decisions in the drug discovery process.&lt;/p&gt;
+&lt;p&gt;Ultimately, the power of molecular simulation lies in using the right tool for the right question — and, increasingly, in combining those tools into coherent, multiscale workflows. As computational power and algorithms continue to improve, these simulations will only become more predictive, more accessible, and more central to the future of drug discovery.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>GMXPlotter</title>
+      <link>https://yboulaamane.github.io/project/gmxplotter/</link>
+      <pubDate>Sun, 27 Aug 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/gmxplotter/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Understanding Molecular Dynamics Simulations</title>
+      <link>https://yboulaamane.github.io/blog/understanding-molecular-dynamics-simulations/</link>
+      <pubDate>Sun, 12 Mar 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/understanding-molecular-dynamics-simulations/</guid>
+      <description>&lt;p&gt;Hey there! Today, let&amp;rsquo;s talk about Molecular Dynamics (MD) simulation and how it can help us understand the behavior of complex molecular systems.
+MD simulation works by creating an initial configuration of a system, including the positions, velocities, and masses of all atoms or molecules. The simulation then calculates the forces acting on each particle based on their interactions with other particles in the system.&lt;/p&gt;
+&lt;p&gt;These forces are used to update the positions and velocities of each particle over a small time step, typically in the femtosecond to picosecond range. The simulation is repeated for many time steps, allowing the system to evolve over time.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://raw.githubusercontent.com/yboulaamane/yboulaamane.github.io/615fbbb664d302cce6cb72ed92b1e228ca3f45ec/_blog/5post-1.png&#34; alt=&#34;Figure1&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 1:  Example MD simulation output plots&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;One of the coolest things about MD simulation is its ability to provide insights into the behavior of complex molecular systems that are difficult or impossible to study experimentally. For example, it can be used to study the behavior of proteins, which are crucial for many biological processes. By simulating the motion of individual atoms and molecules, researchers can gain insights into the structure and function of proteins, including how they interact with other molecules and how their structure changes over time.&lt;/p&gt;
+&lt;p&gt;MD simulation is also widely used in the field of materials science. It can model the behavior of polymers, ceramics, metals, and other materials, providing insight into their mechanical properties, stability, and behavior under different conditions. By simulating the behavior of materials at the atomic scale, researchers can develop a deeper understanding of how they behave and how they can be optimized for specific applications.&lt;/p&gt;
+&lt;p&gt;One of the strengths of MD simulation is its ability to model complex systems that have a large number of particles. Proteins, for example, are made up of thousands of atoms, making them difficult to study experimentally. However, by using MD simulation, researchers can study the behavior of these systems in detail, gaining insights into their structure, function, and behavior.&lt;/p&gt;
+&lt;p&gt;Another advantage of MD simulation is its ability to simulate systems under a wide range of conditions, including different temperatures, pressures, and chemical environments. This makes it a powerful tool for studying how systems behave under different conditions and how they respond to changes in their environment.&lt;/p&gt;
+&lt;p&gt;While MD simulation has its limitations, such as accurately modeling the interactions between particles and the computational cost, advances in computing technology have made it more accessible. Researchers are constantly developing new algorithms and techniques to improve the accuracy and efficiency of simulations.&lt;/p&gt;
+&lt;p&gt;So, what are some common visualizations used in MD simulations? Trajectories show the positions of particles in a system over time, energy plots show the total energy of a system over time, radial distribution functions measure how particles are distributed around a central particle, and density plots show the density of particles in a system as a function of position.&lt;/p&gt;
+&lt;p&gt;In conclusion, MD simulation is a powerful tool for studying the behavior of complex molecular systems, from proteins to materials. It has the potential to provide new insights into a wide range of scientific and technological applications, from drug design to energy storage. If you&amp;rsquo;re interested in learning more about MD simulation, be sure to check out the different types of simulations and visualizations used in the field.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>How Long Should Molecular Dynamics Simulations Run? A Practical Guide</title>
+      <link>https://yboulaamane.github.io/blog/determining-the-appropriate-length-for-proteinligand-md-simulations/</link>
+      <pubDate>Mon, 09 Jan 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/determining-the-appropriate-length-for-proteinligand-md-simulations/</guid>
+      <description>&lt;p&gt;Molecular dynamics (MD) simulations are a central technique in computational drug discovery, offering atomistic insights into the behavior of protein-ligand complexes. One of the most common practical questions when setting up such simulations is: &lt;em&gt;How long should they run?&lt;/em&gt; The answer depends heavily on the complexity of the system, the research question, and the type of molecular events you aim to observe.&lt;/p&gt;
+&lt;h2 id=&#34;general-timeframes-for-proteinligand-simulations&#34;&gt;General Timeframes for Protein–Ligand Simulations&lt;/h2&gt;
+&lt;p&gt;There is no one-size-fits-all answer, but several time ranges have become standard based on prior experience and published studies:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;50–100 nanoseconds&lt;/strong&gt;: Typically sufficient for analyzing initial binding stability, particularly with small, rigid ligands and relatively stable protein structures.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;100–200 nanoseconds&lt;/strong&gt;: Useful for exploring ligand flexibility, side-chain reorganization, or early conformational transitions within the binding pocket.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;200–500 nanoseconds&lt;/strong&gt;: Recommended for studying slower events, such as partial unbinding, induced fit mechanisms, or domain-level conformational shifts.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;500 nanoseconds to 1 microsecond (or more)&lt;/strong&gt;: Required when investigating long-timescale processes, such as allosteric communication, full ligand unbinding, or global protein rearrangements.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These are only guidelines. The required simulation time may vary considerably depending on the nature of the system and the endpoints of interest.&lt;/p&gt;
+&lt;h2 id=&#34;assessing-convergence-when-can-you-trust-the-results&#34;&gt;Assessing Convergence: When Can You Trust the Results?&lt;/h2&gt;
+&lt;p&gt;In MD simulations, convergence refers to the point at which key structural and energetic properties stabilize. If your system hasn&amp;rsquo;t converged, any conclusions drawn—no matter how long the simulation—may be unreliable.&lt;/p&gt;
+&lt;h3 id=&#34;key-convergence-metrics&#34;&gt;Key Convergence Metrics&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;1. Root Mean Square Deviation (RMSD)&lt;/strong&gt;&lt;br&gt;
+Tracks the structural deviation of atoms (commonly the protein backbone) over time. A stable RMSD plateau suggests that the structure has equilibrated. A continually rising RMSD implies ongoing rearrangement or instability.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. Root Mean Square Fluctuation (RMSF)&lt;/strong&gt;&lt;br&gt;
+Measures per-residue flexibility across the simulation. Once the system is stable, RMSF profiles tend to show consistent patterns across time windows. Large fluctuations may signal that equilibrium has not been achieved.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3. Energy Stability&lt;/strong&gt;&lt;br&gt;
+Monitoring total, potential, and kinetic energy can help confirm that the system has reached thermodynamic equilibrium. Sharp energy fluctuations or long-term drift suggest insufficient equilibration.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;4. Secondary Structure Content&lt;/strong&gt;&lt;br&gt;
+For proteins, consistent secondary structure (e.g., helices, sheets) is a good indicator of folding stability. If secondary structures shift frequently, especially after the initial equilibration period, further simulation may be needed.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;5. Interaction Fingerprint Stability&lt;/strong&gt;&lt;br&gt;
+The persistence of key protein-ligand contacts—hydrogen bonds, salt bridges, π–π stacking, etc.—is critical. Stable interaction profiles across the trajectory indicate that the binding pose is likely valid.&lt;/p&gt;
+&lt;h2 id=&#34;an-illustrative-scenario&#34;&gt;An Illustrative Scenario&lt;/h2&gt;
+&lt;p&gt;Consider a protein-ligand system where the RMSD increases during the first 50 nanoseconds as the complex settles into a favorable binding mode. Around 100 nanoseconds, the RMSD plateaus, interaction fingerprints become consistent, and total energy stabilizes. These indicators suggest the system has likely converged, and extending the simulation might not yield significantly different results.&lt;/p&gt;
+&lt;p&gt;On the other hand, if the ligand continues to shift within the binding pocket or protein domains undergo progressive rearrangement, longer simulations or enhanced sampling approaches may be required.&lt;/p&gt;
+&lt;h2 id=&#34;factors-influencing-simulation-time&#34;&gt;Factors Influencing Simulation Time&lt;/h2&gt;
+&lt;p&gt;Several variables determine how long your simulation should run:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;System size and flexibility&lt;/strong&gt;: Larger and more flexible proteins typically require longer simulations to sample relevant conformational space.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Ligand dynamics&lt;/strong&gt;: Flexible or highly rotatable ligands may explore multiple poses, requiring more time to identify dominant binding modes.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Scientific objective&lt;/strong&gt;: Short simulations may suffice for pose validation, while mechanistic studies (e.g., unbinding) demand longer runs.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Replicates&lt;/strong&gt;: Multiple shorter runs can often provide better statistical reliability than a single long trajectory.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Convergence monitoring&lt;/strong&gt;: Regularly assess key observables (RMSD, energy, interactions) to determine whether additional sampling is necessary.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;final-thoughts&#34;&gt;Final Thoughts&lt;/h2&gt;
+&lt;p&gt;For most protein-ligand MD simulations, a range of 50 to 200 nanoseconds is typically sufficient for analyzing pose stability and interaction patterns. However, in cases where you’re studying complex events—such as ligand unbinding, allosteric modulation, or major conformational shifts—longer simulations may be warranted. Ultimately, simulation length should be guided not by arbitrary cutoffs, but by careful monitoring of convergence and system behavior over time.&lt;/p&gt;
+&lt;p&gt;Be cautious when interpreting results from under-converged simulations. Without evidence of structural or energetic stability, conclusions about binding modes or molecular mechanisms may be premature.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Electronic Structure | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/electronic-structure/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/electronic-structure/index.xml" rel="self" type="application/rss+xml" />
+    <description>Electronic Structure</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 24 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Electronic Structure</title>
+      <link>https://yboulaamane.github.io/tags/electronic-structure/</link>
+    </image>
+    
+    <item>
+      <title>Stop Using B3LYP/6-31G*: Critical Pitfalls in Modern DFT Calculations and How to Avoid Them</title>
+      <link>https://yboulaamane.github.io/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/</link>
+      <pubDate>Wed, 24 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/</guid>
+      <description>&lt;p&gt;Density Functional Theory (DFT) has become the workhorse of computational chemistry, enabling routine access to molecular structures, reaction mechanisms, and noncovalent interactions at a reasonable computational cost. However, as with molecular dynamics simulations, DFT is not a black-box technique. Seemingly minor methodological choices can introduce systematic errors that quietly undermine the physical validity of the results.&lt;/p&gt;
+&lt;p&gt;One of the most persistent problems in the field is the continued use of outdated protocols—most notably &lt;strong&gt;B3LYP/6-31G&lt;/strong&gt;*—long after their limitations have been clearly demonstrated. These calculations rarely fail numerically. Instead, they produce results that appear reasonable while being quantitatively wrong.&lt;/p&gt;
+&lt;p&gt;This article outlines the most critical pitfalls in modern DFT calculations and provides best-practice strategies to ensure accuracy, robustness, and reproducibility.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-treating-b3lyp6-31g-as-a-safe-default&#34;&gt;1. Treating B3LYP/6-31G* as a Safe Default&lt;/h2&gt;
+&lt;p&gt;For many years, B3LYP/6-31G* was considered an acceptable compromise between accuracy and efficiency. Today, this assumption is no longer valid. This protocol lacks an explicit description of London dispersion interactions and suffers from severe basis set limitations, leading to artificial error cancellation.&lt;/p&gt;
+&lt;p&gt;As a result, reaction energies, conformational preferences, and intermolecular interactions are often misrepresented, with errors frequently exceeding chemical accuracy.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;br&gt;
+B3LYP/6-31G* should be avoided for production calculations. Modern alternatives such as &lt;strong&gt;r²SCAN-3c&lt;/strong&gt; or dispersion-corrected functionals with appropriate basis sets provide substantially improved accuracy at comparable computational cost.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;2-ignoring-london-dispersion-interactions&#34;&gt;2. Ignoring London Dispersion Interactions&lt;/h2&gt;
+&lt;p&gt;Standard DFT functionals do not account for long-range electron correlation. Without explicit correction, dispersion interactions are entirely absent, leading to overly repulsive potential energy surfaces.&lt;/p&gt;
+&lt;p&gt;This omission severely affects noncovalent interactions, conformational equilibria, and binding energies.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;br&gt;
+Dispersion corrections are mandatory in modern DFT. Always include schemes such as &lt;strong&gt;D3(BJ)&lt;/strong&gt; or &lt;strong&gt;D4&lt;/strong&gt;, or use functionals with built-in nonlocal correlation. The additional cost is negligible compared to the improvement in physical realism.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;3-using-inadequate-basis-sets-without-correction&#34;&gt;3. Using Inadequate Basis Sets Without Correction&lt;/h2&gt;
+&lt;p&gt;Small basis sets such as 6-31G* suffer from &lt;strong&gt;basis set superposition error (BSSE)&lt;/strong&gt;. This artifact artificially stabilizes interacting fragments by allowing them to borrow basis functions from each other.&lt;/p&gt;
+&lt;p&gt;In many cases, BSSE leads to misleading agreement with experiment due to compensating errors.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;br&gt;
+Use &lt;strong&gt;triple-zeta or larger basis sets&lt;/strong&gt; for energetic quantities whenever possible. If smaller basis sets must be used, apply &lt;strong&gt;geometric counterpoise corrections (gCP)&lt;/strong&gt; or use composite methods that correct BSSE by construction.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;4-applying-a-single-level-of-theory-to-all-properties&#34;&gt;4. Applying a Single Level of Theory to All Properties&lt;/h2&gt;
+&lt;p&gt;A common misconception is that one functional and basis set combination is equally suitable for geometries, reaction energies, and barrier heights. In practice, different properties have very different sensitivities to the electronic structure method.&lt;/p&gt;
+&lt;p&gt;Methods that perform well for structures may fail badly for kinetics.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;br&gt;
+Choose the method based on the target property. Efficient composite methods are ideal for geometry optimization, while reaction energies and barrier heights require higher-rung functionals and larger basis sets.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;5-underestimating-self-interaction-error-in-barrier-heights&#34;&gt;5. Underestimating Self-Interaction Error in Barrier Heights&lt;/h2&gt;
+&lt;p&gt;Transition states are particularly sensitive to &lt;strong&gt;self-interaction error (SIE)&lt;/strong&gt;. Many (meta-)GGA functionals systematically underestimate activation barriers, leading to incorrect kinetic predictions and flawed mechanistic conclusions.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;br&gt;
+Barrier height calculations should include &lt;strong&gt;Fock exchange&lt;/strong&gt;. Range-separated hybrid functionals are especially effective at reducing SIE while maintaining balanced energetics.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;6-neglecting-solvation-effects&#34;&gt;6. Neglecting Solvation Effects&lt;/h2&gt;
+&lt;p&gt;Gas-phase calculations are frequently compared to experimental data obtained in solution. For polar or charged systems, this mismatch can dominate the total error.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;br&gt;
+Include solvation effects routinely when modeling condensed-phase chemistry. Modern implicit models such as &lt;strong&gt;SMD&lt;/strong&gt; or &lt;strong&gt;COSMO-RS&lt;/strong&gt; provide a physically meaningful description beyond simple electrostatics.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;7-relying-on-a-single-conformer-for-flexible-molecules&#34;&gt;7. Relying on a Single Conformer for Flexible Molecules&lt;/h2&gt;
+&lt;p&gt;Many molecules populate multiple conformations at ambient temperature. Evaluating only a single optimized structure can lead to incorrect thermodynamic and kinetic predictions.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;br&gt;
+Perform conformational sampling and compute &lt;strong&gt;Boltzmann-weighted averages&lt;/strong&gt; for relevant properties. Automated tools now make this feasible even for moderately large systems.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;8-overinterpreting-numerical-agreement-with-experiment&#34;&gt;8. Overinterpreting Numerical Agreement with Experiment&lt;/h2&gt;
+&lt;p&gt;Agreement between calculated and experimental values does not guarantee correctness. Apparent accuracy can arise from compensating errors, particularly when outdated methods are used.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Solution:&lt;/strong&gt;&lt;br&gt;
+Prioritize methodological robustness over coincidence. Use approaches that perform consistently across diverse chemical problems rather than relying on fortuitous agreement.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;final-takeaway&#34;&gt;Final Takeaway&lt;/h2&gt;
+&lt;p&gt;Modern DFT best practice is not about increasing computational cost—it is about avoiding known failure modes. Legacy protocols persist largely due to familiarity, not reliability.&lt;/p&gt;
+&lt;p&gt;Replacing B3LYP/6-31G* with contemporary, well-validated methods significantly improves accuracy at little to no additional cost and aligns computational results with physical reality.&lt;/p&gt;
+&lt;p&gt;A calculation that runs smoothly is not necessarily correct. In DFT, as in molecular dynamics, methodological rigor is essential for meaningful scientific insight.&lt;/p&gt;
+&lt;h2 id=&#34;reference-paper&#34;&gt;Reference Paper&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Bursch, M., Mewes, J.-M., Hansen, A., &amp;amp; Grimme, S.&lt;/strong&gt; (2022). Best-Practice DFT Protocols for Basic Molecular Computational Chemistry. &lt;em&gt;Angewandte Chemie International Edition&lt;/em&gt;, 61, e202205735.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

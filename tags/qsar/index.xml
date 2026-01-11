@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>QSAR | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/qsar/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/qsar/index.xml" rel="self" type="application/rss+xml" />
+    <description>QSAR</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Fri, 15 Aug 2025 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>QSAR</title>
+      <link>https://yboulaamane.github.io/tags/qsar/</link>
+    </image>
+    
+    <item>
+      <title>QSARBoost</title>
+      <link>https://yboulaamane.github.io/project/qsarboost/</link>
+      <pubDate>Fri, 15 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/qsarboost/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>QSARBioPred</title>
+      <link>https://yboulaamane.github.io/project/qsarbiopred/</link>
+      <pubDate>Tue, 07 May 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/qsarbiopred/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Using PaDELPy to Generate Molecular Fingerprints for Machine Learning-Based QSAR</title>
+      <link>https://yboulaamane.github.io/blog/using-padelpy-generate-molecular-fingerprints-machine-learning-based-qsar/</link>
+      <pubDate>Wed, 15 Mar 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/using-padelpy-generate-molecular-fingerprints-machine-learning-based-qsar/</guid>
+      <description>&lt;p&gt;PaDELPy is a Python library that integrates the PaDEL-Descriptor molecular descriptor calculation software, allowing efficient generation of molecular fingerprints for machine learning-based quantitative structure-activity relationship (QSAR) models in drug discovery.&lt;/p&gt;
+&lt;p&gt;Machine learning models, created by training algorithms to recognize data patterns, can be either supervised or unsupervised, applied in classification, regression, and more. Here, we’ll explore using PaDELPy to generate fingerprints that are crucial in predictive QSAR modeling, specifically targeting molecular activity prediction within the HCV Drug dataset.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225259643-df0568cd-1cfe-4395-aa7e-980902108f25.png&#34; alt=&#34;Molecular Fingerprint&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;what-is-padelpy&#34;&gt;What Is PaDELPy?&lt;/h2&gt;
+&lt;p&gt;PaDELPy is a Python wrapper for the Java-based PaDEL-Descriptor software, streamlining molecular descriptor calculations. With PaDELPy, you can easily compute molecular fingerprints, avoiding the complexity of Java setup and reducing the time required for implementation.&lt;/p&gt;
+&lt;h2 id=&#34;getting-started-with-the-code&#34;&gt;Getting Started with the Code&lt;/h2&gt;
+&lt;p&gt;In this tutorial, we will create a machine learning model using Random Forest to predict molecular activity within the HCV Drug dataset. The dataset is available 
+.&lt;/p&gt;
+&lt;p&gt;To install the PaDELPy library, use the following:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Installing the library
+!pip install padelpy
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Download and configure XML data files required by PaDELPy:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Downloading XML data files
+!wget https://github.com/dataprofessor/padel/raw/main/fingerprints_xml.zip
+!unzip fingerprints_xml.zip
+
+
+# Listing and sorting downloaded files
+import glob
+xml_files = glob.glob(&amp;quot;*.xml&amp;quot;)
+xml_files.sort()
+xml_files
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Output:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[&#39;AtomPairs2DFingerprintCount.xml&#39;, &#39;AtomPairs2DFingerprinter.xml&#39;, &#39;EStateFingerprinter.xml&#39;, ...]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Create a list of available fingerprint types:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Creating a list of present files
+FP_list = [&#39;AtomPairs2DCount&#39;, &#39;AtomPairs2D&#39;, &#39;EState&#39;, &#39;CDKextended&#39;, &#39;CDK&#39;, &#39;CDKgraphonly&#39;, 
+		   &#39;KlekotaRothCount&#39;, &#39;KlekotaRoth&#39;, &#39;MACCS&#39;, &#39;PubChem&#39;, &#39;SubstructureCount&#39;, &#39;Substructure&#39;]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Create a data dictionary of file names for easy reference:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Creating Data Dictionary
+fp = dict(zip(FP_list, xml_files))
+fp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;After setting up, load the dataset:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Loading the dataset
+import pandas as pd
+df = pd.read_csv(&#39;https://raw.githubusercontent.com/dataprofessor/data/master/HCV_NS5B_Curated.csv&#39;)
+df.head()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Prepare the data by concatenating necessary columns:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Concatenating necessary columns
+df2 = pd.concat([df[&#39;CANONICAL_SMILES&#39;], df[&#39;CMPD_CHEMBLID&#39;]], axis=1)
+df2.to_csv(&#39;molecule.smi&#39;, sep=&#39;\t&#39;, index=False, header=False)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Select a fingerprint type and calculate descriptors:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Setting the fingerprint module
+from padelpy import padeldescriptor
+fingerprint = &#39;Substructure&#39;
+fingerprint_output_file = &#39;&#39;.join([fingerprint, &#39;.csv&#39;])  # Substructure.csv
+fingerprint_descriptortypes = fp[fingerprint]
+
+padeldescriptor(mol_dir=&#39;molecule.smi&#39;, 
+				d_file=fingerprint_output_file,
+				descriptortypes=fingerprint_descriptortypes,
+				detectaromaticity=True,
+				standardizenitro=True,
+				standardizetautomers=True,
+				threads=2,
+				removesalt=True,
+				log=True,
+				fingerprints=True)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Display calculated fingerprints:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;descriptors = pd.read_csv(fingerprint_output_file)
+descriptors.head()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Creating a Random Forest Model
+Using the processed data, create a Random Forest model for classification.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;X = descriptors.drop(&#39;Name&#39;, axis=1)
+y = df[&#39;Activity&#39;]  # Target variable
+
+# Removing low variance features
+from sklearn.feature_selection import VarianceThreshold
+
+def remove_low_variance(input_data, threshold=0.1):
+	selection = VarianceThreshold(threshold)
+	selection.fit(input_data)
+	return input_data[input_data.columns[selection.get_support(indices=True)]]
+
+X = remove_low_variance(X, threshold=0.1)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Split data into training and testing sets:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Splitting into Train and Test sets
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Train the Random Forest model:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;from sklearn.ensemble import RandomForestClassifier
+model = RandomForestClassifier(n_estimators=500, random_state=42)
+model.fit(X_train, y_train)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Evaluate model performance using Matthews Correlation Coefficient (MCC):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Making predictions
+y_train_pred = model.predict(X_train)
+y_test_pred = model.predict(X_test)
+
+
+# Calculating MCC for train and test
+from sklearn.metrics import matthews_corrcoef
+mcc_train = matthews_corrcoef(y_train, y_train_pred)
+mcc_test = matthews_corrcoef(y_test, y_test_pred)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Perform 5-fold cross-validation:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import pandas as pd
+performance_metrics = pd.DataFrame({
+	&#39;Model&#39;: [&#39;Random Forest&#39;],
+	&#39;MCC_Train&#39;: [mcc_train],
+	&#39;MCC_CV&#39;: [mcc_cv],
+	&#39;MCC_Test&#39;: [mcc_test]
+})
+performance_metrics
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Consolidate performance metrics into a single DataFrame:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import pandas as pd
+performance_metrics = pd.DataFrame({
+	&#39;Model&#39;: [&#39;Random Forest&#39;],
+	&#39;MCC_Train&#39;: [mcc_train],
+	&#39;MCC_CV&#39;: [mcc_cv],
+	&#39;MCC_Test&#39;: [mcc_test]
+})
+performance_metrics
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;In this tutorial, we explored using PaDELPy to calculate molecular fingerprints, then developed a Random Forest model to predict molecular drug activity. The high Matthews Correlation Coefficient values suggest that this model is effective on the current dataset, though other algorithms could also be evaluated for further optimization.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

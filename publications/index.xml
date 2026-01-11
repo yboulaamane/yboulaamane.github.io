@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Publications | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/publications/</link>
+      <atom:link href="https://yboulaamane.github.io/publications/index.xml" rel="self" type="application/rss+xml" />
+    <description>Publications</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Fri, 24 Oct 2025 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Publications</title>
+      <link>https://yboulaamane.github.io/publications/</link>
+    </image>
+    
+    <item>
+      <title>Drug Repurposing for AML: Structure-Based Virtual Screening and Molecular Simulations of FDA-Approved Compounds with Polypharmacological Potential</title>
+      <link>https://yboulaamane.github.io/publications/paper-17/</link>
+      <pubDate>Fri, 24 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-17/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Computational screening of natural products as tryptophan 2,3-dioxygenase inhibitors: Insights from CNN-based QSAR, molecular docking, ADMET, and molecular dynamics simulations</title>
+      <link>https://yboulaamane.github.io/publications/paper-16/</link>
+      <pubDate>Mon, 14 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-16/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Virtual Screening and Identification of Natural Molecules as Promising Quorum Sensing Inhibitors against Pseudomonas aeruginosa</title>
+      <link>https://yboulaamane.github.io/publications/paper-15/</link>
+      <pubDate>Sat, 15 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-15/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Computational Investigation of Phytochemicals from Aloysia citriodora as Drug Targets for Parkinson’s Disease-Associated Proteins</title>
+      <link>https://yboulaamane.github.io/publications/paper-14/</link>
+      <pubDate>Wed, 11 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-14/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Metal and Metal Oxide Nanoparticles: Computational Analysis of Their Interactions and Antibacterial Activities Against Pseudomonas aeruginosa</title>
+      <link>https://yboulaamane.github.io/publications/paper-13/</link>
+      <pubDate>Thu, 05 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-13/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Computational exploration of acefylline derivatives as MAO-B inhibitors for Parkinson’s disease: insights from molecular docking, DFT, ADMET, and molecular dynamics approaches</title>
+      <link>https://yboulaamane.github.io/publications/paper-12/</link>
+      <pubDate>Tue, 08 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-12/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>In silico Discovery of Dual Ligands Targeting MAO-B and AA2AR from African Natural Products Using Pharmacophore Modelling, Molecular Docking, and Molecular Dynamics Simulations</title>
+      <link>https://yboulaamane.github.io/publications/paper-11/</link>
+      <pubDate>Mon, 09 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-11/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Identification of Natural Inhibitors of SARS-CoV-2 Main Protease (Mpro) via Structure-Based Virtual Screening and Molecular Dynamics Simulations</title>
+      <link>https://yboulaamane.github.io/publications/paper-10/</link>
+      <pubDate>Tue, 27 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-10/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Dendrobium nobile alkaloids modulate calcium dysregulation and neuroinflammation in Alzheimer&#39;s disease: A bioinformatic analysis</title>
+      <link>https://yboulaamane.github.io/publications/paper-9/</link>
+      <pubDate>Mon, 05 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-9/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Antibiotic discovery with artificial intelligence for the treatment of Acinetobacter baumannii infections</title>
+      <link>https://yboulaamane.github.io/publications/paper-8/</link>
+      <pubDate>Fri, 03 May 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-8/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Identification of novel dual acting ligands targeting the adenosine A2A and serotonin 5-HT1A receptors</title>
+      <link>https://yboulaamane.github.io/publications/paper-7/</link>
+      <pubDate>Wed, 18 Oct 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-7/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Exploring natural products as multi-target-directed drugs for Parkinson’s disease: an in-silico approach integrating QSAR, pharmacophore modeling, and molecular dynamics simulations</title>
+      <link>https://yboulaamane.github.io/publications/paper-6/</link>
+      <pubDate>Wed, 27 Sep 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-6/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Probing the molecular mechanisms of α-synuclein inhibitors unveils promising natural candidates through machine-learning QSAR, pharmacophore modeling, and molecular dynamics simulations</title>
+      <link>https://yboulaamane.github.io/publications/paper-5/</link>
+      <pubDate>Tue, 18 Jul 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-5/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Chemical library design, QSAR modeling and molecular dynamics simulations of naturally occurring coumarins as dual inhibitors of MAO-B and AChE</title>
+      <link>https://yboulaamane.github.io/publications/paper-4/</link>
+      <pubDate>Thu, 18 May 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-4/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Insights into the Structure-Activity Relationship of Alkynyl-Coumarinyl Ethers as Selective MAO-B Inhibitors Using Molecular Docking</title>
+      <link>https://yboulaamane.github.io/publications/book-chapter-1/</link>
+      <pubDate>Fri, 20 Jan 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/book-chapter-1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>β-amino carbonyl derivatives: Synthesis, Molecular Docking, ADMET, Molecular Dynamic and Herbicidal studies</title>
+      <link>https://yboulaamane.github.io/publications/paper-3/</link>
+      <pubDate>Tue, 20 Dec 2022 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-3/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>In silico studies of natural product-like caffeine derivatives as potential MAO-B inhibitors/AA2AR antagonists for the treatment of Parkinson&#39;s disease</title>
+      <link>https://yboulaamane.github.io/publications/paper-2/</link>
+      <pubDate>Mon, 19 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Structural exploration of selected C6 and C7-substituted coumarin isomers as selective MAO-B inhibitors</title>
+      <link>https://yboulaamane.github.io/publications/paper-1/</link>
+      <pubDate>Tue, 15 Feb 2022 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-1/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

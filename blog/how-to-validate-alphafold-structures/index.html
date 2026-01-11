@@ -1,0 +1,2335 @@
+<!doctype html>
+<!-- This site was created with Hugo Blox. https://hugoblox.com -->
+<!-- Last Published: January 11, 2026 --><html lang="en-us" dir="ltr"
+      data-wc-theme-default="system">
+  
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="generator" content="Hugo Blox Builder 0.4.2" />
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Yassir Boulaamane" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Practical guide to checking AlphaFold-predicted protein models using pLDDT, PAE, geometry validation tools, structural comparisons, and functional tests." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://yboulaamane.github.io/blog/how-to-validate-alphafold-structures/" />
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="/css/themes/blue.min.css" />
+  
+
+  
+  
+    
+    <link href="/dist/wc.min.66412b998ac08468152d24203c4b87b9cee6bcf511d07b4d040d809cecafd615.css" rel="stylesheet" />
+  
+
+  
+  
+  
+
+  
+
+  <script>
+     
+    window.hbb = {
+       defaultTheme: document.documentElement.dataset.wcThemeDefault,
+       setDarkTheme: () => {
+        document.documentElement.classList.add("dark");
+        document.documentElement.style.colorScheme = "dark";
+      },
+       setLightTheme: () => {
+        document.documentElement.classList.remove("dark");
+        document.documentElement.style.colorScheme = "light";
+      }
+    }
+
+    console.debug(`Default Hugo Blox Builder theme is ${window.hbb.defaultTheme}`);
+
+    if ("wc-color-theme" in localStorage) {
+      localStorage.getItem("wc-color-theme") === "dark" ? window.hbb.setDarkTheme() : window.hbb.setLightTheme();
+    } else {
+      window.hbb.defaultTheme === "dark" ? window.hbb.setDarkTheme() : window.hbb.setLightTheme();
+      if (window.hbb.defaultTheme === "system") {
+        window.matchMedia("(prefers-color-scheme: dark)").matches ? window.hbb.setDarkTheme() : window.hbb.setLightTheme();
+      }
+    }
+  </script>
+
+  <script>
+    
+    document.addEventListener('DOMContentLoaded', function () {
+      
+      let checkboxes = document.querySelectorAll('li input[type=\'checkbox\'][disabled]');
+      checkboxes.forEach(e => {
+        e.parentElement.parentElement.classList.add('task-list');
+      });
+
+      
+      const liNodes = document.querySelectorAll('.task-list li');
+      liNodes.forEach(nodes => {
+        let textNodes = Array.from(nodes.childNodes).filter(node => node.nodeType === 3 && node.textContent.trim().length > 1);
+        if (textNodes.length > 0) {
+          const span = document.createElement('label');
+          textNodes[0].after(span);  
+          span.appendChild(nodes.querySelector('input[type=\'checkbox\']'));
+          span.appendChild(textNodes[0]);
+        }
+      });
+    });
+  </script>
+
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+  <link rel="icon" type="image/png" href="/media/icon_hu_5b9deb501aeab0c7.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu_cc92b57ff025c448.png" />
+
+  <link rel="canonical" href="https://yboulaamane.github.io/blog/how-to-validate-alphafold-structures/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@yassir_tw" />
+    <meta property="twitter:creator" content="@yassir_tw" />
+  
+  <meta property="og:site_name" content="Yassir Boulaamane" />
+  <meta property="og:url" content="https://yboulaamane.github.io/blog/how-to-validate-alphafold-structures/" />
+  <meta property="og:title" content="How to Validate AlphaFold Structures | Yassir Boulaamane" />
+  <meta property="og:description" content="Practical guide to checking AlphaFold-predicted protein models using pLDDT, PAE, geometry validation tools, structural comparisons, and functional tests." /><meta property="og:image" content="https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png" />
+    <meta property="twitter:image" content="https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2024-03-28T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2024-03-28T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://yboulaamane.github.io/blog/how-to-validate-alphafold-structures/"
+  },
+  "headline": "How to Validate AlphaFold Structures",
+  
+  "datePublished": "2024-03-28T00:00:00Z",
+  "dateModified": "2024-03-28T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Yassir Boulaamane"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Yassir Boulaamane",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://yboulaamane.github.io/media/icon_hu_d671a3d3d3979562.png"
+    }
+  },
+  "description": "Practical guide to checking AlphaFold-predicted protein models using pLDDT, PAE, geometry validation tools, structural comparisons, and functional tests."
+}
+</script>
+
+  
+
+  
+
+
+  <title>How to Validate AlphaFold Structures | Yassir Boulaamane</title>
+
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <style>
+    @font-face {
+      font-family: 'Inter var';
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+      src: url(/dist/font/Inter.var.woff2) format(woff2);
+    }
+  </style>
+
+  
+
+  
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+<link type="text/css" rel="stylesheet" href="/dist/pagefind/pagefind-ui.be766eb419317a14ec769d216e9779bfe8f3737c80e780f4ba0dafb57a41a482.css" integrity="sha256-vnZutBkxehTsdp0hbpd5v&#43;jzc3yA54D0ug2vtXpBpII=" />
+
+
+<script src="/dist/pagefind/pagefind-ui.87693d7c6f2b3b347ce359d0ede762c033419f0a32b22ce508c335a81d841f1b.js" integrity="sha256-h2k9fG8rOzR841nQ7ediwDNBnwoysizlCMM1qB2EHxs="></script>
+
+
+<script>window.hbb.pagefind = {"baseUrl":"/"};</script>
+
+<style>
+  html.dark {
+    --pagefind-ui-primary: #eeeeee;
+    --pagefind-ui-text: #eeeeee;
+    --pagefind-ui-background: #152028;
+    --pagefind-ui-border: #152028;
+    --pagefind-ui-tag: #152028;
+  }
+
+   
+  .search-close > svg {
+    height: calc(64px * var(--pagefind-ui-scale));
+    width: calc(64px * var(--pagefind-ui-scale));
+  }
+</style>
+
+<script>
+  
+  let searchWrapper = null;
+
+  window.addEventListener('DOMContentLoaded', (event) => {
+    
+    new PagefindUI({
+      element: "#search",
+      showSubResults: true,
+      baseUrl: window.hbb.pagefind.baseUrl,
+      bundlePath: window.hbb.pagefind.baseUrl + "pagefind/",
+    });
+
+    
+    searchWrapper = document.getElementById('search-wrapper');
+
+    
+    let triggers = document.querySelectorAll('[data-search-toggle]');
+    triggers.forEach(trigger =>
+      trigger.addEventListener('click', handleSearchToggle)
+    );
+  });
+
+  function handleSearchToggle(event) {
+    if (!searchWrapper) return;
+
+    const isHidden = searchWrapper.classList.contains('hidden');
+    searchWrapper.classList.toggle('hidden');
+    document.body.style.overflow = isHidden ? 'hidden' : '';
+
+    const searchInput = searchWrapper.querySelector("input");
+    if (searchInput) {
+      searchInput.value = "";
+      searchInput.focus();
+    }
+
+    if (!searchWrapper.classList.contains('hidden')) {
+      let clearTrigger = document.querySelector('.pagefind-ui__search-clear');
+
+      if (clearTrigger && !clearTrigger.hasAttribute('listenerOnClick')) {
+        clearTrigger.setAttribute('listenerOnClick', 'true');
+
+        clearTrigger.addEventListener('click', () => {
+          searchInput.focus();
+        });
+      }
+    }
+  }
+
+  
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && searchWrapper && !searchWrapper.classList.contains('hidden')) {
+      searchWrapper.classList.add('hidden');
+    }
+  });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  <script
+    defer
+    src="/js/hugo-blox-en.min.66c960df48bae747fe5c0e4923bb91161361660e526c2982c5c49d1e76c35649.js"
+    integrity="sha256-Zslg30i650f&#43;XA5JI7uRFhNhZg5SbCmCxcSdHnbDVkk="
+  ></script>
+
+  
+  
+
+
+
+
+
+
+
+
+  
+    
+      
+      <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+      
+    
+  
+
+
+
+
+</head>
+
+  <body class="dark:bg-hb-dark dark:text-white page-wrapper" id="top">
+    <div id="page-bg"></div>
+    <div class="page-header sticky top-0 z-30">
+      
+      
+      
+        
+        
+        
+          <header id="site-header" class="header">
+  <nav class="navbar px-3 flex justify-left">
+    <div class="order-0 h-100">
+      
+      <a class="navbar-brand" href="/" title="Yassir Boulaamane">
+        Yassir Boulaamane
+      </a>
+    </div>
+    
+    <input id="nav-toggle" type="checkbox" class="hidden" />
+    <label
+      for="nav-toggle"
+      class="order-3 cursor-pointer flex items-center lg:hidden text-dark dark:text-white lg:order-1">
+      <svg id="show-button" class="h-6 fill-current block" viewBox="0 0 20 20">
+        <title>Open Menu</title>
+        <path d="M0 3h20v2H0V3z m0 6h20v2H0V9z m0 6h20v2H0V0z"></path>
+      </svg>
+      <svg id="hide-button" class="h-6 fill-current hidden" viewBox="0 0 20 20">
+        <title>Close Menu</title>
+        <polygon
+          points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2"
+          transform="rotate(45 10 10)"></polygon>
+      </svg>
+    </label>
+    
+
+    
+    
+    <ul
+      id="nav-menu"
+      class="navbar-nav order-3 hidden lg:flex w-full pb-6 lg:order-1 lg:w-auto lg:space-x-2 lg:pb-0 xl:space-x-8 justify-left
+      ">
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/"
+        >Bio</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/#publications"
+        >Publications</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/#conferences"
+        >Conferences</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/blog"
+        >Blog</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/cv"
+        >CV</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/projects"
+        >Projects</a
+        >
+      </li>
+      
+      
+      
+    </ul>
+
+    <div class="order-1 ml-auto flex items-center md:order-2 lg:ml-0">
+
+      
+      
+      
+      <button
+        aria-label="toggle search"
+        class="text-black hover:text-primary  inline-block px-3 text-xl dark:text-white"
+        data-search-toggle>
+        <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512" fill="currentColor"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+      </button>
+      
+
+      
+      
+      <div class="px-3 text-black hover:text-primary-700 dark:text-white dark:hover:text-primary-300
+            [&.active]:font-bold [&.active]:text-black/90 dark:[&.active]:text-white">
+        <button class="theme-toggle mt-1" accesskey="t" title="appearance">
+          <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+               stroke-linejoin="round" class="dark:hidden">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+               stroke-linejoin="round" class=" dark:block [&:not(dark)]:hidden">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+      
+
+      
+      
+
+      
+      
+    </div>
+  </nav>
+</header>
+
+<div
+  id="search-wrapper"
+  class="hidden fixed inset-0 z-50 bg-white dark:bg-gray-900 flex flex-col overflow-hidden"
+>
+  <div class="flex justify-end p-3">
+    <button
+      aria-label="search"
+      class="search-close text-black hover:text-primary dark:text-white"
+      data-search-toggle
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <div id="search" class="flex-1 overflow-y-auto p-3">
+    
+  </div>
+</div>
+
+
+        
+      
+    </div>
+    <div class="page-body  my-10">
+      
+
+
+
+
+
+<div class="mx-auto flex max-w-screen-xl">
+  
+
+
+
+<aside class="hb-sidebar-container max-lg:[transform:translate3d(0,-100%,0)] lg:hidden xl:block">
+  
+  <div class="px-4 pt-4 lg:hidden">
+    
+    
+  </div>
+  <div class="hb-scrollbar lg:h-[calc(100vh-var(--navbar-height))]">
+    <ul class="flex flex-col gap-1 lg:hidden">
+      
+      
+        <li class="open"><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/"
+    
+  >Blog
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/"
+    
+  >Stop Using B3LYP/6-31G*: Critical Pitfalls in Modern DFT Calculations and How to Avoid Them
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/ten-critical-pitfalls-in-molecular-dynamics-simulations-and-strategies-for-mitigation/"
+    
+  >Ten Critical Pitfalls in Molecular Dynamics Simulations and Strategies for Mitigation
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/unlocking-the-undruggable-how-biotechnology-is-rewriting-drug-discovery/"
+    
+  >Unlocking the Undruggable: How Biotechnology Is Rewriting Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/how-to-use-datawarrior-for-drug-discovery-key-workflows-from-the-villoutreix-tutorials/"
+    
+  >How to Use DataWarrior for Drug Discovery: Key Workflows From the Villoutreix Tutorials
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/energy-minimization-with-open-babel-practical-guide-for-ligand-preparation/"
+    
+  >Energy Minimization with Open Babel: Practical Guide for Ligand Preparation
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/a-quick-guide-to-temperature-replica-exchange-molecular-dynamics/"
+    
+  >A Quick Guide to Temperature Replica Exchange Molecular Dynamics
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/principal-component-analysis-and-free-energy-landscape-mapping-using-gromacs/"
+    
+  >Principal Component Analysis and Free Energy Landscape Mapping Using GROMACS
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/validating-molecular-docking-poses-with-dft-a-quick-guide/"
+    
+  >Validating Molecular Docking Poses with DFT: A Quick Guide
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/ai-chemistry-building-drug-discovery-pipelines-with-free-tools/"
+    
+  >AI &#43; Chemistry: Building Drug Discovery Pipelines with Free Tools
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/an-in-depth-guide-to-md-simulation-and-analysis-of-a-proteinligand-complex/"
+    
+  >Step-by-Step MD Simulation of a Protein–Ligand Complex with GROMACS
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/molecular-simulation-in-drug-discovery-a-strategic-guide-to-core-methods/"
+    
+  >Molecular Simulation in Drug Discovery: A Strategic Guide to Core Methods
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/computational-drug-repurposing-with-multiscale-interactomes/"
+    
+  >Computational Drug Repurposing with Multiscale Interactomes
+    </a>
+              
+            </li><li class="flex flex-col open"><a
+    class="hb-sidebar-custom-link
+      sidebar-active-item bg-primary-100 font-semibold text-primary-800 dark:bg-primary-300 dark:text-primary-900"
+    href="/blog/how-to-validate-alphafold-structures/"
+    
+  >How to Validate AlphaFold Structures
+    </a>
+  
+    <ul class="hb-sidebar-mobile-toc"><li>
+              <a
+                href="#alphafold-confidence-metrics-plddt-and-pae"
+                class="hb-docs-link"
+              >AlphaFold Confidence Metrics: pLDDT and PAE</a>
+            </li>
+          <li>
+              <a
+                href="#visual-inspection-of-the-model"
+                class="hb-docs-link"
+              >Visual Inspection of the Model</a>
+            </li>
+          <li>
+              <a
+                href="#using-structural-validation-tools"
+                class="hb-docs-link"
+              >Using Structural Validation Tools</a>
+            </li>
+          <li>
+              <a
+                href="#comparison-with-experimental-structures"
+                class="hb-docs-link"
+              >Comparison with Experimental Structures</a>
+            </li>
+          <li>
+              <a
+                href="#functional-validation-ligand-binding-and-dynamics"
+                class="hb-docs-link"
+              >Functional Validation: Ligand Binding and Dynamics</a>
+            </li>
+          <li>
+              <a
+                href="#summary-of-validation-steps"
+                class="hb-docs-link"
+              >Summary of Validation Steps</a>
+            </li>
+          <li>
+              <a
+                href="#references"
+                class="hb-docs-link"
+              >References</a>
+            </li>
+          </ul>
+  
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/a-comprehensive-guide-to-scientific-writing-and-publishing/"
+    
+  >A Comprehensive Guide to Scientific Writing and Publishing
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/interpretable-machine-learning-model-as-a-key-to-understanding-bbb-permeability/"
+    
+  >Interpretable Machine Learning as a Key to Understanding BBB Permeability
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/3d-qsar-general-workflow-with-key-metrics-insights-from-xu-et-al-2020/"
+    
+  >How to build and validate 3D-QSAR models - Insights from Xu et al., 2020
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/a-comprehensive-guide-to-hybrid-assembly-pipeline-for-genomic-sequencing/"
+    
+  >A Comprehensive Guide to Hybrid Assembly Pipeline for Genomic Sequencing
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/data-driven-chemistry-how-data-science-empowers-drug-discovery/"
+    
+  >Data-Driven Chemistry: How Data Science Empowers Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/using-padelpy-generate-molecular-fingerprints-machine-learning-based-qsar/"
+    
+  >Using PaDELPy to Generate Molecular Fingerprints for Machine Learning-Based QSAR
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/understanding-molecular-dynamics-simulations/"
+    
+  >Understanding Molecular Dynamics Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/determining-the-appropriate-length-for-proteinligand-md-simulations/"
+    
+  >How Long Should Molecular Dynamics Simulations Run? A Practical Guide
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/supervised-vs-unsupervised-methods-machine-learning/"
+    
+  >Supervised vs. Unsupervised Methods in Machine Learning
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/chemical-databases-machine-learning-drug-discovery/"
+    
+  >Chemical Databases Every ML Scientist Should Know for Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/perform-data-curation-classify-bioactivity-data-chembl-database/"
+    
+  >How to Perform Data Curation and Classify Bioactivity Data on ChEMBL Database
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/"
+    
+  >Publications
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-17/"
+    
+  >Drug Repurposing for AML: Structure-Based Virtual Screening and Molecular Simulations of FDA-Approved Compounds with Polypharmacological Potential
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-16/"
+    
+  >Computational screening of natural products as tryptophan 2,3-dioxygenase inhibitors: Insights from CNN-based QSAR, molecular docking, ADMET, and molecular dynamics simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-15/"
+    
+  >Virtual Screening and Identification of Natural Molecules as Promising Quorum Sensing Inhibitors against Pseudomonas aeruginosa
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-14/"
+    
+  >Computational Investigation of Phytochemicals from Aloysia citriodora as Drug Targets for Parkinson’s Disease-Associated Proteins
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-13/"
+    
+  >Metal and Metal Oxide Nanoparticles: Computational Analysis of Their Interactions and Antibacterial Activities Against Pseudomonas aeruginosa
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-12/"
+    
+  >Computational exploration of acefylline derivatives as MAO-B inhibitors for Parkinson’s disease: insights from molecular docking, DFT, ADMET, and molecular dynamics approaches
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-11/"
+    
+  >In silico Discovery of Dual Ligands Targeting MAO-B and AA2AR from African Natural Products Using Pharmacophore Modelling, Molecular Docking, and Molecular Dynamics Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-10/"
+    
+  >Identification of Natural Inhibitors of SARS-CoV-2 Main Protease (Mpro) via Structure-Based Virtual Screening and Molecular Dynamics Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-9/"
+    
+  >Dendrobium nobile alkaloids modulate calcium dysregulation and neuroinflammation in Alzheimer&#39;s disease: A bioinformatic analysis
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-8/"
+    
+  >Antibiotic discovery with artificial intelligence for the treatment of Acinetobacter baumannii infections
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-7/"
+    
+  >Identification of novel dual acting ligands targeting the adenosine A2A and serotonin 5-HT1A receptors
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-6/"
+    
+  >Exploring natural products as multi-target-directed drugs for Parkinson’s disease: an in-silico approach integrating QSAR, pharmacophore modeling, and molecular dynamics simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-5/"
+    
+  >Probing the molecular mechanisms of α-synuclein inhibitors unveils promising natural candidates through machine-learning QSAR, pharmacophore modeling, and molecular dynamics simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-4/"
+    
+  >Chemical library design, QSAR modeling and molecular dynamics simulations of naturally occurring coumarins as dual inhibitors of MAO-B and AChE
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/book-chapter-1/"
+    
+  >Insights into the Structure-Activity Relationship of Alkynyl-Coumarinyl Ethers as Selective MAO-B Inhibitors Using Molecular Docking
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-3/"
+    
+  >β-amino carbonyl derivatives: Synthesis, Molecular Docking, ADMET, Molecular Dynamic and Herbicidal studies
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-2/"
+    
+  >In silico studies of natural product-like caffeine derivatives as potential MAO-B inhibitors/AA2AR antagonists for the treatment of Parkinson&#39;s disease
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-1/"
+    
+  >Structural exploration of selected C6 and C7-substituted coumarin isomers as selective MAO-B inhibitors
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/"
+    
+  >Projects
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/awesomedrugdiscovery/"
+    
+  >Awesome Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/qsarboost/"
+    
+  >QSARBoost
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/vinascreen/"
+    
+  >VinaScreen
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/qsarbiopred/"
+    
+  >QSARBioPred
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/ensemblebbb/"
+    
+  >EnsembleBBB
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/artemisiadb/"
+    
+  >ArtemisiaDB
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/coumarindb/"
+    
+  >CoumarinDB
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/gmxplotter/"
+    
+  >GMXPlotter
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/"
+    
+  >Conferences
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2024-12-20-presentation-5/"
+    
+  >Computational screening of natural products as tryptophan 2,3-dioxygenase inhibitors: Insights from machine learning QSAR, molecular docking, ADMET, and molecular dynamics simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2024-10-31-poster-2/"
+    
+  >Antibiotic discovery with artificial intelligence for the treatment of Acinetobacter baumannii infections
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2023-10-06-presentation-4/"
+    
+  >Enhanced accuracy in predicting drug blood-brain barrier permeability with a Machine Learning Ensemble model
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2022-10-09-presentation-3/"
+    
+  >QSAR and molecular modeling studies for the discovery of natural products as multi-target-directed drugs for Parkinson&#39;s disease
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2021-12-27-presentation-2/"
+    
+  >Computational studies of African Natural Products Databases to identify natural dual-target-directed antiparkinsonian drugs
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2021-12-27-poster-1/"
+    
+  >Machine Learning model to predict potential Monoamine Oxidase B inhibitors from Cannabis Compound Database
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2021-06-23-presentation-1/"
+    
+  >Docking-based virtual screening and ADME evaluation of caffeine-based phytochemicals as inhibitors of Monoamine Oxidase B
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/projects/"
+    
+  >Projects
+    </a></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/cv/"
+    
+  >CV
+    </a></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/teaching/"
+    
+  >Teaching
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/teaching/js/"
+    
+  >Learn JavaScript
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/teaching/python/"
+    
+  >Learn Python
+    </a>
+              
+            </li></ul>
+      </div></li>
+    </ul>
+
+    <div class="max-xl:hidden h-0 w-64 shrink-0"></div></div>
+
+</aside>
+  
+
+<nav class="hb-toc order-last hidden w-64 shrink-0 xl:block print:hidden px-4" aria-label="table of contents">
+  
+
+
+
+
+
+
+
+
+
+
+
+  <div class="hb-scrollbar text-sm [hyphens:auto] sticky top-16 overflow-y-auto pr-4 pt-6 max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] -mr-4 rtl:-ml-4"><p class="mb-4 font-semibold tracking-tight">On this page</p><ul>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#alphafold-confidence-metrics-plddt-and-pae">AlphaFold Confidence Metrics: pLDDT and PAE</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#visual-inspection-of-the-model">Visual Inspection of the Model</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#using-structural-validation-tools">Using Structural Validation Tools</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#comparison-with-experimental-structures">Comparison with Experimental Structures</a>
+      </li></ul><ul>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#functional-validation-ligand-binding-and-dynamics">Functional Validation: Ligand Binding and Dynamics</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#summary-of-validation-steps">Summary of Validation Steps</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#references">References</a>
+      </li></ul>
+
+  
+  
+    
+    
+  
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  </nav>
+
+
+  <article class="w-full break-words flex min-h-[calc(100vh-var(--navbar-height))] min-w-0 justify-center pb-8 pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+    <main class="w-full min-w-0 max-w-6xl px-6 pt-4 md:px-12">
+
+      
+
+      <h1 class="mt-2 text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100">How to Validate AlphaFold Structures</h1>
+
+      <div class="mt-4 mb-16">
+      <div class="text-gray-500 dark:text-gray-300 text-sm flex items-center flex-wrap gap-y-2"><span class="mr-1">Mar 28, 2024</span><span class="mx-1">·</span>
+        
+          
+          
+          <div class="group inline-flex items-center text-current gap-x-1.5 mx-1">
+            
+            
+            <img src="/author/yassir-boulaamane/avatar_hu_b693f72bb8d357f9.webp" alt="Yassir Boulaamane" class="inline-block h-4 w-4 rounded-full border border-current" loading="lazy" />
+            
+            <div >Yassir Boulaamane</div>
+          </div>
+          
+        
+
+        
+        <span class="mx-1">·</span>
+        <span class="mx-1">
+          28 min read
+        </span>
+        
+        </div>
+
+        <div class="mt-3">
+          
+
+
+
+
+
+        </div>
+      </div>
+
+
+
+      
+      
+      
+
+      
+      
+
+      <div class="prose prose-slate lg:prose-xl dark:prose-invert">
+        <p>AlphaFold has revolutionized protein structure prediction by achieving unprecedented accuracy in many cases​ (1). However, even high-quality predicted models should be rigorously validated before use in research.
+Just as experimental structures undergo validation (geometry checks, reliability scores, etc.), <strong>AlphaFold-predicted structures</strong> require careful assessment of confidence, stereochemistry, and functional plausibility. In this comprehensive guide, we outline practical strategies to validate an AlphaFold model, from interpreting AlphaFold’s own confidence metrics to using external validation tools, comparing against known structures, and even testing the model’s behavior in silico. The goal is to ensure the predicted structure is trustworthy for drawing biological conclusions.</p>
+<h2 id="alphafold-confidence-metrics-plddt-and-pae">AlphaFold Confidence Metrics: pLDDT and PAE</h2>
+<p>AlphaFold provides intrinsic confidence measures that are the first step in validation. <strong>pLDDT (predicted Local Distance Difference Test)</strong> is a per-residue confidence score ranging from 0 to 100. Higher pLDDT means the model is more confident that the local structure around that residue is accurate​ (2). This metric is based on the lDDT-Cα score, which assesses local structural accuracy without requiring a global superposition​ (3). In practice, AlphaFold classifies residues into confidence bands:</p>
+<ul>
+<li><strong>pLDDT ≥ 90</strong>: Very high confidence (high accuracy for backbone and side chains)​.</li>
+<li><strong>70 ≤ pLDDT &lt; 90</strong>: Confident – backbone likely correct, though side chains may have some error​.</li>
+<li><strong>50 ≤ pLDDT &lt; 70</strong>: Low confidence – the region is less reliable, possibly mis-modeled.</li>
+<li><strong>pLDDT &lt; 50</strong>: Very low confidence – often indicates disordered or flexible regions​, which AlphaFold expects might not adopt a single stable structure in reality.</li>
+</ul>
+<p>AlphaFold typically <strong>encodes pLDDT in the B-factor field</strong> of the output PDB/mmCIF file​ (4). This means visualization programs can color the structure by B-factor to see confidence per residue. For example, in PyMOL you can load the model and run a command to color by B-factor (pLDDT):</p>
+<pre><code># In PyMOL, after loading the AlphaFold model:
+spectrum b, red_white_blue, minimum=0, maximum=100
+# This colors residues from red (low pLDDT) to blue (high pLDDT).
+</code></pre>
+<p>AlphaFold’s second key metric is the <strong>PAE (Predicted Aligned Error)</strong>. PAE is a measure of the model’s confidence in the relative positions of two residues​ (5). More formally, <em>PAE(x, y)</em> is the expected error (in Å) at residue <em>x</em>’s position <strong>if</strong> the predicted structure were aligned to the (unknown) true structure on residue _y_​ (6). In simpler terms, <strong>PAE tells us how well the model thinks region <em>x</em> and region <em>y</em> are positioned relative to each other</strong>. A low PAE between two residues (or domains) implies the model is confident about their relative arrangement, whereas a high PAE means the relative placement is uncertain​ (7). For example, if two domains have consistently high PAE with each other, the model is essentially saying <em>“these domains might move relative to each other, so don’t trust the exact orientation.”</em> By contrast, low PAE between two domains suggests a well-defined domain packing​ (8).</p>
+<p>PAE is often visualized as a heatmap (matrix) where each axis is residue index. AlphaFold’s structure database provides an interactive PAE plot alongside each model​ (9,10). In a PAE heatmap, the diagonal is always dark (zero error when a residue is aligned on itself) and can be ignored​ (10). Off-diagonal blocks indicate inter-residue or inter-domain confidence: <strong>dark green/blue regions = low error (high confidence)</strong>, and **light colors = high error (low confidence)**​. For instance, a multi-domain protein often shows clear dark blocks along the diagonal (each domain internally high confidence) separated by lighter regions (uncertain relative domain orientation). <strong>Interpreting PAE</strong> in validation is crucial: even if each domain has high pLDDT, a high PAE between domains means you should not assume the domain arrangement is correct​ (10). In such cases, additional validation (or experimental data) is needed to confirm domain orientations.</p>
+<p>In summary, <strong>check pLDDT and PAE first</strong>. These tell you which parts of the model are likely reliable and whether the overall fold (especially multi-domain architecture) is predicted with confidence. Regions with low pLDDT or very high PAE should be treated with caution – they might be disordered in reality or simply modeled inaccurately. Often, those regions may require further analysis or may be trimmed out if you only need the stable core of the structure.</p>
+<h2 id="visual-inspection-of-the-model">Visual Inspection of the Model</h2>
+<p>After reviewing AlphaFold’s confidence metrics, the next validation step is a <strong>careful visual inspection</strong> of the model. This is a straightforward but powerful way to catch obvious issues. Tools such as <strong>PyMOL</strong>, <strong>UCSF ChimeraX</strong>, and <strong>Mol*</strong> (MolStar) are invaluable for this task:</p>
+<ul>
+<li><strong>PyMOL</strong> – A widely-used molecular graphics tool. Load the AlphaFold PDB, and visualize secondary structure (cartoon view) to see if helices and strands look well-formed. Color the model by pLDDT (as described above) to highlight low-confidence segments. Pay attention to any steric clashes or oddly twisted geometries. For example, check if any side chains deeply penetrate other parts of the protein (which might indicate a clash or error). PyMOL’s distance measurement can help verify if supposed disulfide bonds or salt bridges are geometrically plausible. If you have a known motif (e.g., a catalytic triad), inspect whether those residues align in the expected geometry.</li>
+<li><strong>UCSF ChimeraX</strong> – A modern visualization tool that can directly fetch AlphaFold models from the AlphaFold DB by UniProt ID, and it has built-in presets for AlphaFold confidence coloring. In ChimeraX, one can simply use the command color bfactor palette alphafold to apply the standard pLDDT color scheme (blue = high confidence, orange/red = low)​. Use ChimeraX’s structure analysis features to examine hydrogen bonds, contacts, and clashes. Chimera(X) also allows viewing the PAE map if you have it, or you can segment the model by domains to see how they interact. If the model has flexible termini (often glowing red/orange from low pLDDT), you might visualize those separately – they could be flopping around and not relevant to the stable core.</li>
+<li><strong>Mol</strong>* – This is the web-based 3D viewer used by the AlphaFold Protein Structure Database​ (11). If you obtained your model from AlphaFold DB, you can use the online Mol* viewer to instantly see the structure colored by confidence and the PAE plot side-by-side. Mol* is great for a quick look without installing software. Through Mol*, you can rotate the model, identify secondary structure elements, and even select a region on the PAE plot to highlight which parts of the 3D structure are uncertain​ (12). While not as feature-rich as desktop tools, it’s convenient for an initial overview.</li>
+</ul>
+<p>During visual inspection, <strong>look for red flags</strong> such as:</p>
+<ul>
+<li><strong>Unphysical bond lengths or angles</strong>: AlphaFold generally produces chemically sensible structures, but extremely distorted geometries (e.g., a peptide bond angle that looks abnormal) could appear in low-confidence regions. These are rare, but if present, they’ll likely be flagged by subsequent validation tools as well.</li>
+<li><strong>Clashes</strong>: Overlapping atoms or very tightly packed regions. Our eyes might miss slight clashes, so after visual review you’ll use tools like MolProbity to quantify this. But obvious clashes (like two side chains on top of each other) can sometimes be spotted visually.</li>
+<li><strong>Chain breaks or gaps</strong>: Check if the protein backbone is continuous. If AlphaFold was unsure in a region, it might produce an unphysical loop. Usually AlphaFold does not literally break the chain (except maybe at extreme low confidence segments, it still gives a continuous but perhaps highly extended or tangled loop). If you do see a gap (missing residues), it could be because the input sequence had a region AlphaFold couldn’t model confidently or was omitted – though in normal operation AlphaFold predicts all residues provided.</li>
+<li><strong>Secondary structure mismatches</strong>: Does the model’s secondary structure make sense given the sequence? If you have prior knowledge (say from sequence analysis, you expect three transmembrane helices or a beta-sheet in a certain region), see if the model matches that. If AlphaFold predicts a region to be helical (and with high confidence), it likely is. But if you see something like a beta-strand contorted oddly, or a helix with a kink, note those for further scrutiny.</li>
+<li><strong>Active site or binding site conformation</strong>: If the protein’s function is known and certain residues are critical (e.g., enzyme active site), inspect that region. Are the catalytic residues oriented in a plausible way? Is there a cavity where a substrate could bind? Sometimes AlphaFold might predict a side chain orientation that blocks a known binding cleft (especially if no ligand was present during prediction). Visualizing this early can hint if the model is consistent with function or if something might be off.</li>
+</ul>
+<p>Visual inspection is mostly qualitative, but it sets the stage for targeted questions. For instance, if you notice the model has an unexpected large cavity or an unusual domain orientation, you might plan specific validations (like docking a ligand into that cavity, or checking if domain orientation is supported by known data). At this stage, you should also decide if any segments of the model might be so low confidence that they should be treated separately (for example, you might exclude a floppy tail from further analysis if it’s not essential to the protein’s folded core).</p>
+<h2 id="using-structural-validation-tools">Using Structural Validation Tools</h2>
+<p>Automated structure-validation tools provide quantitative checks on your model’s stereochemistry and overall quality. Many of these tools were originally developed for validating experimentally determined structures, but they are equally applicable to predicted models. Here are some key validation tools and what they offer:</p>
+<ul>
+<li><strong>MolProbity</strong> – A comprehensive <strong>all-atom structure validation</strong> server (13). <a href="https://molprobity.biochem.duke.edu/" target="_blank" rel="noopener">MolProbity</a> checks for steric clashes by adding hydrogens to the structure and finding all-atom overlaps. It also evaluates bond angles and dihedrals, highlighting <strong>Ramachandran outliers</strong> (phi/psi angles that fall in disallowed regions of the Ramachandran plot) and <strong>rotamer outliers</strong> (unusual side chain conformations). MolProbity provides an overall score (the “MolProbity score”) and specific metrics like <strong>clashscore</strong> (number of serious clashes per 1000 atoms), percentage of Ramachandran favored/allowed/outlier residues, and more ​(14,15). A good AlphaFold model should have low clashscore and few (if any) Ramachandran outliers. However, it’s not uncommon for some <strong>low-pLDDT loops</strong> in AlphaFold models to show outliers or clashes, since the model wasn’t physics-refined. MolProbity can guide you to those problematic spots; you can then consider refining them (e.g., via energy minimization or rebuilding). <strong>Tip:</strong> If MolProbity reports many clashes or poor geometry in a high-pLDDT region, that’s a red flag – the model might be locally strained, and further investigation is needed.</li>
+<li><strong>PROCHECK</strong> – A classic tool (from 1993) that checks the <strong>stereochemical quality</strong> of a protein structure​ (16). <a href="https://www.ebi.ac.uk/thornton-srv/software/PROCHECK/" target="_blank" rel="noopener">PROCHECK</a> generates a number of outputs, the most famous being the Ramachandran plot. It will tell you what fraction of residues lie in favored, allowed, and disallowed regions of Ramachandran space. It also checks other parameters: peptide bond planarity, bond length deviations, Cβ deviations, and backbone torsion angle quality. In essence, PROCHECK ensures your model’s geometry is within typical bounds seen in crystallographic structures. For an AlphaFold model, you’d like to see the vast majority of residues in the favored regions of the Ramachandran plot (ideally &gt;90% favored, &lt;1% outliers, similar to high-resolution crystal structures). AlphaFold models generally fare well here, especially in well-defined regions, but if you have an outlier, PROCHECK will pinpoint it. You can run PROCHECK via the command-line (it’s part of the CCP4 suite) or conveniently through web servers like PDBsum (which can generate PROCHECK analysis for any uploaded structure)​.</li>
+<li><strong>WHAT_CHECK</strong> – Part of the <strong>WHAT IF</strong> software suite, <a href="https://swift.cmbi.umcn.nl/gv/whatcheck/" target="_blank" rel="noopener">WHAT_CHECK</a> is an extensive consistency check for protein structures. It examines a wide range of criteria: geometry, van der Waals contacts, environment of residues, and more. For example, it will check if buried polar groups have hydrogen-bonding partners, if side chain torsions are consistent with electron density (for experimental structures), etc. With a predicted model, some checks (like comparison to electron density) don’t apply, but WHAT_CHECK’s geometrical and empirical rules can still flag issues. It’s quite thorough – sometimes producing a long report. If you have access to the WHAT IF web interface or servers, running WHAT_CHECK can complement PROCHECK/MolProbity by catching subtle issues. However, if you’re already using MolProbity and PROCHECK, you may get sufficient info; use WHAT_CHECK if you want an extra layer of scrutiny.</li>
+<li><strong>Verify3D</strong> – A <strong>3D-1D profile</strong> method that checks <strong>residue environment compatibility</strong>​ (17). Essentially, <a href="https://www.doe-mbi.ucla.edu/verify3d/" target="_blank" rel="noopener">Verify3D</a> evaluates each residue in the model to see if its environment (surface vs buried, secondary structure context, etc.) is consistent with what one would expect for that amino acid. It returns a score for each residue and an overall percentage of residues that pass a threshold. Typically, you want a Verify3D result where &gt;80% of residues have a score above the cutoff (0.2 in the original scoring scheme)​ (18). If Verify3D flags certain residues, it means those amino acids are in an environment that is unusual (e.g., a polar residue buried without contacts, or a hydrophobic residue exposed to solvent) – potentially indicating a modeling error or an unusual but real feature. When validating an AlphaFold model, a <strong>low Verify3D percentage (significantly below 80%) is a warning</strong>. It could be due to a genuine peculiarity of the protein, but often it suggests some regions of the model are not structurally sound. Verify3D is available via the <a href="https://saves.mbi.ucla.edu/" target="_blank" rel="noopener">UCLA SAVES</a> server (which bundles several validation tools).</li>
+<li><strong>ERRAT</strong> – A program that analyzes <strong>non-bonded atom-atom interactions</strong> in the model and identifies regions that deviate from expected patterns​ (19). <a href="https://www.doe-mbi.ucla.edu/errat/" target="_blank" rel="noopener">ERRAT</a> essentially plots a quality score across the protein and gives an overall quality factor (as a percentage). High-quality structures tend to have an ERRAT overall quality score in the high 80s or 90s (out of 100), whereas a significantly lower score might indicate problems. For example, an ERRAT score of ~79% (as seen in some homology models) is marginal, and one would try to improve the model (20). ERRAT is also available via the UCLA SAVES server. If ERRAT flags a specific region (say residues 50–60) as problematic, that region likely has odd interatomic distances (perhaps a mis-packed helix or something). Cross-check such regions with what pLDDT said – often they coincide with low pLDDT stretches.</li>
+<li><strong>SwissModel Structure Assessment (QMEAN)</strong> – The <a href="https://swissmodel.expasy.org/" target="_blank" rel="noopener">SwissModel</a> server provides a <strong>model quality assessment</strong> tool that includes the QMEAN scoring function. <strong>QMEAN</strong> (Qualitative Model Energy ANalysis) is a composite score evaluating various geometrical aspects (e.g., torsion angles, solvation, secondary structure packing) to estimate how “protein-like” a model is​ (21). When you submit a model to SwissModel’s Assessment, you receive a QMEAN score and a <strong>QMEAN Z-score</strong> which compares your model to a baseline of experimental structures of similar size. A QMEAN Z-score around 0 is good (meaning your model is in the range of normal structures); a score significantly below -4.0 indicates a model of low quality (likely incorrect)​ (22). QMEAN also provides per-residue scores, so you can see which regions contribute to lowering the score. For AlphaFold models, QMEAN often yields scores consistent with high accuracy for high-pLDDT regions, but may penalize the low-confidence regions. Use this as an overall “sanity check” – if even QMEAN (which is trained on typical protein statistics) finds your entire model to be an outlier, you should be cautious. SwissModel will also report other descriptors like predicted secondary structure vs model secondary structure agreement, and possible buriedness mismatches.</li>
+</ul>
+<p>All these tools provide <strong>complementary views of model quality</strong>. In practice, you don’t have to use every single one for every model; but it’s wise to use at least one geometry-focused tool (MolProbity/PROCHECK) and one environment-focused tool (Verify3D/ERRAT/QMEAN). Many of these can be run easily via web servers. For instance, the <strong>UCLA SAVES</strong> web server allows you to upload a PDB and get results from PROCHECK, Verify3D, and ERRAT together. MolProbity has its own web server (as part of Phenix or standalone). SwissModel’s assessment is another one-stop option for QMEAN and additional analyses.</p>
+<p>When you get the results, pay attention to consistent signals: e.g., if <strong>MolProbity and PROCHECK both say the same residue is an outlier</strong> (bad geometry) and <strong>Verify3D also flags that region</strong>, that part of the model is definitely suspect. You might then decide to remodel that segment or simply note that it’s unreliable. On the other hand, if all tools give you largely clean reports (few clashes, good Ramachandran stats, high Verify3D percentage, high ERRAT score), you can be more confident the model is reasonable.</p>
+<h2 id="comparison-with-experimental-structures">Comparison with Experimental Structures</h2>
+<p>If a related experimental structure is available, comparing your AlphaFold model to it is one of the most telling validations. Such comparisons can <strong>quantify the accuracy</strong> of the prediction and highlight any differences that might be important.</p>
+<p><strong>Finding a reference structure:</strong> First, determine if the same protein (or a homolog with significant sequence identity) has a known structure in the Protein Data Bank (PDB). You might have done this prior to running AlphaFold, but it’s worth doing a BLAST or HHPred search of your sequence against PDB. Even if an exact match isn’t found, perhaps a homologous domain or a partial structure exists. Any high-resolution structure (X-ray, cryo-EM, NMR) of a similar sequence can serve as a reference to validate fold correctness.</p>
+<p><strong>Structural alignment tools:</strong> To compare the 3D structures, you can use alignment programs like <strong>TM-align</strong> or built-in tools in PyMOL/Chimera.</p>
+<ul>
+<li>
+<p><strong>TM-align</strong> – A command-line tool that superimposes two protein structures and calculates the TM-score and RMSD. The <strong>TM-score</strong> is particularly useful; it ranges from 0 to 1, where 1 indicates an identical structure. Importantly, TM-score is designed to be length-independent and sensitive to overall fold​ (23,24). A TM-score &gt; 0.5 generally indicates the two structures share the same fold​ (25) (and &gt;0.9 would mean almost identical). Scores &lt; 0.2 indicate essentially unrelated structures (random similarity) (26). RMSD (root-mean-square deviation) in Å is also output, but RMSD can be misleading for large proteins or ones with flexible termini, so TM-score is the better metric for global accuracy. To use TM-align, download it from the Zhang Lab website and run it on your model and the reference PDB:</p>
+<h1 id="example-usage-of-tm-align">Example usage of TM-align</h1>
+<p>TMalign model.pdb reference.pdb &gt; tmalign_output.txt</p>
+</li>
+</ul>
+<p>The output will list aligned length, RMSD, and TM-scores. Check the TM-score first. For instance, if you get TM-score = 0.65, that’s a strong confirmation the fold is correct (assuming the reference covers the full length). You might also get a per-residue alignment which can identify where differences occur (e.g., a loop in the model that deviates from the crystal structure).</p>
+<ul>
+<li><strong>PyMOL or Chimera(X) alignment</strong> – In PyMOL, you can use the align or cealign commands to superimpose two structures (if sequences are identical or very similar, a straightforward align model, reference works; for more distantly related, PyMOL’s built-in alignment might struggle, so TM-align is better). UCSF Chimera has a tool called MatchMaker which can align structures based on sequences and secondary structure. After superposition, you can visually inspect differences and also measure RMSD over aligned regions. Look at the <strong>alpha carbon trace</strong>: do the helices and strands overlap well? Are there specific regions where the model deviates? Often, you’ll find that high-pLDDT regions of the AlphaFold model align closely with the experimental structure (perhaps within 1–2 Å RMSD), whereas low-confidence loops might be displaced or completely different (AlphaFold might have modeled a loop arbitrarily if there was no template or signal for it).</li>
+</ul>
+<p><strong>Interpreting differences:</strong> If your model aligns well (high TM-score, low RMSD) with an experimental structure, that’s great validation. Minor differences in side chain conformations are expected and not usually concerning, especially if the experimental structure was determined at moderate resolution or is in a different environment (AlphaFold predictions are effectively in isolation, whereas a crystal structure might have bound ligands or lattice contacts that shift things). Focus on larger deviations:</p>
+<ul>
+<li><strong>Domain shifts:</strong> Perhaps the model predicted a closed conformation whereas the crystal is open (or vice versa). Check the PAE from AlphaFold; it might have indicated uncertainty between domains, and indeed the experimental structure shows a different orientation. This doesn’t mean the model is “wrong” per se, but that the protein might be dynamic or the model chose one plausible state. You might then need to verify which state is relevant biologically (through experiments or further modeling).</li>
+<li><strong>Loop conformations:</strong> A common scenario is that AlphaFold modeled a loop one way (especially if low confidence, it might even be a nonsense loop), and the crystal structure shows a different loop conformation. If the loop is functionally important (e.g., part of an active site), you’d want to trust the experimental structure more. If it’s surface-exposed, it might be flexible in reality; AlphaFold’s guess is just one of many conformations it could take. In such cases, don’t over-interpret that part of the model.</li>
+<li><strong>Secondary structure errors:</strong> Rarely, AlphaFold might predict a helix where the actual structure has a strand, or vice versa. This usually happens in lower confidence regions or if the sequence had an unusual pattern. If you find such a discrepancy, that region of the model is likely incorrect. Use the experimental structure’s assignment as the truth. It’s worth noting if the pLDDT was low there (likely yes); AlphaFold was unsure and picked one possibility. Knowing the correct secondary structure, you might rebuild that segment or simply note the model’s limitation.</li>
+</ul>
+<p>If no experimental structure is available for the exact protein, you can still do <strong>remote validations</strong>:</p>
+<ul>
+<li>Align the model to the closest known structure (even if only part of it aligns). For example, maybe one domain matches a known protein family structure. Validate that portion – a good alignment (say TM-score &gt;0.5 for that domain) gives confidence that domain is correct. The other parts of your model that have no benchmark will rely on the internal metrics and other validations we discuss.</li>
+<li>Use multiple structure prediction approaches and compare (e.g., if there’s an older homology model or a Rosetta model for the protein). Consistency between different models can be somewhat validating, though remember they might all be wrong in the same way if based on the same inputs. Still, if AlphaFold and, say, Rosetta both produce a similar fold for a novel protein, that convergence is encouraging.</li>
+</ul>
+<p>Overall, <strong>structural comparison is the gold standard</strong> when you have an experimental reference. It can confirm that AlphaFold got it right, or pinpoint exactly where it differs. In favorable cases (AlphaFold’s high-accuracy predictions), you might find your model is virtually identical to the crystal structure of a homolog, with perhaps a TM-score ~0.9 and main-chain RMSD ~1 Å​. That level of agreement would give you great confidence moving forward. On the other hand, if the model and experiment differ significantly (low TM-score), you should trust the experiment more – and treat the model with skepticism or use it only for qualitative insights in regions that do align well.</p>
+<h2 id="functional-validation-ligand-binding-and-dynamics">Functional Validation: Ligand Binding and Dynamics</h2>
+<p>The ultimate purpose of a protein structure is often to investigate function – e.g., how it binds to a ligand, catalyzes a reaction, or interacts with other molecules. Thus, validating an AlphaFold model also involves asking: <em>Does this structure make sense functionally?</em> There are a few approaches to explore this:</p>
+<p><strong>1. Checking Binding Sites and Docking Ligands:</strong> If your protein is known (or suspected) to bind a small-molecule ligand, cofactor, or substrate, examine the predicted structure for the binding site. AlphaFold might not explicitly indicate pockets, but you can use tools or visual cues:</p>
+<ul>
+<li>Use a pocket detection tool like <strong>CASTp</strong> or <strong>Fpocket</strong> to identify cavities on the model. These tools will list pockets by volume and residues lining them. Check if a known active site corresponds to one of the top pockets.</li>
+<li>If you have a known ligand (say, the substrate of an enzyme or a cofactor like NADH), try <strong>docking</strong> it into the model. Software like <strong>AutoDock Vina</strong> (open source) or <strong>SwissDock</strong>, <strong>Glide</strong> (commercial) can take your model (treated as the receptor) and the ligand structure and attempt to find plausible binding poses. Before docking, prepare the protein: add hydrogens (especially if using AutoDock, you’d prepare a PDBQT file with charges), and consider making the protein rigid for the initial docking. A successful dock would show the ligand fitting well into a pocket, with key interactions (hydrogen bonds to the right residues, hydrophobics nestled in hydrophobic patches, etc.) similar to what you’d expect. If docking suggests a reasonable pose and binding energy, it <strong>supports the validity of the binding site conformation</strong> in the model. If the ligand cannot dock or only docks in a bizarre way (or with a very poor score), that might indicate the binding site in the model is not accurately formed. Perhaps a side chain that should move is blocking the pocket, or a loop is mis-modeled.</li>
+<li>For enzymes, check the geometry of catalytic residues. Do they form the correct arrangement? For example, a catalytic triad (Ser-His-Asp) should be in the right orientation to form hydrogen bonds. If the model’s active site residues are far apart or oriented incorrectly, the model might represent an inactive conformation, or it might be wrong in that region. Sometimes, energy-minimizing that region or running a short MD (see below) can relax the structure into a more favorable active-site geometry.</li>
+</ul>
+<p><strong>2. Protein-Protein Interactions:</strong> If your protein’s function involves other macromolecules (another protein, DNA/RNA, etc.), consider validating those interfaces. AlphaFold-Multimer (a version of AlphaFold for complexes) might predict complexes, but if you only have a monomeric model, you can still simulate docking:</p>
+<ul>
+<li>Use a protein-protein docking server (e.g., <strong>HADDOCK</strong> or <strong>ClusPro</strong>) to see if your model can interact with its partner in a way that’s consistent with known data. This is more advanced, but if an interface is known experimentally (like mutagenesis showed certain residues are important), check if those residues are surface-exposed and clustered, as they should be if an interface is there.</li>
+<li>If the model is of a single chain that normally oligomerizes (dimer, etc.), you might superpose multiple copies or use symmetry to see if a plausible dimer can form. Again, low PAE between chains in an AlphaFold-Multimer prediction would signal a confident multimer interface​ (27), but for a single-chain prediction you have to manually inspect.</li>
+</ul>
+<p><strong>3. Molecular Dynamics (MD) Simulations:</strong> This is a powerful way to <strong>test the stability</strong> of the predicted structure and to possibly refine it. In MD, you treat the model with physical force fields and see if it holds up under simulation (e.g., in water at 300 K). MD can reveal if the structure wants to <strong>unfold or change</strong> and can also relieve any residual strain by nudging the model into a more favorable state.</p>
+<p>Common MD packages include <strong>GROMACS</strong> (free, open-source), <strong>AMBER</strong> (academic, partly free tools), and <strong>NAMD</strong> (free, optimized for large systems). An example workflow using GROMACS will be covered in another blog post.</p>
+<p>During the simulation, monitor:</p>
+<ul>
+<li><strong>RMSD over time:</strong> Does the protein rapidly drift away from the starting structure, or does it stabilize? A stable RMSD (plateauing after some fluctuation) suggests the structure is in a favourable energy well (likely a correct fold). If RMSD keeps increasing or the protein partially unfolds, that indicates the model had instabilities (perhaps that region was incorrect or inherently flexible).</li>
+<li><strong>Secondary structure retention:</strong> You can use tools (like DSSP on each frame) to see if helices and strands remain intact. If a predicted helix quickly unravels in MD, maybe that segment wasn’t truly helical.</li>
+<li><strong>Key interactions:</strong> Check if critical hydrogen bonds or salt bridges persist. For example, if the model suggested a salt bridge that’s important for stability, does MD maintain it or does it break?</li>
+<li><strong>Refinement:</strong> MD often causes side chains to adjust, sometimes resolving minor clashes automatically. You might take an <strong>average or low-energy structure from the simulation</strong> as a refined model. Many researchers use short MD refinement to improve homology models​ (28); the same can be done for AlphaFold models, especially to relax strained loops. As one approach, you could restrain the well-defined parts of the structure (to prevent them from moving too much) and let a loop of interest move freely; this can relieve local strain​ (28).</li>
+</ul>
+<p>MD simulation essentially serves as a <strong>reality check</strong>: AlphaFold’s neural network prediction isn’t guaranteed to be at an energy minimum. If the model is good, it should withstand simulation in a realistic environment. If it’s not, you might see it start to collapse or drift, which tells you that at least some interactions in the model were not favorable. Of course, MD itself is an approximation (dependent on the force field, etc.), but it’s a well-established method to refine and validate structures.</p>
+<p><strong>After MD analysis:</strong> If the structure proved stable, you gain confidence. You might also use the MD trajectory to estimate the flexibility of different regions (e.g., high B-factor regions in a crystal often correspond to mobile loops in MD). If the structure was unstable, identify what broke down – was it the interface between two domains? Was it a particular loop that kept swinging out? This can pinpoint the weak spots of the model that might need revision or cautious interpretation.</p>
+<p>Lastly, <strong>tie back to experiments whenever possible</strong>. If you have biochemical data (e.g., mutation effects, binding assays), see if the model’s features align with them. For example, if a mutation is known to disrupt function and your model places that residue in the core of the active site, that’s consistent and supports the model. If instead the model has that residue on the surface away from any obvious functional site, maybe the model is missing something (like maybe it’s actually part of a protein-protein interface that wasn’t modeled).</p>
+<p>By this point, you have examined the model from every angle: intrinsic confidence (AlphaFold metrics), overall geometry and quality (validation tools), comparison to known structures, and functional plausibility (docking, pockets, MD). Based on all these, you can form a judgment on how <strong>reliable each part of the model is</strong>. It’s often useful to summarize this in a <strong>table or checklist</strong>, as we do below.</p>
+<h2 id="summary-of-validation-steps">Summary of Validation Steps</h2>
+<p>The following table summarizes key validation steps for an AlphaFold model and why each step is important:</p>
+<table>
+  <thead>
+      <tr>
+          <th><strong>Validation Step</strong></th>
+          <th><strong>Purpose and Importance</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>AlphaFold Confidence (pLDDT &amp; PAE)</strong></td>
+          <td>Identify which regions of the model are predicted with high confidence and which are uncertain. pLDDT highlights local reliability (e.g., core vs. floppy tail) and PAE indicates confidence in domain orientation​ (29). This guides where to focus further validation – low pLDDT or high PAE regions are likely error-prone or flexible.</td>
+      </tr>
+      <tr>
+          <td><strong>Visual Inspection (PyMOL/ChimeraX/Mol)</strong></td>
+          <td>Catch obvious structural anomalies and get an intuitive feel for the model. By coloring the structure by confidence and examining secondary structure, one can see if the fold makes sense. Visual checks can reveal steric clashes, weird loops, or missing pockets early on. It’s a simple sanity check before delving into metrics.</td>
+      </tr>
+      <tr>
+          <td><strong>Geometric Validation (MolProbity, PROCHECK, WHAT_CHECK)</strong></td>
+          <td>Ensure the model’s geometry is physically plausible. These tools check bond lengths, angles, dihedral angles (Ramachandran plot) and detect atomic clashes​ (29). Good geometry (few outliers, low clashscore) means the model is stereochemically sound, while many violations indicate errors or regions that may need refinement.</td>
+      </tr>
+      <tr>
+          <td><strong>Residue Environment Validation (Verify3D, ERRAT, QMEAN)</strong></td>
+          <td>Assess whether each residue is in a realistic environment and the model has protein-like statistical features. Verify3D and ERRAT compare the structure to empirical rules derived from real proteins​ (19). A high Verify3D score or ERRAT quality factor, and a QMEAN Z-score near 0, suggest the model is globally consistent with known protein structures. Poor scores flag unlikely regions (e.g., a hydrophobic residue exposed, or an odd packing) for further scrutiny.</td>
+      </tr>
+      <tr>
+          <td><strong>Comparison to Known Structures (TM-align, structural superposition)</strong></td>
+          <td>Quantify accuracy by comparing to experimental data. If a PDB structure exists, a high TM-score (≈0.5–1.0) and low RMSD confirm the model’s correctness​. Even partial matches validate domains or motifs. Discrepancies pinpoint specific errors or alternative conformations. This step effectively benchmarks the model against reality.</td>
+      </tr>
+      <tr>
+          <td><strong>Functional Site Check (Docking &amp; Pockets)</strong></td>
+          <td>Verify that the model supports the protein’s known function. Checking for expected pockets and docking ligands tests if the active or binding site is correctly formed. Successful docking (reasonable poses &amp; scores) means the geometry allows the interaction, while failures could mean the site is modeled incorrectly. This links structure to biochemical function, an essential validation for usability in studies (e.g., drug design).</td>
+      </tr>
+      <tr>
+          <td><strong>Molecular Dynamics Simulation (GROMACS/AMBER/NAMD)</strong></td>
+          <td>Test the model’s stability and refine it in a physics-based environment. A stable trajectory (little deviation) indicates the model sits in an energy minimum (likely correct fold), whereas structural unraveling signals problems. MD can also relieve minor clashes and adjust the model to be more realistic. In sum, MD validation ensures the model’s behavior is consistent with a real protein in solvent over time.</td>
+      </tr>
+  </tbody>
+</table>
+<p>Each step adds a layer of confidence to your AlphaFold-predicted structure. By the end of this process, you should have a detailed understanding of your model’s strengths and weaknesses: which parts you can trust, which parts should be treated as hypotheses, and what further experiments or refinements might be necessary. Validating computational models is crucial for <strong>responsible use of AlphaFold predictions</strong> in research – it separates the cases where the model is as good as a crystal structure from those where it might mislead if taken at face value​ (30). With the strategies outlined above, researchers and students can robustly assess their AlphaFold structures and proceed with confidence in subsequent analyses.</p>
+<h2 id="references">References</h2>
+<p>1- Jumper, J., Evans, R., Pritzel, A., et al. (2021). Highly accurate protein structure prediction with AlphaFold. <em>Nature</em>, 596(7873), 583–589. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8728224/" target="_blank" rel="noopener">https://pmc.ncbi.nlm.nih.gov/articles/PMC8728224/</a></p>
+<p>2- European Bioinformatics Institute. (n.d.). <em>pLDDT: Understanding local confidence</em>. <a href="https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/plddt-understanding-local-confidence/" target="_blank" rel="noopener">https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/plddt-understanding-local-confidence/</a></p>
+<p>3- European Bioinformatics Institute. (n.d.). <em>pLDDT measures confidence in the predicted position of residues</em>. <a href="https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/plddt-understanding-local-confidence/" target="_blank" rel="noopener">https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/plddt-understanding-local-confidence/</a></p>
+<p>4- Jumper et al., 2021 – (lDDT, pLDDT also reflects local geometry) <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8728224/" target="_blank" rel="noopener">https://pmc.ncbi.nlm.nih.gov/articles/PMC8728224/</a></p>
+<p>5- European Bioinformatics Institute. (n.d.). <em>Predicted aligned error (PAE) – Explanation</em>. <a href="https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/" target="_blank" rel="noopener">https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/</a></p>
+<p>6- European Bioinformatics Institute. (n.d.). <em>Low PAE score implies confident relative positions</em>. <a href="https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/" target="_blank" rel="noopener">https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/</a></p>
+<p>7- European Bioinformatics Institute. (n.d.). <em>PAE visualisation explanation</em>. <a href="https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/" target="_blank" rel="noopener">https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/</a></p>
+<p>8- EBI (n.d.). <em>Image: Figure 18 – PAE plot</em>. <a href="https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/" target="_blank" rel="noopener">https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/</a></p>
+<p>9- EBI (n.d.). <em>Explanation of diagonal PAE plot</em>. <a href="https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/" target="_blank" rel="noopener">https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/</a></p>
+<p>10- EBI (n.d.). <em>Comparison of pLDDT and PAE</em>. <a href="https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/" target="_blank" rel="noopener">https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/</a></p>
+<p>11- Jumper et al., 2021 – (residue confidence metric pLDDT) <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8728224/" target="_blank" rel="noopener">https://pmc.ncbi.nlm.nih.gov/articles/PMC8728224/</a></p>
+<p>12- EBI (n.d.). <em>How to view PAE plots in structure viewer</em>. <a href="https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/" target="_blank" rel="noopener">https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/</a></p>
+<p>13- Chen, V. B., Arendall, W. B., Headd, J. J., et al. (2010). MolProbity: All-atom structure validation for macromolecular crystallography. <em>Acta Crystallographica Section D: Biological Crystallography</em>, 66(1), 12–21. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC1933162/" target="_blank" rel="noopener">https://pmc.ncbi.nlm.nih.gov/articles/PMC1933162/</a></p>
+<p>14- Chen et al., 2010 – (integration with other resources) <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC1933162/" target="_blank" rel="noopener">https://pmc.ncbi.nlm.nih.gov/articles/PMC1933162/</a></p>
+<p>15- Laskowski, R. A., MacArthur, M. W., Moss, D. S., &amp; Thornton, J. M. (1993). PROCHECK: A program to check the stereochemical quality of protein structures. <em>Journal of Applied Crystallography</em>, 26(2), 283–291. <a href="https://www.ebi.ac.uk/thornton-srv/software/PROCHECK/" target="_blank" rel="noopener">https://www.ebi.ac.uk/thornton-srv/software/PROCHECK/</a></p>
+<p>16- EBI (n.d.). <em>PROCHECK hand menu image</em>. <a href="https://www.ebi.ac.uk/thornton-srv/software/PROCHECK/" target="_blank" rel="noopener">https://www.ebi.ac.uk/thornton-srv/software/PROCHECK/</a></p>
+<p>17- SAVES. (n.d.). <em>VERIFY 3D</em>. <a href="https://saves.mbi.ucla.edu/#:~:text=VERIFY%203D" target="_blank" rel="noopener">https://saves.mbi.ucla.edu/#:~:text=VERIFY%203D</a></p>
+<p>18- ResearchGate. (n.d.). <em>Interpreting ERRAT, Verify3D and PROCHECK scores</em>. <a href="https://www.researchgate.net/post/How-do-I-interpret-my-results-from-ERRAT-Verify3D-and-PROCHECK" target="_blank" rel="noopener">https://www.researchgate.net/post/How-do-I-interpret-my-results-from-ERRAT-Verify3D-and-PROCHECK</a></p>
+<p>19- SAVES. (n.d.). <em>ERRAT</em>. <a href="https://saves.mbi.ucla.edu/#:~:text=ERRAT" target="_blank" rel="noopener">https://saves.mbi.ucla.edu/#:~:text=ERRAT</a></p>
+<p>20- BioStars. (n.d.). <em>Verify3D result discussion</em>. <a href="https://www.biostars.org/p/14354/#:~:text=Verify3D%20shows%2076.10,087" target="_blank" rel="noopener">https://www.biostars.org/p/14354/#:~:text=Verify3D%20shows%2076.10,087</a></p>
+<p>21- Benkert, P., Tosatto, S. C., &amp; Schwede, T. (2009). QMEAN: A comprehensive scoring function for model quality assessment. <em>Proteins: Structure, Function, and Bioinformatics</em>, 71(1), 261–277. <a href="https://swissmodel.expasy.org/qmean/" target="_blank" rel="noopener">https://swissmodel.expasy.org/qmean/</a></p>
+<p>22- Bonvin Lab. (n.d.). <em>QMEAN Z-score</em>. <a href="https://www.bonvinlab.org/education/molmod_online/modelling/" target="_blank" rel="noopener">https://www.bonvinlab.org/education/molmod_online/modelling/</a></p>
+<p>23- Zhang, Y., &amp; Skolnick, J. (2005). TM-align: A protein structure alignment algorithm based on the TM-score. <em>Nucleic Acids Research</em>, 33(7), 2302–2309. <a href="https://zhanggroup.org/TM-score/" target="_blank" rel="noopener">https://zhanggroup.org/TM-score/</a></p>
+<p>24- ZhangGroup. (n.d.). <em>TM-score info</em>. <a href="https://zhanggroup.org/TM-score/" target="_blank" rel="noopener">https://zhanggroup.org/TM-score/</a></p>
+<p>25- Varadi, M., Anyango, S., Deshpande, M., et al. (2022). AlphaFold Protein Structure Database: Massively expanding the structural coverage of protein-sequence space with high-accuracy models. <em>Nucleic Acids Research</em>, 50(D1), D439–D444. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10776388/" target="_blank" rel="noopener">https://pmc.ncbi.nlm.nih.gov/articles/PMC10776388/</a></p>
+<p>26- EBI (n.d.). <em>Residue confidence within structure prediction</em>. <a href="https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/" target="_blank" rel="noopener">https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/</a></p>
+<p>27- EBI (n.d.). <em>pLDDT: More accurate structures</em>. <a href="https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/plddt-understanding-local-confidence/" target="_blank" rel="noopener">https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/plddt-understanding-local-confidence/</a></p>
+<p>28- BioStars. (n.d.). <em>Simulations and MD prep</em>. <a href="https://www.biostars.org/p/14354/#:~:text=I%20would%20run%20a%20short,system%20and%20running%20the%20simulations" target="_blank" rel="noopener">https://www.biostars.org/p/14354/#:~:text=I%20would%20run%20a%20short,system%20and%20running%20the%20simulations</a></p>
+<p>29- Jumper et al., 2021 – (Predicted Aligned Error detail) <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8728224/" target="_blank" rel="noopener">https://pmc.ncbi.nlm.nih.gov/articles/PMC8728224/</a></p>
+<p>30- EBI (n.d.). <em>PAE score importance for AlphaFold ID</em>. <a href="https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/" target="_blank" rel="noopener">https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/pae-a-measure-of-global-confidence-in-alphafold-predictions/</a></p>
+
+      </div>
+
+      
+  <time class="mt-12 mb-8 block text-xs text-gray-500 ltr:text-right rtl:text-left dark:text-gray-400" datetime="2024-03-28T00:00:00.000Z">
+    <span>Last updated on</span>
+    Mar 28, 2024</time>
+
+      <div class="container mx-auto prose prose-slate lg:prose-xl dark:prose-invert mt-5">
+        
+        <div class="max-w-prose print:hidden">
+  
+  
+
+  
+<div class="flex justify-center">
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/drug-discovery/">Drug Discovery</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/computational-chemistry/">Computational Chemistry</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/structural-biology/">Structural Biology</a>
+  
+</div>
+
+
+  
+<section class="flex flex-row flex-wrap justify-center pt-4 text-xl">
+  
+
+  
+  
+  
+  
+  
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fhow-to-validate-alphafold-structures%2F&amp;text=How&#43;to&#43;Validate&#43;AlphaFold&#43;Structures"
+    title="X"
+    aria-label="X"
+    id="share-link-x"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+  </a>
+  
+
+  
+  
+  
+  
+  
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fhow-to-validate-alphafold-structures%2F&amp;t=How&#43;to&#43;Validate&#43;AlphaFold&#43;Structures"
+    title="Facebook"
+    aria-label="Facebook"
+    id="share-link-facebook"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+  </a>
+  
+
+  
+  
+  
+  
+  
+  
+    
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="mailto:?subject=How%20to%20Validate%20AlphaFold%20Structures&amp;body=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fhow-to-validate-alphafold-structures%2F"
+    title="Email"
+    aria-label="Email"
+    id="share-link-email"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M16.5 12a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25"/></svg>
+  </a>
+  
+
+  
+  
+  
+  
+  
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="https://www.linkedin.com/shareArticle?url=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fhow-to-validate-alphafold-structures%2F&amp;title=How&#43;to&#43;Validate&#43;AlphaFold&#43;Structures"
+    title="LinkedIn"
+    aria-label="LinkedIn"
+    id="share-link-linkedin"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+  </a>
+  
+
+  
+  
+  
+  
+  
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="whatsapp://send?text=How&#43;to&#43;Validate&#43;AlphaFold&#43;Structures%20https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fhow-to-validate-alphafold-structures%2F"
+    title="WhatsApp"
+    aria-label="WhatsApp"
+    id="share-link-whatsapp"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="m187.58 144.84-32-16a8 8 0 0 0-8 .5l-14.69 9.8a40.55 40.55 0 0 1-16-16l9.8-14.69a8 8 0 0 0 .5-8l-16-32A8 8 0 0 0 104 64a40 40 0 0 0-40 40 88.1 88.1 0 0 0 88 88 40 40 0 0 0 40-40 8 8 0 0 0-4.42-7.16ZM152 176a72.08 72.08 0 0 1-72-72 24 24 0 0 1 19.29-23.54l11.48 23L101 118a8 8 0 0 0-.73 7.51 56.47 56.47 0 0 0 30.15 30.15A8 8 0 0 0 138 155l14.61-9.74 23 11.48A24 24 0 0 1 152 176ZM128 24a104 104 0 0 0-91.82 152.88l-11.35 34.05a16 16 0 0 0 20.24 20.24l34.05-11.35A104 104 0 1 0 128 24Zm0 192a87.87 87.87 0 0 1-44.06-11.81 8 8 0 0 0-6.54-.67L40 216l12.47-37.4a8 8 0 0 0-.66-6.54A88 88 0 1 1 128 216Z"/></svg>
+  </a>
+  
+</section>
+
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+
+
+
+  
+  
+  
+    
+  
+  
+  
+
+<div class="flex pt-12 pb-4">
+  
+  
+  <img
+    class="mr-4 h-24 w-24 rounded-full"
+    width="96"
+    height="96"
+    alt="Yassir Boulaamane"
+  src="/author/yassir-boulaamane/avatar_hu_9aa8ce6cf147a32a.jpg"
+  loading="lazy"
+  />
+  
+  <div class="place-self-center">
+    <div class="text-[0.6rem] uppercase leading-3 text-neutral-500 dark:text-neutral-400">
+      Authors
+    </div>
+    <div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">
+      <a href="https://yboulaamane.github.io/" class="no-underline">
+      Yassir Boulaamane
+      </a>
+    </div>
+
+    
+    <div class="text-sm font-bold text-neutral-700 dark:text-neutral-300">
+    Postdoctoral Researcher
+    </div>
+    
+
+
+    
+
+    <div class="text-2xl sm:text-lg pt-1">
+
+      
+<div class="flex flex-wrap text-neutral-500 dark:text-neutral-300">
+  
+    
+    
+    
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="mailto:yassir.boulaamane@uab.cat"
+      
+      aria-label="At-Symbol"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M16.5 12a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://twitter.com/yassir_tw"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Brands/X"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://github.com/yboulaamane"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Brands/Github"
+    ><svg style="height: 1em;" fill="currentColor" viewBox="3 3 18 18"><path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://www.linkedin.com/in/yassir-boulaamane"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Brands/Linkedin"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://scholar.google.com/citations?user=L_EMgLcAAAAJ"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Academicons/Google-Scholar"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M343.759 106.662V79.43L363.524 64h-213.89L20.476 176.274h85.656a82.339 82.339 0 0 0-.219 6.225c0 20.845 7.22 38.087 21.672 51.861c14.453 13.797 32.252 20.648 53.327 20.648c4.923 0 9.75-.368 14.438-1.024c-2.907 6.5-4.374 12.523-4.374 18.142c0 9.875 4.499 20.43 13.467 31.642c-39.234 2.67-68.061 9.732-86.437 21.163c-10.531 6.5-19 14.704-25.39 24.531c-6.391 9.9-9.578 20.515-9.578 31.962c0 9.648 2.062 18.336 6.219 26.062c4.156 7.726 9.578 14.07 16.312 18.984c6.718 4.968 14.469 9.101 23.219 12.469c8.734 3.344 17.406 5.718 26.061 7.062A167.052 167.052 0 0 0 180.555 448c13.469 0 26.953-1.734 40.547-5.187c13.562-3.485 26.28-8.642 38.171-15.493c11.86-6.805 21.515-16.086 28.922-27.718c7.39-11.68 11.094-24.805 11.094-39.336c0-11.016-2.25-21.039-6.75-30.14c-4.468-9.073-9.938-16.542-16.452-22.345c-6.501-5.813-13-11.155-19.516-15.968c-6.5-4.845-12-9.75-16.468-14.813c-4.485-5.046-6.735-10.054-6.735-14.984c0-4.921 1.734-9.672 5.216-14.265c3.455-4.61 7.674-9.048 12.61-13.306c4.937-4.25 9.875-8.968 14.796-14.133c4.922-5.147 9.141-11.827 12.61-20.008c3.485-8.18 5.203-17.445 5.203-27.757c0-13.453-2.547-24.46-7.547-33.314c-.594-1.022-1.218-1.803-1.875-3.022l56.907-46.672v17.119c-7.393.93-6.624 5.345-6.624 10.635V245.96c0 5.958 4.875 10.834 10.834 10.834h3.989c5.958 0 10.833-4.875 10.833-10.834V117.293c0-5.277.778-9.688-6.561-10.63zm-107.36 222.48c1.14.75 3.704 2.78 7.718 6.038c4.05 3.243 6.797 5.695 8.266 7.414a443.553 443.553 0 0 1 6.376 7.547c2.813 3.375 4.718 6.304 5.718 8.734c1 2.477 2.016 5.461 3.047 8.946a38.27 38.27 0 0 1 1.485 10.562c0 17.048-6.564 29.68-19.656 37.859c-13.125 8.18-28.767 12.274-46.938 12.274c-9.187 0-18.203-1.093-27.063-3.196c-8.843-2.116-17.311-5.336-25.39-9.601c-8.078-4.258-14.577-10.204-19.5-17.797c-4.938-7.64-7.407-16.415-7.407-26.25c0-10.32 2.797-19.29 8.422-26.906c5.594-7.625 12.938-13.391 22.032-17.315c9.063-3.946 18.25-6.742 27.562-8.398a157.865 157.865 0 0 1 28.438-2.555c4.47 0 7.936.25 10.405.696c.455.219 3.032 2.07 7.735 5.563c4.704 3.462 7.625 5.595 8.75 6.384zm-3.359-100.579c-7.406 8.86-17.734 13.288-30.953 13.288c-11.86 0-22.298-4.764-31.266-14.312c-9-9.523-15.422-20.328-19.344-32.43c-3.937-12.109-5.906-23.984-5.906-35.648c0-13.694 3.596-25.352 10.781-34.976c7.187-9.65 17.5-14.485 30.938-14.485c11.875 0 22.374 5.038 31.437 15.157c9.094 10.085 15.61 21.413 19.517 33.968c3.922 12.54 5.873 24.53 5.873 35.984c0 13.446-3.702 24.61-11.076 33.454z"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://orcid.org/0000-0002-2939-7772"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Academicons/Orcid"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M336.62 194.538c-7.13-3.328-13.866-5.56-20.253-6.614c-6.365-1.095-16.574-1.612-30.71-1.612h-36.704v152.747h37.634c14.673 0 26.081-1.013 34.224-3.017c8.142-2.004 14.921-4.526 20.356-7.626a69.448 69.448 0 0 0 14.942-11.388c14.488-14.714 21.742-33.273 21.742-55.717c0-22.052-7.44-40.052-22.341-53.982c-5.498-5.166-11.822-9.444-18.89-12.793zM256 8C119.022 8 8 119.042 8 256s111.022 248 248 248s248-111.042 248-248S392.978 8 256 8Zm-82.336 357.513h-29.389V160.148h29.389zM158.95 138.696c-11.14 0-20.213-9.01-20.213-20.212c0-11.118 9.052-20.191 20.213-20.191c11.18 0 20.232 9.052 20.232 20.191a20.194 20.194 0 0 1-20.232 20.212zm241.386 163.597c-5.29 12.545-12.834 23.581-22.65 33.088c-9.982 9.837-21.597 17.194-34.844 22.196c-7.75 3.017-14.839 5.063-21.307 6.117c-6.49 1.013-18.828 1.509-37.076 1.509h-64.956V160.148h69.233c27.962 0 50.034 4.154 66.32 12.545c16.265 8.37 29.181 20.728 38.792 36.972c9.61 16.265 14.425 34.018 14.425 53.196c.023 13.765-2.666 26.908-7.936 39.432z"/></svg></a>
+  
+</div>
+
+
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+
+
+
+
+  
+  
+    
+    
+    
+      
+      
+    
+<div class="pt-1 no-prose w-full">
+  <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+  <div class="flex flex-col md:flex-row flex-nowrap justify-between gap-5 pt-2">
+    <div class="">
+      
+        <a class="group flex no-underline" href="/blog/computational-drug-repurposing-with-multiscale-interactomes/">
+          <span
+            class="mt-[-0.3rem] me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+          ><span class="ltr:inline rtl:hidden">&larr;</span></span>
+          <span class="flex flex-col">
+            <span
+              class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+            >Computational Drug Repurposing with Multiscale Interactomes</span>
+            <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+              
+                Apr 23, 2024
+              
+            </span>
+          </span>
+        </a>
+      
+    </div>
+    <div class="">
+      
+        <a class="group flex text-right no-underline" href="/blog/a-comprehensive-guide-to-scientific-writing-and-publishing/">
+          <span class="flex flex-col">
+            <span
+              class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+            >A Comprehensive Guide to Scientific Writing and Publishing</span
+            >
+            <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+              
+                Jan 23, 2024
+              
+            </span>
+          </span>
+          <span
+            class="mt-[-0.3rem] ms-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+          ><span class="ltr:inline">&rarr;</span></span>
+        </a>
+      
+    </div>
+  </div>
+</div>
+
+
+
+  
+
+
+  
+
+
+
+</div>
+
+      </div>
+
+    </main>
+  </article>
+</div>
+
+    </div>
+    <div class="page-footer">
+      <footer class="container mx-auto flex flex-col justify-items-center text-sm leading-6 mt-24 mb-4 text-slate-700 dark:text-slate-200">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+
+  
+  
+    
+  
+  
+    
+  
+
+  
+
+  
+  <p class="powered-by text-center">
+    © 2026 Yassir Boulaamane, PhD. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
+  </p>
+  
+
+  <p class="powered-by footer-license-icons">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank" aria-label="Creative Commons">
+      <i class="fab fa-creative-commons fa-2x" aria-hidden="true"></i>
+      <i class="fab fa-creative-commons-by fa-2x" aria-hidden="true"></i>
+      
+        <i class="fab fa-creative-commons-nc fa-2x" aria-hidden="true"></i>
+      
+      
+        <i class="fab fa-creative-commons-nd fa-2x" aria-hidden="true"></i>
+      
+    </a>
+  </p>
+
+
+
+
+
+  <p class="powered-by text-center">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://hugoblox.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Hugo Blox Builder</a> — the free, <a href="https://github.com/HugoBlox/hugo-blox-builder" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+
+</footer>
+
+    </div>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

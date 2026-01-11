@@ -1,0 +1,2263 @@
+<!doctype html>
+<!-- This site was created with Hugo Blox. https://hugoblox.com -->
+<!-- Last Published: January 11, 2026 --><html lang="en-us" dir="ltr"
+      data-wc-theme-default="system">
+  
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="generator" content="Hugo Blox Builder 0.4.2" />
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Yassir Boulaamane" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Learn how to use Density Functional Theory (DFT) to validate docking poses, estimate strain energies, and gain quantum insights into ligand binding." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://yboulaamane.github.io/blog/validating-molecular-docking-poses-with-dft-a-quick-guide/" />
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="/css/themes/blue.min.css" />
+  
+
+  
+  
+    
+    <link href="/dist/wc.min.66412b998ac08468152d24203c4b87b9cee6bcf511d07b4d040d809cecafd615.css" rel="stylesheet" />
+  
+
+  
+  
+  
+
+  
+
+  <script>
+     
+    window.hbb = {
+       defaultTheme: document.documentElement.dataset.wcThemeDefault,
+       setDarkTheme: () => {
+        document.documentElement.classList.add("dark");
+        document.documentElement.style.colorScheme = "dark";
+      },
+       setLightTheme: () => {
+        document.documentElement.classList.remove("dark");
+        document.documentElement.style.colorScheme = "light";
+      }
+    }
+
+    console.debug(`Default Hugo Blox Builder theme is ${window.hbb.defaultTheme}`);
+
+    if ("wc-color-theme" in localStorage) {
+      localStorage.getItem("wc-color-theme") === "dark" ? window.hbb.setDarkTheme() : window.hbb.setLightTheme();
+    } else {
+      window.hbb.defaultTheme === "dark" ? window.hbb.setDarkTheme() : window.hbb.setLightTheme();
+      if (window.hbb.defaultTheme === "system") {
+        window.matchMedia("(prefers-color-scheme: dark)").matches ? window.hbb.setDarkTheme() : window.hbb.setLightTheme();
+      }
+    }
+  </script>
+
+  <script>
+    
+    document.addEventListener('DOMContentLoaded', function () {
+      
+      let checkboxes = document.querySelectorAll('li input[type=\'checkbox\'][disabled]');
+      checkboxes.forEach(e => {
+        e.parentElement.parentElement.classList.add('task-list');
+      });
+
+      
+      const liNodes = document.querySelectorAll('.task-list li');
+      liNodes.forEach(nodes => {
+        let textNodes = Array.from(nodes.childNodes).filter(node => node.nodeType === 3 && node.textContent.trim().length > 1);
+        if (textNodes.length > 0) {
+          const span = document.createElement('label');
+          textNodes[0].after(span);  
+          span.appendChild(nodes.querySelector('input[type=\'checkbox\']'));
+          span.appendChild(textNodes[0]);
+        }
+      });
+    });
+  </script>
+
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+  <link rel="icon" type="image/png" href="/media/icon_hu_5b9deb501aeab0c7.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu_cc92b57ff025c448.png" />
+
+  <link rel="canonical" href="https://yboulaamane.github.io/blog/validating-molecular-docking-poses-with-dft-a-quick-guide/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@yassir_tw" />
+    <meta property="twitter:creator" content="@yassir_tw" />
+  
+  <meta property="og:site_name" content="Yassir Boulaamane" />
+  <meta property="og:url" content="https://yboulaamane.github.io/blog/validating-molecular-docking-poses-with-dft-a-quick-guide/" />
+  <meta property="og:title" content="Validating Molecular Docking Poses with DFT: A Quick Guide | Yassir Boulaamane" />
+  <meta property="og:description" content="Learn how to use Density Functional Theory (DFT) to validate docking poses, estimate strain energies, and gain quantum insights into ligand binding." /><meta property="og:image" content="https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png" />
+    <meta property="twitter:image" content="https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2025-07-03T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2025-07-03T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://yboulaamane.github.io/blog/validating-molecular-docking-poses-with-dft-a-quick-guide/"
+  },
+  "headline": "Validating Molecular Docking Poses with DFT: A Quick Guide",
+  
+  "datePublished": "2025-07-03T00:00:00Z",
+  "dateModified": "2025-07-03T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Yassir Boulaamane"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Yassir Boulaamane",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://yboulaamane.github.io/media/icon_hu_d671a3d3d3979562.png"
+    }
+  },
+  "description": "Learn how to use Density Functional Theory (DFT) to validate docking poses, estimate strain energies, and gain quantum insights into ligand binding."
+}
+</script>
+
+  
+
+  
+
+
+  <title>Validating Molecular Docking Poses with DFT: A Quick Guide | Yassir Boulaamane</title>
+
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <style>
+    @font-face {
+      font-family: 'Inter var';
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+      src: url(/dist/font/Inter.var.woff2) format(woff2);
+    }
+  </style>
+
+  
+
+  
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+<link type="text/css" rel="stylesheet" href="/dist/pagefind/pagefind-ui.be766eb419317a14ec769d216e9779bfe8f3737c80e780f4ba0dafb57a41a482.css" integrity="sha256-vnZutBkxehTsdp0hbpd5v&#43;jzc3yA54D0ug2vtXpBpII=" />
+
+
+<script src="/dist/pagefind/pagefind-ui.87693d7c6f2b3b347ce359d0ede762c033419f0a32b22ce508c335a81d841f1b.js" integrity="sha256-h2k9fG8rOzR841nQ7ediwDNBnwoysizlCMM1qB2EHxs="></script>
+
+
+<script>window.hbb.pagefind = {"baseUrl":"/"};</script>
+
+<style>
+  html.dark {
+    --pagefind-ui-primary: #eeeeee;
+    --pagefind-ui-text: #eeeeee;
+    --pagefind-ui-background: #152028;
+    --pagefind-ui-border: #152028;
+    --pagefind-ui-tag: #152028;
+  }
+
+   
+  .search-close > svg {
+    height: calc(64px * var(--pagefind-ui-scale));
+    width: calc(64px * var(--pagefind-ui-scale));
+  }
+</style>
+
+<script>
+  
+  let searchWrapper = null;
+
+  window.addEventListener('DOMContentLoaded', (event) => {
+    
+    new PagefindUI({
+      element: "#search",
+      showSubResults: true,
+      baseUrl: window.hbb.pagefind.baseUrl,
+      bundlePath: window.hbb.pagefind.baseUrl + "pagefind/",
+    });
+
+    
+    searchWrapper = document.getElementById('search-wrapper');
+
+    
+    let triggers = document.querySelectorAll('[data-search-toggle]');
+    triggers.forEach(trigger =>
+      trigger.addEventListener('click', handleSearchToggle)
+    );
+  });
+
+  function handleSearchToggle(event) {
+    if (!searchWrapper) return;
+
+    const isHidden = searchWrapper.classList.contains('hidden');
+    searchWrapper.classList.toggle('hidden');
+    document.body.style.overflow = isHidden ? 'hidden' : '';
+
+    const searchInput = searchWrapper.querySelector("input");
+    if (searchInput) {
+      searchInput.value = "";
+      searchInput.focus();
+    }
+
+    if (!searchWrapper.classList.contains('hidden')) {
+      let clearTrigger = document.querySelector('.pagefind-ui__search-clear');
+
+      if (clearTrigger && !clearTrigger.hasAttribute('listenerOnClick')) {
+        clearTrigger.setAttribute('listenerOnClick', 'true');
+
+        clearTrigger.addEventListener('click', () => {
+          searchInput.focus();
+        });
+      }
+    }
+  }
+
+  
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && searchWrapper && !searchWrapper.classList.contains('hidden')) {
+      searchWrapper.classList.add('hidden');
+    }
+  });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  <script
+    defer
+    src="/js/hugo-blox-en.min.66c960df48bae747fe5c0e4923bb91161361660e526c2982c5c49d1e76c35649.js"
+    integrity="sha256-Zslg30i650f&#43;XA5JI7uRFhNhZg5SbCmCxcSdHnbDVkk="
+  ></script>
+
+  
+  
+
+
+
+
+
+
+
+
+  
+    
+      
+      <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+      
+    
+  
+
+
+
+
+</head>
+
+  <body class="dark:bg-hb-dark dark:text-white page-wrapper" id="top">
+    <div id="page-bg"></div>
+    <div class="page-header sticky top-0 z-30">
+      
+      
+      
+        
+        
+        
+          <header id="site-header" class="header">
+  <nav class="navbar px-3 flex justify-left">
+    <div class="order-0 h-100">
+      
+      <a class="navbar-brand" href="/" title="Yassir Boulaamane">
+        Yassir Boulaamane
+      </a>
+    </div>
+    
+    <input id="nav-toggle" type="checkbox" class="hidden" />
+    <label
+      for="nav-toggle"
+      class="order-3 cursor-pointer flex items-center lg:hidden text-dark dark:text-white lg:order-1">
+      <svg id="show-button" class="h-6 fill-current block" viewBox="0 0 20 20">
+        <title>Open Menu</title>
+        <path d="M0 3h20v2H0V3z m0 6h20v2H0V9z m0 6h20v2H0V0z"></path>
+      </svg>
+      <svg id="hide-button" class="h-6 fill-current hidden" viewBox="0 0 20 20">
+        <title>Close Menu</title>
+        <polygon
+          points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2"
+          transform="rotate(45 10 10)"></polygon>
+      </svg>
+    </label>
+    
+
+    
+    
+    <ul
+      id="nav-menu"
+      class="navbar-nav order-3 hidden lg:flex w-full pb-6 lg:order-1 lg:w-auto lg:space-x-2 lg:pb-0 xl:space-x-8 justify-left
+      ">
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/"
+        >Bio</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/#publications"
+        >Publications</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/#conferences"
+        >Conferences</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/blog"
+        >Blog</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/cv"
+        >CV</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/projects"
+        >Projects</a
+        >
+      </li>
+      
+      
+      
+    </ul>
+
+    <div class="order-1 ml-auto flex items-center md:order-2 lg:ml-0">
+
+      
+      
+      
+      <button
+        aria-label="toggle search"
+        class="text-black hover:text-primary  inline-block px-3 text-xl dark:text-white"
+        data-search-toggle>
+        <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512" fill="currentColor"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+      </button>
+      
+
+      
+      
+      <div class="px-3 text-black hover:text-primary-700 dark:text-white dark:hover:text-primary-300
+            [&.active]:font-bold [&.active]:text-black/90 dark:[&.active]:text-white">
+        <button class="theme-toggle mt-1" accesskey="t" title="appearance">
+          <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+               stroke-linejoin="round" class="dark:hidden">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+               stroke-linejoin="round" class=" dark:block [&:not(dark)]:hidden">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+      
+
+      
+      
+
+      
+      
+    </div>
+  </nav>
+</header>
+
+<div
+  id="search-wrapper"
+  class="hidden fixed inset-0 z-50 bg-white dark:bg-gray-900 flex flex-col overflow-hidden"
+>
+  <div class="flex justify-end p-3">
+    <button
+      aria-label="search"
+      class="search-close text-black hover:text-primary dark:text-white"
+      data-search-toggle
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <div id="search" class="flex-1 overflow-y-auto p-3">
+    
+  </div>
+</div>
+
+
+        
+      
+    </div>
+    <div class="page-body  my-10">
+      
+
+
+
+
+
+<div class="mx-auto flex max-w-screen-xl">
+  
+
+
+
+<aside class="hb-sidebar-container max-lg:[transform:translate3d(0,-100%,0)] lg:hidden xl:block">
+  
+  <div class="px-4 pt-4 lg:hidden">
+    
+    
+  </div>
+  <div class="hb-scrollbar lg:h-[calc(100vh-var(--navbar-height))]">
+    <ul class="flex flex-col gap-1 lg:hidden">
+      
+      
+        <li class="open"><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/"
+    
+  >Blog
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/"
+    
+  >Stop Using B3LYP/6-31G*: Critical Pitfalls in Modern DFT Calculations and How to Avoid Them
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/ten-critical-pitfalls-in-molecular-dynamics-simulations-and-strategies-for-mitigation/"
+    
+  >Ten Critical Pitfalls in Molecular Dynamics Simulations and Strategies for Mitigation
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/unlocking-the-undruggable-how-biotechnology-is-rewriting-drug-discovery/"
+    
+  >Unlocking the Undruggable: How Biotechnology Is Rewriting Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/how-to-use-datawarrior-for-drug-discovery-key-workflows-from-the-villoutreix-tutorials/"
+    
+  >How to Use DataWarrior for Drug Discovery: Key Workflows From the Villoutreix Tutorials
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/energy-minimization-with-open-babel-practical-guide-for-ligand-preparation/"
+    
+  >Energy Minimization with Open Babel: Practical Guide for Ligand Preparation
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/a-quick-guide-to-temperature-replica-exchange-molecular-dynamics/"
+    
+  >A Quick Guide to Temperature Replica Exchange Molecular Dynamics
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/principal-component-analysis-and-free-energy-landscape-mapping-using-gromacs/"
+    
+  >Principal Component Analysis and Free Energy Landscape Mapping Using GROMACS
+    </a>
+              
+            </li><li class="flex flex-col open"><a
+    class="hb-sidebar-custom-link
+      sidebar-active-item bg-primary-100 font-semibold text-primary-800 dark:bg-primary-300 dark:text-primary-900"
+    href="/blog/validating-molecular-docking-poses-with-dft-a-quick-guide/"
+    
+  >Validating Molecular Docking Poses with DFT: A Quick Guide
+    </a>
+  
+    <ul class="hb-sidebar-mobile-toc"><li>
+              <a
+                href="#molecular-docking-in-drug-discovery-power-and-pitfalls"
+                class="hb-docs-link"
+              >Molecular Docking in Drug Discovery: Power and Pitfalls</a>
+            </li>
+          <li>
+              <a
+                href="#validating-docking-poses-with-dft-energy-calculations"
+                class="hb-docs-link"
+              >Validating Docking Poses with DFT Energy Calculations</a>
+            </li>
+          <li>
+              <a
+                href="#key-dft-concepts-homo-lumo-and-energy-gaps-in-ligand-binding"
+                class="hb-docs-link"
+              >Key DFT Concepts: HOMO, LUMO, and Energy Gaps in Ligand Binding</a>
+            </li>
+          <li>
+              <a
+                href="#geometry-optimization-vs-docked-pose-an-orca-example"
+                class="hb-docs-link"
+              >Geometry Optimization vs. Docked Pose: An ORCA Example</a>
+            </li>
+          <li>
+              <a
+                href="#transition-state-search-for-pose-validation-advanced"
+                class="hb-docs-link"
+              >Transition State Search for Pose Validation (Advanced)</a>
+            </li>
+          <li>
+              <a
+                href="#interpreting-the-dft-results-when-is-a-pose-unreasonable"
+                class="hb-docs-link"
+              >Interpreting the DFT Results: When is a Pose Unreasonable?</a>
+            </li>
+          <li>
+              <a
+                href="#practical-advice-for-integrating-dft-into-docking-workflows"
+                class="hb-docs-link"
+              >Practical Advice for Integrating DFT into Docking Workflows</a>
+            </li>
+          <li>
+              <a
+                href="#conclusion-a-stronger-docking-workflow-with-quantum-insights"
+                class="hb-docs-link"
+              >Conclusion: A Stronger Docking Workflow with Quantum Insights</a>
+            </li>
+          </ul>
+  
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/ai-chemistry-building-drug-discovery-pipelines-with-free-tools/"
+    
+  >AI &#43; Chemistry: Building Drug Discovery Pipelines with Free Tools
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/an-in-depth-guide-to-md-simulation-and-analysis-of-a-proteinligand-complex/"
+    
+  >Step-by-Step MD Simulation of a Protein–Ligand Complex with GROMACS
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/molecular-simulation-in-drug-discovery-a-strategic-guide-to-core-methods/"
+    
+  >Molecular Simulation in Drug Discovery: A Strategic Guide to Core Methods
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/computational-drug-repurposing-with-multiscale-interactomes/"
+    
+  >Computational Drug Repurposing with Multiscale Interactomes
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/how-to-validate-alphafold-structures/"
+    
+  >How to Validate AlphaFold Structures
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/a-comprehensive-guide-to-scientific-writing-and-publishing/"
+    
+  >A Comprehensive Guide to Scientific Writing and Publishing
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/interpretable-machine-learning-model-as-a-key-to-understanding-bbb-permeability/"
+    
+  >Interpretable Machine Learning as a Key to Understanding BBB Permeability
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/3d-qsar-general-workflow-with-key-metrics-insights-from-xu-et-al-2020/"
+    
+  >How to build and validate 3D-QSAR models - Insights from Xu et al., 2020
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/a-comprehensive-guide-to-hybrid-assembly-pipeline-for-genomic-sequencing/"
+    
+  >A Comprehensive Guide to Hybrid Assembly Pipeline for Genomic Sequencing
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/data-driven-chemistry-how-data-science-empowers-drug-discovery/"
+    
+  >Data-Driven Chemistry: How Data Science Empowers Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/using-padelpy-generate-molecular-fingerprints-machine-learning-based-qsar/"
+    
+  >Using PaDELPy to Generate Molecular Fingerprints for Machine Learning-Based QSAR
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/understanding-molecular-dynamics-simulations/"
+    
+  >Understanding Molecular Dynamics Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/determining-the-appropriate-length-for-proteinligand-md-simulations/"
+    
+  >How Long Should Molecular Dynamics Simulations Run? A Practical Guide
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/supervised-vs-unsupervised-methods-machine-learning/"
+    
+  >Supervised vs. Unsupervised Methods in Machine Learning
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/chemical-databases-machine-learning-drug-discovery/"
+    
+  >Chemical Databases Every ML Scientist Should Know for Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/perform-data-curation-classify-bioactivity-data-chembl-database/"
+    
+  >How to Perform Data Curation and Classify Bioactivity Data on ChEMBL Database
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/"
+    
+  >Publications
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-17/"
+    
+  >Drug Repurposing for AML: Structure-Based Virtual Screening and Molecular Simulations of FDA-Approved Compounds with Polypharmacological Potential
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-16/"
+    
+  >Computational screening of natural products as tryptophan 2,3-dioxygenase inhibitors: Insights from CNN-based QSAR, molecular docking, ADMET, and molecular dynamics simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-15/"
+    
+  >Virtual Screening and Identification of Natural Molecules as Promising Quorum Sensing Inhibitors against Pseudomonas aeruginosa
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-14/"
+    
+  >Computational Investigation of Phytochemicals from Aloysia citriodora as Drug Targets for Parkinson’s Disease-Associated Proteins
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-13/"
+    
+  >Metal and Metal Oxide Nanoparticles: Computational Analysis of Their Interactions and Antibacterial Activities Against Pseudomonas aeruginosa
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-12/"
+    
+  >Computational exploration of acefylline derivatives as MAO-B inhibitors for Parkinson’s disease: insights from molecular docking, DFT, ADMET, and molecular dynamics approaches
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-11/"
+    
+  >In silico Discovery of Dual Ligands Targeting MAO-B and AA2AR from African Natural Products Using Pharmacophore Modelling, Molecular Docking, and Molecular Dynamics Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-10/"
+    
+  >Identification of Natural Inhibitors of SARS-CoV-2 Main Protease (Mpro) via Structure-Based Virtual Screening and Molecular Dynamics Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-9/"
+    
+  >Dendrobium nobile alkaloids modulate calcium dysregulation and neuroinflammation in Alzheimer&#39;s disease: A bioinformatic analysis
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-8/"
+    
+  >Antibiotic discovery with artificial intelligence for the treatment of Acinetobacter baumannii infections
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-7/"
+    
+  >Identification of novel dual acting ligands targeting the adenosine A2A and serotonin 5-HT1A receptors
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-6/"
+    
+  >Exploring natural products as multi-target-directed drugs for Parkinson’s disease: an in-silico approach integrating QSAR, pharmacophore modeling, and molecular dynamics simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-5/"
+    
+  >Probing the molecular mechanisms of α-synuclein inhibitors unveils promising natural candidates through machine-learning QSAR, pharmacophore modeling, and molecular dynamics simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-4/"
+    
+  >Chemical library design, QSAR modeling and molecular dynamics simulations of naturally occurring coumarins as dual inhibitors of MAO-B and AChE
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/book-chapter-1/"
+    
+  >Insights into the Structure-Activity Relationship of Alkynyl-Coumarinyl Ethers as Selective MAO-B Inhibitors Using Molecular Docking
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-3/"
+    
+  >β-amino carbonyl derivatives: Synthesis, Molecular Docking, ADMET, Molecular Dynamic and Herbicidal studies
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-2/"
+    
+  >In silico studies of natural product-like caffeine derivatives as potential MAO-B inhibitors/AA2AR antagonists for the treatment of Parkinson&#39;s disease
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/paper-1/"
+    
+  >Structural exploration of selected C6 and C7-substituted coumarin isomers as selective MAO-B inhibitors
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/"
+    
+  >Projects
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/awesomedrugdiscovery/"
+    
+  >Awesome Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/qsarboost/"
+    
+  >QSARBoost
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/vinascreen/"
+    
+  >VinaScreen
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/qsarbiopred/"
+    
+  >QSARBioPred
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/ensemblebbb/"
+    
+  >EnsembleBBB
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/artemisiadb/"
+    
+  >ArtemisiaDB
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/coumarindb/"
+    
+  >CoumarinDB
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/gmxplotter/"
+    
+  >GMXPlotter
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/"
+    
+  >Conferences
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2024-12-20-presentation-5/"
+    
+  >Computational screening of natural products as tryptophan 2,3-dioxygenase inhibitors: Insights from machine learning QSAR, molecular docking, ADMET, and molecular dynamics simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2024-10-31-poster-2/"
+    
+  >Antibiotic discovery with artificial intelligence for the treatment of Acinetobacter baumannii infections
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2023-10-06-presentation-4/"
+    
+  >Enhanced accuracy in predicting drug blood-brain barrier permeability with a Machine Learning Ensemble model
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2022-10-09-presentation-3/"
+    
+  >QSAR and molecular modeling studies for the discovery of natural products as multi-target-directed drugs for Parkinson&#39;s disease
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2021-12-27-presentation-2/"
+    
+  >Computational studies of African Natural Products Databases to identify natural dual-target-directed antiparkinsonian drugs
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2021-12-27-poster-1/"
+    
+  >Machine Learning model to predict potential Monoamine Oxidase B inhibitors from Cannabis Compound Database
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2021-06-23-presentation-1/"
+    
+  >Docking-based virtual screening and ADME evaluation of caffeine-based phytochemicals as inhibitors of Monoamine Oxidase B
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/projects/"
+    
+  >Projects
+    </a></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/cv/"
+    
+  >CV
+    </a></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/teaching/"
+    
+  >Teaching
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/teaching/js/"
+    
+  >Learn JavaScript
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/teaching/python/"
+    
+  >Learn Python
+    </a>
+              
+            </li></ul>
+      </div></li>
+    </ul>
+
+    <div class="max-xl:hidden h-0 w-64 shrink-0"></div></div>
+
+</aside>
+  
+
+<nav class="hb-toc order-last hidden w-64 shrink-0 xl:block print:hidden px-4" aria-label="table of contents">
+  
+
+
+
+
+
+
+
+
+
+
+
+  <div class="hb-scrollbar text-sm [hyphens:auto] sticky top-16 overflow-y-auto pr-4 pt-6 max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] -mr-4 rtl:-ml-4"><p class="mb-4 font-semibold tracking-tight">On this page</p><ul>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#molecular-docking-in-drug-discovery-power-and-pitfalls">Molecular Docking in Drug Discovery: Power and Pitfalls</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#validating-docking-poses-with-dft-energy-calculations">Validating Docking Poses with DFT Energy Calculations</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#key-dft-concepts-homo-lumo-and-energy-gaps-in-ligand-binding">Key DFT Concepts: HOMO, LUMO, and Energy Gaps in Ligand Binding</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#geometry-optimization-vs-docked-pose-an-orca-example">Geometry Optimization vs. Docked Pose: An ORCA Example</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#transition-state-search-for-pose-validation-advanced">Transition State Search for Pose Validation (Advanced)</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#interpreting-the-dft-results-when-is-a-pose-unreasonable">Interpreting the DFT Results: When is a Pose Unreasonable?</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#practical-advice-for-integrating-dft-into-docking-workflows">Practical Advice for Integrating DFT into Docking Workflows</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#conclusion-a-stronger-docking-workflow-with-quantum-insights">Conclusion: A Stronger Docking Workflow with Quantum Insights</a>
+      </li></ul>
+
+  
+  
+    
+    
+  
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  </nav>
+
+
+  <article class="w-full break-words flex min-h-[calc(100vh-var(--navbar-height))] min-w-0 justify-center pb-8 pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+    <main class="w-full min-w-0 max-w-6xl px-6 pt-4 md:px-12">
+
+      
+
+      <h1 class="mt-2 text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Validating Molecular Docking Poses with DFT: A Quick Guide</h1>
+
+      <div class="mt-4 mb-16">
+      <div class="text-gray-500 dark:text-gray-300 text-sm flex items-center flex-wrap gap-y-2"><span class="mr-1">Jul 3, 2025</span><span class="mx-1">·</span>
+        
+          
+          
+          <div class="group inline-flex items-center text-current gap-x-1.5 mx-1">
+            
+            
+            <img src="/author/yassir-boulaamane/avatar_hu_b693f72bb8d357f9.webp" alt="Yassir Boulaamane" class="inline-block h-4 w-4 rounded-full border border-current" loading="lazy" />
+            
+            <div >Yassir Boulaamane</div>
+          </div>
+          
+        
+
+        
+        <span class="mx-1">·</span>
+        <span class="mx-1">
+          20 min read
+        </span>
+        
+        </div>
+
+        <div class="mt-3">
+          
+
+
+
+
+
+        </div>
+      </div>
+
+
+
+      
+      
+      
+
+      
+      
+
+      <div class="prose prose-slate lg:prose-xl dark:prose-invert">
+        <p>Molecular docking is a cornerstone of computer-aided drug discovery. In docking studies, a small molecule (ligand) is computationally “fit” into a protein’s binding site to predict the preferred orientation (pose) and binding affinity. This approach allows researchers to screen large libraries of compounds rapidly and propose how a drug candidate might bind to its target. Docking is valued for generating hypotheses and guiding experiments in the early stages of drug design.</p>
+<h2 id="molecular-docking-in-drug-discovery-power-and-pitfalls">Molecular Docking in Drug Discovery: Power and Pitfalls</h2>
+<p>Molecular docking is not foolproof. The scoring functions used in most docking programs are simplifications – they account for basic interactions like van der Waals forces and electrostatics, but often ignore ligand strain and detailed quantum effects. Docking assumes a mostly rigid receptor and sometimes forces the ligand into conformations that real molecules might not adopt easily. As a result, the <strong>top-ranked pose cannot always be trusted</strong> – a high docking score doesn’t guarantee the pose is physically realistic. In practice, docking can produce <strong>false positives</strong>: poses that look good in silico but are unstable or energetically unfavorable in reality. This limitation creates a need for validation steps after docking, to filter out poses that are likely artifacts of the scoring function.</p>
+<h2 id="validating-docking-poses-with-dft-energy-calculations">Validating Docking Poses with DFT Energy Calculations</h2>
+<p>This is where <strong>Density Functional Theory (DFT)</strong> comes into play as a powerful validation tool. DFT is a quantum mechanical method that can provide a more accurate calculation of a molecule’s energy and properties by explicitly considering its electron distribution. Unlike docking’s empirical scoring, DFT is physics-based and can evaluate how “comfortable” a ligand is in a given conformation by computing its electronic energy.</p>
+<p><strong>The core idea for pose validation</strong> is simple: use DFT to optimize the ligand’s geometry starting from the docked pose, and compare the energies of the two structures (docked vs. DFT-relaxed). If the docked pose was realistic, the DFT geometry optimization should not drastically alter the ligand’s structure or energy. But if the docking pose was strained or artificially stabilized by the scoring function, the ligand will likely relax to a very different geometry and <strong>release a lot of energy</strong> in the process. The energy difference between the initial docked structure and the optimized structure is essentially the <strong>strain energy</strong> that was needed to force the ligand into the docked pose.</p>
+<p>In practice, the validation workflow might look like this:</p>
+<ol>
+<li><strong>Take the Docked Pose:</strong> After docking, extract the coordinates of the top-ranked ligand pose.</li>
+<li><strong>Single-Point Energy (Optional):</strong> Compute the DFT energy of the ligand <em>in the docked conformation</em> (without relaxing it) to have a reference energy.</li>
+<li><strong>Geometry Optimization:</strong> Perform a DFT geometry optimization of the ligand (in isolation or in the binding pocket, see below). This yields a relaxed structure and its energy, representing a more <em>unstrained</em> conformation.</li>
+<li><strong>Compare Energies:</strong> Calculate the difference in energy between the docked pose and the DFT-optimized pose. A small difference (e.g. a few kcal/mol) suggests the docking pose was already near an energy minimum (plausible). A large difference means the docked pose was high-energy and thus likely unstable.</li>
+</ol>
+<p>Why does this help? Imagine a ligand that the docking algorithm contorted to fit the protein. If that contorted shape lies, say, <strong>10 kcal/mol</strong> higher in energy than the ligand’s preferred shape, it’s improbable that the ligand would actually bind that way – the protein would have to compensate by providing at least 10 kcal/mol of extra favorable interactions, which is quite significant. Empirical evidence and advanced workflows reflect this: if the energy gap is above a certain threshold (commonly cited around 8–10 kcal/mol), the pose is likely a false positive. In other words, a <strong>&gt;8 kcal/mol strain</strong> in the ligand often indicates an unrealistic binding mode.</p>
+<p>It’s important to note that this validation via DFT focuses on the ligand’s <strong>internal energy</strong>. Docking scores try to estimate binding free energy (which is ligand–protein interactions minus strain and entropy costs). By using DFT, we isolate one component of that: how much strain energy the ligand must bear in that pose. An ideal binder has a low strain energy (the ligand can adopt its binding conformation easily) and strong intermolecular interactions. If strain energy is high, the binding affinity prediction from docking is overly optimistic because in reality the ligand would prefer to change shape (or not bind at all).</p>
+<h2 id="key-dft-concepts-homo-lumo-and-energy-gaps-in-ligand-binding">Key DFT Concepts: HOMO, LUMO, and Energy Gaps in Ligand Binding</h2>
+<p>When you perform DFT calculations, you gain insights beyond just geometry and total energy. DFT will provide information on the molecule’s molecular orbitals, including the <strong>HOMO</strong> (Highest Occupied Molecular Orbital) and <strong>LUMO</strong> (Lowest Unoccupied Molecular Orbital). These are often called the <em>frontier molecular orbitals</em> because they represent the frontier between filled and empty electron states. The HOMO is the highest-energy orbital that contains electrons, and the LUMO is the lowest-energy orbital that is empty.</p>
+<p>Why do these matter in the context of ligand binding? The characteristics of the HOMO and LUMO can hint at how the ligand might interact electronically with the protein:</p>
+<ul>
+<li><strong>HOMO</strong> – The HOMO can be thought of as the electron-donating ability of the ligand. A high-energy (less negative) HOMO means the ligand’s outermost electrons are relatively easy to donate. For example, if a ligand has a high HOMO and the protein has a region of low electron density (or a metal ion), the ligand could donate electron density into the protein’s LUMO or metal orbitals, facilitating binding. In frontier orbital theory terms, often a ligand’s HOMO will interact with the protein’s LUMO (for instance, π electrons of a ligand interacting with empty orbitals of a metal center in an enzyme).</li>
+<li><strong>LUMO</strong> – The LUMO represents the ligand’s capacity to accept electrons. A low-energy (more negative) LUMO indicates the ligand is easily reduced or can accept electron density. If the protein has electron-rich sites (like an electron-donating amino acid side chain), a ligand with a low LUMO might accept electron density from the protein’s HOMO. One theoretical model even posits that effective binding involves the protein’s HOMO interacting with the ligand’s LUMO and <em>vice versa</em>, aligning with classical donor–acceptor concepts in chemistry.</li>
+<li><strong>HOMO–LUMO Gap</strong> – The difference in energy between the HOMO and LUMO (the band gap for the molecule) is a measure of the molecule’s electronic stability and reactivity. Generally, a <strong>small HOMO-LUMO gap</strong> means the molecule is more polarizable and reactive (lower “hardness”), whereas a <strong>large gap</strong> implies a more inert, stable molecule<a href="https://www.researchgate.net/figure/HOMO-LUMO-gap-hardness-and-softness-of-all-compounds_tbl2_337289741#:~:text=A%20small%20HOMO%20,E" target="_blank" rel="noopener">\[1\]</a>. In binding terms, a highly reactive ligand (small gap) might form covalent bonds or undergo chemical reactions in the binding site, whereas a large-gap ligand is more chemically stable (it will bind through non-covalent interactions without undergoing changes). For most non-covalent docking scenarios, the HOMO-LUMO gap won’t change dramatically upon binding, but it’s a useful concept for understanding if a ligand is prone to electronic interactions. A ligand with a very small gap might require special consideration (for example, it could auto-ionize or be reactive). Conversely, if docking a very stable molecule (large gap), one might expect purely shape/steric-driven binding.</li>
+</ul>
+<p>For early-career researchers, it’s not critical to master frontier orbital theory immediately, but being aware of these concepts adds depth to your analysis. For instance, if your DFT results show the ligand has a HOMO centered on a particular functional group, that group might be the one donating electron density to form a hydrogen bond or coordinate a metal in the protein. Likewise, the magnitude of the HOMO-LUMO gap can qualitatively indicate if the ligand is likely to be chemically flexible or if it might require a lot of energy to excite or change – which plays into how it might behave in a binding site.</p>
+<h2 id="geometry-optimization-vs-docked-pose-an-orca-example">Geometry Optimization vs. Docked Pose: An ORCA Example</h2>
+<p>Let’s walk through how you would actually perform a DFT geometry optimization on a docked pose, using the <strong>ORCA</strong> quantum chemistry software as a tool of choice. ORCA is a powerful and user-friendly quantum chemistry package that is free for academic use. It can perform DFT calculations (among many other methods) and is well-suited for geometry optimizations of small molecules.</p>
+<p><strong>Step 1: Preparing the Structure.</strong> After docking (using AutoDock, Glide, or any other docking software), you will have a ligand pose, often saved in a file format like PDB or MOL2. The first task is to extract that ligand’s coordinates for a DFT program. You can use a molecule editor or converter (like OpenBabel or Avogadro) to get the coordinates in XYZ format or directly paste them into an ORCA input file. Ensure you have the correct atom types and that the geometry corresponds to the docked conformation you want to test.</p>
+<p><strong>Step 2: Creating the ORCA Input File.</strong> ORCA input files are simple text files. Below is an example of what an ORCA input might look like for optimizing a ligand geometry:</p>
+<pre><code>! B3LYP-D3 def2-SVP Opt TightSCF  
+&lt;br/&gt;%pal nprocs 4 end # Use 4 CPU cores (adjust as available)  
+&lt;br/&gt;\* xyz 0 1  
+C 0.127 1.265 0.000 # (Example coordinates for the ligand)  
+N -0.769 0.352 0.000 # Replace with your ligand's atoms...  
+C 0.127 -0.961 0.000  
+O 1.288 -1.414 0.000  
+... (rest of ligand atoms)  
+\*
+</code></pre>
+<p>Let’s break down this input:</p>
+<ul>
+<li>The first line beginning with ! lists the <strong>method and options</strong>. In this example, we use B3LYP-D3 def2-SVP Opt TightSCF. This specifies the DFT functional B3LYP with D3 dispersion correction, a moderate basis set (def2-SVP), and requests a geometry optimization (Opt). TightSCF is a keyword to tighten the convergence criteria of the self-consistent field (which leads to more accurate energy determination, albeit slightly longer computation). These settings are a reasonable starting point for an organic molecule optimization.</li>
+<li>The %pal section is optional; it requests parallel processing (here 4 cores). If you have access to multiple CPUs, ORCA can parallelize many tasks, speeding up the calculation.</li>
+<li>The * xyz 0 1 line begins the coordinate block. The format here is * xyz \[charge\] \[multiplicity\], followed by the atomic coordinates. In our example, 0 1 means the molecule has neutral charge and a singlet multiplicity (no unpaired electrons). Adjust these if your ligand is an ion or radical (e.g., * xyz -1 1 for a -1 charged anion, or * xyz 0 2 for a neutral doublet radical).</li>
+<li>The subsequent lines list each atom: atomic symbol and its X, Y, Z coordinates (in Angstroms). You would insert the coordinates of your ligand as obtained from the docking output.</li>
+<li>The coordinate block is closed by a line with just *.</li>
+</ul>
+<p>Save this text as, for example, ligand_opt.inp. To run the calculation, you would execute ORCA from the command line (e.g., orca ligand_opt.inp &gt; ligand_opt.out). ORCA will then carry out the DFT calculation, iteratively adjusting the geometry to find a minimum energy structure. After completion, you should check the output file for the results. If the optimization was successful, ORCA will report &ldquo;<strong>OPTIMIZATION RUN DONE</strong>&rdquo; and provide the final coordinates and energies.</p>
+<p><strong>Step 3: Analyzing the Optimized Geometry and Energy.</strong> Compare the final coordinates from ORCA’s output (ligand_opt.out) to the initial docked coordinates. Did the ligand change shape significantly? Often, you can visualize both the docked pose and the DFT-optimized pose in a molecular viewer (PyMOL, Chimera, or even Avogadro) to see any structural shifts. If the ligand only moved slightly, that suggests the docked pose was close to a true minimum. But if the ligand rearranged notably (e.g., flipping a ring, straightening a torsion, etc.), that indicates the docking pose might have been a high-energy conformation that the DFT relaxation corrected.</p>
+<p>From the output, note the final single-point energy of the optimized structure. Let’s say ORCA reports the optimized energy as <strong>E_opt</strong> (in atomic units, Hartrees, which you can convert to kcal/mol if needed by multiplying the difference by 627.5). If you also computed the single-point energy of the initial structure (call it <strong>E_initial</strong>), you can quantify the energy difference: <strong>ΔE = E_initial – E_opt</strong>. A positive ΔE (when converted to kcal/mol) means the initial structure was that many kcal/mol higher in energy than the optimized structure.</p>
+<p>For example, if ΔE comes out to be +10.5 kcal/mol, it means the docked pose had ~10.5 kcal/mol of strain relative to the relaxed state. Such a large strain is a red flag. In contrast, if ΔE is only +2 kcal/mol, the pose is probably fine (a 2 kcal strain is quite tolerable and could easily be offset by protein–ligand interactions).</p>
+<h2 id="transition-state-search-for-pose-validation-advanced">Transition State Search for Pose Validation (Advanced)</h2>
+<p>In some cases, researchers may go a step further and perform a <strong>transition state (TS) search</strong> related to the conformational change between the docked pose and the optimized geometry. This is a more advanced technique and not always necessary for routine docking validation, but it’s conceptually interesting. The idea is to identify the <em>energy barrier</em> that separates the docked conformation from the optimized conformation on the potential energy surface. In other words, if the ligand must distort from shape A (optimized) to shape B (docked), what is the highest-energy point (transition state) along that path?</p>
+<p>Finding a transition state for a conformational change can be tricky, but ORCA does offer tools for this. One approach is to perform a constrained scan or use the <strong>eigenvector-following TS search</strong> algorithm. For example, ORCA’s keyword OptTS turns on a transition state optimization using a variant of the geometry optimizer that searches for a saddle point (a maximum along one coordinate, minimum along others). To use it, you typically need a decent initial guess geometry that is partway between the two conformations or an initial guess of the normal mode that leads to the distortion.</p>
+<p>An ORCA input snippet for a transition state search might look like:</p>
+<pre><code>! B3LYP-D3 def2-SVP OptTS TightSCF  
+&lt;br/&gt;%geom  
+TS_Mode {M 0} # follow the lowest-frequency mode (mode 0) uphill to find TS  
+end  
+&lt;br/&gt;\* xyz 0 1  
+... (coordinates of a guess structure near the anticipated transition state) ...  
+\*
+</code></pre>
+<p>In this input, we replaced Opt with OptTS to request a transition state optimization. We also included a %geom block to specify the TS search mode. {M 0} tells ORCA to follow the eigenvector with the lowest eigenvalue (the softest vibrational mode) uphill – we assume that mode corresponds to the distortion between the two conformers. In practice, you might first do a relaxed scan of a dihedral angle or some coordinate from the docked to the optimized structure to generate an intermediate geometry, then use that as a starting point for OptTS. If ORCA succeeds, it will locate a saddle point, evidenced by one imaginary frequency in the vibrational analysis (if you request a frequency calculation).</p>
+<p>For validating docking poses, a full TS search is usually <strong>optional</strong>. Most of the time, simply comparing energies ΔE is enough to flag problematic poses. But the concept of an “energy barrier” is useful: if the pose is <strong>so</strong> strained that the ligand would need to overcome, say, an 8+ kcal/mol barrier to reach a stable conformation, it’s unlikely that binding is real – the protein isn’t a magical force field that can freeze the ligand in a high-energy shape without paying the price in binding affinity.</p>
+<h2 id="interpreting-the-dft-results-when-is-a-pose-unreasonable">Interpreting the DFT Results: When is a Pose Unreasonable?</h2>
+<p>After running the DFT calculations, you will have quantitative data to make a call on your docking poses. The rule of thumb mentioned earlier bears repeating: <strong>if the energy difference between the docked pose and the optimized geometry exceeds about 8 kcal/mol, be very skeptical of that docking pose</strong>. This threshold isn’t absolute, but it comes from studies and expert recommendations that examine how much strain real protein-bound ligands typically have. Most experimentally observed ligand conformations in crystal structures don’t carry more than ~5 kcal/mol of strain energy. Thus, if your pose is demanding 10+ kcal/mol just to hold that conformation, it likely wouldn’t survive in a real biological system – the ligand would either bind in a different conformation or not bind at all.</p>
+<p>On the other hand, if ΔE is small (for example, 0–3 kcal/mol), the pose is probably physically plausible. The ligand doesn’t mind being in that conformation, and any small strain could potentially be offset by binding interactions. Gray areas are in between – e.g., a 5–7 kcal/mol strain might be borderline. In those cases, consider the context: does the protein provide exceptionally strong interactions (like multiple salt bridges or a covalent bond) that could compensate? If not, you might still doubt a 6 kcal/mol-strained pose, but it’s not as clear-cut as a 12 kcal/mol strain which is almost certainly artifactual.</p>
+<p>It’s also enlightening to look at <em>what parts</em> of the ligand changed upon optimization. Perhaps a particular ring system flipped – that could indicate that in the docked pose, that ring was forced into an awkward orientation to make a protein contact. If the DFT opt shows it flipping 180°, it means the docking algorithm’s scoring perhaps overestimated the benefit of that contact or ignored a torsional penalty. This gives you insight into how to refine your docking: you might impose a torsion constraint in docking next time, or simply be aware that pose might need re-evaluation with induced fit or molecular dynamics.</p>
+<p>Another thing to glean from DFT output: the <strong>HOMO/LUMO energies</strong> of the optimized ligand. While not directly telling you about the pose stability, they can hint if the ligand gained or lost any conjugation or planarity. For example, if the docked pose had a certain π–π stacking and the ligand optimized away from that planarity, its HOMO-LUMO gap might increase (less conjugation). This is more of a niche consideration, but as you grow more comfortable with DFT data, you’ll start to connect these dots.</p>
+<h2 id="practical-advice-for-integrating-dft-into-docking-workflows">Practical Advice for Integrating DFT into Docking Workflows</h2>
+<p>For early-career researchers with limited computational chemistry experience, integrating DFT checks into your docking workflow might seem daunting at first. Here are some practical tips to help you get started:</p>
+<ul>
+<li><strong>Use DFT selectively:</strong> You don’t need to DFT-optimize every single docking result (that could be thousands of compounds!). Prioritize a small set of top-scoring poses or any pose that looks chemically suspicious. For instance, if a docking pose shows a ligand in an unusual contortion or with strained bond angles just to fit the pocket, that’s a prime candidate for DFT validation.</li>
+<li><strong>Choose the right level of theory:</strong> Aim for a balance between accuracy and speed. Methods like B3LYP (a popular DFT functional) with at least a double-zeta basis set (e.g., def2-SVP or 6-31G**) are a common starting point for organic molecules. Include dispersion corrections (e.g., the D3 or D4 dispersion in ORCA, invoked by adding -D3 or similar in the functional line) because dispersion can affect conformational energies. You can often get good results with these settings without the calculation taking too long. If your ligand contains metal atoms or is very large, you may need to use effective core potentials or a smaller basis set respectively, or consider semi-empirical methods as a preliminary filter.</li>
+<li><strong>Leverage faster methods for initial screening:</strong> If full DFT is too slow for the number of poses you want to check, consider using a semi-empirical QM method or a fast approximate DFT like <strong>GFN2-xTB</strong> or <strong>PM6</strong> just to weed out obviously high-strain poses. ORCA can run semi-empirical calculations as well (e.g., using the GFN2-xTB keyword). These methods are less accurate than DFT but much faster – a reasonable compromise for initial strain assessment.</li>
+<li><strong>Optimize in context if possible:</strong> The simplest DFT check is to optimize the ligand in vacuum (or implicit solvent) as we described. This tells you the ligand’s intrinsic strain. In reality, the protein might stabilize some strained conformations. For a more nuanced check, you can do a <strong>QM/MM optimization</strong> – where the ligand is treated with DFT and the protein with a molecular mechanics force field. ORCA supports QM/MM calculations, though setting them up is more complex. Alternatively, you could constrain key interaction distances during the ligand optimization to mimic the protein’s hold. These advanced approaches can be considered if a vacuum-phase optimization suggests strain, but you suspect the protein’s environment might significantly alter the picture.</li>
+<li><strong>Check for convergence and errors:</strong> When running ORCA (or any QM software), always verify that the calculation converged properly. In ORCA, if the geometry optimizer failed (e.g., due to a bad initial geometry or insufficient iterations), the results won’t be reliable. You might need to increase MaxIter in the %geom settings or tweak the initial structure. Similarly, watch out for any error messages in the output (like SCF not converged, which you can address by adding SlowConv or other SCF convergence aids).</li>
+<li><strong>Interpret results conservatively:</strong> Remember that computed energies have some error bars. A ~2 kcal/mol difference is probably within the “noise” of method accuracy – it means essentially no significant strain. A &gt;10 kcal/mol difference is huge and almost certainly meaningful. Middle values (e.g., 4–7 kcal/mol) might depend on method, so consider doing a sanity check: perhaps re-optimize using a different functional (like M06-2X or PBE0) or a higher basis set for a single-point energy on the optimized geometry to see if the gap persists. If all methods agree that a pose is high-strain, you can be confident in flagging it.</li>
+<li><strong>Use visualization and intuition:</strong> DFT numbers are great, but always circle back to the chemistry. Visualize the DFT-relaxed pose overlaid with the docked pose. Which bonds rotated? Which angles opened up? Does that make chemical sense (e.g., a steric clash was resolved, an eclipsed conformation went to staggered)? This can teach you <em>why</em> a pose was unstable and improve your docking criteria next time (for example, you might realize a particular functional group prefers to be planar but the docking forced it non-planar).</li>
+<li><strong>Time and resource management:</strong> DFT calculations can be time-consuming, especially for larger molecules. If you’re working on a laptop, start with very small tests. Perhaps try optimizing just a piece of the ligand or a single pose and see how long it takes. Make use of any high-performance computing resources your institution provides for larger jobs. And be mindful of ORCA’s memory and disk usage settings if your system is large (these can be controlled via %maxcore and other inputs).</li>
+<li><strong>Learn from community examples:</strong> Many researchers have shared tutorials and benchmarks on docking and QM. Don’t hesitate to look up examples (including the ORCA forum and manual) for similar use-cases. For instance, searching for “ligand strain DFT docking” might lead you to studies where they did exactly this kind of validation, giving you a sense of typical values and pitfalls to watch out for.</li>
+</ul>
+<p>By incorporating DFT into your workflow, you add a layer of rigor that can save you from chasing false leads. It trains your chemical intuition as well – after a few such exercises, you’ll start to anticipate which poses are likely strained without even computing them, simply by recognizing telltale geometrical quirks.</p>
+<h2 id="conclusion-a-stronger-docking-workflow-with-quantum-insights">Conclusion: A Stronger Docking Workflow with Quantum Insights</h2>
+<p>In summary, molecular docking is a powerful technique for generating hypotheses in drug discovery, but it has well-known limitations in accuracy. DFT provides a complementary approach to <strong>double-check and validate docking poses</strong> by focusing on the fundamental question: Is this pose physically reasonable for the ligand molecule? By optimizing the ligand geometry and examining energies, DFT can expose cases where the docking solution is riding on unrealistically high internal strain. Early-career researchers can greatly benefit from this approach, as it not only improves the reliability of computational predictions but also deepens one’s understanding of molecular behavior.</p>
+<p>Using ORCA or similar quantum chemistry tools to perform these validations might seem like extra work, but it pays off by preventing wasted effort on false positives. Moreover, it offers a learning opportunity to become familiar with quantum chemical concepts like HOMOs, LUMOs, and energy landscapes in a very practical context. Over time, these skills will strengthen your ability to critically evaluate computational results and make you a more effective researcher in computational chemistry and drug design.</p>
+<p><strong>Integrating DFT into docking workflows doesn’t mean abandoning speed or simplicity – it means knowing when to switch from a fast, heuristic method to a detailed, first-principles check.</strong> With the tips and examples provided, you should be well on your way to applying DFT validation in your own projects. Happy docking, and may your binding poses be ever in your favor (and physically plausible)!</p>
+<p><strong>References:</strong> The concepts and strategies discussed here are informed by both practical computational experience and literature. The idea of using DFT to optimize ligand geometries and flag strained poses is highlighted in advanced docking validation workflows. The limitations of docking scoring functions in accounting for ligand strain have been noted in the literature, leading to recommendations for post-docking refinement. Definitions of HOMO/LUMO and their relevance to chemical reactivity are well-established in molecular orbital theory<a href="https://www.researchgate.net/figure/HOMO-LUMO-gap-hardness-and-softness-of-all-compounds_tbl2_337289741#:~:text=A%20small%20HOMO%20,E" target="_blank" rel="noopener">\[1\]</a>, and even in the context of protein–ligand interactions the frontier orbital alignment can play a role. ORCA, as a chosen tool in our examples, is a widely used quantum chemistry package available to academics, and its manual provides details on techniques like transition state searches. These sources and the accumulated knowledge from them reinforce the practices recommended in this guide.</p>
+<p><a href="https://www.researchgate.net/figure/HOMO-LUMO-gap-hardness-and-softness-of-all-compounds_tbl2_337289741#:~:text=A%20small%20HOMO%20,E" target="_blank" rel="noopener">\[1\]</a> HOMO, LUMO, gap, hardness, and softness of all compounds.</p>
+<p><a href="https://www.researchgate.net/figure/HOMO-LUMO-gap-hardness-and-softness-of-all-compounds_tbl2_337289741" target="_blank" rel="noopener">https://www.researchgate.net/figure/HOMO-LUMO-gap-hardness-and-softness-of-all-compounds_tbl2_337289741</a></p>
+
+      </div>
+
+      
+  <time class="mt-12 mb-8 block text-xs text-gray-500 ltr:text-right rtl:text-left dark:text-gray-400" datetime="2025-07-03T00:00:00.000Z">
+    <span>Last updated on</span>
+    Jul 3, 2025</time>
+
+      <div class="container mx-auto prose prose-slate lg:prose-xl dark:prose-invert mt-5">
+        
+        <div class="max-w-prose print:hidden">
+  
+  
+
+  
+<div class="flex justify-center">
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/computational-chemistry/">Computational Chemistry</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/dft/">DFT</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/drug-discovery/">Drug Discovery</a>
+  
+</div>
+
+
+  
+<section class="flex flex-row flex-wrap justify-center pt-4 text-xl">
+  
+
+  
+  
+  
+  
+  
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fvalidating-molecular-docking-poses-with-dft-a-quick-guide%2F&amp;text=Validating&#43;Molecular&#43;Docking&#43;Poses&#43;with&#43;DFT%3A&#43;A&#43;Quick&#43;Guide"
+    title="X"
+    aria-label="X"
+    id="share-link-x"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+  </a>
+  
+
+  
+  
+  
+  
+  
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fvalidating-molecular-docking-poses-with-dft-a-quick-guide%2F&amp;t=Validating&#43;Molecular&#43;Docking&#43;Poses&#43;with&#43;DFT%3A&#43;A&#43;Quick&#43;Guide"
+    title="Facebook"
+    aria-label="Facebook"
+    id="share-link-facebook"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+  </a>
+  
+
+  
+  
+  
+  
+  
+  
+    
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="mailto:?subject=Validating%20Molecular%20Docking%20Poses%20with%20DFT%3A%20A%20Quick%20Guide&amp;body=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fvalidating-molecular-docking-poses-with-dft-a-quick-guide%2F"
+    title="Email"
+    aria-label="Email"
+    id="share-link-email"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M16.5 12a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25"/></svg>
+  </a>
+  
+
+  
+  
+  
+  
+  
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="https://www.linkedin.com/shareArticle?url=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fvalidating-molecular-docking-poses-with-dft-a-quick-guide%2F&amp;title=Validating&#43;Molecular&#43;Docking&#43;Poses&#43;with&#43;DFT%3A&#43;A&#43;Quick&#43;Guide"
+    title="LinkedIn"
+    aria-label="LinkedIn"
+    id="share-link-linkedin"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+  </a>
+  
+
+  
+  
+  
+  
+  
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="whatsapp://send?text=Validating&#43;Molecular&#43;Docking&#43;Poses&#43;with&#43;DFT%3A&#43;A&#43;Quick&#43;Guide%20https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fvalidating-molecular-docking-poses-with-dft-a-quick-guide%2F"
+    title="WhatsApp"
+    aria-label="WhatsApp"
+    id="share-link-whatsapp"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="m187.58 144.84-32-16a8 8 0 0 0-8 .5l-14.69 9.8a40.55 40.55 0 0 1-16-16l9.8-14.69a8 8 0 0 0 .5-8l-16-32A8 8 0 0 0 104 64a40 40 0 0 0-40 40 88.1 88.1 0 0 0 88 88 40 40 0 0 0 40-40 8 8 0 0 0-4.42-7.16ZM152 176a72.08 72.08 0 0 1-72-72 24 24 0 0 1 19.29-23.54l11.48 23L101 118a8 8 0 0 0-.73 7.51 56.47 56.47 0 0 0 30.15 30.15A8 8 0 0 0 138 155l14.61-9.74 23 11.48A24 24 0 0 1 152 176ZM128 24a104 104 0 0 0-91.82 152.88l-11.35 34.05a16 16 0 0 0 20.24 20.24l34.05-11.35A104 104 0 1 0 128 24Zm0 192a87.87 87.87 0 0 1-44.06-11.81 8 8 0 0 0-6.54-.67L40 216l12.47-37.4a8 8 0 0 0-.66-6.54A88 88 0 1 1 128 216Z"/></svg>
+  </a>
+  
+</section>
+
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+
+
+
+  
+  
+  
+    
+  
+  
+  
+
+<div class="flex pt-12 pb-4">
+  
+  
+  <img
+    class="mr-4 h-24 w-24 rounded-full"
+    width="96"
+    height="96"
+    alt="Yassir Boulaamane"
+  src="/author/yassir-boulaamane/avatar_hu_9aa8ce6cf147a32a.jpg"
+  loading="lazy"
+  />
+  
+  <div class="place-self-center">
+    <div class="text-[0.6rem] uppercase leading-3 text-neutral-500 dark:text-neutral-400">
+      Authors
+    </div>
+    <div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">
+      <a href="https://yboulaamane.github.io/" class="no-underline">
+      Yassir Boulaamane
+      </a>
+    </div>
+
+    
+    <div class="text-sm font-bold text-neutral-700 dark:text-neutral-300">
+    Postdoctoral Researcher
+    </div>
+    
+
+
+    
+
+    <div class="text-2xl sm:text-lg pt-1">
+
+      
+<div class="flex flex-wrap text-neutral-500 dark:text-neutral-300">
+  
+    
+    
+    
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="mailto:yassir.boulaamane@uab.cat"
+      
+      aria-label="At-Symbol"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M16.5 12a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://twitter.com/yassir_tw"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Brands/X"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://github.com/yboulaamane"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Brands/Github"
+    ><svg style="height: 1em;" fill="currentColor" viewBox="3 3 18 18"><path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://www.linkedin.com/in/yassir-boulaamane"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Brands/Linkedin"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://scholar.google.com/citations?user=L_EMgLcAAAAJ"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Academicons/Google-Scholar"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M343.759 106.662V79.43L363.524 64h-213.89L20.476 176.274h85.656a82.339 82.339 0 0 0-.219 6.225c0 20.845 7.22 38.087 21.672 51.861c14.453 13.797 32.252 20.648 53.327 20.648c4.923 0 9.75-.368 14.438-1.024c-2.907 6.5-4.374 12.523-4.374 18.142c0 9.875 4.499 20.43 13.467 31.642c-39.234 2.67-68.061 9.732-86.437 21.163c-10.531 6.5-19 14.704-25.39 24.531c-6.391 9.9-9.578 20.515-9.578 31.962c0 9.648 2.062 18.336 6.219 26.062c4.156 7.726 9.578 14.07 16.312 18.984c6.718 4.968 14.469 9.101 23.219 12.469c8.734 3.344 17.406 5.718 26.061 7.062A167.052 167.052 0 0 0 180.555 448c13.469 0 26.953-1.734 40.547-5.187c13.562-3.485 26.28-8.642 38.171-15.493c11.86-6.805 21.515-16.086 28.922-27.718c7.39-11.68 11.094-24.805 11.094-39.336c0-11.016-2.25-21.039-6.75-30.14c-4.468-9.073-9.938-16.542-16.452-22.345c-6.501-5.813-13-11.155-19.516-15.968c-6.5-4.845-12-9.75-16.468-14.813c-4.485-5.046-6.735-10.054-6.735-14.984c0-4.921 1.734-9.672 5.216-14.265c3.455-4.61 7.674-9.048 12.61-13.306c4.937-4.25 9.875-8.968 14.796-14.133c4.922-5.147 9.141-11.827 12.61-20.008c3.485-8.18 5.203-17.445 5.203-27.757c0-13.453-2.547-24.46-7.547-33.314c-.594-1.022-1.218-1.803-1.875-3.022l56.907-46.672v17.119c-7.393.93-6.624 5.345-6.624 10.635V245.96c0 5.958 4.875 10.834 10.834 10.834h3.989c5.958 0 10.833-4.875 10.833-10.834V117.293c0-5.277.778-9.688-6.561-10.63zm-107.36 222.48c1.14.75 3.704 2.78 7.718 6.038c4.05 3.243 6.797 5.695 8.266 7.414a443.553 443.553 0 0 1 6.376 7.547c2.813 3.375 4.718 6.304 5.718 8.734c1 2.477 2.016 5.461 3.047 8.946a38.27 38.27 0 0 1 1.485 10.562c0 17.048-6.564 29.68-19.656 37.859c-13.125 8.18-28.767 12.274-46.938 12.274c-9.187 0-18.203-1.093-27.063-3.196c-8.843-2.116-17.311-5.336-25.39-9.601c-8.078-4.258-14.577-10.204-19.5-17.797c-4.938-7.64-7.407-16.415-7.407-26.25c0-10.32 2.797-19.29 8.422-26.906c5.594-7.625 12.938-13.391 22.032-17.315c9.063-3.946 18.25-6.742 27.562-8.398a157.865 157.865 0 0 1 28.438-2.555c4.47 0 7.936.25 10.405.696c.455.219 3.032 2.07 7.735 5.563c4.704 3.462 7.625 5.595 8.75 6.384zm-3.359-100.579c-7.406 8.86-17.734 13.288-30.953 13.288c-11.86 0-22.298-4.764-31.266-14.312c-9-9.523-15.422-20.328-19.344-32.43c-3.937-12.109-5.906-23.984-5.906-35.648c0-13.694 3.596-25.352 10.781-34.976c7.187-9.65 17.5-14.485 30.938-14.485c11.875 0 22.374 5.038 31.437 15.157c9.094 10.085 15.61 21.413 19.517 33.968c3.922 12.54 5.873 24.53 5.873 35.984c0 13.446-3.702 24.61-11.076 33.454z"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://orcid.org/0000-0002-2939-7772"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Academicons/Orcid"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M336.62 194.538c-7.13-3.328-13.866-5.56-20.253-6.614c-6.365-1.095-16.574-1.612-30.71-1.612h-36.704v152.747h37.634c14.673 0 26.081-1.013 34.224-3.017c8.142-2.004 14.921-4.526 20.356-7.626a69.448 69.448 0 0 0 14.942-11.388c14.488-14.714 21.742-33.273 21.742-55.717c0-22.052-7.44-40.052-22.341-53.982c-5.498-5.166-11.822-9.444-18.89-12.793zM256 8C119.022 8 8 119.042 8 256s111.022 248 248 248s248-111.042 248-248S392.978 8 256 8Zm-82.336 357.513h-29.389V160.148h29.389zM158.95 138.696c-11.14 0-20.213-9.01-20.213-20.212c0-11.118 9.052-20.191 20.213-20.191c11.18 0 20.232 9.052 20.232 20.191a20.194 20.194 0 0 1-20.232 20.212zm241.386 163.597c-5.29 12.545-12.834 23.581-22.65 33.088c-9.982 9.837-21.597 17.194-34.844 22.196c-7.75 3.017-14.839 5.063-21.307 6.117c-6.49 1.013-18.828 1.509-37.076 1.509h-64.956V160.148h69.233c27.962 0 50.034 4.154 66.32 12.545c16.265 8.37 29.181 20.728 38.792 36.972c9.61 16.265 14.425 34.018 14.425 53.196c.023 13.765-2.666 26.908-7.936 39.432z"/></svg></a>
+  
+</div>
+
+
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+
+
+
+
+  
+  
+    
+    
+    
+      
+      
+    
+<div class="pt-1 no-prose w-full">
+  <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+  <div class="flex flex-col md:flex-row flex-nowrap justify-between gap-5 pt-2">
+    <div class="">
+      
+        <a class="group flex no-underline" href="/blog/principal-component-analysis-and-free-energy-landscape-mapping-using-gromacs/">
+          <span
+            class="mt-[-0.3rem] me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+          ><span class="ltr:inline rtl:hidden">&larr;</span></span>
+          <span class="flex flex-col">
+            <span
+              class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+            >Principal Component Analysis and Free Energy Landscape Mapping Using GROMACS</span>
+            <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+              
+                Jul 9, 2025
+              
+            </span>
+          </span>
+        </a>
+      
+    </div>
+    <div class="">
+      
+        <a class="group flex text-right no-underline" href="/blog/ai-chemistry-building-drug-discovery-pipelines-with-free-tools/">
+          <span class="flex flex-col">
+            <span
+              class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+            >AI &#43; Chemistry: Building Drug Discovery Pipelines with Free Tools</span
+            >
+            <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+              
+                Jul 1, 2025
+              
+            </span>
+          </span>
+          <span
+            class="mt-[-0.3rem] ms-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+          ><span class="ltr:inline">&rarr;</span></span>
+        </a>
+      
+    </div>
+  </div>
+</div>
+
+
+
+  
+
+
+  
+
+
+
+</div>
+
+      </div>
+
+    </main>
+  </article>
+</div>
+
+    </div>
+    <div class="page-footer">
+      <footer class="container mx-auto flex flex-col justify-items-center text-sm leading-6 mt-24 mb-4 text-slate-700 dark:text-slate-200">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+
+  
+  
+    
+  
+  
+    
+  
+
+  
+
+  
+  <p class="powered-by text-center">
+    © 2026 Yassir Boulaamane, PhD. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
+  </p>
+  
+
+  <p class="powered-by footer-license-icons">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank" aria-label="Creative Commons">
+      <i class="fab fa-creative-commons fa-2x" aria-hidden="true"></i>
+      <i class="fab fa-creative-commons-by fa-2x" aria-hidden="true"></i>
+      
+        <i class="fab fa-creative-commons-nc fa-2x" aria-hidden="true"></i>
+      
+      
+        <i class="fab fa-creative-commons-nd fa-2x" aria-hidden="true"></i>
+      
+    </a>
+  </p>
+
+
+
+
+
+  <p class="powered-by text-center">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://hugoblox.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Hugo Blox Builder</a> — the free, <a href="https://github.com/HugoBlox/hugo-blox-builder" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+
+</footer>
+
+    </div>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

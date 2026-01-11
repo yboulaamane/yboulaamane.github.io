@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Genomics | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/genomics/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/genomics/index.xml" rel="self" type="application/rss+xml" />
+    <description>Genomics</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Thu, 11 Jan 2024 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Genomics</title>
+      <link>https://yboulaamane.github.io/tags/genomics/</link>
+    </image>
+    
+    <item>
+      <title>A Comprehensive Guide to Hybrid Assembly Pipeline for Genomic Sequencing</title>
+      <link>https://yboulaamane.github.io/blog/a-comprehensive-guide-to-hybrid-assembly-pipeline-for-genomic-sequencing/</link>
+      <pubDate>Thu, 11 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/a-comprehensive-guide-to-hybrid-assembly-pipeline-for-genomic-sequencing/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Microbes, life&amp;rsquo;s unseen workhorses, hold immense potential for bioremediation, medicine, and understanding our planet. Yet, their intricate workings remain largely a mystery. This is where microbial genomics steps in, offering a powerful tool to decode their genetic language. Genomic sequencing has revolutionized our understanding of microbial diversity and function.&lt;/p&gt;
+&lt;p&gt;In this guide, we&amp;rsquo;ll walk through a &lt;strong&gt;hybrid assembly pipeline&lt;/strong&gt;, combining long reads (ONT) and short reads (Illumina), using tools for quality control, assembly, polishing, and assessment.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;requirements&#34;&gt;Requirements&lt;/h2&gt;
+&lt;h3 id=&#34;using-anaconda-for-package-management&#34;&gt;Using Anaconda for Package Management&lt;/h3&gt;
+&lt;p&gt;
+ - simplifies installing and managing bioinformatics tools.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;conda create --name myenv
+conda activate myenv
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;quality-control-tools&#34;&gt;Quality Control Tools&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+ - visualize quality metrics of long reads (ONT/PacBio).&lt;/li&gt;
+&lt;li&gt;
+ - generate quality reports for short reads (Illumina).&lt;/li&gt;
+&lt;li&gt;
+ - filter and trim long reads by quality and length.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;assembly&#34;&gt;Assembly&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+ - long-read assembler optimized for ONT and PacBio data.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;polishing&#34;&gt;Polishing&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+ - ONT neural-network-based polishing tool.&lt;/li&gt;
+&lt;li&gt;
+ - short-read aligner for mapping Illumina reads to assemblies.&lt;/li&gt;
+&lt;li&gt;
+ - polishing tool that uses short-read alignments to correct assembly errors.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;assembly-assessment&#34;&gt;Assembly Assessment&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+ - assess genome completeness using universal single-copy orthologs.&lt;/li&gt;
+&lt;li&gt;
+ - evaluate assembly quality with metrics like N50, misassemblies, and GC content.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;hybrid-assembly-pipeline&#34;&gt;Hybrid Assembly Pipeline&lt;/h2&gt;
+&lt;h3 id=&#34;quality-control&#34;&gt;Quality Control&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;For Long Reads (ONT):&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mkdir -p nanoplot_lr_raw
+NanoPlot --fastq LR_input.fastq --N50 --verbose --outdir nanoplot_lr_raw/ -t 8
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;For Short Reads (Illumina):&lt;/strong&gt;
+mkdir -p fastqc_reports
+fastqc SR_input_1.fastq SR_input_2.fastq -o fastqc_reports/ -t 8&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;filter-long-reads&#34;&gt;Filter Long Reads&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;filtlong -1 SR_input_1.fastq -2 SR_input_2.fastq --min_length 1000 --keep_percent 90 LR_input.fastq &amp;gt; LR_filtered.fastq
+mkdir -p nanoplot_lr_filtered
+NanoPlot --fastq LR_filtered.fastq --N50 --verbose --outdir nanoplot_lr_filtered/ -t 8
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;long-reads-assembly-flye&#34;&gt;Long Reads Assembly (Flye)&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;flye --nano-raw LR_filtered.fastq --out-dir Flye/ --threads 8 --scaffold -g 6m
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;first-polishing-medaka&#34;&gt;First Polishing (Medaka)&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;conda activate medaka
+medaka_consensus -i LR_filtered.fastq -d Flye/assembly.fasta -o Polish1/ -m r941_min_fast_g303 -t 8
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;second-polishing-polypolish&#34;&gt;Second Polishing (Polypolish)&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;mkdir -p Polish2
+bwa index Polish1/consensus.fasta
+bwa mem -t 8 -a Polish1/consensus.fasta SR_input_1.fastq &amp;gt; Polish2/alignments_1.sam
+bwa mem -t 8 -a Polish1/consensus.fasta SR_input_2.fastq &amp;gt; Polish2/alignments_2.sam
+
+polypolish_insert_filter.py   --in1 Polish2/alignments_1.sam   --in2 Polish2/alignments_2.sam   --out1 Polish2/filtered_1.sam   --out2 Polish2/filtered_2.sam
+
+polypolish Polish1/consensus.fasta   Polish2/filtered_1.sam   Polish2/filtered_2.sam &amp;gt; final_assembly.fasta
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;assembly-quality-assessment&#34;&gt;Assembly Quality Assessment&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;conda activate busco
+busco -i final_assembly.fasta -l bacteria_odb10 -m genome -o busco_final_assembly
+
+quast -o quast_final_assembly -t 8 final_assembly.fasta
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;annotation-for-16s-rrna&#34;&gt;Annotation for 16S rRNA&lt;/h2&gt;
+&lt;h3 id=&#34;prokka&#34;&gt;Prokka&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;conda install -c conda-forge -c bioconda prokka
+prokka --outdir prokka_annotation --prefix final_assembly final_assembly.fasta
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;rast&#34;&gt;RAST&lt;/h3&gt;
+&lt;p&gt;Submit the genome via the 
+ for functional annotation.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;bottom-line&#34;&gt;Bottom Line&lt;/h2&gt;
+&lt;p&gt;This hybrid assembly pipeline, coupled with annotation tools like Prokka and RAST, empowers researchers to unravel microbial genomes. Combining long and short reads with rigorous QC and assessment ensures a reliable, accurate representation of genomic information.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
