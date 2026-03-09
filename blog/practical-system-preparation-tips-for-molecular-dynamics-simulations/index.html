@@ -41,11 +41,11 @@
   
     
   
-  <meta name="description" content="GPCRs are a family of transmembrane receptors that are profoundly linked to various neurological disorders, among which is Parkinson’s disease (PD). PD is the second most ubiquitous neurological disorder after Alzheimer’s disease, characterized by the depletion of dopamine in the central nervous system due to the impairment of dopaminergic neurons, leading to involuntary movements or dyskinesia. The current standard of care for PD is Levodopa, a dopamine precursor, yet the chronic use of this agent can exacerbate motor symptoms. Recent studies have investigated the effects of combining A2AR antagonist and 5-HT1A agonist on dyskinesia and motor complications in animal models of PD. It has been proved that the drug combination has significantly improved involuntary movements while maintaining motor activity, highlighting as a result new lines of therapy for PD treatments, through the regulation of both receptors. Using a combination of ligand-based pharmacophore modelling, virtual screening, and molecular dynamics simulation, this study intends on identifying potential dual-target compounds from IBScreen. Results showed that the selected models displayed good enrichment metrics with a near perfect receiver operator characteristic (ROC) and Area under the accumulation curve (AUAC) values, signifying that the models are both specific and sensitive. Molecular docking and ADMET analysis revealed that STOCK2N-00171 could be potentially active against A2AR and 5-HT1A. Post-MD analysis confirmed that the ligand exhibits a stable behavior throughout the simulation while maintaining crucial interactions. These results imply that STOCK2N-00171 can serve as a blueprint for the design of novel and effective dual-acting ligands targeting A2AR and 5-HT1A.
+  <meta name="description" content="Preparing a molecular system correctly before running molecular dynamics (MD) simulations is essential for obtaining meaningful and reproducible results. Small technical choices such as solvent box geometry, treatment of protein termini, and strategies for selecting representative conformations can strongly influence simulation stability, computational efficiency, and interpretation of results.
 " />
 
   
-  <link rel="alternate" hreflang="en-us" href="https://yboulaamane.github.io/publications/paper-7/" />
+  <link rel="alternate" hreflang="en-us" href="https://yboulaamane.github.io/blog/practical-system-preparation-tips-for-molecular-dynamics-simulations/" />
 
   
   
@@ -201,7 +201,7 @@
   <link rel="icon" type="image/png" href="/media/icon_hu_5b9deb501aeab0c7.png" />
   <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu_cc92b57ff025c448.png" />
 
-  <link rel="canonical" href="https://yboulaamane.github.io/publications/paper-7/" />
+  <link rel="canonical" href="https://yboulaamane.github.io/blog/practical-system-preparation-tips-for-molecular-dynamics-simulations/" />
 
   
   
@@ -227,29 +227,71 @@
     <meta property="twitter:creator" content="@yassir_tw" />
   
   <meta property="og:site_name" content="Yassir Boulaamane" />
-  <meta property="og:url" content="https://yboulaamane.github.io/publications/paper-7/" />
-  <meta property="og:title" content="Identification of novel dual acting ligands targeting the adenosine A2A and serotonin 5-HT1A receptors | Yassir Boulaamane" />
-  <meta property="og:description" content="GPCRs are a family of transmembrane receptors that are profoundly linked to various neurological disorders, among which is Parkinson’s disease (PD). PD is the second most ubiquitous neurological disorder after Alzheimer’s disease, characterized by the depletion of dopamine in the central nervous system due to the impairment of dopaminergic neurons, leading to involuntary movements or dyskinesia. The current standard of care for PD is Levodopa, a dopamine precursor, yet the chronic use of this agent can exacerbate motor symptoms. Recent studies have investigated the effects of combining A2AR antagonist and 5-HT1A agonist on dyskinesia and motor complications in animal models of PD. It has been proved that the drug combination has significantly improved involuntary movements while maintaining motor activity, highlighting as a result new lines of therapy for PD treatments, through the regulation of both receptors. Using a combination of ligand-based pharmacophore modelling, virtual screening, and molecular dynamics simulation, this study intends on identifying potential dual-target compounds from IBScreen. Results showed that the selected models displayed good enrichment metrics with a near perfect receiver operator characteristic (ROC) and Area under the accumulation curve (AUAC) values, signifying that the models are both specific and sensitive. Molecular docking and ADMET analysis revealed that STOCK2N-00171 could be potentially active against A2AR and 5-HT1A. Post-MD analysis confirmed that the ligand exhibits a stable behavior throughout the simulation while maintaining crucial interactions. These results imply that STOCK2N-00171 can serve as a blueprint for the design of novel and effective dual-acting ligands targeting A2AR and 5-HT1A.
-" /><meta property="og:image" content="https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png" />
+  <meta property="og:url" content="https://yboulaamane.github.io/blog/practical-system-preparation-tips-for-molecular-dynamics-simulations/" />
+  <meta property="og:title" content="Practical System Preparation Tips for Molecular Dynamics Simulations | Yassir Boulaamane" />
+  <meta property="og:description" content="Preparing a molecular system correctly before running molecular dynamics (MD) simulations is essential for obtaining meaningful and reproducible results. Small technical choices such as solvent box geometry, treatment of protein termini, and strategies for selecting representative conformations can strongly influence simulation stability, computational efficiency, and interpretation of results." /><meta property="og:image" content="https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png" />
     <meta property="twitter:image" content="https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png" /><meta property="og:locale" content="en-us" />
   
     
       <meta
         property="article:published_time"
-        content="2023-10-18T00:00:00&#43;00:00"
+        content="2026-03-09T00:00:00&#43;00:00"
       />
     
-    <meta property="article:modified_time" content="2023-10-18T00:00:00&#43;00:00">
+    <meta property="article:modified_time" content="2026-03-09T00:00:00&#43;00:00">
   
 
   
 
 
+    
+
+
+
+
+
 
   
 
 
-  <title>Identification of novel dual acting ligands targeting the adenosine A2A and serotonin 5-HT1A receptors | Yassir Boulaamane</title>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://yboulaamane.github.io/blog/practical-system-preparation-tips-for-molecular-dynamics-simulations/"
+  },
+  "headline": "Practical System Preparation Tips for Molecular Dynamics Simulations",
+  
+  "datePublished": "2026-03-09T00:00:00Z",
+  "dateModified": "2026-03-09T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Yassir Boulaamane"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Yassir Boulaamane",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://yboulaamane.github.io/media/icon_hu_d671a3d3d3979562.png"
+    }
+  },
+  "description": "\u003cp\u003ePreparing a molecular system correctly before running molecular dynamics (MD) simulations is essential for obtaining meaningful and reproducible results. Small technical choices such as solvent box geometry, treatment of protein termini, and strategies for selecting representative conformations can strongly influence simulation stability, computational efficiency, and interpretation of results.\u003c/p\u003e"
+}
+</script>
+
+  
+
+  
+
+
+  <title>Practical System Preparation Tips for Molecular Dynamics Simulations | Yassir Boulaamane</title>
 
   
   
@@ -1008,7 +1050,7 @@
     <ul class="flex flex-col gap-1 lg:hidden">
       
       
-        <li class=""><a
+        <li class="open"><a
     class="hb-sidebar-custom-link
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
     href="/blog/"
@@ -1018,13 +1060,40 @@
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
         </span>
     </a><div class="ltr:pr-0 overflow-hidden">
-        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+        <ul class="hb-sidebar-list"><li class="flex flex-col open"><a
     class="hb-sidebar-custom-link
-      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+      sidebar-active-item bg-primary-100 font-semibold text-primary-800 dark:bg-primary-300 dark:text-primary-900"
     href="/blog/practical-system-preparation-tips-for-molecular-dynamics-simulations/"
     
   >Practical System Preparation Tips for Molecular Dynamics Simulations
     </a>
+  
+    <ul class="hb-sidebar-mobile-toc"><li>
+              <a
+                href="#solvent-box-geometry-cube-truncated-octahedron-and-rhombic-dodecahedron"
+                class="hb-docs-link"
+              >Solvent Box Geometry: Cube, Truncated Octahedron, and Rhombic Dodecahedron</a>
+            </li>
+          <li>
+              <a
+                href="#capping-protein-termini-in-molecular-simulations"
+                class="hb-docs-link"
+              >Capping Protein Termini in Molecular Simulations</a>
+            </li>
+          <li>
+              <a
+                href="#selecting-representative-conformations-from-multiple-simulations"
+                class="hb-docs-link"
+              >Selecting Representative Conformations from Multiple Simulations</a>
+            </li>
+          <li>
+              <a
+                href="#final-thoughts"
+                class="hb-docs-link"
+              >Final Thoughts</a>
+            </li>
+          </ul>
+  
               
             </li><li class="flex flex-col "><a
     class="hb-sidebar-custom-link
@@ -1220,7 +1289,7 @@
               
             </li></ul>
       </div></li>
-        <li class="open"><a
+        <li class=""><a
     class="hb-sidebar-custom-link
       text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
     href="/publications/"
@@ -1318,14 +1387,13 @@
   >Antibiotic discovery with artificial intelligence for the treatment of Acinetobacter baumannii infections
     </a>
               
-            </li><li class="flex flex-col open"><a
+            </li><li class="flex flex-col "><a
     class="hb-sidebar-custom-link
-      sidebar-active-item bg-primary-100 font-semibold text-primary-800 dark:bg-primary-300 dark:text-primary-900"
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
     href="/publications/paper-7/"
     
   >Identification of novel dual acting ligands targeting the adenosine A2A and serotonin 5-HT1A receptors
     </a>
-  
               
             </li><li class="flex flex-col "><a
     class="hb-sidebar-custom-link
@@ -1591,7 +1659,43 @@
 
 
 
-  <div class="hb-scrollbar text-sm [hyphens:auto] sticky top-16 overflow-y-auto pr-4 pt-6 max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] -mr-4 rtl:-ml-4">
+  <div class="hb-scrollbar text-sm [hyphens:auto] sticky top-16 overflow-y-auto pr-4 pt-6 max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] -mr-4 rtl:-ml-4"><p class="mb-4 font-semibold tracking-tight">On this page</p><ul>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#solvent-box-geometry-cube-truncated-octahedron-and-rhombic-dodecahedron">Solvent Box Geometry: Cube, Truncated Octahedron, and Rhombic Dodecahedron</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#cubic-box">Cubic Box</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#truncated-octahedron">Truncated Octahedron</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#rhombic-dodecahedron">Rhombic Dodecahedron</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#practical-summary">Practical Summary</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#capping-protein-termini-in-molecular-simulations">Capping Protein Termini in Molecular Simulations</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#what-does-capping-mean">What Does Capping Mean?</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#why-capping-is-important">Why Capping Is Important</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#when-should-you-cap-termini">When Should You Cap Termini?</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#selecting-representative-conformations-from-multiple-simulations">Selecting Representative Conformations from Multiple Simulations</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#recommended-workflow">Recommended Workflow</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#final-thoughts">Final Thoughts</a>
+      </li></ul>
 
   
   
@@ -1623,64 +1727,19 @@
 
       
 
-      <h1 class="mt-2 text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Identification of novel dual acting ligands targeting the adenosine A2A and serotonin 5-HT1A receptors</h1>
+      <h1 class="mt-2 text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Practical System Preparation Tips for Molecular Dynamics Simulations</h1>
 
       <div class="mt-4 mb-16">
-      <div class="text-gray-500 dark:text-gray-300 text-sm flex items-center flex-wrap gap-y-2"><span class="mr-1">Oct 18, 2023</span><span class="mx-1">·</span>
+      <div class="text-gray-500 dark:text-gray-300 text-sm flex items-center flex-wrap gap-y-2"><span class="mr-1">Mar 9, 2026</span><span class="mx-1">·</span>
         
           
           
           <div class="group inline-flex items-center text-current gap-x-1.5 mx-1">
             
-            <div >Iman Touati</div>
-          </div>
-          
-        
-          
-          <span class="mr-1">,</span>
-          <div class="group inline-flex items-center text-current gap-x-1.5 mx-1">
             
-            <div >Mohnad Abdalla</div>
-          </div>
-          
-        
-          
-          <span class="mr-1">,</span>
-          <div class="group inline-flex items-center text-current gap-x-1.5 mx-1">
+            <img src="/author/yassir-boulaamane/avatar_hu_b693f72bb8d357f9.webp" alt="Yassir Boulaamane" class="inline-block h-4 w-4 rounded-full border border-current" loading="lazy" />
             
             <div >Yassir Boulaamane</div>
-          </div>
-          
-        
-          
-          <span class="mr-1">,</span>
-          <div class="group inline-flex items-center text-current gap-x-1.5 mx-1">
-            
-            <div >Nawal Al-Hoshani</div>
-          </div>
-          
-        
-          
-          <span class="mr-1">,</span>
-          <div class="group inline-flex items-center text-current gap-x-1.5 mx-1">
-            
-            <div >Abdulaziz Alouffi</div>
-          </div>
-          
-        
-          
-          <span class="mr-1">,</span>
-          <div class="group inline-flex items-center text-current gap-x-1.5 mx-1">
-            
-            <div >Mohammed Reda Britel</div>
-          </div>
-          
-        
-          
-          <span class="mr-1">,</span>
-          <div class="group inline-flex items-center text-current gap-x-1.5 mx-1">
-            
-            <div >Amal Maurady</div>
           </div>
           
         
@@ -1688,7 +1747,7 @@
         
         <span class="mx-1">·</span>
         <span class="mx-1">
-          0 min read
+          4 min read
         </span>
         
         </div>
@@ -1699,72 +1758,6 @@
 
 
 
-<div class="">
-  
-  
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
-    
-  
-  
-  
-  
-  
-    
-    
-      
-    
-  
-  <a class="hb-attachment-link hb-attachment-large" href="/uploads/paper-7.pdf" >
-    <svg style="height: 1em" class='inline-block' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"/></svg>
-    </a>
-
-  
-  
-  
-    
-  
-  
-  
-  
-  
-    
-  
-  <a class="hb-attachment-link hb-attachment-large" href="https://doi.org/10.1080/07391102.2023.2270753" target="_blank" rel="noopener">
-    <svg style="height: 1em" class='inline-block' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"/></svg>
-    </a>
-
-
-</div>
-
 
         </div>
       </div>
@@ -1777,38 +1770,147 @@
 
       
       
-        <div class="max-w-prose grid grid-cols-1 md:grid-cols-[200px_auto] gap-4 my-6">
-
-        
-          <div class="font-bold text-2xl">Abstract</div>
-          <div>GPCRs are a family of transmembrane receptors that are profoundly linked to various neurological disorders, among which is Parkinson’s disease (PD). PD is the second most ubiquitous neurological disorder after Alzheimer’s disease, characterized by the depletion of dopamine in the central nervous system due to the impairment of dopaminergic neurons, leading to involuntary movements or dyskinesia. The current standard of care for PD is Levodopa, a dopamine precursor, yet the chronic use of this agent can exacerbate motor symptoms. Recent studies have investigated the effects of combining A2AR antagonist and 5-HT1A agonist on dyskinesia and motor complications in animal models of PD. It has been proved that the drug combination has significantly improved involuntary movements while maintaining motor activity, highlighting as a result new lines of therapy for PD treatments, through the regulation of both receptors. Using a combination of ligand-based pharmacophore modelling, virtual screening, and molecular dynamics simulation, this study intends on identifying potential dual-target compounds from IBScreen. Results showed that the selected models displayed good enrichment metrics with a near perfect receiver operator characteristic (ROC) and Area under the accumulation curve (AUAC) values, signifying that the models are both specific and sensitive. Molecular docking and ADMET analysis revealed that STOCK2N-00171 could be potentially active against A2AR and 5-HT1A. Post-MD analysis confirmed that the ligand exhibits a stable behavior throughout the simulation while maintaining crucial interactions. These results imply that STOCK2N-00171 can serve as a blueprint for the design of novel and effective dual-acting ligands targeting A2AR and 5-HT1A.</div>
-        
-
-        
-        
-
-        
-          <div class="font-bold text-2xl">Publication</div>
-          <div>Journal Article</div>
-        
-
-        
-
-        
-
-        
-
-      </div>
-      
 
       <div class="prose prose-slate lg:prose-xl dark:prose-invert">
-        
+        <p>Preparing a molecular system correctly before running molecular dynamics (MD) simulations is essential for obtaining meaningful and reproducible results. Small technical choices such as solvent box geometry, treatment of protein termini, and strategies for selecting representative conformations can strongly influence simulation stability, computational efficiency, and interpretation of results.</p>
+<p>This article highlights several practical considerations that often arise during MD system preparation.</p>
+<hr>
+<h2 id="solvent-box-geometry-cube-truncated-octahedron-and-rhombic-dodecahedron">Solvent Box Geometry: Cube, Truncated Octahedron, and Rhombic Dodecahedron</h2>
+<p>When solvating a biomolecular system, the simulation box defines the periodic environment in which the molecule evolves. The geometry of the box directly affects the number of solvent molecules and therefore the computational cost of the simulation.</p>
+<h3 id="cubic-box">Cubic Box</h3>
+<p>A cubic box is the simplest and most intuitive choice.</p>
+<p><strong>Characteristics</strong></p>
+<ul>
+<li>Orthogonal geometry aligned with Cartesian axes</li>
+<li>Straightforward implementation in most MD packages</li>
+<li>Easy visualization and debugging</li>
+</ul>
+<p><strong>Limitations</strong></p>
+<ul>
+<li>Inefficient packing for roughly spherical biomolecules</li>
+<li>Requires more solvent molecules than other box geometries for the same minimum solute to edge distance</li>
+<li>Leads to larger systems and higher computational cost</li>
+</ul>
+<p>Cubic boxes are often used for simplicity or for systems that are naturally elongated along Cartesian directions.</p>
+<hr>
+<h3 id="truncated-octahedron">Truncated Octahedron</h3>
+<p>The truncated octahedron is a more spherical periodic box that is commonly used in biomolecular simulations.</p>
+<p><strong>Advantages</strong></p>
+<ul>
+<li>Better volume efficiency compared with a cube</li>
+<li>Reduces solvent molecules by roughly 30 to 40 percent for spherical solutes</li>
+<li>Maintains isotropic solvent distribution around the molecule</li>
+</ul>
+<p>Because many proteins are approximately globular, this geometry provides a good balance between efficiency and simplicity. It is one of the most frequently used box types in MD simulations.</p>
+<hr>
+<h3 id="rhombic-dodecahedron">Rhombic Dodecahedron</h3>
+<p>The rhombic dodecahedron is the most compact periodic box for spherical systems.</p>
+<p><strong>Advantages</strong></p>
+<ul>
+<li>Minimizes unused solvent space</li>
+<li>Produces the smallest number of solvent molecules for a given buffer distance</li>
+<li>Particularly useful for large systems where solvent count becomes significant</li>
+</ul>
+<p>Modern MD software handles this geometry without difficulty. For large biomolecules, the reduction in solvent volume can noticeably decrease computational cost.</p>
+<hr>
+<h3 id="practical-summary">Practical Summary</h3>
+<table>
+  <thead>
+      <tr>
+          <th>Box Type</th>
+          <th>Main Advantage</th>
+          <th>Limitation</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Cube</td>
+          <td>Simple and intuitive</td>
+          <td>Least efficient for globular systems</td>
+      </tr>
+      <tr>
+          <td>Truncated Octahedron</td>
+          <td>Good balance between simplicity and efficiency</td>
+          <td>Slightly more complex geometry</td>
+      </tr>
+      <tr>
+          <td>Rhombic Dodecahedron</td>
+          <td>Most compact solvent volume</td>
+          <td>Less intuitive shape</td>
+      </tr>
+  </tbody>
+</table>
+<p>For many protein simulations, truncated octahedron or rhombic dodecahedron boxes provide clear efficiency advantages over cubic boxes.</p>
+<hr>
+<h2 id="capping-protein-termini-in-molecular-simulations">Capping Protein Termini in Molecular Simulations</h2>
+<p>Another important structural preparation step is the treatment of protein termini.</p>
+<p>Proteins naturally contain an <strong>N terminus</strong> and a <strong>C terminus</strong>. In many cases the N terminus carries a positive charge and the C terminus carries a negative charge. When simulating truncated proteins, peptide fragments, or isolated domains, these termini may become artificially exposed and introduce simulation artifacts.</p>
+<p>To prevent this, the termini are often <strong>capped</strong>.</p>
+<hr>
+<h3 id="what-does-capping-mean">What Does Capping Mean?</h3>
+<p>Capping involves adding small chemical groups that neutralize the terminal charges and mimic the continuation of the peptide chain.</p>
+<p>Common terminal caps include:</p>
+<ul>
+<li><strong>ACE (acetyl group)</strong> for the N terminus</li>
+<li><strong>NME (N-methylamide)</strong> for the C terminus</li>
+</ul>
+<p>These groups effectively close the peptide backbone and prevent artificial electrostatic interactions.</p>
+<hr>
+<h3 id="why-capping-is-important">Why Capping Is Important</h3>
+<p>Uncapped termini in truncated systems can introduce several artifacts:</p>
+<ul>
+<li>Artificial salt bridges</li>
+<li>Nonphysical electrostatic interactions</li>
+<li>Increased structural instability</li>
+<li>Distorted conformational dynamics</li>
+</ul>
+<p>Capping helps prevent these problems by neutralizing terminal charges and providing a more realistic chemical environment.</p>
+<hr>
+<h3 id="when-should-you-cap-termini">When Should You Cap Termini?</h3>
+<p>Capping is recommended when:</p>
+<ul>
+<li>Simulating peptide fragments or isolated protein domains</li>
+<li>Extracting a region from a larger protein structure</li>
+<li>Studying small peptides or engineered sequences</li>
+</ul>
+<p>Capping is generally not required when:</p>
+<ul>
+<li>Simulating a full length protein</li>
+<li>The natural termini are solvent exposed and biologically relevant</li>
+</ul>
+<p>Handling termini correctly helps ensure that the simulated system behaves realistically.</p>
+<hr>
+<h2 id="selecting-representative-conformations-from-multiple-simulations">Selecting Representative Conformations from Multiple Simulations</h2>
+<p>Another common challenge in computational studies is selecting representative structures from multiple simulation trajectories.</p>
+<p>A frequent mistake is choosing the structure that deviates the most from the starting conformation. Although such structures may appear interesting, they do not necessarily represent meaningful conformational states.</p>
+<p>A more reliable strategy is <strong>ensemble analysis</strong>.</p>
+<hr>
+<h3 id="recommended-workflow">Recommended Workflow</h3>
+<ol>
+<li>Combine trajectories from multiple simulations.</li>
+<li>Align structures using a stable reference region.</li>
+<li>Characterize conformational variability using metrics such as RMSD, key residue distances, or pocket geometry.</li>
+<li>Perform clustering to identify dominant conformational states.</li>
+<li>Select cluster centroids as representative structures.</li>
+</ol>
+<p>This approach ensures that selected conformations represent statistically meaningful states rather than isolated outliers.</p>
+<hr>
+<h2 id="final-thoughts">Final Thoughts</h2>
+<p>Successful molecular dynamics simulations depend heavily on careful system preparation. Choices that may appear minor, such as box geometry, terminal capping, or conformational selection, can have substantial downstream effects on simulation quality and computational efficiency.</p>
+<p>Key points to remember:</p>
+<ul>
+<li>Efficient solvent box geometry can significantly reduce computational cost.</li>
+<li>Capping termini prevents artificial electrostatic artifacts in truncated systems.</li>
+<li>Ensemble analysis provides more reliable representative structures than selecting extreme conformations.</li>
+</ul>
+<p>Paying attention to these details improves the robustness and reproducibility of molecular dynamics simulations and helps generate more reliable insights into biomolecular behavior.</p>
+
       </div>
 
       
-  <time class="mt-12 mb-8 block text-xs text-gray-500 ltr:text-right rtl:text-left dark:text-gray-400" datetime="2023-10-18T00:00:00.000Z">
+  <time class="mt-12 mb-8 block text-xs text-gray-500 ltr:text-right rtl:text-left dark:text-gray-400" datetime="2026-03-09T00:00:00.000Z">
     <span>Last updated on</span>
-    Oct 18, 2023</time>
+    Mar 9, 2026</time>
 
       <div class="container mx-auto prose prose-slate lg:prose-xl dark:prose-invert mt-5">
         
@@ -1817,6 +1919,18 @@
   
 
   
+<div class="flex justify-center">
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/computational-chemistry/">Computational Chemistry</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/molecular-dynamics/">Molecular Dynamics</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/cheminformatics/">Cheminformatics</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/drug-discovery/">Drug Discovery</a>
+  
+</div>
+
 
   
 <section class="flex flex-row flex-wrap justify-center pt-4 text-xl">
@@ -1831,7 +1945,7 @@
   <a
     target="_blank" rel="noopener"
     class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
-    href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fyboulaamane.github.io%2Fpublications%2Fpaper-7%2F&amp;text=Identification&#43;of&#43;novel&#43;dual&#43;acting&#43;ligands&#43;targeting&#43;the&#43;adenosine&#43;A2A&#43;and&#43;serotonin&#43;5-HT1A&#43;receptors"
+    href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fpractical-system-preparation-tips-for-molecular-dynamics-simulations%2F&amp;text=Practical&#43;System&#43;Preparation&#43;Tips&#43;for&#43;Molecular&#43;Dynamics&#43;Simulations"
     title="X"
     aria-label="X"
     id="share-link-x"
@@ -1849,7 +1963,7 @@
   <a
     target="_blank" rel="noopener"
     class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
-    href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fyboulaamane.github.io%2Fpublications%2Fpaper-7%2F&amp;t=Identification&#43;of&#43;novel&#43;dual&#43;acting&#43;ligands&#43;targeting&#43;the&#43;adenosine&#43;A2A&#43;and&#43;serotonin&#43;5-HT1A&#43;receptors"
+    href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fpractical-system-preparation-tips-for-molecular-dynamics-simulations%2F&amp;t=Practical&#43;System&#43;Preparation&#43;Tips&#43;for&#43;Molecular&#43;Dynamics&#43;Simulations"
     title="Facebook"
     aria-label="Facebook"
     id="share-link-facebook"
@@ -1869,7 +1983,7 @@
   <a
     target="_blank" rel="noopener"
     class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
-    href="mailto:?subject=Identification%20of%20novel%20dual%20acting%20ligands%20targeting%20the%20adenosine%20A2A%20and%20serotonin%205-HT1A%20receptors&amp;body=https%3A%2F%2Fyboulaamane.github.io%2Fpublications%2Fpaper-7%2F"
+    href="mailto:?subject=Practical%20System%20Preparation%20Tips%20for%20Molecular%20Dynamics%20Simulations&amp;body=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fpractical-system-preparation-tips-for-molecular-dynamics-simulations%2F"
     title="Email"
     aria-label="Email"
     id="share-link-email"
@@ -1887,7 +2001,7 @@
   <a
     target="_blank" rel="noopener"
     class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
-    href="https://www.linkedin.com/shareArticle?url=https%3A%2F%2Fyboulaamane.github.io%2Fpublications%2Fpaper-7%2F&amp;title=Identification&#43;of&#43;novel&#43;dual&#43;acting&#43;ligands&#43;targeting&#43;the&#43;adenosine&#43;A2A&#43;and&#43;serotonin&#43;5-HT1A&#43;receptors"
+    href="https://www.linkedin.com/shareArticle?url=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fpractical-system-preparation-tips-for-molecular-dynamics-simulations%2F&amp;title=Practical&#43;System&#43;Preparation&#43;Tips&#43;for&#43;Molecular&#43;Dynamics&#43;Simulations"
     title="LinkedIn"
     aria-label="LinkedIn"
     id="share-link-linkedin"
@@ -1905,7 +2019,7 @@
   <a
     target="_blank" rel="noopener"
     class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
-    href="whatsapp://send?text=Identification&#43;of&#43;novel&#43;dual&#43;acting&#43;ligands&#43;targeting&#43;the&#43;adenosine&#43;A2A&#43;and&#43;serotonin&#43;5-HT1A&#43;receptors%20https%3A%2F%2Fyboulaamane.github.io%2Fpublications%2Fpaper-7%2F"
+    href="whatsapp://send?text=Practical&#43;System&#43;Preparation&#43;Tips&#43;for&#43;Molecular&#43;Dynamics&#43;Simulations%20https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fpractical-system-preparation-tips-for-molecular-dynamics-simulations%2F"
     title="WhatsApp"
     aria-label="WhatsApp"
     id="share-link-whatsapp"
@@ -1931,40 +2045,139 @@
 
 
 
-
   
+  
+  
+    
+  
+  
+  
+
+<div class="flex pt-12 pb-4">
+  
+  
+  <img
+    class="mr-4 h-24 w-24 rounded-full"
+    width="96"
+    height="96"
+    alt="Yassir Boulaamane"
+  src="/author/yassir-boulaamane/avatar_hu_9aa8ce6cf147a32a.jpg"
+  loading="lazy"
+  />
+  
+  <div class="place-self-center">
+    <div class="text-[0.6rem] uppercase leading-3 text-neutral-500 dark:text-neutral-400">
+      Authors
+    </div>
+    <div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">
+      <a href="https://yboulaamane.github.io/" class="no-underline">
+      Yassir Boulaamane
+      </a>
+    </div>
+
+    
+    <div class="text-sm font-bold text-neutral-700 dark:text-neutral-300">
+    Postdoctoral Researcher
+    </div>
     
 
 
-
-
-  
     
 
+    <div class="text-2xl sm:text-lg pt-1">
 
-
-
+      
+<div class="flex flex-wrap text-neutral-500 dark:text-neutral-300">
   
     
-
-
-
-
+    
+    
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="mailto:yassir.boulaamane@uab.cat"
+      
+      aria-label="At-Symbol"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M16.5 12a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25"/></svg></a>
   
     
-
-
-
-
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://twitter.com/yassir_tw"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Brands/X"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg></a>
   
     
-
-
-
-
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://github.com/yboulaamane"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Brands/Github"
+    ><svg style="height: 1em;" fill="currentColor" viewBox="3 3 18 18"><path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path></svg></a>
   
     
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://www.linkedin.com/in/yassir-boulaamane"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Brands/Linkedin"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://scholar.google.com/citations?user=L_EMgLcAAAAJ"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Academicons/Google-Scholar"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M343.759 106.662V79.43L363.524 64h-213.89L20.476 176.274h85.656a82.339 82.339 0 0 0-.219 6.225c0 20.845 7.22 38.087 21.672 51.861c14.453 13.797 32.252 20.648 53.327 20.648c4.923 0 9.75-.368 14.438-1.024c-2.907 6.5-4.374 12.523-4.374 18.142c0 9.875 4.499 20.43 13.467 31.642c-39.234 2.67-68.061 9.732-86.437 21.163c-10.531 6.5-19 14.704-25.39 24.531c-6.391 9.9-9.578 20.515-9.578 31.962c0 9.648 2.062 18.336 6.219 26.062c4.156 7.726 9.578 14.07 16.312 18.984c6.718 4.968 14.469 9.101 23.219 12.469c8.734 3.344 17.406 5.718 26.061 7.062A167.052 167.052 0 0 0 180.555 448c13.469 0 26.953-1.734 40.547-5.187c13.562-3.485 26.28-8.642 38.171-15.493c11.86-6.805 21.515-16.086 28.922-27.718c7.39-11.68 11.094-24.805 11.094-39.336c0-11.016-2.25-21.039-6.75-30.14c-4.468-9.073-9.938-16.542-16.452-22.345c-6.501-5.813-13-11.155-19.516-15.968c-6.5-4.845-12-9.75-16.468-14.813c-4.485-5.046-6.735-10.054-6.735-14.984c0-4.921 1.734-9.672 5.216-14.265c3.455-4.61 7.674-9.048 12.61-13.306c4.937-4.25 9.875-8.968 14.796-14.133c4.922-5.147 9.141-11.827 12.61-20.008c3.485-8.18 5.203-17.445 5.203-27.757c0-13.453-2.547-24.46-7.547-33.314c-.594-1.022-1.218-1.803-1.875-3.022l56.907-46.672v17.119c-7.393.93-6.624 5.345-6.624 10.635V245.96c0 5.958 4.875 10.834 10.834 10.834h3.989c5.958 0 10.833-4.875 10.833-10.834V117.293c0-5.277.778-9.688-6.561-10.63zm-107.36 222.48c1.14.75 3.704 2.78 7.718 6.038c4.05 3.243 6.797 5.695 8.266 7.414a443.553 443.553 0 0 1 6.376 7.547c2.813 3.375 4.718 6.304 5.718 8.734c1 2.477 2.016 5.461 3.047 8.946a38.27 38.27 0 0 1 1.485 10.562c0 17.048-6.564 29.68-19.656 37.859c-13.125 8.18-28.767 12.274-46.938 12.274c-9.187 0-18.203-1.093-27.063-3.196c-8.843-2.116-17.311-5.336-25.39-9.601c-8.078-4.258-14.577-10.204-19.5-17.797c-4.938-7.64-7.407-16.415-7.407-26.25c0-10.32 2.797-19.29 8.422-26.906c5.594-7.625 12.938-13.391 22.032-17.315c9.063-3.946 18.25-6.742 27.562-8.398a157.865 157.865 0 0 1 28.438-2.555c4.47 0 7.936.25 10.405.696c.455.219 3.032 2.07 7.735 5.563c4.704 3.462 7.625 5.595 8.75 6.384zm-3.359-100.579c-7.406 8.86-17.734 13.288-30.953 13.288c-11.86 0-22.298-4.764-31.266-14.312c-9-9.523-15.422-20.328-19.344-32.43c-3.937-12.109-5.906-23.984-5.906-35.648c0-13.694 3.596-25.352 10.781-34.976c7.187-9.65 17.5-14.485 30.938-14.485c11.875 0 22.374 5.038 31.437 15.157c9.094 10.085 15.61 21.413 19.517 33.968c3.922 12.54 5.873 24.53 5.873 35.984c0 13.446-3.702 24.61-11.076 33.454z"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://orcid.org/0000-0002-2939-7772"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Academicons/Orcid"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M336.62 194.538c-7.13-3.328-13.866-5.56-20.253-6.614c-6.365-1.095-16.574-1.612-30.71-1.612h-36.704v152.747h37.634c14.673 0 26.081-1.013 34.224-3.017c8.142-2.004 14.921-4.526 20.356-7.626a69.448 69.448 0 0 0 14.942-11.388c14.488-14.714 21.742-33.273 21.742-55.717c0-22.052-7.44-40.052-22.341-53.982c-5.498-5.166-11.822-9.444-18.89-12.793zM256 8C119.022 8 8 119.042 8 256s111.022 248 248 248s248-111.042 248-248S392.978 8 256 8Zm-82.336 357.513h-29.389V160.148h29.389zM158.95 138.696c-11.14 0-20.213-9.01-20.213-20.212c0-11.118 9.052-20.191 20.213-20.191c11.18 0 20.232 9.052 20.232 20.191a20.194 20.194 0 0 1-20.232 20.212zm241.386 163.597c-5.29 12.545-12.834 23.581-22.65 33.088c-9.982 9.837-21.597 17.194-34.844 22.196c-7.75 3.017-14.839 5.063-21.307 6.117c-6.49 1.013-18.828 1.509-37.076 1.509h-64.956V160.148h69.233c27.962 0 50.034 4.154 66.32 12.545c16.265 8.37 29.181 20.728 38.792 36.972c9.61 16.265 14.425 34.018 14.425 53.196c.023 13.765-2.666 26.908-7.936 39.432z"/></svg></a>
+  
+</div>
 
+
+
+    </div>
+  </div>
+</div>
 
 
 
@@ -1986,34 +2199,18 @@
   <div class="flex flex-col md:flex-row flex-nowrap justify-between gap-5 pt-2">
     <div class="">
       
-        <a class="group flex no-underline" href="/publications/paper-8/">
-          <span
-            class="mt-[-0.3rem] me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
-          ><span class="ltr:inline rtl:hidden">&larr;</span></span>
-          <span class="flex flex-col">
-            <span
-              class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-            >Antibiotic discovery with artificial intelligence for the treatment of Acinetobacter baumannii infections</span>
-            <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
-              
-                May 3, 2024
-              
-            </span>
-          </span>
-        </a>
-      
     </div>
     <div class="">
       
-        <a class="group flex text-right no-underline" href="/publications/paper-6/">
+        <a class="group flex text-right no-underline" href="/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/">
           <span class="flex flex-col">
             <span
               class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-            >Exploring natural products as multi-target-directed drugs for Parkinson’s disease: an in-silico approach integrating QSAR, pharmacophore modeling, and molecular dynamics simulations</span
+            >Stop Using B3LYP/6-31G*: Critical Pitfalls in Modern DFT Calculations and How to Avoid Them</span
             >
             <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
               
-                Sep 27, 2023
+                Dec 24, 2025
               
             </span>
           </span>

@@ -5,12 +5,152 @@
     <link>https://yboulaamane.github.io/blog/</link>
       <atom:link href="https://yboulaamane.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     <description>Blog</description>
-    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 24 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 09 Mar 2026 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
       <title>Blog</title>
       <link>https://yboulaamane.github.io/blog/</link>
     </image>
+    
+    <item>
+      <title>Practical System Preparation Tips for Molecular Dynamics Simulations</title>
+      <link>https://yboulaamane.github.io/blog/practical-system-preparation-tips-for-molecular-dynamics-simulations/</link>
+      <pubDate>Mon, 09 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/practical-system-preparation-tips-for-molecular-dynamics-simulations/</guid>
+      <description>&lt;p&gt;Preparing a molecular system correctly before running molecular dynamics (MD) simulations is essential for obtaining meaningful and reproducible results. Small technical choices such as solvent box geometry, treatment of protein termini, and strategies for selecting representative conformations can strongly influence simulation stability, computational efficiency, and interpretation of results.&lt;/p&gt;
+&lt;p&gt;This article highlights several practical considerations that often arise during MD system preparation.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;solvent-box-geometry-cube-truncated-octahedron-and-rhombic-dodecahedron&#34;&gt;Solvent Box Geometry: Cube, Truncated Octahedron, and Rhombic Dodecahedron&lt;/h2&gt;
+&lt;p&gt;When solvating a biomolecular system, the simulation box defines the periodic environment in which the molecule evolves. The geometry of the box directly affects the number of solvent molecules and therefore the computational cost of the simulation.&lt;/p&gt;
+&lt;h3 id=&#34;cubic-box&#34;&gt;Cubic Box&lt;/h3&gt;
+&lt;p&gt;A cubic box is the simplest and most intuitive choice.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Characteristics&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Orthogonal geometry aligned with Cartesian axes&lt;/li&gt;
+&lt;li&gt;Straightforward implementation in most MD packages&lt;/li&gt;
+&lt;li&gt;Easy visualization and debugging&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Limitations&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Inefficient packing for roughly spherical biomolecules&lt;/li&gt;
+&lt;li&gt;Requires more solvent molecules than other box geometries for the same minimum solute to edge distance&lt;/li&gt;
+&lt;li&gt;Leads to larger systems and higher computational cost&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Cubic boxes are often used for simplicity or for systems that are naturally elongated along Cartesian directions.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;truncated-octahedron&#34;&gt;Truncated Octahedron&lt;/h3&gt;
+&lt;p&gt;The truncated octahedron is a more spherical periodic box that is commonly used in biomolecular simulations.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Advantages&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Better volume efficiency compared with a cube&lt;/li&gt;
+&lt;li&gt;Reduces solvent molecules by roughly 30 to 40 percent for spherical solutes&lt;/li&gt;
+&lt;li&gt;Maintains isotropic solvent distribution around the molecule&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Because many proteins are approximately globular, this geometry provides a good balance between efficiency and simplicity. It is one of the most frequently used box types in MD simulations.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;rhombic-dodecahedron&#34;&gt;Rhombic Dodecahedron&lt;/h3&gt;
+&lt;p&gt;The rhombic dodecahedron is the most compact periodic box for spherical systems.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Advantages&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Minimizes unused solvent space&lt;/li&gt;
+&lt;li&gt;Produces the smallest number of solvent molecules for a given buffer distance&lt;/li&gt;
+&lt;li&gt;Particularly useful for large systems where solvent count becomes significant&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Modern MD software handles this geometry without difficulty. For large biomolecules, the reduction in solvent volume can noticeably decrease computational cost.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;practical-summary&#34;&gt;Practical Summary&lt;/h3&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Box Type&lt;/th&gt;
+          &lt;th&gt;Main Advantage&lt;/th&gt;
+          &lt;th&gt;Limitation&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Cube&lt;/td&gt;
+          &lt;td&gt;Simple and intuitive&lt;/td&gt;
+          &lt;td&gt;Least efficient for globular systems&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Truncated Octahedron&lt;/td&gt;
+          &lt;td&gt;Good balance between simplicity and efficiency&lt;/td&gt;
+          &lt;td&gt;Slightly more complex geometry&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Rhombic Dodecahedron&lt;/td&gt;
+          &lt;td&gt;Most compact solvent volume&lt;/td&gt;
+          &lt;td&gt;Less intuitive shape&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;For many protein simulations, truncated octahedron or rhombic dodecahedron boxes provide clear efficiency advantages over cubic boxes.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;capping-protein-termini-in-molecular-simulations&#34;&gt;Capping Protein Termini in Molecular Simulations&lt;/h2&gt;
+&lt;p&gt;Another important structural preparation step is the treatment of protein termini.&lt;/p&gt;
+&lt;p&gt;Proteins naturally contain an &lt;strong&gt;N terminus&lt;/strong&gt; and a &lt;strong&gt;C terminus&lt;/strong&gt;. In many cases the N terminus carries a positive charge and the C terminus carries a negative charge. When simulating truncated proteins, peptide fragments, or isolated domains, these termini may become artificially exposed and introduce simulation artifacts.&lt;/p&gt;
+&lt;p&gt;To prevent this, the termini are often &lt;strong&gt;capped&lt;/strong&gt;.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;what-does-capping-mean&#34;&gt;What Does Capping Mean?&lt;/h3&gt;
+&lt;p&gt;Capping involves adding small chemical groups that neutralize the terminal charges and mimic the continuation of the peptide chain.&lt;/p&gt;
+&lt;p&gt;Common terminal caps include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;ACE (acetyl group)&lt;/strong&gt; for the N terminus&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;NME (N-methylamide)&lt;/strong&gt; for the C terminus&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These groups effectively close the peptide backbone and prevent artificial electrostatic interactions.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;why-capping-is-important&#34;&gt;Why Capping Is Important&lt;/h3&gt;
+&lt;p&gt;Uncapped termini in truncated systems can introduce several artifacts:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Artificial salt bridges&lt;/li&gt;
+&lt;li&gt;Nonphysical electrostatic interactions&lt;/li&gt;
+&lt;li&gt;Increased structural instability&lt;/li&gt;
+&lt;li&gt;Distorted conformational dynamics&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Capping helps prevent these problems by neutralizing terminal charges and providing a more realistic chemical environment.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;when-should-you-cap-termini&#34;&gt;When Should You Cap Termini?&lt;/h3&gt;
+&lt;p&gt;Capping is recommended when:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Simulating peptide fragments or isolated protein domains&lt;/li&gt;
+&lt;li&gt;Extracting a region from a larger protein structure&lt;/li&gt;
+&lt;li&gt;Studying small peptides or engineered sequences&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Capping is generally not required when:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Simulating a full length protein&lt;/li&gt;
+&lt;li&gt;The natural termini are solvent exposed and biologically relevant&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Handling termini correctly helps ensure that the simulated system behaves realistically.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;selecting-representative-conformations-from-multiple-simulations&#34;&gt;Selecting Representative Conformations from Multiple Simulations&lt;/h2&gt;
+&lt;p&gt;Another common challenge in computational studies is selecting representative structures from multiple simulation trajectories.&lt;/p&gt;
+&lt;p&gt;A frequent mistake is choosing the structure that deviates the most from the starting conformation. Although such structures may appear interesting, they do not necessarily represent meaningful conformational states.&lt;/p&gt;
+&lt;p&gt;A more reliable strategy is &lt;strong&gt;ensemble analysis&lt;/strong&gt;.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;recommended-workflow&#34;&gt;Recommended Workflow&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;Combine trajectories from multiple simulations.&lt;/li&gt;
+&lt;li&gt;Align structures using a stable reference region.&lt;/li&gt;
+&lt;li&gt;Characterize conformational variability using metrics such as RMSD, key residue distances, or pocket geometry.&lt;/li&gt;
+&lt;li&gt;Perform clustering to identify dominant conformational states.&lt;/li&gt;
+&lt;li&gt;Select cluster centroids as representative structures.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This approach ensures that selected conformations represent statistically meaningful states rather than isolated outliers.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;final-thoughts&#34;&gt;Final Thoughts&lt;/h2&gt;
+&lt;p&gt;Successful molecular dynamics simulations depend heavily on careful system preparation. Choices that may appear minor, such as box geometry, terminal capping, or conformational selection, can have substantial downstream effects on simulation quality and computational efficiency.&lt;/p&gt;
+&lt;p&gt;Key points to remember:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Efficient solvent box geometry can significantly reduce computational cost.&lt;/li&gt;
+&lt;li&gt;Capping termini prevents artificial electrostatic artifacts in truncated systems.&lt;/li&gt;
+&lt;li&gt;Ensemble analysis provides more reliable representative structures than selecting extreme conformations.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Paying attention to these details improves the robustness and reproducibility of molecular dynamics simulations and helps generate more reliable insights into biomolecular behavior.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Stop Using B3LYP/6-31G*: Critical Pitfalls in Modern DFT Calculations and How to Avoid Them</title>
