@@ -41,10 +41,10 @@
   
     
   
-  <meta name="description" content="A practical guide to the most common methodological errors in Density Functional Theory calculations, explaining why legacy protocols like B3LYP/6-31G* are no longer reliable and how to adopt robust, modern best practices." />
+  <meta name="description" content="Conceptual overview of the key energetic contributions governing protein–ligand binding in molecular docking, including desolvation, entropy, water displacement, electrostatics, and scoring function behavior." />
 
   
-  <link rel="alternate" hreflang="en-us" href="https://yboulaamane.github.io/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/" />
+  <link rel="alternate" hreflang="en-us" href="https://yboulaamane.github.io/blog/understanding-binding-energetics-in-molecular-docking/" />
 
   
   
@@ -200,7 +200,7 @@
   <link rel="icon" type="image/png" href="/media/icon_hu_5b9deb501aeab0c7.png" />
   <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu_cc92b57ff025c448.png" />
 
-  <link rel="canonical" href="https://yboulaamane.github.io/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/" />
+  <link rel="canonical" href="https://yboulaamane.github.io/blog/understanding-binding-energetics-in-molecular-docking/" />
 
   
   
@@ -226,18 +226,18 @@
     <meta property="twitter:creator" content="@yassir_tw" />
   
   <meta property="og:site_name" content="Yassir Boulaamane" />
-  <meta property="og:url" content="https://yboulaamane.github.io/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/" />
-  <meta property="og:title" content="Stop Using B3LYP/6-31G*: Critical Pitfalls in Modern DFT Calculations and How to Avoid Them | Yassir Boulaamane" />
-  <meta property="og:description" content="A practical guide to the most common methodological errors in Density Functional Theory calculations, explaining why legacy protocols like B3LYP/6-31G* are no longer reliable and how to adopt robust, modern best practices." /><meta property="og:image" content="https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png" />
+  <meta property="og:url" content="https://yboulaamane.github.io/blog/understanding-binding-energetics-in-molecular-docking/" />
+  <meta property="og:title" content="Understanding Binding Energetics in Molecular Docking | Yassir Boulaamane" />
+  <meta property="og:description" content="Conceptual overview of the key energetic contributions governing protein–ligand binding in molecular docking, including desolvation, entropy, water displacement, electrostatics, and scoring function behavior." /><meta property="og:image" content="https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png" />
     <meta property="twitter:image" content="https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png" /><meta property="og:locale" content="en-us" />
   
     
       <meta
         property="article:published_time"
-        content="2025-12-24T00:00:00&#43;00:00"
+        content="2026-03-13T00:00:00&#43;00:00"
       />
     
-    <meta property="article:modified_time" content="2025-12-24T00:00:00&#43;00:00">
+    <meta property="article:modified_time" content="2026-03-13T00:00:00&#43;00:00">
   
 
   
@@ -261,12 +261,12 @@
   "@type": "BlogPosting",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://yboulaamane.github.io/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/"
+    "@id": "https://yboulaamane.github.io/blog/understanding-binding-energetics-in-molecular-docking/"
   },
-  "headline": "Stop Using B3LYP/6-31G*: Critical Pitfalls in Modern DFT Calculations and How to Avoid Them",
+  "headline": "Understanding Binding Energetics in Molecular Docking",
   
-  "datePublished": "2025-12-24T00:00:00Z",
-  "dateModified": "2025-12-24T00:00:00Z",
+  "datePublished": "2026-03-13T00:00:00Z",
+  "dateModified": "2026-03-13T00:00:00Z",
   
   "author": {
     "@type": "Person",
@@ -281,7 +281,7 @@
       "url": "https://yboulaamane.github.io/media/icon_hu_d671a3d3d3979562.png"
     }
   },
-  "description": "A practical guide to the most common methodological errors in Density Functional Theory calculations, explaining why legacy protocols like B3LYP/6-31G* are no longer reliable and how to adopt robust, modern best practices."
+  "description": "Conceptual overview of the key energetic contributions governing protein–ligand binding in molecular docking, including desolvation, entropy, water displacement, electrostatics, and scoring function behavior."
 }
 </script>
 
@@ -290,7 +290,7 @@
   
 
 
-  <title>Stop Using B3LYP/6-31G*: Critical Pitfalls in Modern DFT Calculations and How to Avoid Them | Yassir Boulaamane</title>
+  <title>Understanding Binding Energetics in Molecular Docking | Yassir Boulaamane</title>
 
   
   
@@ -785,140 +785,6 @@
 
 
 
-  
-  
-  <link type="text/css" rel="stylesheet" href="/dist/lib/katex/katex.min.505d5f829022bb7b4f24dfee0aa1141cd7bba67afe411d1240335f820960b5c3.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr&#43;QR0SQDNfgglgtcM=" />
-  
-  
-  <script defer src="/dist/lib/katex/katex.min.dc84b296ec3e884de093158f760fd9d45b6c7abe58b5381557f4e138f46a58ae.js" integrity="sha256-3ISyluw&#43;iE3gkxWPdg/Z1Ftser5YtTgVV/ThOPRqWK4="></script>
-  
-  
-  
-  
-  <script defer src="/js/katex-renderer.6579ec9683211cfb952064aedf3a3baea5eeb17a061775b32b70917474637c80.js" integrity="sha256-ZXnsloMhHPuVIGSu3zo7rqXusXoGF3WzK3CRdHRjfIA="></script>
-  
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-
 
 
 
@@ -1197,13 +1063,64 @@
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
         </span>
     </a><div class="ltr:pr-0 overflow-hidden">
-        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+        <ul class="hb-sidebar-list"><li class="flex flex-col open"><a
     class="hb-sidebar-custom-link
-      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+      sidebar-active-item bg-primary-100 font-semibold text-primary-800 dark:bg-primary-300 dark:text-primary-900"
     href="/blog/understanding-binding-energetics-in-molecular-docking/"
     
   >Understanding Binding Energetics in Molecular Docking
     </a>
+  
+    <ul class="hb-sidebar-mobile-toc"><li>
+              <a
+                href="#1-desolvation-penalty"
+                class="hb-docs-link"
+              >1. Desolvation Penalty</a>
+            </li>
+          <li>
+              <a
+                href="#2-entropy"
+                class="hb-docs-link"
+              >2. Entropy</a>
+            </li>
+          <li>
+              <a
+                href="#3-water-displacement"
+                class="hb-docs-link"
+              >3. Water Displacement</a>
+            </li>
+          <li>
+              <a
+                href="#4-electrostatic-interactions"
+                class="hb-docs-link"
+              >4. Electrostatic Interactions</a>
+            </li>
+          <li>
+              <a
+                href="#5-molecular-size-bias-in-docking"
+                class="hb-docs-link"
+              >5. Molecular Size Bias in Docking</a>
+            </li>
+          <li>
+              <a
+                href="#6-scoring-function-differences-physics-based-vs-empirical-approaches"
+                class="hb-docs-link"
+              >6. Scoring Function Differences: Physics-Based vs Empirical Approaches</a>
+            </li>
+          <li>
+              <a
+                href="#7-interpretation-of-docking-scores"
+                class="hb-docs-link"
+              >7. Interpretation of Docking Scores</a>
+            </li>
+          <li>
+              <a
+                href="#8-the-energetic-trade-off-behind-binding"
+                class="hb-docs-link"
+              >8. The Energetic Trade-Off Behind Binding</a>
+            </li>
+          </ul>
+  
               
             </li><li class="flex flex-col "><a
     class="hb-sidebar-custom-link
@@ -1213,76 +1130,13 @@
   >Practical System Preparation Tips for Molecular Dynamics Simulations
     </a>
               
-            </li><li class="flex flex-col open"><a
+            </li><li class="flex flex-col "><a
     class="hb-sidebar-custom-link
-      sidebar-active-item bg-primary-100 font-semibold text-primary-800 dark:bg-primary-300 dark:text-primary-900"
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
     href="/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/"
     
   >Stop Using B3LYP/6-31G*: Critical Pitfalls in Modern DFT Calculations and How to Avoid Them
     </a>
-  
-    <ul class="hb-sidebar-mobile-toc"><li>
-              <a
-                href="#1-treating-b3lyp6-31g-as-a-safe-default"
-                class="hb-docs-link"
-              >1. Treating B3LYP/6-31G* as a Safe Default</a>
-            </li>
-          <li>
-              <a
-                href="#2-ignoring-london-dispersion-interactions"
-                class="hb-docs-link"
-              >2. Ignoring London Dispersion Interactions</a>
-            </li>
-          <li>
-              <a
-                href="#3-using-inadequate-basis-sets-without-correction"
-                class="hb-docs-link"
-              >3. Using Inadequate Basis Sets Without Correction</a>
-            </li>
-          <li>
-              <a
-                href="#4-applying-a-single-level-of-theory-to-all-properties"
-                class="hb-docs-link"
-              >4. Applying a Single Level of Theory to All Properties</a>
-            </li>
-          <li>
-              <a
-                href="#5-underestimating-self-interaction-error-in-barrier-heights"
-                class="hb-docs-link"
-              >5. Underestimating Self-Interaction Error in Barrier Heights</a>
-            </li>
-          <li>
-              <a
-                href="#6-neglecting-solvation-effects"
-                class="hb-docs-link"
-              >6. Neglecting Solvation Effects</a>
-            </li>
-          <li>
-              <a
-                href="#7-relying-on-a-single-conformer-for-flexible-molecules"
-                class="hb-docs-link"
-              >7. Relying on a Single Conformer for Flexible Molecules</a>
-            </li>
-          <li>
-              <a
-                href="#8-overinterpreting-numerical-agreement-with-experiment"
-                class="hb-docs-link"
-              >8. Overinterpreting Numerical Agreement with Experiment</a>
-            </li>
-          <li>
-              <a
-                href="#final-takeaway"
-                class="hb-docs-link"
-              >Final Takeaway</a>
-            </li>
-          <li>
-              <a
-                href="#reference-paper"
-                class="hb-docs-link"
-              >Reference Paper</a>
-            </li>
-          </ul>
-  
               
             </li><li class="flex flex-col "><a
     class="hb-sidebar-custom-link
@@ -1850,34 +1704,28 @@
 
   <div class="hb-scrollbar text-sm [hyphens:auto] sticky top-16 overflow-y-auto pr-4 pt-6 max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] -mr-4 rtl:-ml-4"><p class="mb-4 font-semibold tracking-tight">On this page</p><ul>
       <li class="my-2 scroll-my-6 scroll-py-6">
-        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#1-treating-b3lyp6-31g-as-a-safe-default">1. Treating B3LYP/6-31G* as a Safe Default</a>
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#1-desolvation-penalty">1. Desolvation Penalty</a>
       </li>
       <li class="my-2 scroll-my-6 scroll-py-6">
-        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#2-ignoring-london-dispersion-interactions">2. Ignoring London Dispersion Interactions</a>
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#2-entropy">2. Entropy</a>
       </li>
       <li class="my-2 scroll-my-6 scroll-py-6">
-        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#3-using-inadequate-basis-sets-without-correction">3. Using Inadequate Basis Sets Without Correction</a>
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#3-water-displacement">3. Water Displacement</a>
       </li>
       <li class="my-2 scroll-my-6 scroll-py-6">
-        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#4-applying-a-single-level-of-theory-to-all-properties">4. Applying a Single Level of Theory to All Properties</a>
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#4-electrostatic-interactions">4. Electrostatic Interactions</a>
       </li>
       <li class="my-2 scroll-my-6 scroll-py-6">
-        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#5-underestimating-self-interaction-error-in-barrier-heights">5. Underestimating Self-Interaction Error in Barrier Heights</a>
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#5-molecular-size-bias-in-docking">5. Molecular Size Bias in Docking</a>
       </li>
       <li class="my-2 scroll-my-6 scroll-py-6">
-        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#6-neglecting-solvation-effects">6. Neglecting Solvation Effects</a>
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#6-scoring-function-differences-physics-based-vs-empirical-approaches">6. Scoring Function Differences: Physics-Based vs Empirical Approaches</a>
       </li>
       <li class="my-2 scroll-my-6 scroll-py-6">
-        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#7-relying-on-a-single-conformer-for-flexible-molecules">7. Relying on a Single Conformer for Flexible Molecules</a>
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#7-interpretation-of-docking-scores">7. Interpretation of Docking Scores</a>
       </li>
       <li class="my-2 scroll-my-6 scroll-py-6">
-        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#8-overinterpreting-numerical-agreement-with-experiment">8. Overinterpreting Numerical Agreement with Experiment</a>
-      </li>
-      <li class="my-2 scroll-my-6 scroll-py-6">
-        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#final-takeaway">Final Takeaway</a>
-      </li>
-      <li class="my-2 scroll-my-6 scroll-py-6">
-        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#reference-paper">Reference Paper</a>
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#8-the-energetic-trade-off-behind-binding">8. The Energetic Trade-Off Behind Binding</a>
       </li></ul>
 
   
@@ -1910,10 +1758,10 @@
 
       
 
-      <h1 class="mt-2 text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Stop Using B3LYP/6-31G*: Critical Pitfalls in Modern DFT Calculations and How to Avoid Them</h1>
+      <h1 class="mt-2 text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Understanding Binding Energetics in Molecular Docking</h1>
 
       <div class="mt-4 mb-16">
-      <div class="text-gray-500 dark:text-gray-300 text-sm flex items-center flex-wrap gap-y-2"><span class="mr-1">Dec 24, 2025</span><span class="mx-1">·</span>
+      <div class="text-gray-500 dark:text-gray-300 text-sm flex items-center flex-wrap gap-y-2"><span class="mr-1">Mar 13, 2026</span><span class="mx-1">·</span>
         
           
           
@@ -1930,7 +1778,7 @@
         
         <span class="mx-1">·</span>
         <span class="mx-1">
-          4 min read
+          5 min read
         </span>
         
         </div>
@@ -1955,69 +1803,132 @@
       
 
       <div class="prose prose-slate lg:prose-xl dark:prose-invert">
-        <p>Density Functional Theory (DFT) has become the workhorse of computational chemistry, enabling routine access to molecular structures, reaction mechanisms, and noncovalent interactions at a reasonable computational cost. However, as with molecular dynamics simulations, DFT is not a black-box technique. Seemingly minor methodological choices can introduce systematic errors that quietly undermine the physical validity of the results.</p>
-<p>One of the most persistent problems in the field is the continued use of outdated protocols—most notably <strong>B3LYP/6-31G</strong>*—long after their limitations have been clearly demonstrated. These calculations rarely fail numerically. Instead, they produce results that appear reasonable while being quantitatively wrong.</p>
-<p>This article outlines the most critical pitfalls in modern DFT calculations and provides best-practice strategies to ensure accuracy, robustness, and reproducibility.</p>
+        <p>When predicting how a ligand binds to a protein, docking programs estimate the overall binding free energy. Behind these scores lies a complex balance of physical forces. Understanding the main energetic contributions helps interpret docking results more reliably and identify meaningful binding trends instead of relying solely on raw scores.</p>
 <hr>
-<h2 id="1-treating-b3lyp6-31g-as-a-safe-default">1. Treating B3LYP/6-31G* as a Safe Default</h2>
-<p>For many years, B3LYP/6-31G* was considered an acceptable compromise between accuracy and efficiency. Today, this assumption is no longer valid. This protocol lacks an explicit description of London dispersion interactions and suffers from severe basis set limitations, leading to artificial error cancellation.</p>
-<p>As a result, reaction energies, conformational preferences, and intermolecular interactions are often misrepresented, with errors frequently exceeding chemical accuracy.</p>
-<p><strong>The Solution:</strong><br>
-B3LYP/6-31G* should be avoided for production calculations. Modern alternatives such as <strong>r²SCAN-3c</strong> or dispersion-corrected functionals with appropriate basis sets provide substantially improved accuracy at comparable computational cost.</p>
+<h2 id="1-desolvation-penalty">1. Desolvation Penalty</h2>
+<p>Before binding, both the ligand and the protein surface are surrounded by water molecules. These water molecules stabilize polar and charged groups through hydrogen bonding and electrostatic interactions.</p>
+<p>During binding, many of these water molecules must be displaced. The <strong>desolvation penalty</strong> refers to the energetic cost associated with removing these stabilizing water interactions.</p>
+<p>If the ligand does not form interactions with the protein that compensate for the loss of water stabilization, binding becomes energetically unfavorable.</p>
+<p><strong>Example</strong></p>
+<p>A charged amine interacts strongly with water in solution. If that group becomes buried inside a hydrophobic pocket without forming compensating interactions with the protein, the loss of its hydration shell results in an unfavorable desolvation cost.</p>
 <hr>
-<h2 id="2-ignoring-london-dispersion-interactions">2. Ignoring London Dispersion Interactions</h2>
-<p>Standard DFT functionals do not account for long-range electron correlation. Without explicit correction, dispersion interactions are entirely absent, leading to overly repulsive potential energy surfaces.</p>
-<p>This omission severely affects noncovalent interactions, conformational equilibria, and binding energies.</p>
-<p><strong>The Solution:</strong><br>
-Dispersion corrections are mandatory in modern DFT. Always include schemes such as <strong>D3(BJ)</strong> or <strong>D4</strong>, or use functionals with built-in nonlocal correlation. The additional cost is negligible compared to the improvement in physical realism.</p>
-<hr>
-<h2 id="3-using-inadequate-basis-sets-without-correction">3. Using Inadequate Basis Sets Without Correction</h2>
-<p>Small basis sets such as 6-31G* suffer from <strong>basis set superposition error (BSSE)</strong>. This artifact artificially stabilizes interacting fragments by allowing them to borrow basis functions from each other.</p>
-<p>In many cases, BSSE leads to misleading agreement with experiment due to compensating errors.</p>
-<p><strong>The Solution:</strong><br>
-Use <strong>triple-zeta or larger basis sets</strong> for energetic quantities whenever possible. If smaller basis sets must be used, apply <strong>geometric counterpoise corrections (gCP)</strong> or use composite methods that correct BSSE by construction.</p>
-<hr>
-<h2 id="4-applying-a-single-level-of-theory-to-all-properties">4. Applying a Single Level of Theory to All Properties</h2>
-<p>A common misconception is that one functional and basis set combination is equally suitable for geometries, reaction energies, and barrier heights. In practice, different properties have very different sensitivities to the electronic structure method.</p>
-<p>Methods that perform well for structures may fail badly for kinetics.</p>
-<p><strong>The Solution:</strong><br>
-Choose the method based on the target property. Efficient composite methods are ideal for geometry optimization, while reaction energies and barrier heights require higher-rung functionals and larger basis sets.</p>
-<hr>
-<h2 id="5-underestimating-self-interaction-error-in-barrier-heights">5. Underestimating Self-Interaction Error in Barrier Heights</h2>
-<p>Transition states are particularly sensitive to <strong>self-interaction error (SIE)</strong>. Many (meta-)GGA functionals systematically underestimate activation barriers, leading to incorrect kinetic predictions and flawed mechanistic conclusions.</p>
-<p><strong>The Solution:</strong><br>
-Barrier height calculations should include <strong>Fock exchange</strong>. Range-separated hybrid functionals are especially effective at reducing SIE while maintaining balanced energetics.</p>
-<hr>
-<h2 id="6-neglecting-solvation-effects">6. Neglecting Solvation Effects</h2>
-<p>Gas-phase calculations are frequently compared to experimental data obtained in solution. For polar or charged systems, this mismatch can dominate the total error.</p>
-<p><strong>The Solution:</strong><br>
-Include solvation effects routinely when modeling condensed-phase chemistry. Modern implicit models such as <strong>SMD</strong> or <strong>COSMO-RS</strong> provide a physically meaningful description beyond simple electrostatics.</p>
-<hr>
-<h2 id="7-relying-on-a-single-conformer-for-flexible-molecules">7. Relying on a Single Conformer for Flexible Molecules</h2>
-<p>Many molecules populate multiple conformations at ambient temperature. Evaluating only a single optimized structure can lead to incorrect thermodynamic and kinetic predictions.</p>
-<p><strong>The Solution:</strong><br>
-Perform conformational sampling and compute <strong>Boltzmann-weighted averages</strong> for relevant properties. Automated tools now make this feasible even for moderately large systems.</p>
-<hr>
-<h2 id="8-overinterpreting-numerical-agreement-with-experiment">8. Overinterpreting Numerical Agreement with Experiment</h2>
-<p>Agreement between calculated and experimental values does not guarantee correctness. Apparent accuracy can arise from compensating errors, particularly when outdated methods are used.</p>
-<p><strong>The Solution:</strong><br>
-Prioritize methodological robustness over coincidence. Use approaches that perform consistently across diverse chemical problems rather than relying on fortuitous agreement.</p>
-<hr>
-<h2 id="final-takeaway">Final Takeaway</h2>
-<p>Modern DFT best practice is not about increasing computational cost—it is about avoiding known failure modes. Legacy protocols persist largely due to familiarity, not reliability.</p>
-<p>Replacing B3LYP/6-31G* with contemporary, well-validated methods significantly improves accuracy at little to no additional cost and aligns computational results with physical reality.</p>
-<p>A calculation that runs smoothly is not necessarily correct. In DFT, as in molecular dynamics, methodological rigor is essential for meaningful scientific insight.</p>
-<h2 id="reference-paper">Reference Paper</h2>
+<h2 id="2-entropy">2. Entropy</h2>
+<p>Entropy reflects the degree of disorder or freedom within the system. When a ligand binds to a protein several types of molecular freedom are reduced:</p>
 <ul>
-<li><strong>Bursch, M., Mewes, J.-M., Hansen, A., &amp; Grimme, S.</strong> (2022). Best-Practice DFT Protocols for Basic Molecular Computational Chemistry. <em>Angewandte Chemie International Edition</em>, 61, e202205735.</li>
+<li>The ligand loses translational and rotational movement.</li>
+<li>Flexible ligands lose conformational freedom.</li>
+<li>Protein side chains near the binding site often become more ordered.</li>
 </ul>
+<p>This reduction in freedom produces an <strong>entropy penalty</strong> that opposes binding.</p>
+<p>However, entropy can also favor binding when structured water molecules are released into bulk solvent, increasing the overall disorder of the system.</p>
+<p>In general, <strong>rigid ligands tend to experience smaller entropy penalties than highly flexible molecules</strong>, which can improve binding efficiency.</p>
+<hr>
+<h2 id="3-water-displacement">3. Water Displacement</h2>
+<p>Protein binding pockets frequently contain <strong>ordered water molecules</strong>. When a ligand occupies the pocket, it may displace these waters, which can significantly influence binding energetics.</p>
+<p>Two outcomes are possible:</p>
+<p><strong>Favorable displacement</strong></p>
+<ul>
+<li>High-energy or poorly stabilized water molecules are released into bulk solvent.</li>
+<li>The released waters gain entropy, which favors binding.</li>
+</ul>
+<p><strong>Unfavorable displacement</strong></p>
+<ul>
+<li>Stable water molecules that form strong hydrogen bonds are removed.</li>
+<li>The ligand may fail to compensate for these lost interactions.</li>
+</ul>
+<p>Modern structure-based drug design often analyzes hydration patterns to identify <strong>high-energy (“unhappy”) water molecules</strong> that can be beneficial targets for displacement.</p>
+<hr>
+<h2 id="4-electrostatic-interactions">4. Electrostatic Interactions</h2>
+<p>Electrostatic interactions are major contributors to ligand binding. These include:</p>
+<ul>
+<li>Salt bridges between oppositely charged groups</li>
+<li>Hydrogen bonds</li>
+<li>Dipole–dipole interactions</li>
+</ul>
+<p>For example, a negatively charged carboxylate group may interact favorably with positively charged residues such as lysine or arginine in a binding pocket.</p>
+<p>However, electrostatics are strongly influenced by the surrounding environment. Charged groups are stabilized by polar solvents such as water. If a charged group is buried in a hydrophobic pocket without forming compensating interactions, the <strong>desolvation cost can outweigh the electrostatic benefit</strong>.</p>
+<hr>
+<h2 id="5-molecular-size-bias-in-docking">5. Molecular Size Bias in Docking</h2>
+<p>Docking scoring functions often favor <strong>larger molecules</strong> because they form more contacts with the protein. This introduces a molecular size bias: larger ligands frequently receive better docking scores even when their binding efficiency is not inherently superior.</p>
+<p>To account for this bias, results are often interpreted using size-normalized metrics such as:</p>
+<ul>
+<li><strong>Ligand Efficiency (LE)</strong> – binding energy normalized by the number of heavy atoms</li>
+<li><strong>Fit Quality (FQ)</strong> – a size-adjusted measure of binding efficiency</li>
+</ul>
+<p>Considering these metrics helps identify compounds that achieve strong interactions with minimal molecular complexity. A smaller ligand with efficient interactions may represent a stronger lead than a larger molecule that scores well primarily due to size.</p>
+<hr>
+<h2 id="6-scoring-function-differences-physics-based-vs-empirical-approaches">6. Scoring Function Differences: Physics-Based vs Empirical Approaches</h2>
+<p>Docking programs use different strategies to approximate binding energetics, particularly for electrostatic effects.</p>
+<p><strong>AutoDock4 (AD4)</strong><br>
+Uses a physics-based force field approach. Partial atomic charges are explicitly calculated (commonly using the Gasteiger-PEOE method). Electrostatic interactions are modeled using a screened Coulombic potential. AD4 also includes separate terms for hydrogen bonding and desolvation that were calibrated using experimental binding data.</p>
+<p><strong>AutoDock Vina</strong><br>
+Uses an empirical scoring function trained on experimental protein–ligand complexes. It does not explicitly calculate partial charges or use a classical Coulombic electrostatic term. Instead, interactions such as steric complementarity, hydrophobic contacts, and hydrogen bonding are modeled using optimized empirical potentials. This design makes Vina significantly faster but less transparent in its treatment of electrostatics.</p>
+<p><strong>Smina</strong><br>
+An enhanced fork of Vina that refines empirical potentials and adds additional terms such as torsional penalties and improved hydrophobic interactions. Like Vina, it remains fully empirical and does not explicitly compute partial charges.</p>
+<p><strong>GNINA</strong><br>
+Extends Vina by incorporating convolutional neural networks trained on large datasets of protein–ligand complexes. The neural network evaluates three-dimensional interaction patterns directly from structural data, effectively bypassing traditional physics-based electrostatic modeling. GNINA often performs well in pose prediction but may not explicitly capture detailed charge-driven interactions.</p>
+<table>
+  <thead>
+      <tr>
+          <th>Scoring Function</th>
+          <th>Electrostatics Treatment</th>
+          <th>Partial Charges</th>
+          <th>Speed</th>
+          <th>Typical Strength</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>AutoDock4</td>
+          <td>Physics-based</td>
+          <td>Explicit</td>
+          <td>Slower</td>
+          <td>Detailed treatment of charged systems</td>
+      </tr>
+      <tr>
+          <td>Vina / Smina</td>
+          <td>Empirical (implicit)</td>
+          <td>None</td>
+          <td>Fast</td>
+          <td>Efficient for large virtual screens</td>
+      </tr>
+      <tr>
+          <td>GNINA</td>
+          <td>Neural network</td>
+          <td>None</td>
+          <td>Fast</td>
+          <td>Strong pose prediction performance</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="7-interpretation-of-docking-scores">7. Interpretation of Docking Scores</h2>
+<p>Docking scores approximate several energetic contributions, including van der Waals interactions, electrostatics, hydrogen bonding, desolvation effects, and entropy-related penalties.</p>
+<p>Because these terms are simplified and often partially empirical, docking scores should be interpreted as <strong>relative estimates rather than precise predictions of binding affinity</strong>.</p>
+<p>For this reason, docking is most reliable for <strong>ranking compounds within the same dataset</strong> rather than predicting absolute binding energies.</p>
+<hr>
+<h2 id="8-the-energetic-trade-off-behind-binding">8. The Energetic Trade-Off Behind Binding</h2>
+<p>Molecular recognition arises from a balance between favorable and unfavorable contributions.</p>
+<p><strong>Favorable contributions</strong></p>
+<ul>
+<li>Electrostatic complementarity and hydrogen bonding</li>
+<li>Hydrophobic interactions</li>
+<li>Release of high-energy or constrained water molecules</li>
+</ul>
+<p><strong>Unfavorable contributions</strong></p>
+<ul>
+<li>Desolvation of polar or charged atoms</li>
+<li>Loss of ligand conformational freedom (entropy)</li>
+<li>Scoring bias toward larger molecules</li>
+</ul>
+<p>Binding occurs when favorable interactions outweigh these energetic penalties. Selecting an appropriate scoring function and interpreting results within their physical context are therefore essential for obtaining meaningful insights from docking studies.</p>
 
       </div>
 
       
-  <time class="mt-12 mb-8 block text-xs text-gray-500 ltr:text-right rtl:text-left dark:text-gray-400" datetime="2025-12-24T00:00:00.000Z">
+  <time class="mt-12 mb-8 block text-xs text-gray-500 ltr:text-right rtl:text-left dark:text-gray-400" datetime="2026-03-13T00:00:00.000Z">
     <span>Last updated on</span>
-    Dec 24, 2025</time>
+    Mar 13, 2026</time>
 
       <div class="container mx-auto prose prose-slate lg:prose-xl dark:prose-invert mt-5">
         
@@ -2030,13 +1941,11 @@ Prioritize methodological robustness over coincidence. Use approaches that perfo
   
   <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/computational-chemistry/">Computational Chemistry</a>
   
-  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/quantum-chemistry/">Quantum Chemistry</a>
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/cheminformatics/">Cheminformatics</a>
   
-  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/density-functional-theory/">Density Functional Theory</a>
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/molecular-docking/">Molecular Docking</a>
   
-  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/best-practices/">Best Practices</a>
-  
-  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/electronic-structure/">Electronic Structure</a>
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/drug-discovery/">Drug Discovery</a>
   
 </div>
 
@@ -2054,7 +1963,7 @@ Prioritize methodological robustness over coincidence. Use approaches that perfo
   <a
     target="_blank" rel="noopener"
     class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
-    href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fstop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols%2F&amp;text=Stop&#43;Using&#43;B3LYP%2F6-31G%2A%3A&#43;Critical&#43;Pitfalls&#43;in&#43;Modern&#43;DFT&#43;Calculations&#43;and&#43;How&#43;to&#43;Avoid&#43;Them"
+    href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Funderstanding-binding-energetics-in-molecular-docking%2F&amp;text=Understanding&#43;Binding&#43;Energetics&#43;in&#43;Molecular&#43;Docking"
     title="X"
     aria-label="X"
     id="share-link-x"
@@ -2072,7 +1981,7 @@ Prioritize methodological robustness over coincidence. Use approaches that perfo
   <a
     target="_blank" rel="noopener"
     class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
-    href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fstop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols%2F&amp;t=Stop&#43;Using&#43;B3LYP%2F6-31G%2A%3A&#43;Critical&#43;Pitfalls&#43;in&#43;Modern&#43;DFT&#43;Calculations&#43;and&#43;How&#43;to&#43;Avoid&#43;Them"
+    href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Funderstanding-binding-energetics-in-molecular-docking%2F&amp;t=Understanding&#43;Binding&#43;Energetics&#43;in&#43;Molecular&#43;Docking"
     title="Facebook"
     aria-label="Facebook"
     id="share-link-facebook"
@@ -2092,7 +2001,7 @@ Prioritize methodological robustness over coincidence. Use approaches that perfo
   <a
     target="_blank" rel="noopener"
     class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
-    href="mailto:?subject=Stop%20Using%20B3LYP%2F6-31G%2A%3A%20Critical%20Pitfalls%20in%20Modern%20DFT%20Calculations%20and%20How%20to%20Avoid%20Them&amp;body=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fstop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols%2F"
+    href="mailto:?subject=Understanding%20Binding%20Energetics%20in%20Molecular%20Docking&amp;body=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Funderstanding-binding-energetics-in-molecular-docking%2F"
     title="Email"
     aria-label="Email"
     id="share-link-email"
@@ -2110,7 +2019,7 @@ Prioritize methodological robustness over coincidence. Use approaches that perfo
   <a
     target="_blank" rel="noopener"
     class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
-    href="https://www.linkedin.com/shareArticle?url=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fstop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols%2F&amp;title=Stop&#43;Using&#43;B3LYP%2F6-31G%2A%3A&#43;Critical&#43;Pitfalls&#43;in&#43;Modern&#43;DFT&#43;Calculations&#43;and&#43;How&#43;to&#43;Avoid&#43;Them"
+    href="https://www.linkedin.com/shareArticle?url=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Funderstanding-binding-energetics-in-molecular-docking%2F&amp;title=Understanding&#43;Binding&#43;Energetics&#43;in&#43;Molecular&#43;Docking"
     title="LinkedIn"
     aria-label="LinkedIn"
     id="share-link-linkedin"
@@ -2128,7 +2037,7 @@ Prioritize methodological robustness over coincidence. Use approaches that perfo
   <a
     target="_blank" rel="noopener"
     class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
-    href="whatsapp://send?text=Stop&#43;Using&#43;B3LYP%2F6-31G%2A%3A&#43;Critical&#43;Pitfalls&#43;in&#43;Modern&#43;DFT&#43;Calculations&#43;and&#43;How&#43;to&#43;Avoid&#43;Them%20https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fstop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols%2F"
+    href="whatsapp://send?text=Understanding&#43;Binding&#43;Energetics&#43;in&#43;Molecular&#43;Docking%20https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Funderstanding-binding-energetics-in-molecular-docking%2F"
     title="WhatsApp"
     aria-label="WhatsApp"
     id="share-link-whatsapp"
@@ -2308,34 +2217,18 @@ Prioritize methodological robustness over coincidence. Use approaches that perfo
   <div class="flex flex-col md:flex-row flex-nowrap justify-between gap-5 pt-2">
     <div class="">
       
-        <a class="group flex no-underline" href="/blog/practical-system-preparation-tips-for-molecular-dynamics-simulations/">
-          <span
-            class="mt-[-0.3rem] me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
-          ><span class="ltr:inline rtl:hidden">&larr;</span></span>
-          <span class="flex flex-col">
-            <span
-              class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-            >Practical System Preparation Tips for Molecular Dynamics Simulations</span>
-            <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
-              
-                Mar 9, 2026
-              
-            </span>
-          </span>
-        </a>
-      
     </div>
     <div class="">
       
-        <a class="group flex text-right no-underline" href="/blog/ten-critical-pitfalls-in-molecular-dynamics-simulations-and-strategies-for-mitigation/">
+        <a class="group flex text-right no-underline" href="/blog/practical-system-preparation-tips-for-molecular-dynamics-simulations/">
           <span class="flex flex-col">
             <span
               class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-            >Ten Critical Pitfalls in Molecular Dynamics Simulations and Strategies for Mitigation</span
+            >Practical System Preparation Tips for Molecular Dynamics Simulations</span
             >
             <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
               
-                Dec 21, 2025
+                Mar 9, 2026
               
             </span>
           </span>

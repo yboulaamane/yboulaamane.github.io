@@ -5,12 +5,139 @@
     <link>https://yboulaamane.github.io/tags/computational-chemistry/</link>
       <atom:link href="https://yboulaamane.github.io/tags/computational-chemistry/index.xml" rel="self" type="application/rss+xml" />
     <description>Computational Chemistry</description>
-    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 09 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Fri, 13 Mar 2026 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
       <title>Computational Chemistry</title>
       <link>https://yboulaamane.github.io/tags/computational-chemistry/</link>
     </image>
+    
+    <item>
+      <title>Understanding Binding Energetics in Molecular Docking</title>
+      <link>https://yboulaamane.github.io/blog/understanding-binding-energetics-in-molecular-docking/</link>
+      <pubDate>Fri, 13 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/understanding-binding-energetics-in-molecular-docking/</guid>
+      <description>&lt;p&gt;When predicting how a ligand binds to a protein, docking programs estimate the overall binding free energy. Behind these scores lies a complex balance of physical forces. Understanding the main energetic contributions helps interpret docking results more reliably and identify meaningful binding trends instead of relying solely on raw scores.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-desolvation-penalty&#34;&gt;1. Desolvation Penalty&lt;/h2&gt;
+&lt;p&gt;Before binding, both the ligand and the protein surface are surrounded by water molecules. These water molecules stabilize polar and charged groups through hydrogen bonding and electrostatic interactions.&lt;/p&gt;
+&lt;p&gt;During binding, many of these water molecules must be displaced. The &lt;strong&gt;desolvation penalty&lt;/strong&gt; refers to the energetic cost associated with removing these stabilizing water interactions.&lt;/p&gt;
+&lt;p&gt;If the ligand does not form interactions with the protein that compensate for the loss of water stabilization, binding becomes energetically unfavorable.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Example&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;A charged amine interacts strongly with water in solution. If that group becomes buried inside a hydrophobic pocket without forming compensating interactions with the protein, the loss of its hydration shell results in an unfavorable desolvation cost.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;2-entropy&#34;&gt;2. Entropy&lt;/h2&gt;
+&lt;p&gt;Entropy reflects the degree of disorder or freedom within the system. When a ligand binds to a protein several types of molecular freedom are reduced:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The ligand loses translational and rotational movement.&lt;/li&gt;
+&lt;li&gt;Flexible ligands lose conformational freedom.&lt;/li&gt;
+&lt;li&gt;Protein side chains near the binding site often become more ordered.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This reduction in freedom produces an &lt;strong&gt;entropy penalty&lt;/strong&gt; that opposes binding.&lt;/p&gt;
+&lt;p&gt;However, entropy can also favor binding when structured water molecules are released into bulk solvent, increasing the overall disorder of the system.&lt;/p&gt;
+&lt;p&gt;In general, &lt;strong&gt;rigid ligands tend to experience smaller entropy penalties than highly flexible molecules&lt;/strong&gt;, which can improve binding efficiency.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;3-water-displacement&#34;&gt;3. Water Displacement&lt;/h2&gt;
+&lt;p&gt;Protein binding pockets frequently contain &lt;strong&gt;ordered water molecules&lt;/strong&gt;. When a ligand occupies the pocket, it may displace these waters, which can significantly influence binding energetics.&lt;/p&gt;
+&lt;p&gt;Two outcomes are possible:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Favorable displacement&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;High-energy or poorly stabilized water molecules are released into bulk solvent.&lt;/li&gt;
+&lt;li&gt;The released waters gain entropy, which favors binding.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Unfavorable displacement&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Stable water molecules that form strong hydrogen bonds are removed.&lt;/li&gt;
+&lt;li&gt;The ligand may fail to compensate for these lost interactions.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Modern structure-based drug design often analyzes hydration patterns to identify &lt;strong&gt;high-energy (“unhappy”) water molecules&lt;/strong&gt; that can be beneficial targets for displacement.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;4-electrostatic-interactions&#34;&gt;4. Electrostatic Interactions&lt;/h2&gt;
+&lt;p&gt;Electrostatic interactions are major contributors to ligand binding. These include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Salt bridges between oppositely charged groups&lt;/li&gt;
+&lt;li&gt;Hydrogen bonds&lt;/li&gt;
+&lt;li&gt;Dipole–dipole interactions&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For example, a negatively charged carboxylate group may interact favorably with positively charged residues such as lysine or arginine in a binding pocket.&lt;/p&gt;
+&lt;p&gt;However, electrostatics are strongly influenced by the surrounding environment. Charged groups are stabilized by polar solvents such as water. If a charged group is buried in a hydrophobic pocket without forming compensating interactions, the &lt;strong&gt;desolvation cost can outweigh the electrostatic benefit&lt;/strong&gt;.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;5-molecular-size-bias-in-docking&#34;&gt;5. Molecular Size Bias in Docking&lt;/h2&gt;
+&lt;p&gt;Docking scoring functions often favor &lt;strong&gt;larger molecules&lt;/strong&gt; because they form more contacts with the protein. This introduces a molecular size bias: larger ligands frequently receive better docking scores even when their binding efficiency is not inherently superior.&lt;/p&gt;
+&lt;p&gt;To account for this bias, results are often interpreted using size-normalized metrics such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Ligand Efficiency (LE)&lt;/strong&gt; – binding energy normalized by the number of heavy atoms&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Fit Quality (FQ)&lt;/strong&gt; – a size-adjusted measure of binding efficiency&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Considering these metrics helps identify compounds that achieve strong interactions with minimal molecular complexity. A smaller ligand with efficient interactions may represent a stronger lead than a larger molecule that scores well primarily due to size.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;6-scoring-function-differences-physics-based-vs-empirical-approaches&#34;&gt;6. Scoring Function Differences: Physics-Based vs Empirical Approaches&lt;/h2&gt;
+&lt;p&gt;Docking programs use different strategies to approximate binding energetics, particularly for electrostatic effects.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;AutoDock4 (AD4)&lt;/strong&gt;&lt;br&gt;
+Uses a physics-based force field approach. Partial atomic charges are explicitly calculated (commonly using the Gasteiger-PEOE method). Electrostatic interactions are modeled using a screened Coulombic potential. AD4 also includes separate terms for hydrogen bonding and desolvation that were calibrated using experimental binding data.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;AutoDock Vina&lt;/strong&gt;&lt;br&gt;
+Uses an empirical scoring function trained on experimental protein–ligand complexes. It does not explicitly calculate partial charges or use a classical Coulombic electrostatic term. Instead, interactions such as steric complementarity, hydrophobic contacts, and hydrogen bonding are modeled using optimized empirical potentials. This design makes Vina significantly faster but less transparent in its treatment of electrostatics.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Smina&lt;/strong&gt;&lt;br&gt;
+An enhanced fork of Vina that refines empirical potentials and adds additional terms such as torsional penalties and improved hydrophobic interactions. Like Vina, it remains fully empirical and does not explicitly compute partial charges.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;GNINA&lt;/strong&gt;&lt;br&gt;
+Extends Vina by incorporating convolutional neural networks trained on large datasets of protein–ligand complexes. The neural network evaluates three-dimensional interaction patterns directly from structural data, effectively bypassing traditional physics-based electrostatic modeling. GNINA often performs well in pose prediction but may not explicitly capture detailed charge-driven interactions.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Scoring Function&lt;/th&gt;
+          &lt;th&gt;Electrostatics Treatment&lt;/th&gt;
+          &lt;th&gt;Partial Charges&lt;/th&gt;
+          &lt;th&gt;Speed&lt;/th&gt;
+          &lt;th&gt;Typical Strength&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;AutoDock4&lt;/td&gt;
+          &lt;td&gt;Physics-based&lt;/td&gt;
+          &lt;td&gt;Explicit&lt;/td&gt;
+          &lt;td&gt;Slower&lt;/td&gt;
+          &lt;td&gt;Detailed treatment of charged systems&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Vina / Smina&lt;/td&gt;
+          &lt;td&gt;Empirical (implicit)&lt;/td&gt;
+          &lt;td&gt;None&lt;/td&gt;
+          &lt;td&gt;Fast&lt;/td&gt;
+          &lt;td&gt;Efficient for large virtual screens&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;GNINA&lt;/td&gt;
+          &lt;td&gt;Neural network&lt;/td&gt;
+          &lt;td&gt;None&lt;/td&gt;
+          &lt;td&gt;Fast&lt;/td&gt;
+          &lt;td&gt;Strong pose prediction performance&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;7-interpretation-of-docking-scores&#34;&gt;7. Interpretation of Docking Scores&lt;/h2&gt;
+&lt;p&gt;Docking scores approximate several energetic contributions, including van der Waals interactions, electrostatics, hydrogen bonding, desolvation effects, and entropy-related penalties.&lt;/p&gt;
+&lt;p&gt;Because these terms are simplified and often partially empirical, docking scores should be interpreted as &lt;strong&gt;relative estimates rather than precise predictions of binding affinity&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;For this reason, docking is most reliable for &lt;strong&gt;ranking compounds within the same dataset&lt;/strong&gt; rather than predicting absolute binding energies.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;8-the-energetic-trade-off-behind-binding&#34;&gt;8. The Energetic Trade-Off Behind Binding&lt;/h2&gt;
+&lt;p&gt;Molecular recognition arises from a balance between favorable and unfavorable contributions.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Favorable contributions&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Electrostatic complementarity and hydrogen bonding&lt;/li&gt;
+&lt;li&gt;Hydrophobic interactions&lt;/li&gt;
+&lt;li&gt;Release of high-energy or constrained water molecules&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Unfavorable contributions&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Desolvation of polar or charged atoms&lt;/li&gt;
+&lt;li&gt;Loss of ligand conformational freedom (entropy)&lt;/li&gt;
+&lt;li&gt;Scoring bias toward larger molecules&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Binding occurs when favorable interactions outweigh these energetic penalties. Selecting an appropriate scoring function and interpreting results within their physical context are therefore essential for obtaining meaningful insights from docking studies.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Practical System Preparation Tips for Molecular Dynamics Simulations</title>
