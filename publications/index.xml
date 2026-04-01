@@ -5,12 +5,20 @@
     <link>https://yboulaamane.github.io/publications/</link>
       <atom:link href="https://yboulaamane.github.io/publications/index.xml" rel="self" type="application/rss+xml" />
     <description>Publications</description>
-    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Thu, 12 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 30 Mar 2026 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
       <title>Publications</title>
       <link>https://yboulaamane.github.io/publications/</link>
     </image>
+    
+    <item>
+      <title>Odorant-Binding Protein Interactions with Herbivore-Induced Volatiles Drive Behavioral Attraction of Harmonia axyridis (Coleoptera: Coccinellidae) to Tuta Absoluta-Infested Tomato Plant</title>
+      <link>https://yboulaamane.github.io/publications/paper-20/</link>
+      <pubDate>Mon, 30 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/publications/paper-20/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Repurposing DrugBank compounds as NAD-dependent deacetylase sirtuin 2 inhibitors via QSAR modelling with gradient boosting algorithms and all-atom molecular simulations</title>
