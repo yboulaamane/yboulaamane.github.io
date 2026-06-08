@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Agentic-Engineering | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/agentic-engineering/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/agentic-engineering/index.xml" rel="self" type="application/rss+xml" />
+    <description>Agentic-Engineering</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sat, 04 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Agentic-Engineering</title>
+      <link>https://yboulaamane.github.io/tags/agentic-engineering/</link>
+    </image>
+    
+    <item>
+      <title>What Agentic Engineering Means for Computational Drug Discovery</title>
+      <link>https://yboulaamane.github.io/blog/what-agentic-engineering-means-for-computational-drug-discovery/</link>
+      <pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/what-agentic-engineering-means-for-computational-drug-discovery/</guid>
+      <description>&lt;p&gt;Simon Willison recently appeared on 
+ to discuss what he calls the &lt;em&gt;November inflection point&lt;/em&gt;: the moment in late 2025 when frontier models crossed a threshold where agentic coding went from &amp;ldquo;mostly works if you watch carefully&amp;rdquo; to &amp;ldquo;almost always does what you asked.&amp;rdquo; His highlights post is 
+, but reading it through the lens of computational drug discovery, several themes land with unusual force.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-inflection-point-is-real-in-our-field-too&#34;&gt;The Inflection Point is Real in Our Field Too&lt;/h2&gt;
+&lt;p&gt;Willison frames November 2025 as the moment the promise of coding agents became practical: you can spin up an agent, describe what you want, and get something back that actually runs. For those of us building MD analysis pipelines, virtual screening workflows, or ML-based substrate classifiers, this rings true. What changed isn&amp;rsquo;t just raw model capability - it&amp;rsquo;s &lt;em&gt;reliability&lt;/em&gt;. An agent that gets it right 75% of the time creates more debugging work than it saves. One that gets it right 95% of the time fundamentally changes how you design a project.&lt;/p&gt;
+&lt;p&gt;In drug discovery, the code we write is usually not the point. The point is the science: does this compound dock with the right binding pose? Does this ML model generalize across CYP isoforms? The code is scaffolding. And if agents can build the scaffolding reliably, that frees researchers to focus on the parts that actually require domain expertise: choosing the right receptor ensemble, interpreting docking scores, deciding whether a geometric feature captures what you think it captures.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-bottleneck-has-moved-to-testing-and-thats-familiar-territory&#34;&gt;The Bottleneck Has Moved to Testing, and That&amp;rsquo;s Familiar Territory&lt;/h2&gt;
+&lt;p&gt;One of Willison&amp;rsquo;s most interesting observations is that the bottleneck in software development has shifted: implementation is no longer the slow part. Prototyping three different approaches now costs as much as prototyping one used to. The new constraint is &lt;em&gt;validation&lt;/em&gt; - how do you know which of your three prototypes is actually right?&lt;/p&gt;
+&lt;p&gt;This maps almost perfectly onto computational drug discovery, where validation has always been the hard part. It takes minutes to run a docking job. It takes weeks or months of wet lab work to find out if the predicted binder actually binds. The ratio of compute to experimental validation hasn&amp;rsquo;t changed just because the AI can write your AutoDock Vina wrapper faster. If anything, the pressure on experimental teams increases as computational throughput accelerates.&lt;/p&gt;
+&lt;p&gt;What does change is internal validation. It&amp;rsquo;s now cheap to try multiple featurization strategies for your ML model, run multiple docking protocols on your ensemble, or test three different clustering approaches on your MD trajectories, and compare them properly. The scientific judgment required to &lt;em&gt;interpret&lt;/em&gt; those comparisons doesn&amp;rsquo;t get cheaper, but you get more data to feed it.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;experience-amplification-not-experience-replacement&#34;&gt;Experience Amplification, Not Experience Replacement&lt;/h2&gt;
+&lt;p&gt;Willison cites a ThoughtWorks finding: AI tools benefit senior engineers and junior engineers most, while mid-career engineers face the most disruption. The reasoning is that senior engineers know &lt;em&gt;what&lt;/em&gt; to build and &lt;em&gt;how to evaluate&lt;/em&gt; what was built - they provide the judgment that guides the agent and the critical eye that catches its mistakes. Junior engineers benefit from having an endlessly patient collaborator that can explain concepts, demonstrate patterns, and scaffold early projects.&lt;/p&gt;
+&lt;p&gt;The parallel in computational drug discovery is direct. A postdoctoral researcher who understands force fields, binding free energies, the difference between RMSD and RMSF as quality metrics, or why a high docking score doesn&amp;rsquo;t mean a good drug candidate: that knowledge becomes &lt;em&gt;more&lt;/em&gt; valuable when an agent can rapidly implement whatever protocol you describe. The agent doesn&amp;rsquo;t know that your receptor is in an unusual conformational state, or that the crystallographic water in the binding site probably shouldn&amp;rsquo;t be stripped. You know that.&lt;/p&gt;
+&lt;p&gt;What could be disrupted is the middle ground: researchers who can run established pipelines competently but haven&amp;rsquo;t yet developed the scientific intuition to question their own results. If agents can run the pipelines, that skill alone is no longer a differentiator.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;responsible-vibe-coding-and-the-stakes-of-our-domain&#34;&gt;Responsible &amp;ldquo;Vibe Coding&amp;rdquo; and the Stakes of Our Domain&lt;/h2&gt;
+&lt;p&gt;Willison draws a clear line: vibe coding (rapidly assembling working software without deeply scrutinizing every line) is fine when only you are affected by any bugs. The moment other people depend on your output, you have to be more careful.&lt;/p&gt;
+&lt;p&gt;Drug discovery sits unambiguously on the &amp;ldquo;be more careful&amp;rdquo; side of that line. A virtual screening pipeline that silently uses the wrong protonation state, a feature extraction script that indexes atoms incorrectly, an ML model that leaks test set information through improper splitting: these errors don&amp;rsquo;t just waste compute time. They can misdirect medicinal chemistry efforts, consume experimental resources, and slow down projects with real human health implications downstream.&lt;/p&gt;
+&lt;p&gt;This doesn&amp;rsquo;t mean agents are inappropriate for the field. It means the validation discipline we already apply to our science needs to be applied to the code too. Write tests. Sanity-check intermediate outputs against known reference datasets. Treat agent-generated code with the same skepticism you&amp;rsquo;d apply to a script handed to you by a collaborator you respect but haven&amp;rsquo;t worked with before.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-new-bottleneck-can-we-ask-better-questions&#34;&gt;The New Bottleneck: Can We Ask Better Questions?&lt;/h2&gt;
+&lt;p&gt;The thread that runs through Willison&amp;rsquo;s entire conversation is this: the cost of &lt;em&gt;implementation&lt;/em&gt; is collapsing. What remains expensive is knowing what to implement and why. In computational drug discovery, this is the oldest truth in the field. CADD has always been able to generate enormous numbers of candidates; the limiting resource has always been the ability to prioritize them intelligently.&lt;/p&gt;
+&lt;p&gt;Agentic AI doesn&amp;rsquo;t solve the prioritization problem. But it does mean that a researcher with genuine scientific judgment - about target biology, about the chemical space worth exploring, about what a binding pose is actually telling you - can execute on that judgment faster and at greater scale than before. The field has always needed people who can think at the interface of chemistry, biology, and computation. That&amp;rsquo;s not going away. If anything, it matters more.&lt;/p&gt;
+&lt;p&gt;The inflection point Willison describes is real, and it&amp;rsquo;s arriving in computational drug discovery the same way it&amp;rsquo;s arriving everywhere else. The question is whether we use it to accelerate science or just to accelerate the production of numbers.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Episode: 
+, Lenny&amp;rsquo;s Podcast, April 2026. Simon Willison&amp;rsquo;s highlights post: 
+.&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

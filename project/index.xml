@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/project/</link>
+      <atom:link href="https://yboulaamane.github.io/project/index.xml" rel="self" type="application/rss+xml" />
+    <description>Projects</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 25 Aug 2025 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Projects</title>
+      <link>https://yboulaamane.github.io/project/</link>
+    </image>
+    
+    <item>
+      <title>Awesome Drug Discovery</title>
+      <link>https://yboulaamane.github.io/project/awesomedrugdiscovery/</link>
+      <pubDate>Mon, 25 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/awesomedrugdiscovery/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>QSARBoost</title>
+      <link>https://yboulaamane.github.io/project/qsarboost/</link>
+      <pubDate>Fri, 15 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/qsarboost/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>VinaScreen</title>
+      <link>https://yboulaamane.github.io/project/vinascreen/</link>
+      <pubDate>Mon, 18 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/vinascreen/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>QSARBioPred</title>
+      <link>https://yboulaamane.github.io/project/qsarbiopred/</link>
+      <pubDate>Tue, 07 May 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/qsarbiopred/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>EnsembleBBB</title>
+      <link>https://yboulaamane.github.io/project/ensemblebbb/</link>
+      <pubDate>Mon, 19 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/ensemblebbb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ArtemisiaDB</title>
+      <link>https://yboulaamane.github.io/project/artemisiadb/</link>
+      <pubDate>Thu, 25 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/artemisiadb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CoumarinDB</title>
+      <link>https://yboulaamane.github.io/project/coumarindb/</link>
+      <pubDate>Thu, 25 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/coumarindb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>GMXPlotter</title>
+      <link>https://yboulaamane.github.io/project/gmxplotter/</link>
+      <pubDate>Sun, 27 Aug 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/gmxplotter/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

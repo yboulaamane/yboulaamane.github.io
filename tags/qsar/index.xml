@@ -1,0 +1,1559 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>QSAR | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/qsar/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/qsar/index.xml" rel="self" type="application/rss+xml" />
+    <description>QSAR</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 01 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>QSAR</title>
+      <link>https://yboulaamane.github.io/tags/qsar/</link>
+    </image>
+    
+    <item>
+      <title>A Practical Guide to QSAR Model Validation: Internal, Cross, and External Checks</title>
+      <link>https://yboulaamane.github.io/blog/a-practical-guide-to-qsar-model-validation-internal-cross-and-external-checks/</link>
+      <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/a-practical-guide-to-qsar-model-validation-internal-cross-and-external-checks/</guid>
+      <description>&lt;p&gt;Building a QSAR model is only half the job. The harder question is: &lt;em&gt;does it actually work?&lt;/em&gt; Overfitted models routinely pass internal checks while failing completely on new compounds. The OECD principles and decades of best-practice literature have converged on a three-tier validation framework that separates what a model has memorised from what it can genuinely predict.&lt;/p&gt;
+&lt;p&gt;This post walks through that framework, explains what each parameter actually measures, and gives you the threshold values you need to report in a manuscript or regulatory submission.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Bottom line up front:&lt;/strong&gt; a valid QSAR model must pass all three tiers simultaneously. Good internal statistics with poor external performance is a red flag, not a trade-off.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-three-tier-validation-framework&#34;&gt;The Three-Tier Validation Framework&lt;/h2&gt;
+&lt;p&gt;The table below consolidates the standard parameters across internal, cross-validation, and external validation. Threshold values reflect widely accepted criteria in the literature (Golbraikh &amp;amp; Tropsha, Roy et al., Chirico &amp;amp; Gramatica).&lt;/p&gt;
+
+&lt;style&gt;
+.val-table-wrap { margin: 1.5rem 0; overflow-x: auto; }
+table.val-table { width: 100%; border-collapse: collapse; font-size: 13.5px; font-family: inherit; }
+table.val-table thead tr { background: rgba(0,0,0,0.03); }
+table.val-table th { padding: 9px 12px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 2px solid; white-space: nowrap; }
+table.val-table th.int-col  { border-bottom-color: #1D9E75; color: #0F6E56; }
+table.val-table th.cv-col   { border-bottom-color: #185FA5; color: #0C447C; }
+table.val-table th.ext-col  { border-bottom-color: #D85A30; color: #993C1D; }
+table.val-table td { padding: 8px 12px; border-bottom: 1px solid rgba(0,0,0,0.07); vertical-align: middle; line-height: 1.4; }
+table.val-table tr:last-child td { border-bottom: none; }
+table.val-table tr:hover td { background: rgba(0,0,0,0.02); }
+.param { font-family: &#39;SFMono-Regular&#39;, Consolas, monospace; font-size: 12.5px; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 500; white-space: nowrap; }
+.tag-green  { background: #E1F5EE; color: #0F6E56; }
+.tag-blue   { background: #E6F1FB; color: #185FA5; }
+.tag-amber  { background: #FAEEDA; color: #854F0B; }
+.tag-gray   { background: #F1EFE8; color: #5F5E5A; border: 1px solid #D3D1C7; }
+.note-box { background: #f8f8f6; border: 1px solid #e0e0d8; border-radius: 8px; padding: 0.9rem 1.1rem; margin: 1.25rem 0; font-size: 13.5px; line-height: 1.65; }
+&lt;/style&gt;
+
+&lt;div class=&#34;val-table-wrap&#34;&gt;
+&lt;table class=&#34;val-table&#34;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th class=&#34;int-col&#34;&gt;Internal parameter&lt;/th&gt;
+      &lt;th class=&#34;int-col&#34;&gt;Threshold&lt;/th&gt;
+      &lt;th class=&#34;cv-col&#34;&gt;Cross-validation parameter&lt;/th&gt;
+      &lt;th class=&#34;cv-col&#34;&gt;Threshold&lt;/th&gt;
+      &lt;th class=&#34;ext-col&#34;&gt;External parameter&lt;/th&gt;
+      &lt;th class=&#34;ext-col&#34;&gt;Threshold&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;R²&lt;sub&gt;tr&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-green&#34;&gt;≥ 0.600&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;R²&lt;sub&gt;cv&lt;/sub&gt; (Q²&lt;sub&gt;loo&lt;/sub&gt;)&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-blue&#34;&gt;&amp;gt; 0.500&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;RMSE&lt;sub&gt;ex&lt;/sub&gt; and MAE&lt;sub&gt;ex&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-amber&#34;&gt;Lowest possible&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;R²&lt;sub&gt;adj.&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-gray&#34;&gt;Close to R²&lt;sub&gt;tr&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;RMSE&lt;sub&gt;cv&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-amber&#34;&gt;Lowest possible&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;R²&lt;sub&gt;ex&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-green&#34;&gt;&amp;gt; 0.600&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;LOF&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-amber&#34;&gt;Lowest possible&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;MAE&lt;sub&gt;cv&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-amber&#34;&gt;Lowest possible&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;Q²-F1, Q²-F2, Q²-F3&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-green&#34;&gt;&amp;gt; 0.600&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;CCC&lt;sub&gt;tr&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-green&#34;&gt;&amp;gt; 0.800&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;CCC&lt;sub&gt;cv&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-blue&#34;&gt;&amp;gt; 0.800&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;CCC&lt;sub&gt;ex&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-green&#34;&gt;&amp;gt; 0.800&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;RMSE&lt;sub&gt;tr&lt;/sub&gt; and MAE&lt;sub&gt;tr&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-amber&#34;&gt;Lowest possible&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;Q²&lt;sub&gt;LMO&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-blue&#34;&gt;&amp;gt; 0.500&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;R²-ExPy&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-gray&#34;&gt;0.786&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;ΔK&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-green&#34;&gt;0.05&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;R²&lt;sub&gt;Yscr&lt;/sub&gt; and Q²&lt;sub&gt;Yscr&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-amber&#34;&gt;Lowest possible&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;R&#39;&lt;sub&gt;o&lt;/sub&gt;²&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-gray&#34;&gt;0.741&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;s&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-amber&#34;&gt;Lowest possible&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;K&#39;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-gray&#34;&gt;1&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;F&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-green&#34;&gt;Highest possible&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;div class=&#34;note-box&#34;&gt;
+  &lt;strong&gt;Key inequality to remember:&lt;/strong&gt; R² &amp;gt; Q², RMSE&lt;sub&gt;tr&lt;/sub&gt; &amp;lt; RMSE&lt;sub&gt;cv&lt;/sub&gt;, a low RMSE&lt;sub&gt;ex&lt;/sub&gt; and MAE&lt;sub&gt;ex&lt;/sub&gt;, together with a high R²&lt;sub&gt;ex&lt;/sub&gt;, are all required simultaneously for a reliable model.
+&lt;/div&gt;
+
+
+&lt;hr&gt;
+&lt;h2 id=&#34;internal-validation-necessary-but-not-sufficient&#34;&gt;Internal Validation: Necessary but Not Sufficient&lt;/h2&gt;
+&lt;p&gt;Internal statistics describe how well your model fits the training data. R²&lt;sub&gt;tr&lt;/sub&gt; must be at least 0.600, but the more diagnostic check is the gap between R²&lt;sub&gt;tr&lt;/sub&gt; and R²&lt;sub&gt;adj.&lt;/sub&gt;. A large gap signals that some descriptors are contributing noise rather than signal and should be removed.&lt;/p&gt;
+&lt;p&gt;The Lack-of-Fit (LOF) statistic penalises overfitting more aggressively than R² alone. The concordance correlation coefficient CCC&lt;sub&gt;tr&lt;/sub&gt; above 0.800 is particularly informative because it jointly measures precision and accuracy, punishing models that are systematically biased even if they show high correlation.&lt;/p&gt;
+&lt;p&gt;The ΔK criterion of 0.05 is a lesser-known but important check: it compares slopes of regression lines through the origin between observed and predicted values, detecting systematic over- or under-prediction that R² obscures.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;cross-validation-testing-generalisability-on-training-data&#34;&gt;Cross-Validation: Testing Generalisability on Training Data&lt;/h2&gt;
+&lt;p&gt;Cross-validation estimates predictive ability without touching the external set. Q²&lt;sub&gt;loo&lt;/sub&gt; above 0.500 is the minimum bar; many reviewers now expect 0.600 or above for publication. Leave-many-out (Q²&lt;sub&gt;LMO&lt;/sub&gt;) is more conservative and more reliable for small datasets where single compound removals can give optimistic results.&lt;/p&gt;
+&lt;p&gt;Y-scrambling is often overlooked but should be reported in every paper. If R²&lt;sub&gt;Yscr&lt;/sub&gt; and Q²&lt;sub&gt;Yscr&lt;/sub&gt; are not close to zero, your model is capturing artefacts in the data structure rather than a true structure-activity relationship.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;external-validation-the-real-test&#34;&gt;External Validation: The Real Test&lt;/h2&gt;
+&lt;p&gt;Compounds in the external set were never seen during training. This makes external metrics the gold standard. R²&lt;sub&gt;ex&lt;/sub&gt; above 0.600 and CCC&lt;sub&gt;ex&lt;/sub&gt; above 0.800 are the headline numbers, but the Golbraikh-Tropsha criteria (R²-ExPy = 0.786 and R&amp;rsquo;&lt;sub&gt;o&lt;/sub&gt;² = 0.741) add important geometric checks on whether your regression line passes through the origin appropriately.&lt;/p&gt;
+&lt;p&gt;The Schüürmann Q²-F1, Q²-F2 and Consonni-Todeschini Q²-F3 metrics each use a different reference model in the denominator. Reporting all three gives reviewers and regulators a more complete picture than any single metric alone.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;practical-checklist-before-submission&#34;&gt;Practical Checklist Before Submission&lt;/h2&gt;
+&lt;p&gt;Before submitting a QSAR paper, run through each tier. A model that passes internal checks but fails cross-validation almost certainly overfits. A model that passes cross-validation but fails external validation likely has a biased or unrepresentative training set, or the applicability domain has not been properly defined. Only models that clear all three tiers simultaneously warrant regulatory or prospective use.&lt;/p&gt;
+&lt;p&gt;Finally, always report the full set of metrics rather than cherry-picking the ones that look best. Reviewers familiar with this framework will notice missing statistics, and the absence of Y-scrambling results in particular is a common reason for rejection at journals such as &lt;em&gt;JCIM&lt;/em&gt; or &lt;em&gt;JCTC&lt;/em&gt;.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Golbraikh, A.; Tropsha, A. &lt;em&gt;J. Mol. Graph. Model.&lt;/em&gt; &lt;strong&gt;2002&lt;/strong&gt;, &lt;em&gt;20&lt;/em&gt;, 269-276.&lt;/li&gt;
+&lt;li&gt;Roy, K.; Kar, S.; Ambure, P. &lt;em&gt;Chemom. Intell. Lab. Syst.&lt;/em&gt; &lt;strong&gt;2015&lt;/strong&gt;, &lt;em&gt;152&lt;/em&gt;, 18-33.&lt;/li&gt;
+&lt;li&gt;Chirico, N.; Gramatica, P. &lt;em&gt;J. Chem. Inf. Model.&lt;/em&gt; &lt;strong&gt;2011&lt;/strong&gt;, &lt;em&gt;51&lt;/em&gt;, 2320-2335.&lt;/li&gt;
+&lt;li&gt;Consonni, V.; Ballabio, D.; Todeschini, R. &lt;em&gt;J. Chem. Inf. Model.&lt;/em&gt; &lt;strong&gt;2009&lt;/strong&gt;, &lt;em&gt;49&lt;/em&gt;, 1669-1678.&lt;/li&gt;
+&lt;li&gt;OECD. &lt;em&gt;Guidance Document on the Validation of (Q)SAR Models.&lt;/em&gt; ENV/JM/MONO(2007)2.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Computational Strategies for Accelerating Drug Discovery: A Comprehensive Review</title>
+      <link>https://yboulaamane.github.io/blog/computational-strategies-for-accelerating-drug-discovery/</link>
+      <pubDate>Sun, 10 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/computational-strategies-for-accelerating-drug-discovery/</guid>
+      <description>&lt;h2 id=&#34;abstract&#34;&gt;Abstract&lt;/h2&gt;
+&lt;p&gt;Drug discovery is a complex and time-intensive process, often spanning over a decade and requiring substantial financial investments. Recent advances in cheminformatics and computational methods have revolutionized this field, enabling faster and more cost-effective approaches to identify and optimize drug candidates. This review highlights the role of cheminformatics in modern drug discovery, focusing on key methodologies such as quantitative structure-activity relationship (QSAR) modeling, molecular docking, and molecular dynamics simulations. We discuss the integration of artificial intelligence (AI) and machine learning (ML) algorithms for predictive modeling, virtual screening, and structure-based drug design, emphasizing their ability to handle large datasets and uncover hidden patterns. Key cheminformatics tools, including molecular fingerprints, pharmacophore modeling, and ligand-based screening, are explored for their application in lead optimization and target identification. The review also addresses the importance of chemical databases and molecular descriptors in enhancing predictive accuracy and outlines strategies for evaluating drug-likeness and ADMET profiles to improve candidate selection. Furthermore, we examine the role of molecular dynamics in capturing dynamic interactions and free-energy landscapes for ligand-protein complexes. Despite these advancements, challenges such as data standardization, model interpretability, and validation remain critical. By synthesizing recent developments and future directions, this review highlights the transformative potential of computational approaches in accelerating drug discovery while reducing costs and experimental failures.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Keywords:&lt;/strong&gt; Cheminformatics, Drug Discovery, QSAR Modeling, Molecular Docking, Molecular Dynamics Simulations, Machine Learning, Artificial Intelligence, ADMET Prediction&lt;/p&gt;
+&lt;h2 id=&#34;overview-of-the-drug-discovery-process&#34;&gt;Overview of the drug discovery process&lt;/h2&gt;
+&lt;p&gt;The drug discovery process is a multifaceted journey that typically consists of several key stages. It often begins with a pre-discovery phase, where basic research is conducted to understand the mechanisms underlying diseases and identify potential targets, such as proteins [1]. Subsequently, the drug discovery stage involves the search for molecules, with a focus on small compounds that can modulate these targets. This process can involve the use of computer-aided drug design (CADD) approaches to identify and optimize potential drug candidates. CADD encompasses a range of theoretical and computational methods that are part of modern drug discovery, including structure-based drug design (SBDD) and ligand-based drug design (LBDD). These approaches employ mathematical tools and software packages to manipulate and quantify the properties of potential drug candidates, enabling the analysis of macromolecular structures and the prediction of their properties [2,3]. CADD has become an indispensable part of drug discovery, offering faster and more efficient drug design, a higher chance of success for improving drug efficacy, and a reduction in experimental costs [4]. The drug discovery process is a lengthy and rigorous endeavor, typically taking 10-15 years for a new drug to be approved. Throughout this process, various stages, such as target discovery, lead compound identification, and preclinical and clinical research, are undertaken to ensure the safety and effectiveness of potential drug candidates (Figure 1). The application of CADD in drug discovery has become increasingly important, offering valuable insights and guidance in the identification, optimization, and evaluation of potential drug candidates.&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image1.png&#34;
+    alt=&#34;Figure 1. An overview of the main steps involved in the drug discovery process.&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 1.&lt;/strong&gt; An overview of the main steps involved in the drug discovery process.&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;cheminformatics-in-drug-discovery&#34;&gt;Cheminformatics in drug discovery&lt;/h2&gt;
+&lt;p&gt;Cheminformatics emerged as an active field in the 1970s, initially in academia and later adopted by the pharmaceutical industry. The term was formally defined for drug discovery applications by F.K. Brown in 1998 [5]. It is an interdisciplinary field combining chemistry, computer science, and information science principles to solve chemical problems. Cheminformatics plays a pivotal role in drug discovery by aiding the design of compound libraries, chemical data storage, virtual screening, and quantitative structure-activity relationship (QSAR) modelling [6]. Data-driven drug discovery is an approach within cheminformatics that relies on analyzing large datasets to identify new therapeutic targets, optimize drug candidates, and improve drug discovery efficiency. It employs advanced computational techniques like ML and deep learning (DL) algorithms, and cheminformatics tools to process and extract insights from diverse data sources. This data-driven analysis aims to uncover intricate relationships between compound activity and chemical information, guiding and accelerating drug discovery efforts that would be challenging to achieve through traditional methods alone.&lt;/p&gt;
+&lt;h3 id=&#34;quantitative-structure-activity-relationships&#34;&gt;Quantitative structure-activity relationships&lt;/h3&gt;
+&lt;p&gt;QSAR is the process by which a chemical structure is correlated with a well-determined effect, such as biological activity or pharmacokinetic property [7]. Thus, biological activity can be expressed quantitatively, such as the concentration of a substance required to achieve a certain biological response. Additionally, when physical and chemical properties or structures are expressed numerically, a mathematical relationship, or quantitative structure-activity relationship, can be proposed between them [7]. The mathematical expression obtained can then be used as a predictive means of the biological response for similar structures. QSAR models are constructed using ML algorithms, such as neural networks or decision trees (Figure 2). These algorithms are trained on known molecule data with measured biological activities, to predict the biological activity of new molecules [8]. QSAR models are often used in combination with other techniques, such as molecular modelling, to achieve better prediction accuracy. They can also be used to identify patterns in the data that can be used to understand the underlying mechanisms of biological activity. QSAR models are very useful for saving time and money by allowing for the prediction of biological activity of molecules before they are synthesized and tested &lt;em&gt;in vitro&lt;/em&gt; or &lt;em&gt;in vivo&lt;/em&gt;. However, they also have limitations and cannot always predict biological activity with high accuracy. Therefore, they should be used with caution and in combination with other techniques to achieve accurate results.&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image2.png&#34;
+    alt=&#34;Figure 2. Schematic representation of the QSAR modelling workflow [9].&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 2.&lt;/strong&gt; Schematic representation of the QSAR modelling workflow [9].&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;chemical-bioactivity-databases&#34;&gt;Chemical bioactivity databases&lt;/h3&gt;
+&lt;p&gt;Chemical bioactivity databases such as ChEMBL, BindingDB, PubChem Bioassays, PDBbind, and BRENDA Enzyme Database play a crucial role in modern chemical biology research (Table 1). These databases contain curated data on experimental bioactive molecules including their chemical structures, bioactivity data (such as &lt;em&gt;Ki&lt;/em&gt;, &lt;em&gt;Kd&lt;/em&gt;, IC&lt;sub&gt;50&lt;/sub&gt;, % of inhibition, and EC&lt;sub&gt;50&lt;/sub&gt;), and interactions with macromolecules such as proteins and enzymes. These databases facilitate data-driven drug discovery approaches, such as applying ML methodologies to identify relationships in large datasets.&lt;/p&gt;
+&lt;p&gt;Table 1. List of popular open access chemical bioactivity databases used in drug discovery.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Database&lt;/th&gt;
+          &lt;th&gt;Advantages&lt;/th&gt;
+          &lt;th&gt;Number of bioactivities&lt;/th&gt;
+          &lt;th&gt;Website&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;ChEMBL&lt;/td&gt;
+          &lt;td&gt;- Manually curated database of bioactive molecules ensuring high quality data&lt;br&gt;- Comprehensive chemical and bioactivity data&lt;br&gt;- Advanced filtering and analysis options&lt;/td&gt;
+          &lt;td&gt;&amp;gt;2.4 million compounds and &amp;gt;20 million activities&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;BindingDB&lt;/td&gt;
+          &lt;td&gt;- Offers a public repository of experimental binding affinity data for protein-ligand interactions&lt;br&gt;- Provides virtual screening tools to predict targets and identify potential drug candidates&lt;br&gt;- Supports programmatic access and data downloads for integration into research workflows&lt;/td&gt;
+          &lt;td&gt;&amp;gt;1 million binding data points for &amp;gt;2,500 protein targets and ~500,000 small molecules&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;PubChem Bioassays&lt;/td&gt;
+          &lt;td&gt;- Vast repository of chemical and biological data, including structures, bioactivities, and screening results&lt;br&gt;- Search for molecules flexibly using names, SMILES codes, or chemical structures&lt;br&gt;- Integrated analysis tools for exploring data patterns and relationships&lt;/td&gt;
+          &lt;td&gt;&amp;gt;1.5 million assay records, &amp;gt;115 million compounds and &amp;gt;290 million bioactivity data points&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;PDBbind&lt;/td&gt;
+          &lt;td&gt;- Provides experimentally measured binding affinity data for protein-ligand complexes&lt;br&gt;- Links energetic and structural information for detailed analysis of protein-ligand interactions&lt;br&gt;- Requires free registration for full access to database, ensuring data security and access control&lt;/td&gt;
+          &lt;td&gt;Binding affinities for 23,496 biomolecular complexes in PDB, including protein-ligand (19,443), protein-protein (2,852), protein-nucleic acid (1,052), and nucleic acid-ligand complexes (149)&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;BRENDA Enzyme Database&lt;/td&gt;
+          &lt;td&gt;- Database focused on enzyme functions, providing comprehensive information on enzyme nomenclature, reactions, specificity, structure, and references&lt;br&gt;- Offers data directly from primary literature, ensuring reliable and up-to-date information&lt;/td&gt;
+          &lt;td&gt;&amp;gt;330,000 enzyme synonyms, and &amp;gt;295,000 inhibitors, and &amp;gt;22,000 reactions&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;molecular-representations&#34;&gt;Molecular representations&lt;/h3&gt;
+&lt;p&gt;The technological progress of the last century, marked by the computer revolution and the advent of high-throughput screening technologies in drug discovery, paved the way for computer analysis and visualization of bioactive molecules. To achieve this, it became necessary to represent molecules in a syntax that is readable by computers and understandable by scientists from various disciplines. Many chemical representations have been developed over the years, the number of which is due to the rapid development of computers and the complexity of producing a representation that encompasses all structural and chemical characteristics.&lt;/p&gt;
+&lt;h4 id=&#34;graph-representation&#34;&gt;Graph representation&lt;/h4&gt;
+&lt;p&gt;A molecular graph representation is a mapping of the atoms and bonds that make up a molecule into sets of nodes and edges. Typically, nodes are represented by circles or spheres, and edges by lines (Figure 3). In molecular graph representations, nodes are often represented using letters indicating the type of atom (like in the periodic table), or simply as the intersections of bonds (for carbon atoms) [10]. Formally, a molecular graph representation is a 2D object that can be used to represent 3D information (such as atomic coordinates, bond angles, and chirality). However, all spatial relationships between nodes must be encoded as node and/or edge attributes, as nodes in a graph (the mathematical object) do not formally have spatial positions, only pairwise relationships [11]. Both 2D and 3D representations of graphs can be easily visualized using various software programs, including UCSF Chimera, Avogadro, PyMOL, and VMD [12]&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image3.png&#34;
+    alt=&#34;Figure 3. Dopamine and its molecular graph: different node types according to atomic elements and different edge types depending on the chemical bond [13].&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 3.&lt;/strong&gt; Dopamine and its molecular graph: different node types according to atomic elements and different edge types depending on the chemical bond [13].&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h4 id=&#34;smiles-format&#34;&gt;SMILES format&lt;/h4&gt;
+&lt;p&gt;SMILES (Simplified Molecular Input Line Entry Specification) is a line notation language used to represent chemical structures as a string of ASCII characters (Figure 4). The language is designed to be simple, compact, and machine-readable, making it ideal for use in computer databases and for representing structures in computer programs [14]. SMILES can be used to store and analyze large amounts of molecular data, such as information about the structure of potential drug candidates. Additionally, SMILES can be used in conjunction with molecular modelling software to generate 2D and 3D representations of molecules, allowing researchers to perform molecular docking studies. These simulations can provide valuable information about the physical properties of potential drug candidates, such as their binding affinity, solubility, and stability [15].&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image4.png&#34;
+    alt=&#34;Figure 4. (A) Function and symbol of each ASCII character used in SMILES representation. (B) 2D chemical structure and SMILES representation of dopamine.&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 4.&lt;/strong&gt; (A) Function and symbol of each ASCII character used in SMILES representation. (B) 2D chemical structure and SMILES representation of dopamine.&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h4 id=&#34;smarts-format&#34;&gt;SMARTS format&lt;/h4&gt;
+&lt;p&gt;SMARTS (SMILES arbitrary target specification) is a language used in cheminformatics to specify substructures in molecules. It is an extension of SMILES and allows for flexible and efficient substructure-search specifications in terms that are meaningful (Figure 5). SMARTS uses atomic and bond symbols to specify a graph, and the labels for the graph’s nodes and edges are used to say what type of atom each node represents and what type of bond each edge represents [16].&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image5.png&#34;
+    alt=&#34;Figure 5. SMARTS patterns and their visualization across three MACCS fingerprints using SMARTS PLUS [16].&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 5.&lt;/strong&gt; SMARTS patterns and their visualization across three MACCS fingerprints using SMARTS PLUS [16].&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h4 id=&#34;connection-tables&#34;&gt;Connection tables&lt;/h4&gt;
+&lt;p&gt;The MOL file format, created by MDL Information Systems, is part of the CT file family, also known as chemical table files (Figure 6). These files use connection tables to describe molecular structures, making them highly versatile and widely used for transferring chemical information. The MOL file format encapsulates the connection table and can be enclosed within a structure/data (SD) file, which includes not only structural information but also additional property data for multiple molecules. Other formats in the CT file family include the RXN file, which describes individual reactions, the RD file, which stores reactions or molecules along with their associated data, the RG file, designed for handling queries, and the XD file, an XML-based format for transferring structures or reactions with their metadata (Table 2) [17].&lt;/p&gt;
+&lt;p&gt;Table 2. Comparison between different connections tables formats.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;MOL format&lt;/th&gt;
+          &lt;th&gt;MOL2 format&lt;/th&gt;
+          &lt;th&gt;SDF format&lt;/th&gt;
+          &lt;th&gt;RXN format&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Can only store one molecule per file.&lt;br&gt;Cannot store complex information.&lt;br&gt;Need more storage space.&lt;br&gt;Lack of explicit atom types.&lt;br&gt;Lack of standardization.&lt;/td&gt;
+          &lt;td&gt;Store multiple records such as MOLECULE, ATOM, BOND, SUBSTRUCTURE, and SET.&lt;/td&gt;
+          &lt;td&gt;Can store multiple chemical structures in one file.&lt;br&gt;Can store other information (e.g. chemical properties).&lt;/td&gt;
+          &lt;td&gt;Used to store information on chemical reactions.&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image6.png&#34;
+    alt=&#34;Figure 6. Representation of the connection tables for dopamine within an SDF file.&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 6.&lt;/strong&gt; Representation of the connection tables for dopamine within an SDF file.&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h4 id=&#34;molecular-descriptors&#34;&gt;Molecular descriptors&lt;/h4&gt;
+&lt;p&gt;A molecular descriptor in chemistry is a mathematical representation for characterizing a molecule that allows comparison of different molecules and searching for related molecules in a database [18]. These descriptors are classified into three categories: physicochemical, topological, or electronic, and are mostly characteristics of the 2D, or 3D structure of the molecule (Figure 7). The concept of “molecular descriptor” is closely related to the molecular structure and properties of an observable experimental molecule. The numerical values expressing the molecular descriptors can be obtained from the experimental physicochemical properties of the molecules or through theoretical mathematical formulas and computational algorithms [19].&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image7.png&#34;
+    alt=&#34;Figure 7. The different types of molecular descriptors [20].&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 7.&lt;/strong&gt; The different types of molecular descriptors [20].&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Molecular fingerprints are descriptors specifically optimized for complex computational calculations, such as predictions of new properties using ML. These descriptors are encoded in 1D as bit vectors. The information represented by these bits can come from an initial 2D or 3D representation. In this work, we will focus on 2D molecular fingerprints, which are used to estimate the similarity between two molecules. These molecular fingerprints encode in each of their bits the presence or absence of certain substructures in the molecule. These fragments can be predefined or obtained from each molecule which is considered as a template. The Molecular ACCess System (MACCS) fingerprint is an example using predefined fragments. It consists of 166 substructures that can effectively distinguish between molecules [21]. The extended connectivity fingerprint (ECFP) is designed to capture the molecular features using a circle with an increasing diameter to obtain substructures representative of the molecule. The generation of an ECFP is illustrated in Figure 8. For example, the fingerprint has a length of 8 bits and the circles go up to a diameter of 4 atoms, taking the diameters of 0, 2 and 4 atoms. This diameter is commonly used for similarity search or molecule clustering. ML methods sometimes require higher diameters, up to 8 atoms. The length of the bit vector is usually much larger than the one used for the illustration, with a size of 1024 or 2048 bits [22].&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image8.jpeg&#34;
+    alt=&#34;Figure 8. Generating an ECFP molecular fingerprint. The maximum allowed diameter is 4; successive circles have diameters of 0, 2 and 4. The presence of the obtained substructures is stored in a bit vector of length 8 [23].&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 8.&lt;/strong&gt; Generating an ECFP molecular fingerprint. The maximum allowed diameter is 4; successive circles have diameters of 0, 2 and 4. The presence of the obtained substructures is stored in a bit vector of length 8 [23].&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;artificial-intelligence-in-drug-discovery&#34;&gt;Artificial intelligence in drug discovery&lt;/h3&gt;
+&lt;h4 id=&#34;machine-learning&#34;&gt;Machine learning&lt;/h4&gt;
+&lt;p&gt;ML models are increasingly being used to develop QSAR models, as they can handle large and complex datasets and can be used to identify patterns and relationships in the data that traditional statistical methods may not be able to detect (Figure 9). There are various ML models used in QSAR, such as Random Forest (RF), Support Vector Machine (SVM), k-Nearest Neighbors (KNN), and XGBoost (XGB) [24]. Among these, RF and SVM are considered the most widely used in drug discovery. RF is a type of ensemble learning method that combines multiple decision trees to improve the accuracy and stability of the model. It is particularly useful for handling high-dimensional and noisy data. SVM is a supervised learning algorithm that can be used for both classification and regression problems. It is particularly useful for handling small datasets with many features.&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image9.png&#34;
+    alt=&#34;Figure 9. General workflow of a machine learning algorithm.&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 9.&lt;/strong&gt; General workflow of a machine learning algorithm.&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h5 id=&#34;random-forest&#34;&gt;Random Forest&lt;/h5&gt;
+&lt;p&gt;RF, developed by Leo Breiman in 2001, is an ensemble learning method used for classification, regression, and other tasks [25]. It operates by constructing multiple decision trees at training time, with each tree trained on a different subset of the data and using a random subset of features at each split [25]. The predictions of the individual trees are then combined to make the final prediction [26]. RF is known for its ability to handle overfitting by creating multiple trees, each trained slightly differently, which helps to reduce overfitting and improve the generalization performance of the model [27].&lt;/p&gt;
+&lt;h5 id=&#34;support-vector-machine&#34;&gt;Support Vector Machine&lt;/h5&gt;
+&lt;p&gt;SVM, firmly established by Vladimir Vapnik’s pioneering work and theoretical contributions, is a supervised learning algorithm specifically designed to identify a hyperplane that maximizes the margin between two distinct classes of data [28,29]. The margin is defined as the distance between the hyperplane and the nearest data points from each class [30]. These data points, which are near the hyperplane, are referred to as support vectors. Mathematically, the hyperplane is defined by the following equation (Eq. 1):&lt;/p&gt;
+$$
+w^{T} \times x + b = 0 \tag{1}
+$$&lt;p&gt;Where $w$ is the normal vector to the hyperplane, $x$ is a data point, and $b$ is the bias term.&lt;/p&gt;
+&lt;h5 id=&#34;k-nearest-neighbors&#34;&gt;K-Nearest Neighbors&lt;/h5&gt;
+&lt;p&gt;In 1919, Evelyn Fix proposed a nearest neighbor rule for estimating probability densities which was followed by progressive refinements culminating in its present-day prominence as a robust and versatile ML tool [31]. KNN algorithm is a non-parametric instance-based learning approach that classifies a new data point by examining the k nearest data points in the training set [32]. The label assigned to the new data point is determined by the most frequent class among its k nearest neighbors [33]. In most cases, the distance between two data points, $x$ and $y$, is computed using the Euclidean distance metric (Eq. 2):&lt;/p&gt;
+$$
+d(x, y) = \sqrt{\Sigma_{i}{(x_{i} - y_{i})}^{2}} \tag{2}
+$$&lt;p&gt;Where $x_{i}$and $y_{i}$ are the $i$-th components of the data points &lt;em&gt;x&lt;/em&gt; and &lt;em&gt;y&lt;/em&gt;, respectively.&lt;/p&gt;
+&lt;h5 id=&#34;gaussian-naïve-bayes&#34;&gt;Gaussian Naïve Bayes&lt;/h5&gt;
+&lt;p&gt;GNB is a classification technique used in ML based on a probabilistic approach and Gaussian distribution. It was developed by applying Bayes’ theorem with strong independence assumptions, making it an extension of the Naïve Bayes classifier [34]. GNB supports continuous-valued features and models each feature as conforming to a Gaussian distribution [35]. The mathematical representation of GNB is given by (Eq. 3):&lt;/p&gt;
+$$
+P(c|x) = \frac{(P(c) \times \prod P(xᵢ|c))}{P(x)} \tag{3}
+$$&lt;p&gt;Where $P(c|x)$ is the probability of a data point ($x$) belonging to a specific class ($c$), given its features, $P(c)$ is the prior probability of class ($c$) being encountered, calculated from the overall frequency of class ($c$) in the dataset, $P(xᵢ|c)$ is the likelihood of observing a particular feature value ($xᵢ$) in data point ($x$) given that it belongs to class ($c$), and $P(x)$ is the overall probability of observing the data point ($x$), often calculated as a normalization factor to ensure probabilities sum to 1.&lt;/p&gt;
+&lt;h5 id=&#34;xgboost&#34;&gt;XGBoost&lt;/h5&gt;
+&lt;p&gt;XGB, known as Extreme Gradient Boosting, represents a tree-based ensemble learning algorithm that operates within the framework of gradient boosting [36]. In 2014, Tianqi Chen’s vision set the spark for XGB, and thanks to Carlos Guestrin’s fine-tuning, it evolved into a powerhouse in the real world, boosting performance and pushing boundaries in the ML landscape [36]. This algorithm constructs a sequence of decision trees, with each subsequent tree trained to minimize the errors of its predecessors [36]. To mitigate overfitting, the trees undergo pruning. The predictions generated by an XGB model are the cumulative sum of the predictions made by all the trees within the ensemble (Eq. 4):&lt;/p&gt;
+$$
+ŷ = \Sigma_{t} \times f_{t}(x) \tag{4}
+$$&lt;p&gt;Where $f_{t}\left( x \right)$is the prediction of the $t$*-*th tree for the data point $x$.&lt;/p&gt;
+&lt;h4 id=&#34;deep-learning&#34;&gt;Deep learning&lt;/h4&gt;
+&lt;p&gt;DL is a subset of ML that uses artificial neural networks with multiple layers to learn from large amounts of data and solve complex problems. It is based on the idea of representation learning and abstraction, where simple but non-linear modules transform the representation at one slightly more abstract level. DL models can create new features on their own and can be used to analyze various types of data, including images, voice, and text. DL has been increasingly applied to QSAR and quantitative structure-property relationship (QSPR) modelling, as it can handle complex data structures and interactions, and has shown promising results in predicting various properties of molecules [37].&lt;/p&gt;
+&lt;h5 id=&#34;convolutional-neural-networks&#34;&gt;Convolutional neural networks&lt;/h5&gt;
+&lt;p&gt;A convolutional neural network (CNN) is a type of DL neural network that is designed to process data that has a grid-like topology, such as an image (Figure 10). CNNs are particularly useful for image recognition and classification tasks, as well as for natural language processing and speech recognition. In the context of drug discovery, CNNs can be used to develop QSAR/QSPR models. There are three main types of QSAR models that can be developed using CNNs: graph-based, image-based, and fingerprints-based models [38].&lt;/p&gt;
+&lt;p&gt;Graph-based QSAR models use the chemical structure of a compound represented as a graph, where atoms are nodes and chemical bonds are edges. CNNs can be used to learn the structural features of the compound from the graph representation [39].&lt;/p&gt;
+&lt;p&gt;For image-based QSAR models, CNNs can automatically extract relevant features and relationships from the molecular images. The convolutional layers enable the network to recognize spatial hierarchies of features, capturing important structural characteristics. This approach proves valuable in predicting the activity of compounds for drug discovery without the need for labor-intensive experiments.&lt;/p&gt;
+&lt;p&gt;In fingerprints-based QSAR models use the chemical structure of a compound represented as a binary fingerprint, where each bit corresponds to the presence or absence of a specific structural feature. CNNs can be used to learn the structural features of the compound from the fingerprint representation. Both types of models can be useful for drug discovery as they can predict the activity of compounds without the need for expensive and time-consuming experiments.&lt;/p&gt;
+&lt;p&gt;Several studies have explored the application of CNNs in QSAR modelling. For instance, a study published in the Journal of Cheminformatics introduced a molecular property prediction model based on the CNN framework, demonstrating the potential of deep learning in predicting molecular properties [40]. Additionally, a paper in the BMC Bioinformatics journal presented a learning-based method, CNN-DDI, for predicting drug-drug interactions using CNNs [41]. Furthermore, a study in Molecular Diversity journal discussed the potential of deep learning in improving QSAR models, highlighting the effectiveness of deep neural networks in learning directly from low-level encoded data without the need for computing molecular descriptors [42].&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image10.png&#34;
+    alt=&#34;Figure 10. The architecture of a convolutional neural network [43].&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 10.&lt;/strong&gt; The architecture of a convolutional neural network [43].&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h5 id=&#34;artificial-neural-networks&#34;&gt;Artificial neural networks&lt;/h5&gt;
+&lt;p&gt;Artificial neural networks (ANNs) are a type of ML algorithm that mimics the capacity of the human brain in terms of recognizing underlying relationships and patterns, mimicking the way the human brain processes information (Figure 11) [44]. ANNs can identify rules from samples and accurately describe the relationships between independent variables and dependent variables, and the training of ANNs resembles the process of approximating the formulas [45]. [46]. ANNs have been used in various drug discovery stages, including target identification, lead optimization, and toxicity prediction [46]. ANNs have also been used to develop QSAR models, which can predict the activity of compounds without the need for expensive and time-consuming experiments [46,47]. ANNs have been applied to drug discovery in various ways, such as predicting drug-related features, including bioactivities and drug-drug interactions, and accelerating the drug discovery process [38]. ANNs are crucial in medicinal chemistry for predicting and designing new molecules. They streamline drug discovery by enabling faster and more efficient drug design, increasing the likelihood of improving drug efficacy, and reducing experimental costs. [38,46,47].&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image11.png&#34;
+    alt=&#34;Figure 11. The architecture of an artificial neural network.&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 11.&lt;/strong&gt; The architecture of an artificial neural network.&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h5 id=&#34;recurrent-neural-networks&#34;&gt;Recurrent neural networks&lt;/h5&gt;
+&lt;p&gt;Recurrent neural networks (RNNs) have been successfully applied in drug discovery for &lt;em&gt;de novo&lt;/em&gt; drug design, generating focused molecule libraries, and optimizing multiple traits collectively [48]. RNNs can learn the interrelationships between elements of the input over a protracted length of the input series, and they can capture sequential dependencies and generate new sequences based on learned patterns. According to recent research, Memory Augmented RNNs have been used for &lt;em&gt;de novo&lt;/em&gt; drug design [49]. The study proposed three RNN-based architectures augmented with external memory for de-novo generation of small molecules. These architectures include a refactoring of a stack augmented RNN, adaptations of two recurrent neural network architectures, the Neural Turing Machine (NTM), and the Differentiable Neural Computer (DNC), with external memory to support random access, an advantage over the first-in-last-out access imposed by a stack and establishing their efficacy [49]. The study also compared the performance of these architectures with simpler recurrent neural networks (Long Short-Term Memory and Gated Recurrent Unit) without an external memory component to explore the impact of augmented memory in the task. The results showed that the proposed memory-augmented RNN architectures outperformed the baseline models in terms of the diversity and novelty of the generated molecules [49].&lt;/p&gt;
+&lt;h4 id=&#34;performance-evaluation&#34;&gt;Performance evaluation&lt;/h4&gt;
+&lt;h5 id=&#34;regression-metrics&#34;&gt;Regression metrics&lt;/h5&gt;
+&lt;p&gt;In QSAR modelling, regression metrics are used to evaluate the performance of a regression model that predicts continuous numerical values, such as biological activity or property values, based on chemical features or descriptors of molecules.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Coefficient of determination.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The coefficient of determination (R&lt;sup&gt;2&lt;/sup&gt;) is a measure of how well the regression model fits the data. It represents the proportion of the variance in the dependent variable that is predictable from the independent variable. The formula (Eq. 5) quantifies the proportion of the total variance in the dependent variable that is explained by the regression model. R&lt;sup&gt;2&lt;/sup&gt; values range from 0 to 1, where 1 indicates a perfect fit (the model explains all the variability), and values closer to 0 indicate poorer model fit.&lt;/p&gt;
+$$
+R² = 1 - (\frac{\text{SSres}}{\text{SStot}}) \tag{5}
+$$&lt;p&gt;Where $\text{SSres}$ is the sum of squared residuals, also known as the residual sum of squares (RSS). It measures the total variance that is not explained by the regression model.​ $\text{SStot}$ is the total sum of squares, which represents the total variance in the dependent variable $\text{y }$around its mean.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Mean Squared Error.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The average squared difference between the predicted values and the actual values. It measures the overall prediction error of the model (Eq. 6).&lt;/p&gt;
+$$
+MSE = (\frac{1}{n}) \sum_{i = 1}^{n}{(y_{i} - ŷ_{i})}^{2} \tag{6}
+$$&lt;p&gt;Where $n$ is the number of samples or observations. $y_{i}$represents the actual observed value for the 𝑖-th sample. $ŷ_{i}$ represents the predicted value for the 𝑖-th sample.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Mean Absolute Error.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The average absolute difference between the predicted values and the actual values (Eq. 7). It provides a more intuitive understanding of the prediction error than MSE.&lt;/p&gt;
+$$
+MAE = (\frac{1}{n}) \sum_{i = 1}^{n}{\left| y_{i} - ŷ_{i} \right| } \tag{7}
+$$&lt;p&gt;&lt;strong&gt;Root Mean Squared Error.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The square root of the MSE. It has the same units as the dependent variable, making it easier to interpret than MSE (Eq. 8).&lt;/p&gt;
+$$
+RMSE = \sqrt{(\frac{1}{n}) \sum_{i = 1}^{n}{(y_{i} - ŷ_{i})}^{2}} \tag{8}
+$$&lt;h5 id=&#34;classification-metrics&#34;&gt;Classification metrics&lt;/h5&gt;
+&lt;p&gt;Classification metrics are used to evaluate the performance of models that predict categorical outcomes, such as the activity or toxicity of a molecule. These metrics assess how well the model predicts the class labels of the samples based on their chemical features or descriptors.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Sensitivity.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Sensitivity, also known as true positive rate or recall, measures the proportion of actual positive instances (true positives) that are correctly identified by the model as positive (Eq. 9). In other words, sensitivity quantifies the model’s ability to correctly detect or capture positive instances from the entire pool of positive instances in the dataset.&lt;/p&gt;
+$$
+SE = \frac{\text{TP}}{(TP + FN)} \tag{9}
+$$&lt;p&gt;Where True Positives (TP) are the instances that are correctly classified as positive by the model. False Negatives (FN) are the instances that are actually positive but are incorrectly classified as negative by the model.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Specificity.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Specificity measures the proportion of true negative predictions (correctly predicted negatives) out of all actual negative instances in the dataset (Eq. 10).&lt;/p&gt;
+$$
+SP = \frac{\text{TN}}{(TN + FP)} \tag{10}
+$$&lt;p&gt;Where True Negatives (TN) are the instances that are correctly classified as negative by the model. False Positives (FP) are the instances that are actually negative but are incorrectly classified as positive by the model.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Accuracy.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Accuracy measures the proportion of correctly classified instances out of the total number of instances (Eq. 11).&lt;/p&gt;
+$$
+ACC = \frac{(TP + TN)}{(TP + TN + FP + FN)} \tag{11}
+$$&lt;p&gt;&lt;strong&gt;F1 Score.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The F1 score is the harmonic mean of precision and recall. It provides a single metric that balances both precision and recall (Eq. 12).&lt;/p&gt;
+$$
+F1 = \frac{2TP}{(2TP + FP + FN)} \tag{12}
+$$&lt;p&gt;&lt;strong&gt;Matthews’ correlation coefficient.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Matthews’ correlation coefficient (MCC) is a metric commonly used to evaluate the performance of binary classification models, including those used in QSAR studies (Eq. 13). MCC considers true positives, true negatives, false positives, and false negatives, providing a balanced measure of classification performance, especially in imbalanced datasets.&lt;/p&gt;
+$$
+MCC = \frac{(TP \times TN - FP \times FN)}{\sqrt{((TP + FP) \times (TP + FN) \times (TN + FP) \times (TN + FN))}} \tag{13}
+$$&lt;h2 id=&#34;molecular-modelling&#34;&gt;Molecular modelling&lt;/h2&gt;
+&lt;p&gt;Molecular modelling is a computational technique used to predict the properties and behavior of molecules. It encompasses various methods, theoretical and computational, that help researchers understand molecular systems and their processes [50]. The principles used in molecular modelling can be categorized into three main types: &lt;em&gt;ab initio&lt;/em&gt;, empirical, and semi-empirical [51].&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Ab initio&lt;/em&gt; methods:&lt;/strong&gt; This approach is based on fundamental principles, which are derived from quantum mechanics. &lt;em&gt;Ab initio&lt;/em&gt; MD is a type of &lt;em&gt;ab initio&lt;/em&gt; molecular modelling that simulates the behavior of molecules in real time [52]. This method allows for the study of chemical processes in condensed phases with greater accuracy and fewer biases [52]. Density functional theory (DFT) is an example of &lt;em&gt;ab initio&lt;/em&gt; calculations, instrumental in both &lt;em&gt;de novo&lt;/em&gt; drug design and molecular geometry optimization [53]. In drug design, DFT aids in predicting stable structures, analyzing electronic properties, and assessing binding energies. For molecular geometry, DFT is used for optimization, transition state analysis, and vibrational studies, providing accurate insights into molecular behavior and interactions [54].&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Empirical methods:&lt;/strong&gt; This approach involves the use of force fields to describe the interactions between atoms in a molecule. The force fields are derived from experimental data, such as bond lengths, angles, and thermodynamic properties [55]. Empirical molecular modelling is often used in conjunction with MD simulations to study the conformational changes of proteins and the binding of ligands [55].&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Semi-empirical methods:&lt;/strong&gt; This approach combines the principles of quantum mechanics (QM) with experimental data to describe the electronic structure of molecules. Semi-empirical methods make approximations and use parameters fitted to experimental data, making them less computationally expensive than &lt;em&gt;ab initio&lt;/em&gt; methods. While less fundamentally rigorous than &lt;em&gt;ab initio&lt;/em&gt;, they can still provide reasonably accurate descriptions of molecular properties [51].&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Molecular modelling techniques have been applied in various fields, including computational chemistry, drug design, computational biology, and materials science, to study molecular systems ranging from small chemical compounds to large biomolecules. These techniques have been instrumental in advancing our understanding of molecular processes and designing new molecules for therapeutic purposes [51].&lt;/p&gt;
+&lt;h3 id=&#34;chemical-libraries&#34;&gt;Chemical libraries&lt;/h3&gt;
+&lt;p&gt;Chemical libraries are collections of chemical compounds that are synthesized experimentally or isolated from natural sources such as plants, animals, and microorganisms. These compounds are often of interest for their potential medicinal properties, and many have been used for centuries in traditional medicine [56,57]. NP libraries can be created by isolating and purifying compounds from natural sources, or by synthesizing compounds that are structurally like those found in nature. These libraries can be used in a variety of applications, including drug discovery, material design, and chemical synthesis [58]. Chemical libraries are becoming increasingly important as a resource for drug discovery and development, as they can be used to screen large numbers of compounds for potential activity against specific targets. Table 3 presents a comprehensive compilation of publicly accessible libraries of NPs designed for virtual screening.&lt;/p&gt;
+&lt;p&gt;Table 3. Comprehensive list of natural product libraries suitable for high-throughput virtual screening studies.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Database&lt;/th&gt;
+          &lt;th&gt;Number of NPs&lt;/th&gt;
+          &lt;th&gt;Description&lt;/th&gt;
+          &lt;th&gt;Link&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;COCONUT&lt;/td&gt;
+          &lt;td&gt;406,747&lt;/td&gt;
+          &lt;td&gt;Contains curated, standardized data on natural product structures, bioactivities, origins, and references.&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;LOTUS&lt;/td&gt;
+          &lt;td&gt;276,518&lt;/td&gt;
+          &lt;td&gt;Provides detailed information on NPs with known bioactivities and isolation information.&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;ZINC20&lt;/td&gt;
+          &lt;td&gt;80,617&lt;/td&gt;
+          &lt;td&gt;Includes both natural and synthetic compounds, ideal for virtual screening and cheminformatics research.&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;NPASS&lt;/td&gt;
+          &lt;td&gt;94,413&lt;/td&gt;
+          &lt;td&gt;Offers extensive data on natural product bioactivities, origins, and literature references.&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Cannabis Compound Database&lt;/td&gt;
+          &lt;td&gt;6,172&lt;/td&gt;
+          &lt;td&gt;Comprehensive resource for cannabinoids, terpenes, and other chemicals found in Cannabis sativa.&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;SuperNatural III&lt;/td&gt;
+          &lt;td&gt;449,058&lt;/td&gt;
+          &lt;td&gt;Features curated data on NPs with reported bioactivities and isolation details.&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;FooDB&lt;/td&gt;
+          &lt;td&gt;70,926&lt;/td&gt;
+          &lt;td&gt;Includes naturally occurring compounds found in food, particularly bioactive molecules.&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;NANPDB&lt;/td&gt;
+          &lt;td&gt;4,928&lt;/td&gt;
+          &lt;td&gt;Focuses on NPs and traditional medicine knowledge from North African plants.&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;EANPDB&lt;/td&gt;
+          &lt;td&gt;1,871&lt;/td&gt;
+          &lt;td&gt;Focuses on NPs and traditional medicine knowledge from East African plants.&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;SANCDB&lt;/td&gt;
+          &lt;td&gt;1,017&lt;/td&gt;
+          &lt;td&gt;Focus on natural compounds isolated from the plant and marine life in and around South Africa&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;CMNPD&lt;/td&gt;
+          &lt;td&gt;31,561&lt;/td&gt;
+          &lt;td&gt;Extensive resource for marine-derived NPs, including structures, bioactivities, and isolation sources.&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;SistematX&lt;/td&gt;
+          &lt;td&gt;8,593&lt;/td&gt;
+          &lt;td&gt;Provides data on plant secondary metabolites, including alkaloids, terpenoids, and phenolics.&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Eximed&lt;/td&gt;
+          &lt;td&gt;5,096&lt;/td&gt;
+          &lt;td&gt;Features Natural-Product-Based Library with potential for drug development.&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;CoumarinDB&lt;/td&gt;
+          &lt;td&gt;905&lt;/td&gt;
+          &lt;td&gt;Specialized database dedicated to coumarins, a class of NPs with diverse bioactivities.&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Ambinter&lt;/td&gt;
+          &lt;td&gt;11,648&lt;/td&gt;
+          &lt;td&gt;Comprehensive collection of NPs with structural and bioactivity information.&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id=&#34;ligand-based-virtual-screening&#34;&gt;Ligand-based virtual screening&lt;/h4&gt;
+&lt;p&gt;Ligand-based virtual screening is a method for predicting potential new active molecules based on the knowledge of at least one known active ligand. This approach relies on the principle that structurally similar molecules often exhibit similar bioactivity profiles. It proves particularly valuable in cases where the therapeutic target is unknown or lacks an experimentally resolved crystallographic structure. Furthermore, ligand-based virtual screening offers computational efficiency compared to structure-based approaches, enabling the screening of millions of compounds. The most employed methods include similarity search, pharmacophore modelling, and QSAR models. Additionally, 3D-QSAR, which incorporates knowledge of bioactive conformations for descriptor calculation, features techniques such as Comparative Molecular Field Analysis (CoMFA) and Comparative Molecular Similarity Indices Analysis (CoMSIA). These techniques aim to elucidate the spatial and steric requirements crucial for ligand-receptor interactions, optimizing molecular designs for enhanced bioactivity.&lt;/p&gt;
+&lt;h5 id=&#34;similarity-search&#34;&gt;Similarity search&lt;/h5&gt;
+&lt;p&gt;Similarity search is the method to use when very few ligands have been reported for the chosen biological target. A similarity search can be conducted as soon as an active ligand is known [59]. This method is based on the use of descriptors and similarity metrics to compare molecules to be screened against one or more reference ligands to predict their activity profile. Tanimoto similarity, also known as Tanimoto coefficient (Tc), is a similarity metric commonly used in cheminformatics to quantify the similarity between two molecular fingerprints. It is calculated as the ratio of the number of common bits (features) between two fingerprints to the total number of bits present in both fingerprints (Eq. 14). The Tanimoto index ranges from 0 (no common bits) to 1 (identical fingerprints). Several studies have shown that the Tanimoto index is a popular and effective choice for fingerprint-based similarity calculations [60].&lt;/p&gt;
+$$
+\text{Tc}_{(A,B)} = \frac{N(A \cap B)}{(N\left( A \right) + N\left( B \right) - N\left( A \cap B \right))} \tag{14}
+$$&lt;p&gt;Where $N\left( A \right)$ is he number of bits set to 1 in molecule A’s fingerprint, $N\left( B \right)$ is the number of bits set to 1 in molecule B’s fingerprint, and $N\left( A \cap B \right)$ is the number of bits set to 1 in both molecule A and B’s fingerprints.&lt;/p&gt;
+&lt;h5 id=&#34;pharmacophore-modelling&#34;&gt;Pharmacophore modelling&lt;/h5&gt;
+&lt;p&gt;The concept of pharmacophore was developed by Ehrlich in the late 19&lt;sup&gt;th&lt;/sup&gt; century [61]. At that time, although the term pharmacophore was not used, Ehrlich developed the idea that certain chemical groups in a molecule are responsible for its biological or pharmacological action. The first modern definition of pharmacophore, using the term “abstract features” instead of “chemical groups”, dates to 1960 [62]. The first pharmacophore model identifying orders of magnitude of distance between the features constituting the pharmacophore (Figure 12a) was published in 1963 for muscarinic agents [63]. Kier also published the first pharmacophore model with precise distances measured between the different groups constituting the pharmacophore, referred to as the “proposed receptor pattern” (Figure 12b) [64].&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image12.jpeg&#34;
+    alt=&#34;Figure 12. First published pharmacophores. Beckett&amp;rsquo;s model (a) from 1963 defines approximate distances between Zone 1 (anionic cavity), Zone 2 (positively charged), and Zone 3. Kier&amp;rsquo;s model (b) proposes calculated distances between three key atoms common to acetylcholine, muscarine, and muscarone [63,64].&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 12.&lt;/strong&gt; First published pharmacophores. Beckett&amp;rsquo;s model (a) from 1963 defines approximate distances between Zone 1 (anionic cavity), Zone 2 (positively charged), and Zone 3. Kier&amp;rsquo;s model (b) proposes calculated distances between three key atoms common to acetylcholine, muscarine, and muscarone [63,64].&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;The official definition of International Union of Pure and Applied Chemistry (IUPAC) from 1998 states that a pharmacophore consists of the entire steric and electronic properties of a molecule that are necessary for optimal supramolecular interactions with a specific biological target, resulting in either generation or blocking of a biological response [65]. According to this definition, molecules sharing the same pharmacophore for a given target should bind to the receptor in an identical manner and exhibit similar activity profiles. The generated pharmacophore is then used to screen a chemical library for molecules that overlay with this pharmacophore. One of the major characteristics of this type of method is that a pharmacophore is defined by complementary pharmacophoric points, which are functional groups rather than groups of atoms. The different pharmacophoric points sought after include hydrogen bond donors and acceptors, positively charged groups that form electrostatic interactions with negatively charged groups and vice versa, and aromatic groups, considered separately from the larger class of hydrophobic groups from which they originate, and both are complementary to other hydrophobic groups [66].&lt;/p&gt;
+&lt;h4 id=&#34;structure-based-virtual-screening&#34;&gt;Structure-based virtual screening&lt;/h4&gt;
+&lt;p&gt;When the 3D structure of the biological target of interest is available, methods known as structure-based approaches can be used for virtual screening (Figure 13) [67]. These 3D structures can be obtained through two primary experimental methods:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;X-ray crystallography:&lt;/strong&gt; This technique involves crystallizing the protein and then bombarding it with X-rays to reveal its atomic structure.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Nuclear magnetic resonance (NMR):&lt;/strong&gt; This method probes the protein’s structure in solution using magnetic fields and radio waves.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The resolution of a protein structure is a critical parameter in structural biology that describes the level of detail and precision with which the positions of atoms are determined.&lt;/p&gt;
+&lt;p&gt;A vast repository of experimentally determined 3D structures is freely accessible through the RCSB Protein Data Bank (PDB), a global resource housing over 200,000 structures to date [68]. Resolution is expressed in units of angstroms (Å) and is inversely related to the quality of the data. A lower resolution value indicates higher quality data, meaning that the crystallographers were able to obtain more detailed information about the atomic positions.&lt;/p&gt;
+&lt;p&gt;However, when experimental structures are unavailable, computational methods for structure prediction have become increasingly powerful:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Sequence homology modelling:&lt;/strong&gt; This approach utilizes structural data from related proteins with known structures to construct a model of the target protein.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;AlphaFold:&lt;/strong&gt; This groundbreaking AI system, developed by DeepMind, has transformed structure prediction by achieving remarkable accuracy, often contrasting experimental methods [69]. AlphaFold (
+) has generated over 200 million protein structures with high confidence, significantly expanding the structural coverage of the protein universe.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image13.png&#34;
+    alt=&#34;Figure 13. Methods to obtain the 3D structure of a biological target: experimental approaches (X-ray crystallography, NMR) and de novo methods (homology modelling, AlphaFold).&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 13.&lt;/strong&gt; Methods to obtain the 3D structure of a biological target: experimental approaches (X-ray crystallography, NMR) and de novo methods (homology modelling, AlphaFold).&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h5 id=&#34;concept-of-molecular-docking&#34;&gt;Concept of molecular docking&lt;/h5&gt;
+&lt;p&gt;Over time, molecular docking has become an integral part of the drug discovery process. Since its initial development in the 1980s, advancements in computer hardware and the accessibility of small molecule and protein structures have contributed to the refinement of docking methods, resulting in its widespread adoption in both industrial and academic research [70]. The aim of molecular docking is to predict whether a molecule can bind to the active site of a protein based on the prediction of the conformation and orientation of the molecule during its binding to the receptor. To achieve this, docking methods combine the use of a search algorithm to generate putative binding modes or “poses” of the ligand in the receptor, and a scoring function used to rank the different poses according to a predicted affinity score. Docking methods aim to identify potential ligands of the protein target among all the molecules studied, and determine the correct poses or conformations adopted by the ligands during binding to the receptor.&lt;/p&gt;
+&lt;h5 id=&#34;classification-of-molecular-docking&#34;&gt;Classification of molecular docking&lt;/h5&gt;
+&lt;p&gt;For decades, the “lock-and-key” model dominated our understanding of ligand-receptor binding, leading to the development of rigid docking methods [71]. These early algorithms treated molecules as static entities, attempting to replicate the perfect key-hole fit [72]. In this approach, the ligand is positioned in the binding site through translation and rotation. For example, the software FRED enumerates all rotations and translations for a ligand inside the binding site as its first step[73]. Then, a negative image of the binding site is used to eliminate poses that are incompatible with the active site (due to clashes or distance). Finally, the selected poses are scored, and the best ones are optimized. However, this static view fails to capture the inherent dynamism of biomolecular interactions [73]. Figure 14 summarizes the differences between the three types of molecular docking.&lt;/p&gt;
+&lt;p&gt;Driven by the need for increased accuracy, semi-flexible docking emerged. This approach acknowledges the inherent conformational flexibility of both ligands and receptors, allowing limited conformational changes during the docking process [74]. Consequently, semi-flexible docking offers a more nuanced picture of binding by exploring a wider range of poses [75].. One common approach is to use a rotamer library to represent the possible conformations of the ligand [75]. The software then samples different combinations of rotamers and positions the ligand in the binding site. Another approach is to use a normal mode analysis to identify the most flexible regions of the ligand and the receptor [76]. The software then allows these regions to move during the docking simulation. However, for highly flexible systems, even semi-flexible approaches may fall short [77]. While computationally demanding, flexible docking provides unmatched accuracy, enabling the prediction of binding modes for complex and dynamic systems. One common approach is to use a protein structure prediction method to generate a library of receptor conformations [78]. The software then docks the ligand to each of these conformations and scores the resulting poses. Another approach is to use a MD simulation to simulate the binding process [79]. This allows the software to observe the ligand and receptor as they move and interact with each other.&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image14.png&#34;
+    alt=&#34;Figure 14. Molecular docking software classification.&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 14.&lt;/strong&gt; Molecular docking software classification.&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h5 id=&#34;molecular-docking-programs&#34;&gt;Molecular docking programs&lt;/h5&gt;
+&lt;p&gt;Molecular docking programs play a pivotal role in drug discovery, predicting the binding of small molecules to biomolecular targets. Through advanced algorithms, they simulate interactions and identify favorable binding modes, guiding the discovery of potent and selective drugs [80]. Virtual screening, enabled by molecular docking, efficiently prioritizes potential drug candidates from vast compound libraries, streamlining the drug discovery process. Continuous advancements, including refined force fields and flexibility considerations, further enhance docking programs, accelerating the path to new therapies. Table 4 provides information about different molecular docking programs, highlighting key aspects of each program.&lt;/p&gt;
+&lt;p&gt;Table 4. List of open-source and commercial molecular docking programs.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Program&lt;/th&gt;
+          &lt;th&gt;Licence&lt;/th&gt;
+          &lt;th&gt;Docking Type&lt;/th&gt;
+          &lt;th&gt;Scoring function&lt;/th&gt;
+          &lt;th&gt;Reference&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;AutoDock Vina&lt;/td&gt;
+          &lt;td&gt;Open-source&lt;/td&gt;
+          &lt;td&gt;Flexible&lt;/td&gt;
+          &lt;td&gt;Semi-empirical, force field-based, knowledge-based potentials&lt;/td&gt;
+          &lt;td&gt;[81]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;DOCK 4.0&lt;/td&gt;
+          &lt;td&gt;Open-source&lt;/td&gt;
+          &lt;td&gt;Rigid, Semi-flexible&lt;/td&gt;
+          &lt;td&gt;Empirical, force field-based scoring (grid-based)&lt;/td&gt;
+          &lt;td&gt;[82]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;GOLD&lt;/td&gt;
+          &lt;td&gt;Commercial Academic&lt;/td&gt;
+          &lt;td&gt;Flexible&lt;/td&gt;
+          &lt;td&gt;Empirical (ChemScore, GoldScore, ChemPLP), knowledge-based function&lt;br&gt;(ASP)&lt;/td&gt;
+          &lt;td&gt;[83]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Glide&lt;/td&gt;
+          &lt;td&gt;Commercial&lt;/td&gt;
+          &lt;td&gt;Flexible&lt;/td&gt;
+          &lt;td&gt;Empirical (GlideScore, Ligand conformer (Emodel)&lt;/td&gt;
+          &lt;td&gt;[84]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;MOE&lt;/td&gt;
+          &lt;td&gt;Commercial&lt;/td&gt;
+          &lt;td&gt;Flexible&lt;/td&gt;
+          &lt;td&gt;Empirical: London dG (fast and efficient, suitable for virtual screening), GBVI/WSA dG (more accurate, suitable for lead optimization)&lt;/td&gt;
+          &lt;td&gt;[85]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;AutoDock&lt;/td&gt;
+          &lt;td&gt;Open-source&lt;/td&gt;
+          &lt;td&gt;Flexible&lt;/td&gt;
+          &lt;td&gt;Uses Lamarckian genetic algorithm.&lt;br&gt;Semi-empirical, force field-based&lt;/td&gt;
+          &lt;td&gt;[86]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;FlexX&lt;/td&gt;
+          &lt;td&gt;Commercial&lt;/td&gt;
+          &lt;td&gt;Flexible&lt;/td&gt;
+          &lt;td&gt;Empirical&lt;/td&gt;
+          &lt;td&gt;[87]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;FRED&lt;/td&gt;
+          &lt;td&gt;Academic&lt;/td&gt;
+          &lt;td&gt;Rigid&lt;/td&gt;
+          &lt;td&gt;Shape-based scoring, Chemgauss4 scoring&lt;/td&gt;
+          &lt;td&gt;[88]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Surflex-Dock&lt;/td&gt;
+          &lt;td&gt;Commercial&lt;/td&gt;
+          &lt;td&gt;Flexible&lt;/td&gt;
+          &lt;td&gt;Empirical scoring function&lt;/td&gt;
+          &lt;td&gt;[89]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Molegro4&lt;/td&gt;
+          &lt;td&gt;Commercial&lt;/td&gt;
+          &lt;td&gt;Flexible&lt;/td&gt;
+          &lt;td&gt;Combines empirical, knowledge-based and force field scoring&lt;/td&gt;
+          &lt;td&gt;[90]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Molegro5&lt;/td&gt;
+          &lt;td&gt;Open-source&lt;/td&gt;
+          &lt;td&gt;Semi-flexible&lt;/td&gt;
+          &lt;td&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h5 id=&#34;docking-screens-protocol&#34;&gt;Docking screens protocol&lt;/h5&gt;
+&lt;p&gt;High-throughput virtual screening (HTVS) is a computational technique that can rapidly sift through vast chemical libraries to identify a select number of molecules exhibiting desirable biological activity. HTVS enables the rapid evaluation of millions of compounds against target receptors. By assessing predicted binding affinities and modes, HTVS prioritizes candidate molecules with the highest potential for success, significantly narrowing the scope for subsequent wet-lab experimentation and optimizing resource allocation. This targeted approach not only enhances hit rates, but also mitigates the financial burden associated with late-stage clinical trial failures, which often stem from suboptimal lead compound selection.&lt;/p&gt;
+&lt;p&gt;The successful discovery of drugs heavily relies on the meticulous preparation of both the target protein and the candidate ligand for docking simulations (Figure 15). The protein structure undergoes necessary modifications including the addition of polar hydrogens and the removal of extraneous water molecules. Similarly, the ligand undergoes several preparations, including the addition of polar hydrogens, Gasteiger charge calculation, and the merging of non-polar atoms. Subsequently, the ligand is converted into a compatible format depending on the employed software. To define the search space for the binding site, a grid map is created. The docking run then evaluates various ligand poses within the binding site using a scoring function. The top-ranked candidates, typically within the top 10 %, are prioritized for further experimental validation and visualization with tools like Schrödinger’s PyMOL or UCSF Chimera.&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image15.png&#34;
+    alt=&#34;Figure 15. Flowchart of a molecular docking experiment.&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 15.&lt;/strong&gt; Flowchart of a molecular docking experiment.&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h4 id=&#34;pharmacokinetics-and-toxicity-filters&#34;&gt;Pharmacokinetics and toxicity filters&lt;/h4&gt;
+&lt;p&gt;An estimated 40% of small-molecule drug candidates failing clinical trials in the 1990s suffered from poor bioavailability and pharmacokinetic properties, hindering their ability to reach target sites, and be effectively eliminated from the body (Figure 16) [91].&lt;/p&gt;
+&lt;p&gt;In the era of bioinformatics and cheminformatics, predictive tools have revolutionized drug discovery by allowing early prediction of drug-likeness and absorption, distribution, metabolism, elimination, and toxicity (ADMET) profiles of drug candidates. Despite the high costs associated with drug development, the pharmaceutical industry still faces a staggering 90% failure rate during the transition from preclinical to clinical trials [92,93].&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image16.jpeg&#34;
+    alt=&#34;Figure 16. Evolution of the reasons for failure of drug candidates in clinical phases between 1991 and 2000 [94].&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 16.&lt;/strong&gt; Evolution of the reasons for failure of drug candidates in clinical phases between 1991 and 2000 [94].&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h5 id=&#34;physicochemical-properties&#34;&gt;Physicochemical properties&lt;/h5&gt;
+&lt;p&gt;Physicochemical properties are essential for understanding the probability of a drug candidate’s success and are used to filter compounds with unfavorable properties and poor development potential. Drug-likeness scores, which are based on physicochemical properties as shown in Figure 17, are used to assess a compound’s potential to succeed in clinical trials and are essential for economizing research costs. They are also a key element in raising the success of drug candidates during preclinical development. Physicochemical properties are related to interactions with different structural and physicochemical properties of drug candidates, and they are used to optimize drug-like properties of lead candidates. Certain physicochemical properties, such as molecular weight, are considered intrinsic properties of a molecule, meaning their values remain consistent regardless of the software used for their calculation. Other properties, however, are classified as predicted values and may exhibit slight variations between different software packages [95]. For example, Osiris Property Explorer and Marvin Suite water employ fragment-based methods to assign pre-calculated logS values to individual chemical fragments within the molecule and sum them up, accounting for bond adjustments and interactions. Other webservers like SwissADME use training datasets of known molecules and their logS values to statistically generate predictive QSPR models for calculating logS of new compounds.&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image17.png&#34;
+    alt=&#34;Figure 17. Commonly used physicochemical properties and their drug-likeness rules.&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 17.&lt;/strong&gt; Commonly used physicochemical properties and their drug-likeness rules.&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h5 id=&#34;admet-properties&#34;&gt;ADMET properties&lt;/h5&gt;
+&lt;p&gt;The integration of ADMET profiling into early-stage drug synthesis represents a paradigm shift in the pharmaceutical landscape. Proactive optimization of these critical parameters has the potential to mitigate the risks and financial burdens associated with late-stage clinical trial failures, which often stem from suboptimal ADMET profiles. This shift is further empowered by the emergence of ML and AI-based QSPR models. These models, trained on extensive datasets of experimental ADMET data and molecular descriptors, enable the precise prediction of ADMET properties for novel drug candidates. This invaluable predictive power allows researchers to prioritize compounds with optimal absorption, distribution, metabolism, excretion, and toxicity profiles, streamlining the drug discovery process and boosting the success rate of promising therapeutics.&lt;/p&gt;
+&lt;p&gt;Furthermore, as detailed in Figure 18, specific physicochemical properties play a pivotal role in determining the &lt;em&gt;in vivo&lt;/em&gt; fate and efficacy of drugs. Understanding these intricate relationships equips researchers with the knowledge to rationally design drug candidates with favourable ADMET characteristics, thereby accelerating the path towards safe and effective therapeutics for patients in need.&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image18.png&#34;
+    alt=&#34;Figure 18. Visual diagram of key ADMET parameters for evaluating the safety of drug candidates during development.&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 18.&lt;/strong&gt; Visual diagram of key ADMET parameters for evaluating the safety of drug candidates during development.&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h5 id=&#34;in-silico-admet-prediction-tools&#34;&gt;&lt;em&gt;In silico&lt;/em&gt; ADMET prediction tools&lt;/h5&gt;
+&lt;p&gt;&lt;em&gt;In silico&lt;/em&gt; ADMET tools are computational tools that can predict the ADMET properties of drug candidates using different mathematical models and algorithms, such as regression, classification, and neural networks [95]. &lt;em&gt;In silico&lt;/em&gt; ADMET tools can predict various ADMET endpoints, such as Caco-2 permeability, BBB penetration, CYP450 interaction, and hepatotoxicity [96]. While &lt;em&gt;in silico&lt;/em&gt; ADMET prediction tools have made significant progress, the accuracy and applicability of these tools depend on the quality and availability of experimental data, the validity and relevance of the models, and the user’s expertise and interpretation of the results. Some popular &lt;em&gt;in silico&lt;/em&gt; ADMET tools include ADMETlab, SwissADME, and pkCSM, among others [97,98,99].&lt;/p&gt;
+&lt;h4 id=&#34;molecular-dynamics-simulations&#34;&gt;Molecular dynamics simulations&lt;/h4&gt;
+&lt;p&gt;MD has emerged as an indispensable computational method, providing unprecedented insights into the dynamic behavior and intricate interactions of molecules. The field of structural biology has traditionally focused on capturing static snapshots of molecules, akin to frozen frames in a film. However, the essence of life lies in the dynamic interplay of atoms and molecules. MD serves as a bridge, simulating the time-dependent behavior of these microscopic entities and transforming static structures into dynamic systems.&lt;/p&gt;
+&lt;h5 id=&#34;classical-mechanics&#34;&gt;Classical mechanics&lt;/h5&gt;
+&lt;p&gt;Classical molecular mechanics (MM) forms the foundation of MD simulations, which are used to understand the motion and interactions of atoms and molecules. These simulations rely on the equations of classical mechanics, such as Newton’s laws of motion, to predict the positions and velocities of atoms at successive time steps. The basic principles of classical mechanics, like the conservation of energy and momentum, guide simulation dynamics. MD simulations are useful for studying large systems with a high number of particles, including protein-ligand complexes in drug discovery [100]. In comparison, Monte Carlo simulations provide an alternative approach. Unlike classical MD, Monte Carlo simulations use random sampling to explore the conformational space of molecules, focusing on thermodynamic ensembles and statistical probabilities [101]. This method is adept at studying systems with significant conformational changes, offering a statistical, thermodynamic perspective on the energetically favorable states of a system. Classical MD simulations have limitations stemming from the fact that they do not account for quantum effects and may not accurately represent the interactions between particles. Non-classical MD simulations, which uses forces obtained from electronic structure theory calculations (typically DFT) to evolve the system’s dynamics in time, can provide a more accurate representation of certain systems [102]. Despite these limitations, classical MD remains a valuable tool for investigating a wide range of biological and chemical phenomena, providing insights into the dynamic nature of molecular systems. Table 5 provides a comparative overview of Classical MD, ab initio simulations, and Monte Carlo simulations based on their underlying principles, representation of particles, time evolution approach, consideration of quantum effects, accuracy, typical applications, computational cost, and limitations.&lt;/p&gt;
+&lt;p&gt;Table 5. Comparison of Classical MD, ab initio simulations, and Monte Carlo simulations.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Aspect&lt;/th&gt;
+          &lt;th&gt;Classical MD&lt;/th&gt;
+          &lt;th&gt;Ab Initio&lt;/th&gt;
+          &lt;th&gt;Monte Carlo&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Underlying Principles&lt;/td&gt;
+          &lt;td&gt;Classical Mechanics&lt;/td&gt;
+          &lt;td&gt;Quantum Mechanics&lt;/td&gt;
+          &lt;td&gt;Statistical Mechanics&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Particle Representation&lt;/td&gt;
+          &lt;td&gt;Point masses for atoms and molecules&lt;/td&gt;
+          &lt;td&gt;Explicit consideration of electron cloud&lt;/td&gt;
+          &lt;td&gt;Statistical ensembles for molecular states&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Time Evolution&lt;/td&gt;
+          &lt;td&gt;Time-dependent trajectories of particles&lt;/td&gt;
+          &lt;td&gt;Quantum mechanical evolution of wavefunctions&lt;/td&gt;
+          &lt;td&gt;Statistical sampling of conformational space&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Quantum Effects&lt;/td&gt;
+          &lt;td&gt;Neglects quantum effects&lt;/td&gt;
+          &lt;td&gt;Explicitly considers quantum effects&lt;/td&gt;
+          &lt;td&gt;Does not consider quantum effects directly&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Accuracy&lt;/td&gt;
+          &lt;td&gt;Efficient for large systems, less accurate&lt;/td&gt;
+          &lt;td&gt;High accuracy but computationally expensive&lt;/td&gt;
+          &lt;td&gt;Statistical accuracy, less detailed trajectory&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Applications&lt;/td&gt;
+          &lt;td&gt;Macroscopic dynamics, large molecular systems&lt;/td&gt;
+          &lt;td&gt;Small to medium-sized molecular systems&lt;/td&gt;
+          &lt;td&gt;Wide range, especially for conformational studies&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Computational Cost&lt;/td&gt;
+          &lt;td&gt;Computationally efficient&lt;/td&gt;
+          &lt;td&gt;Computationally expensive&lt;/td&gt;
+          &lt;td&gt;Moderate computational cost&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Typical Use Cases&lt;/td&gt;
+          &lt;td&gt;Protein folding, ligand binding&lt;/td&gt;
+          &lt;td&gt;Small molecules, electronic structure&lt;/td&gt;
+          &lt;td&gt;Thermodynamics, conformational exploration&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Limitations&lt;/td&gt;
+          &lt;td&gt;Limited accuracy in capturing quantum effects&lt;/td&gt;
+          &lt;td&gt;Computationally intensive for large systems&lt;/td&gt;
+          &lt;td&gt;Limited in capturing detailed dynamic behavior&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h5 id=&#34;force-fields&#34;&gt;Force fields&lt;/h5&gt;
+&lt;p&gt;At the core of MD lies the concept of force fields, mathematical models that encapsulate the intricate web of interactions between atoms (Table 6). Force fields are vital in classical MD, defining a system’s potential energy surface and describing atomic and molecular interactions. These interactions include bonded terms (bond stretching, angle bending) and non-bonded terms (van der Waals forces, electrostatic interactions) [103,104]. Force field parameters are calibrated using experimental data and quantum calculations, influencing simulation outcomes [105]. Ongoing developments in force field refinement aim to address challenges like solvent effects and improve accuracy, enhancing the predictive capabilities of classical MD in capturing complex molecular system dynamics [106].&lt;/p&gt;
+&lt;p&gt;Table 6. Comparison of force fields in MD simulations.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Force Field&lt;/th&gt;
+          &lt;th&gt;Potential Energy Terms included&lt;/th&gt;
+          &lt;th&gt;Description&lt;/th&gt;
+          &lt;th&gt;Reference&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;AMBER&lt;/td&gt;
+          &lt;td&gt;Bonded and non-bonded interactions&lt;/td&gt;
+          &lt;td&gt;Biomolecules, proteins. Reproduces biomolecular structures well. Limited accuracy for some non-biological systems.&lt;/td&gt;
+          &lt;td&gt;[107]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;GAFF2&lt;/td&gt;
+          &lt;td&gt;Bonded and non-bonded interactions&lt;/td&gt;
+          &lt;td&gt;Organic molecules, ligands. Improved accuracy for small organic molecules. May not be as accurate for large biomolecules and complex systems.&lt;/td&gt;
+          &lt;td&gt;[108]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;CHARMM36&lt;/td&gt;
+          &lt;td&gt;Bonded and non-bonded interactions&lt;/td&gt;
+          &lt;td&gt;Biomolecules, lipids. Captures protein dynamics and lipid behavior. May require parameterization for non-standard molecules.&lt;/td&gt;
+          &lt;td&gt;[109]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;GROMOS&lt;/td&gt;
+          &lt;td&gt;Bonded and non-bonded interactions&lt;/td&gt;
+          &lt;td&gt;Biomolecules, small molecules. Efficient for small to medium-sized systems. Limited transferability to diverse molecular systems.&lt;/td&gt;
+          &lt;td&gt;[110]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;OPLS3e&lt;/td&gt;
+          &lt;td&gt;Bonded and non-bonded interactions&lt;/td&gt;
+          &lt;td&gt;Broad range of molecules. Balanced accuracy across various molecular types. Parameterization may be required for specific cases.&lt;/td&gt;
+          &lt;td&gt;[111]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;MARTINI&lt;/td&gt;
+          &lt;td&gt;Coarse-grained representation&lt;/td&gt;
+          &lt;td&gt;Lipids, polymers. Efficient for large-scale simulations, captures mesoscale behavior. Loss of atomic details, suitable for specific types of simulations.&lt;/td&gt;
+          &lt;td&gt;[112]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;AMOEBA&lt;/td&gt;
+          &lt;td&gt;Many-body interactions, polarizability&lt;/td&gt;
+          &lt;td&gt;Various molecular systems. Accurate representation of electrostatic and polar interactions. Computationally demanding, particularly for large systems.&lt;/td&gt;
+          &lt;td&gt;[113]&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id=&#34;md-simulations-workflow&#34;&gt;MD simulations workflow&lt;/h4&gt;
+&lt;p&gt;Preparing and running MD simulation for a protein-ligand complex involves several key steps from system preparation to MD trajectory production.&lt;/p&gt;
+&lt;h5 id=&#34;system-preparation&#34;&gt;System preparation&lt;/h5&gt;
+&lt;p&gt;Each system is meticulously prepared to conform to the requirements of the selected force field. The nomenclature of atomic types and residue names is force field-specific, typically differing from that of the PDB. Notably, force fields exhibit distinctions in the protonation states of histidine, which are not explicitly captured in the PDB format. These states include charged state, neutral τ tautomer, anionic τ tautomer, and anionic π tautomer. Subsequently, any missing hydrogens are systematically added, and the hydrogen bonding network undergoes optimization. This optimization involves the rotation of the side chains of asparagine, glutamine, and histidine residues, or the adjustment of the protonation state in the case of histidines [114].&lt;/p&gt;
+&lt;h5 id=&#34;system-solvation&#34;&gt;System solvation&lt;/h5&gt;
+&lt;p&gt;Each protein-ligand complex is placed within a water box, which may take the form of a cubic, rectangular, triclinic, or orthorhombic shape. This configuration ensures a minimum water layer of at least 10 Å surrounds the complex. The choice of a water model, such as Single Point Charge (SPC) or Transferable Intermolecular Potential 3 Point (TIP3P), is crucial for accurately representing the behavior of water molecules in the simulation.&lt;/p&gt;
+&lt;h5 id=&#34;system-neutralization&#34;&gt;System neutralization&lt;/h5&gt;
+&lt;p&gt;Additionally, the overall charge of the complex must be neutralized, this is achieved by adding Na&lt;sup&gt;+&lt;/sup&gt; and Cl&lt;sup&gt;−&lt;/sup&gt; ions to the solvent. The electrostatic potential is computed at multiple points on a grid that spans the volume of the system, accounting for the positions of ions.&lt;/p&gt;
+&lt;h5 id=&#34;energy-minimization&#34;&gt;Energy minimization&lt;/h5&gt;
+&lt;p&gt;The energy minimization step aims to optimize the molecular structure and reach a more stable starting configuration. It relieves steric clashes, corrects bond distortions, and allows the system to settle into a local energy minimum. During this step, an iterative optimization algorithm like steepest descent or conjugate gradient is used to adjust the atomic coordinates and minimize the potential energy of the system. Forces on atoms are calculated and positions are adjusted in each iteration until convergence criteria like an energy threshold or maximum iterations are met. The goal is to guide the system to a local minimum on the potential energy surface, where forces on each atom are near zero. After minimization, the stability and quality of the minimized structure are assessed by checking bond parameters, examining the overall structure, and ensuring no major clashes or unrealistic distortions remain. This step is crucial for obtaining a reasonable starting point for further calculations or simulations.&lt;/p&gt;
+&lt;h5 id=&#34;equilibration&#34;&gt;Equilibration&lt;/h5&gt;
+&lt;p&gt;Following energy minimization, the equilibration step involves adjusting the system’s temperature and pressure, allowing solvent molecules to properly interact with the biomolecular components.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;NVT Equilibration (Constant Number of Particles, Volume, and Temperature):&lt;/strong&gt; In the first equilibration phase, the system is allowed to evolve at a constant temperature (NVT ensemble). This involves applying a thermostat to control the temperature and adjusting atomic velocities accordingly. The duration of this phase allows the system to reach a thermal equilibrium, where the temperature fluctuations stabilize.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- end list --&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;NPT Equilibration (Constant Number of Particles, Pressure, and Temperature):&lt;/strong&gt; Subsequently, the system undergoes equilibration at a constant temperature and pressure (NPT ensemble). This phase includes the application of a barostat to control pressure and may involve adjusting box dimensions to achieve the desired pressure. The system is allowed to equilibrate under these conditions, ensuring that both temperature and pressure fluctuations reach a stable state.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;production-md&#34;&gt;Production MD&lt;/h5&gt;
+&lt;p&gt;Following NVT and NPT equilibration, the system transitions to the production MD run, where the dynamics of the protein-ligand complex are observed over an extended period. This phase is critical for obtaining meaningful data on the system’s behavior.&lt;/p&gt;
+&lt;h4 id=&#34;md-trajectory-data-analysis&#34;&gt;MD trajectory data analysis&lt;/h4&gt;
+&lt;p&gt;In the analysis phase of the MD simulation, various techniques are employed to extract meaningful insights from the obtained trajectory data.&lt;/p&gt;
+&lt;h5 id=&#34;root-mean-square-deviation&#34;&gt;Root-Mean-Square Deviation&lt;/h5&gt;
+&lt;p&gt;The Root-Mean-Square Deviation (RMSD) is a measure of the similarity between two structures. The RMSD between two structures $v$ and $w$ of $n$ atoms each (or $n$ points) is calculated with the following formula (Eq. 15):&lt;/p&gt;
+$$
+\text{RMSD}_{v,w} = \sqrt{\frac{1}{n}\sum_{i = 1}^{n}\left\| v_{i} - w_{i} \right\|^{2}} \tag{15}
+$$&lt;p&gt;RMSD is used to compare protein structures. It is typically applied to the Cα atoms of the protein. In MD analysis, it is used to observe the deviation of the system from the initial structure. The system is equilibrated when the RMSD reaches a plateau. Other analyses are typically performed on the stabilized portion of the trajectory.&lt;/p&gt;
+&lt;h5 id=&#34;root-mean-square-fluctuation&#34;&gt;Root-Mean-Square Fluctuation&lt;/h5&gt;
+&lt;p&gt;While RMSD is an average calculated over all atomic coordinates of the system at each step of the trajectory. The Root-Mean-Square Fluctuation (RMSF) corresponds to an average calculated over all steps of the trajectory for each atom (Eq. 16).&lt;/p&gt;
+$$
+\text{RMSF}_{i} = \sqrt{\frac{1}{T}\sum_{t = 0}^{t = T}\left( x_{i}^{t} - {x\bar{}}_{i} \right)^{2}} \tag{16}
+$$&lt;p&gt;Here, $\text{RMSF}_{i}$represents the fluctuation of atom $i$ calculated over a trajectory of $T$ steps. It is determined by taking the square root of the average squared distance between the position of the atom at time &lt;em&gt;t&lt;/em&gt;$(x_{i}^{t}$) and the average position of the atom (${x\bar{}}_{i}$). This analysis provides valuable insights into stable regions within protein structures.&lt;/p&gt;
+&lt;h5 id=&#34;radius-of-gyration&#34;&gt;Radius of gyration&lt;/h5&gt;
+&lt;p&gt;The radius of gyration (Rg) is a measure of the compactness or spread of a molecular structure around its center of mass. Changes in Rag may indicate structural transitions, such as protein folding/unfolding or conformational changes induced by ligand binding or unbinding. Mathematically, the Rg can be expressed as (Eq. 17):&lt;/p&gt;
+$$
+Rg = \sqrt{\frac{1}{N}\sum_{i = 1}^{N}{m_{i}r_{i}^{2}}} \tag{17}
+$$&lt;p&gt;Where $N$ is the total number of atoms, $m_{i}$is the mass of atom $i$, $r_{i}$ is the distance of atom $i$ from the centre of mass.&lt;/p&gt;
+&lt;h5 id=&#34;solvent-accessible-surface-area&#34;&gt;Solvent-accessible surface area&lt;/h5&gt;
+&lt;p&gt;Solvent Accessible Surface Area (SASA) provides insights into the accessibility of a protein’s surface to its surrounding solvent environment. SASA quantifies the extent to which atoms on the protein surface are accessible to solvent molecules, influencing various biological processes, including ligand binding. Changes in SASA during protein-ligand interactions can indicate alterations in the protein’s conformation, accessibility of binding sites, and the potential impact on ligand binding affinity.&lt;/p&gt;
+&lt;p&gt;The Shrake-Rupley algorithm is widely employed for SASA calculations due to its computational efficiency. It involves rolling a probe sphere over the molecular surface and determining the solvent-accessible points, allowing for an estimation of the accessible surface area of the biomolecule.&lt;/p&gt;
+&lt;h5 id=&#34;hydrogen-bond-analysis&#34;&gt;Hydrogen bond analysis&lt;/h5&gt;
+&lt;p&gt;Hydrogen bonds play a crucial role in maintaining the structure of proteins. The energy required to break a hydrogen bond ranges from 5 to 30 kJ/mol, making it stronger than van der Waals interactions but weaker than ionic or covalent bonds. Hydrogen bonds involve an electronegative atom such as oxygen, nitrogen, or fluorine, and a hydrogen atom covalently bonded to another electronegative atom.&lt;/p&gt;
+&lt;p&gt;The formation of a hydrogen bond depends on the relative position and the types of atoms in the donor (D) and acceptor (A). In MD simulations, observations on hydrogen bonds include the average number of bonds, which can be used to compare interactions between atom groups, and an analysis of occupancy or presence, providing information on stable regions within a molecule. Parameters such as the angle (θ) between the DH and DA vectors and the distance (d) between D and A are crucial, with θ being less than 40° and d less than 3.5 Å for effective hydrogen bonding as illustrated in Figure 19 [115].&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/cdd-review/image19.png&#34;
+    alt=&#34;Figure 19. Geometric constraints of a hydrogen bond [115].&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;&lt;strong&gt;Figure 19.&lt;/strong&gt; Geometric constraints of a hydrogen bond [115].&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h5 id=&#34;principal-component-analysis&#34;&gt;Principal component analysis&lt;/h5&gt;
+&lt;p&gt;Principal component analysis (PCA) is a powerful statistical method that aims to reduce the dimensionality of a dataset while retaining the essential features and variability present in the original data. In the context of MD simulations of biomolecular systems, PCA is particularly valuable for identifying dominant motions, describing structural variations, and uncovering the principal components governing the system’s dynamics.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Covariance Matrix:&lt;/strong&gt; PCA begins by constructing the covariance matrix from the atomic positional fluctuations obtained during the MD simulation.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Eigen decomposition:&lt;/strong&gt; The covariance matrix is then diagonalized, yielding eigenvectors and eigenvalues.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Principal Components:&lt;/strong&gt; The eigenvectors represent the principal components, and the eigenvalues indicate the magnitude of the variance along each principal component.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;free-energy-calculations&#34;&gt;Free energy calculations&lt;/h4&gt;
+&lt;h5 id=&#34;molecular-mechanicsgeneralized-born-surface-area&#34;&gt;Molecular mechanics/Generalized Born Surface Area&lt;/h5&gt;
+&lt;p&gt;Molecular mechanics/Generalized Born Surface Area (MM/GBSA) is a computational approach used to estimate free energy changes in biomolecular systems, particularly for studying binding affinities of ligands to proteins [116]. The MM/GBSA method was developed by Peter Kollman and his group at the University of California, San Diego (UCSD) in the late 1990s [117]. It combines MM calculations, which describe the bonded and non-bonded interactions within the system, with a continuum solvation model based on the Generalized Born (GB) theory to account for solvent effects [118]. The binding free energy of a ligand to a protein receptor is calculated as the thermodynamic difference between the individual free energies of the free protein (P), the free ligand (L), and the formed complex (PL) in solvent (Eq. 18):&lt;/p&gt;
+$$
+\text{ΔG}_{\text{bind}} = G_{\text{PL}} - (G_{P} + G_{L}) \tag{18}
+$$&lt;p&gt;The binding free energy can be decomposed into the vacuum potential energy, $\text{ΔE}_{\text{MM}}$, which includes the energy of both bonded as well as non-bonded interactions (Eq. 19), and it is calculated based on the MM force-field parameters [119,120].&lt;/p&gt;
+$$
+\text{ΔE}_{\text{MM}} = \text{ΔE}_{\text{bonded}} + \text{ΔE}_{\text{nonbonded}} = \text{ΔE}_{\text{bonded}} + ( \text{ΔE}_{\text{ele}} + \text{ΔE}_{\text{vdw}}) \tag{19}
+$$&lt;p&gt;Where $\text{ΔE}_{\text{bonded}}$represents bonded interactions encompassing bond, angle, dihedral, and improper interactions. $\text{ΔE}_{\text{nonbonded}}$ represents nonbonded interactions comprising both electrostatic ($\text{ΔE}_{\text{ele}}$) and van der Waals ($\text{ΔE}_{\text{vdw}}$) interactions, modeled through Coulomb and Lennard-Jones potential functions, respectively. In the single trajectory approach, the conformation of the protein and ligand in both the bound and unbound forms is assumed to be identical. Consequently, $\text{ΔE}_{\text{bonded}}$is consistently considered as zero [121].&lt;/p&gt;
+&lt;p&gt;This binding free energy can be further described to account for the free energy of solvation (Eq. 20):&lt;/p&gt;
+$$
+\text{ΔG}_{\text{bind}} = \text{ΔE}_{\text{ele}} + \text{ΔE}_{\text{vdw}} + \text{ΔG}_{\text{GB}} + \text{ΔG}_{\text{SASA}} - T\Delta S \tag{20}
+$$&lt;p&gt;The equation incorporates the solvation energy ($\text{ΔG}_{\text{GB}}$) accounting for polar solvation effects using an implicit solvation GB model, and the SASA solvation energy ($\text{ΔG}_{\text{SASA}}$) capturing nonpolar solvation effects based on the approximation of SASA [122]. The conformational entropy term ($- T\Delta S$) which is calculated by normal-mode analysis, is usually neglected due to the high computational cost and technical errors associated with its calculation [123].&lt;/p&gt;
+&lt;h5 id=&#34;molecular-mechanicspoisson-boltzmann-surface-area&#34;&gt;Molecular mechanics/Poisson-Boltzmann Surface Area&lt;/h5&gt;
+&lt;p&gt;Like MM/GBSA, Molecular mechanics/Poisson-Boltzmann Surface Area (MM/PBSA) is a computational method used for the estimation of free energy changes in biomolecular systems, especially for studying ligand binding to proteins. MM/PBSA combines MM calculations with a continuum solvation model as described in MM/GBSA (Eq. 21), but it uses the computationally time-consuming Poisson-Boltzmann (PB) equation to describe the electrostatic solvation effects ($\text{ΔG}_{\text{solv}})$ [124].&lt;/p&gt;
+$$
+\text{ΔG}_{\text{bind}} = \text{ΔE}_{\text{ele}} + \text{ΔE}_{\text{vdw}} + \text{ΔG}_{\text{solv}} + \text{ΔG}_{\text{SASA}} - T\Delta S \tag{21}
+$$&lt;h4 id=&#34;md-simulations-software&#34;&gt;MD simulations software&lt;/h4&gt;
+&lt;p&gt;There are several software packages available for MD simulations. Some popular options include GROMACS, AMBER, Desmond, LAMMPS, and NAMD. These software packages are widely used for MD simulations and offer various features suitable for different research needs. GROMACS is a free and open-source software suite for high-performance MD and output analysis [125], while AMBER is a suite of programs for MD simulations of proteins and nucleic acids [126]. Desmond is a high-performance MD simulation software package developed at D. E. Shaw Research. It is designed to perform MD simulations of biological systems on conventional computer clusters and can also be used for absolute and relative free energy calculations, such as free energy perturbation [127]. LAMMPS is a classical MD code with a focus on materials modelling [128]. NAMD is a powerful, parallel MD simulation software package [129]. The choice of software depends on specific research requirements, user expertise, and the nature of the simulations to be performed. Table 7 details some of the commonly used MD simulation software packages.&lt;/p&gt;
+&lt;p&gt;Table 7. Description of commonly used software packages for MD simulations.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Program&lt;/th&gt;
+          &lt;th&gt;Licence&lt;/th&gt;
+          &lt;th&gt;Description&lt;/th&gt;
+          &lt;th&gt;Reference&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;GROMACS&lt;/td&gt;
+          &lt;td&gt;Open-source (GPLv2)&lt;/td&gt;
+          &lt;td&gt;A versatile package to perform MD, scalable and efficient in performing large-scale simulations&lt;/td&gt;
+          &lt;td&gt;[125]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;AMBER&lt;/td&gt;
+          &lt;td&gt;Open-source (Artistic License 2.0)&lt;/td&gt;
+          &lt;td&gt;A suite of biomolecular simulation programs that includes several force fields for the simulation of proteins, nucleic acids, and carbohydrates.&lt;/td&gt;
+          &lt;td&gt;[126]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Desmond&lt;/td&gt;
+          &lt;td&gt;Commercial and academic&lt;/td&gt;
+          &lt;td&gt;Developed by Schrödinger, Desmond is a high-performance MD simulation program with a focus on drug discovery.&lt;/td&gt;
+          &lt;td&gt;[127]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;LAMMPS&lt;/td&gt;
+          &lt;td&gt;Open-source (GPLv2)&lt;/td&gt;
+          &lt;td&gt;A classical MD simulation code, designed to run efficiently on parallel computers.&lt;/td&gt;
+          &lt;td&gt;[128]&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;NAMD&lt;/td&gt;
+          &lt;td&gt;Open-source (NAMD License, like GPL)&lt;/td&gt;
+          &lt;td&gt;A parallel MD code designed for high-performance simulation of large biomolecular systems.&lt;/td&gt;
+          &lt;td&gt;[129]&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Cheminformatics and computational methods have become indispensable in modern drug discovery, significantly accelerating the identification and optimization of drug candidates while reducing costs and experimental failures. This review highlights the transformative impact of key methodologies such as QSAR modeling, molecular docking, molecular dynamics simulations, and ligand- and structure-based virtual screening. The integration of artificial intelligence and machine learning further enhances the predictive power and efficiency of these approaches, enabling the analysis of large datasets and uncovering complex structure-activity relationships.&lt;/p&gt;
+&lt;p&gt;Advancements in cheminformatics tools, molecular representations, and bioactivity databases have expanded the scope and depth of drug discovery pipelines. Moreover, the incorporation of ADMET profiling at early stages provides a more holistic evaluation of drug-likeness, optimizing the likelihood of clinical success. While these computational techniques offer immense potential, challenges such as data standardization, model validation, and limited interpretability of machine learning models persist.&lt;/p&gt;
+&lt;p&gt;Future efforts should focus on improving the integration of computational methods with experimental workflows, leveraging next-generation technologies like quantum computing and generative AI for de novo drug design. By addressing existing challenges and harnessing the synergy between computational and experimental approaches, researchers can continue to advance the development of safe, effective, and innovative therapeutics, ultimately transforming healthcare outcomes globally.&lt;/p&gt;
+&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;N. Singh, P. Vayer, S. Tanwar, J.-L. Poyet, K. Tsaioun, and B. O. Villoutreix, “Drug discovery and development: introduction to the general public and patient groups,” &lt;em&gt;Frontiers in Drug Discovery&lt;/em&gt;, vol. 3, p. 1201419, May 2023, doi: 10.3389/FDDSV.2023.1201419.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;W. Yu and A. D. Mackerell, “Computer-Aided Drug Design Methods,” &lt;em&gt;Methods Mol Biol&lt;/em&gt;, vol. 1520, p. 85, 2017, doi: 10.1007/978-1-4939-6634-9_5.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;J. P. Hughes, S. S. Rees, S. B. Kalindjian, and K. L. Philpott, “Principles of early drug discovery,” &lt;em&gt;Br J Pharmacol&lt;/em&gt;, vol. 162, no. 6, p. 1239, Mar. 2011, doi: 10.1111/J.1476-5381.2010.01127.X.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;P. Sharma, K. Sharma, and M. Nandave, “Computational approaches in drug discovery and design,” &lt;em&gt;Computational Approaches in Drug Discovery, Development and Systems Pharmacology&lt;/em&gt;, pp. 53–93, Jan. 2023, doi: 10.1016/B978-0-323-99137-7.00009-5.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;N. Brown, “Chemoinformatics—An Introduction for Computer Scientists,” &lt;em&gt;ACM Comput Surv&lt;/em&gt;, vol. 41, no. 2, 2009, doi: 10.1145/1459352.1459353.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;R. Guha and A. Bender, &lt;em&gt;Computational Approaches in Cheminformatics and Bioinformatics&lt;/em&gt;. 2011. doi: 10.1002/9781118131411.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;H. M. Patel &lt;em&gt;et al.&lt;/em&gt;, “Quantitative structure-activity relationship (QSAR) studies as strategic approach in drug discovery,” &lt;em&gt;Medicinal Chemistry Research&lt;/em&gt;, vol. 23, no. 12, pp. 4991–5007, Jun. 2014, doi: 10.1007/S00044-014-1072-3/METRICS.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;S. Kwon, H. Bae, J. Jo, and S. Yoon, “Comprehensive ensemble in QSAR prediction for drug discovery,” &lt;em&gt;BMC Bioinformatics&lt;/em&gt;, vol. 20, no. 1, pp. 1–12, Oct. 2019, doi: 10.1186/S12859-019-3135-4/FIGURES/4.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C. Nantasenamat, “Best practices for constructing reproducible QSAR models,” &lt;em&gt;Methods in Pharmacology and Toxicology&lt;/em&gt;, pp. 55–75, 2020, doi: 10.1007/978-1-0716-0150-1_3/COVER.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;D. S. Wigh, J. M. Goodman, and A. A. Lapkin, “A review of molecular representation in the age of machine learning,” &lt;em&gt;Wiley Interdiscip Rev Comput Mol Sci&lt;/em&gt;, vol. 12, no. 5, p. e1603, Sep. 2022, doi: 10.1002/WCMS.1603.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;M. Yamada and M. Sugiyama, “Molecular Graph Generation by Decomposition and Reassembling,” &lt;em&gt;ACS Omega&lt;/em&gt;, vol. 8, no. 22, pp. 19575–19586, Jun. 2023, doi: 10.1021/ACSOMEGA.3C01078/ASSET/IMAGES/LARGE/AO3C01078_0011.JPEG.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;L. David, A. Thakkar, R. Mercado, and O. Engkvist, “Molecular representations in AI-driven drug discovery: a review and practical guide,” &lt;em&gt;Journal of Cheminformatics 2020 12:1&lt;/em&gt;, vol. 12, no. 1, pp. 1–22, Sep. 2020, doi: 10.1186/S13321-020-00460-5.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;S. N. Ilemo, D. Barth, O. David, F. Quessette, M. A. Weisser, and D. Watel, “Improving graphs of cycles approach to structural similarity of molecules,” &lt;em&gt;PLoS One&lt;/em&gt;, vol. 14, no. 12, p. e0226680, Dec. 2019, doi: 10.1371/JOURNAL.PONE.0226680.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A. Veselinovic, J. Veselinovic, J. Zivkovic, and G. Nikolic, “Application of SMILES Notation Based Optimal Descriptors in Drug Discovery and Design,” &lt;em&gt;Curr Top Med Chem&lt;/em&gt;, vol. 15, no. 18, pp. 1768–1779, Jun. 2015, doi: 10.2174/1568026615666150506151533.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;M. Hirohara, Y. Saito, Y. Koda, K. Sato, and Y. Sakakibara, “Convolutional neural network based on SMILES representation of compounds for detecting chemical motif,” &lt;em&gt;BMC Bioinformatics&lt;/em&gt;, vol. 19, no. 19, pp. 83–94, Dec. 2018, doi: 10.1186/S12859-018-2523-5/FIGURES/7.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C. Ehrt, B. Krause, R. Schmidt, E. S. R. Ehmki, and M. Rarey, “SMARTS.plus – A Toolbox for Chemical Pattern Design,” &lt;em&gt;Mol Inform&lt;/em&gt;, vol. 39, no. 12, Dec. 2020, doi: 10.1002/MINF.202000216.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A. Dalby &lt;em&gt;et al.&lt;/em&gt;, “Description of several chemical structure file formats used by computer programs developed at Molecular Design Limited,” &lt;em&gt;J Chem Inf Model&lt;/em&gt;, vol. 32, no. 3, p. 244, Feb. 1992, doi: 10.1021/ci00007a012.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;S. Sahoo, C. Adhikari, M. Kuanar, and B. Mishra, “A Short Review of the Generation of Molecular Descriptors and Their Applications in Quantitative Structure Property/Activity Relationships,” &lt;em&gt;Curr Comput Aided Drug Des&lt;/em&gt;, vol. 12, no. 3, pp. 181–205, May 2016, doi: 10.2174/1573409912666160525112114.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;L. Xue and J. Bajorath, “Molecular Descriptors in Chemoinformatics, Computational Combinatorial Chemistry, and Virtual Screening,” &lt;em&gt;Comb Chem High Throughput Screen&lt;/em&gt;, vol. 3, no. 5, pp. 363–372, Oct. 2012, doi: 10.2174/1386207003331454.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;E. Bielska, X. Lucas, A. Czerwoniec, J. M. Kasprzak, K. H. Kaminska, and J. M. Bujnicki, “Virtual screening strategies in drug design–methods and applications,” &lt;em&gt;journals.pan.pl&lt;/em&gt;, vol. 92, pp. 249–264, 2011, Accessed: Feb. 09, 2023. &lt;/p&gt;
+\[Online\]&lt;p&gt;. Available: 
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;J. L. Durant, B. A. Leland, D. R. Henry, and J. G. Nourse, “Reoptimization of MDL Keys for Use in Drug Discovery,” &lt;em&gt;J Chem Inf Comput Sci&lt;/em&gt;, vol. 42, no. 6, pp. 1273–1280, Nov. 2002, doi: 10.1021/CI010132R.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;D. Rogers and M. Hahn, “Extended-connectivity fingerprints,” &lt;em&gt;J Chem Inf Model&lt;/em&gt;, vol. 50, no. 5, pp. 742–754, May 2010, doi: 10.1021/CI100050T/ASSET/IMAGES/MEDIUM/CI-2010-00050T_0018.GIF.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;G. Peyrat, “Conception d’inhibiteurs de protéines kinases à partir de méthodes in silico basées sur les fragments,” 2021. Accessed: Feb. 11, 2023. &lt;/p&gt;
+\[Online\]&lt;p&gt;. Available: 
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Z. Wu &lt;em&gt;et al.&lt;/em&gt;, “Do we need different machine learning algorithms for QSAR modeling? A comprehensive assessment of 16 machine learning algorithms on 14 QSAR data sets,” &lt;em&gt;Brief Bioinform&lt;/em&gt;, vol. 22, no. 4, Jul. 2021, doi: 10.1093/BIB/BBAA321.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;L. Breiman, “Random forests,” &lt;em&gt;Mach Learn&lt;/em&gt;, vol. 45, no. 1, pp. 5–32, Oct. 2001, doi: 10.1023/A:1010933404324/METRICS.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;J. Ali, R. Khan, N. Ahmad, and I. Maqsood, “Random Forests and Decision Trees,” 2012, Accessed: Dec. 28, 2023. &lt;/p&gt;
+\[Online\]&lt;p&gt;. Available: 
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;T. K. Ho, “The random subspace method for constructing decision forests,” &lt;em&gt;IEEE Trans Pattern Anal Mach Intell&lt;/em&gt;, vol. 20, no. 8, pp. 832–844, 1998, doi: 10.1109/34.709601.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;W. S. Noble, “What is a support vector machine?,” &lt;em&gt;Nature Biotechnology 2006 24:12&lt;/em&gt;, vol. 24, no. 12, pp. 1565–1567, Dec. 2006, doi: 10.1038/nbt1206-1565.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;V. Vapnik and R. Izmailov, “Reinforced SVM method and memorization mechanisms,” &lt;em&gt;Pattern Recognit&lt;/em&gt;, vol. 119, p. 108018, Nov. 2021, doi: 10.1016/J.PATCOG.2021.108018.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;K. Q. Weinberger, J. Blitzer, and L. K. Saul, “Distance Metric Learning for Large Margin Nearest Neighbor Classification,” &lt;em&gt;Adv Neural Inf Process Syst&lt;/em&gt;, vol. 18, 2005.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;X. Hu, J. Wang, L. Wang, and K. Yu, “K-Nearest Neighbor Estimation of Functional Nonparametric Regression Model under NA Samples,” &lt;em&gt;Axioms 2022, Vol. 11, Page 102&lt;/em&gt;, vol. 11, no. 3, p. 102, Feb. 2022, doi: 10.3390/AXIOMS11030102.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;G. Guo, H. Wang, D. Bell, Y. Bi, and K. Greer, “KNN model-based approach in classification,” &lt;em&gt;Lecture Notes in Computer Science (including subseries Lecture Notes in Artificial Intelligence and Lecture Notes in Bioinformatics)&lt;/em&gt;, vol. 2888, pp. 986–996, 2003, doi: 10.1007/978-3-540-39964-3_62/COVER.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;S. Zhang, X. Li, M. Zong, X. Zhu, and D. Cheng, “Learning k for kNN Classification,” &lt;em&gt;ACM Transactions on Intelligent Systems and Technology (TIST)&lt;/em&gt;, vol. 8, no. 3, Jan. 2017, doi: 10.1145/2990508.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;H. Kamel, D. Abdulah, and J. M. Al-Tuwaijari, “Cancer Classification Using Gaussian Naive Bayes Algorithm,” &lt;em&gt;Proceedings of the 5th International Engineering Conference, IEC 2019&lt;/em&gt;, pp. 165–170, Jun. 2019, doi: 10.1109/IEC47844.2019.8950650.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;S. Alkhushayni, D. Al-Zaleq, L. Andradi, and P. Flynn, “The Application of Differing Machine Learning Algorithms and Their Related Performance in Detecting Skin Cancers and Melanomas,” &lt;em&gt;J Skin Cancer&lt;/em&gt;, vol. 2022, 2022, doi: 10.1155/2022/2839162.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;T. Chen and C. Guestrin, “XGBoost: A scalable tree boosting system,” &lt;em&gt;Proceedings of the ACM SIGKDD International Conference on Knowledge Discovery and Data Mining&lt;/em&gt;, vol. 13-17-August-2016, pp. 785–794, Aug. 2016, doi: 10.1145/2939672.2939785.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;V. Kotu and B. Deshpande, “Deep Learning,” &lt;em&gt;Data Science&lt;/em&gt;, pp. 307–342, 2019, doi: 10.1016/B978-0-12-814761-0.00010-1.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;H. Askr, E. Elgeldawi, H. Aboul Ella, Y. A. M. M. Elshaier, M. M. Gomaa, and A. E. Hassanien, “Deep learning in drug discovery: an integrative review and future challenges,” &lt;em&gt;Artif Intell Rev&lt;/em&gt;, vol. 56, no. 7, pp. 5975–6037, Jul. 2023, doi: 10.1007/S10462-022-10306-1/FIGURES/3.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;D. Jiang &lt;em&gt;et al.&lt;/em&gt;, “Could graph neural networks learn better molecular representation for drug discovery? A comparison study of descriptor-based and graph-based models,” &lt;em&gt;J Cheminform&lt;/em&gt;, vol. 13, no. 1, pp. 1–23, Dec. 2021, doi: 10.1186/S13321-020-00479-8/FIGURES/6.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;P. Karpov, G. Godin, and I. V. Tetko, “Transformer-CNN: Swiss knife for QSAR modeling and interpretation,” &lt;em&gt;J Cheminform&lt;/em&gt;, vol. 12, no. 1, pp. 1–12, Mar. 2020, doi: 10.1186/S13321-020-00423-W/FIGURES/9.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C. Zhang, Y. Lu, and T. Zang, “CNN-DDI: a learning-based method for predicting drug–drug interactions using convolution neural networks,” &lt;em&gt;BMC Bioinformatics&lt;/em&gt;, vol. 23, no. 1, pp. 1–11, Jan. 2022, doi: 10.1186/S12859-022-04612-2/FIGURES/3.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C. Hung and G. Gini, “QSAR modeling without descriptors using graph convolutional neural networks: the case of mutagenicity prediction,” &lt;em&gt;Mol Divers&lt;/em&gt;, vol. 25, no. 3, pp. 1283–1299, Aug. 2021, doi: 10.1007/S11030-021-10250-2/METRICS.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Y. Boulaamane &lt;em&gt;et al.&lt;/em&gt;, “Exploring natural products as multi-target-directed drugs for Parkinson’s disease: an in-silico approach integrating QSAR, pharmacophore modeling, and molecular dynamics simulations,” &lt;em&gt;J Biomol Struct Dyn&lt;/em&gt;, 2023, doi: 10.1080/07391102.2023.2260879.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;J. Jiménez-Luna, F. Grisoni, and G. Schneider, “Drug discovery with explainable artificial intelligence,” &lt;em&gt;Nature Machine Intelligence 2020 2:10&lt;/em&gt;, vol. 2, no. 10, pp. 573–584, Oct. 2020, doi: 10.1038/s42256-020-00236-4.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Y. Xu, X. Li, H. Yao, and K. Lin, “Neural networks in drug discovery: current insights from medicinal chemists,” &lt;em&gt;
+&lt;/em&gt;, vol. 11, no. 14, pp. 1669–1672, Jul. 2019, doi: 10.4155/FMC-2019-0118.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;V. Mandlik, P. R. Bejugam, and S. Singh, “Application of Artificial Neural Networks in Modern Drug Discovery,” &lt;em&gt;Artificial Neural Network for Drug Design, Delivery and Disposition&lt;/em&gt;, pp. 123–139, Jan. 2016, doi: 10.1016/B978-0-12-801559-9.00006-5.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;D. Paul, G. Sanap, S. Shenoy, D. Kalyane, K. Kalia, and R. K. Tekade, “Artificial intelligence in drug discovery and development,” &lt;em&gt;Drug Discov Today&lt;/em&gt;, vol. 26, no. 1, p. 80, Jan. 2021, doi: 10.1016/J.DRUDIS.2020.10.010.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;M. H. S. Segler, T. Kogej, C. Tyrchan, and M. P. Waller, “Generating focused molecule libraries for drug discovery with recurrent neural networks,” &lt;em&gt;ACS Cent Sci&lt;/em&gt;, vol. 4, no. 1, pp. 120–131, Jan. 2018, doi: 10.1021/ACSCENTSCI.7B00512/SUPPL_FILE/OC7B00512_SI_002.ZIP.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;N. Suresh, N. C. A. Kumar, S. Subramanian, and G. Srinivasa, “Memory augmented recurrent neural networks for de-novo drug design,” &lt;em&gt;PLoS One&lt;/em&gt;, vol. 17, no. 6, Jun. 2022, doi: 10.1371/JOURNAL.PONE.0269461.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;O. Silakari and P. K. Singh, “Fundamentals of molecular modeling,” &lt;em&gt;Concepts and Experimental Protocols of Modelling and Informatics in Drug Design&lt;/em&gt;, pp. 1–27, 2021, doi: 10.1016/B978-0-12-820546-4.00001-5.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;J.-L. Rivail, “Molecular Modelling. Semi-Empirical and Empirical Methods of Theoretical Chemistry,” &lt;em&gt;Computational Advances in Organic Chemistry: Molecular Structure and Reactivity&lt;/em&gt;, pp. 229–259, 1991, doi: 10.1007/978-94-011-3262-6_4.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;R. Iftimie, P. Minary, and M. E. Tuckerman, “Ab initio molecular dynamics: Concepts, recent developments, and future trends,” &lt;em&gt;Proc Natl Acad Sci U S A&lt;/em&gt;, vol. 102, no. 19, pp. 6654–6659, May 2005, doi: 10.1073/PNAS.0500193102/SUPPL_FILE/00193FIG5.JPG.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;R. J. Bartlett, V. F. Lotrich, and I. V. Schweigert, “Ab initio density functional theory: the best of both worlds?,” &lt;em&gt;J Chem Phys&lt;/em&gt;, vol. 123, no. 6, Aug. 2005, doi: 10.1063/1.1904585.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;M. Hoffmann and J. Rychlewski, “Density Functional Theory (DFT) and Drug Design,” &lt;em&gt;Reviews of Modern Quantum Chemistry&lt;/em&gt;, pp. 1767–1803, Dec. 2002, doi: 10.1142/9789812775702_0058.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;“Fundamental Principles of Molecular Modeling,” &lt;em&gt;Fundamental Principles of Molecular Modeling&lt;/em&gt;, 1996, doi: 10.1007/978-1-4899-0212-2.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;M. Sorokina, P. Merseburger, K. Rajan, M. A. Yirik, and C. Steinbeck, “COCONUT online: Collection of Open Natural Products database,” &lt;em&gt;J Cheminform&lt;/em&gt;, vol. 13, no. 1, pp. 1–13, Dec. 2021, doi: 10.1186/S13321-020-00478-9/FIGURES/4.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Y. Boulaamane, P. Kandpal, A. Chandra, M. R. Britel, and A. Maurady, “Chemical library design, QSAR modeling and molecular dynamics simulations of naturally occurring coumarins as dual inhibitors of MAO-B and AChE,” &lt;em&gt;J Biomol Struct Dyn&lt;/em&gt;, 2023, doi: 10.1080/07391102.2023.2209650.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;B. A. P. Wilson, C. C. Thornburg, C. J. Henrich, T. Grkovic, and B. R. O’Keefe, “Creating and screening natural product libraries,” &lt;em&gt;Nat Prod Rep&lt;/em&gt;, vol. 37, no. 7, pp. 893–918, Jul. 2020, doi: 10.1039/C9NP00068B.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;H. Koeppen, J. Kriegl, U. Lessel, C. S. Tautermann, and B. Wellenzohn, “Ligand-Based Virtual Screening,” pp. 61–85, May 2011, doi: 10.1002/9783527633326.CH3.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;D. Bajusz, A. Rácz, and K. Héberger, “Why is Tanimoto index an appropriate choice for fingerprint-based similarity calculations?,” &lt;em&gt;J Cheminform&lt;/em&gt;, vol. 7, no. 1, pp. 1–13, Dec. 2015, doi: 10.1186/S13321-015-0069-3/FIGURES/7.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;O. F. Güner and J. P. Bowen, “Setting the record straight: The origin of the pharmacophore concept,” &lt;em&gt;J Chem Inf Model&lt;/em&gt;, vol. 54, no. 5, pp. 1269–1283, Apr. 2014, doi: 10.1021/CI5000533/ASSET/IMAGES/MEDIUM/CI-2014-000533_0002.GIF.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;X. Qing &lt;em&gt;et al.&lt;/em&gt;, “Pharmacophore modeling: advances, limitations, and current utility in drug discovery,” &lt;em&gt;Journal of Receptor, Ligand and Channel Research&lt;/em&gt; , vol. 7, pp. 81–92, Jan. 2014, doi: 10.2147/JRLCR.S46843.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A. H. Beckett, N. J. Harper, and J. W. Clitherow, “The Importance of Stereoisomerism in Muscarinic Activity,” &lt;em&gt;Journal of Pharmacy and Pharmacology&lt;/em&gt;, vol. 15, no. 1, pp. 362–371, Apr. 2011, doi: 10.1111/J.2042-7158.1963.TB12799.X.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;L. B. Kier, “Molecular Orbital Calculation of Preferred Conformations of Acetylcholine, Muscarine, and Muscarone,” &lt;em&gt;Mol Pharmacol&lt;/em&gt;, vol. 3, no. 5, 1967.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;D. R. Buckle &lt;em&gt;et al.&lt;/em&gt;, “Glossary of terms used in medicinal chemistry. Part II (IUPAC recommendations 2013),” &lt;em&gt;Pure and Applied Chemistry&lt;/em&gt;, vol. 85, no. 8, pp. 1725–1758, Jul. 2013, doi: 10.1351/PAC-REC-12-11-23/MACHINEREADABLECITATION/RIS.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;F. R. Makhouri and J. B. Ghasemi, “Combating Diseases with Computational Strategies Used for Drug Design and Discovery,” &lt;em&gt;Curr Top Med Chem&lt;/em&gt;, vol. 18, no. 32, pp. 2743–2773, Mar. 2019, doi: 10.2174/1568026619666190121125106.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;L. Maveyraud and L. Mourey, “Protein X-ray Crystallography and Drug Discovery,” &lt;em&gt;Molecules&lt;/em&gt;, vol. 25, no. 5, Feb. 2020, doi: 10.3390/MOLECULES25051030.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A. Kouranov &lt;em&gt;et al.&lt;/em&gt;, “The RCSB PDB information portal for structural genomics,” &lt;em&gt;Nucleic Acids Res&lt;/em&gt;, vol. 34, no. suppl_1, pp. D302–D305, Jan. 2006, doi: 10.1093/NAR/GKJ120.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;J. Jumper &lt;em&gt;et al.&lt;/em&gt;, “Highly accurate protein structure prediction with AlphaFold,” &lt;em&gt;Nature 2021 596:7873&lt;/em&gt;, vol. 596, no. 7873, pp. 583–589, Jul. 2021, doi: 10.1038/s41586-021-03819-2.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;F. Stanzione, I. Giangreco, and J. C. Cole, “Use of molecular docking computational tools in drug discovery,” &lt;em&gt;Prog Med Chem&lt;/em&gt;, vol. 60, pp. 273–343, Jan. 2021, doi: 10.1016/BS.PMCH.2021.01.004.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;“Molecular docking towards drug discovery - Gschwend - 1996 - Journal of Molecular Recognition - Wiley Online Library.” Accessed: Dec. 11, 2023. &lt;/p&gt;
+\[Online\]&lt;p&gt;. Available: 
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;N. Sauton, D. Lagorce, B. O. Villoutreix, and M. A. Miteva, “MS-DOCK: Accurate multiple conformation generator and rigid docking protocol for multi-step virtual ligand screening,” &lt;em&gt;BMC Bioinformatics&lt;/em&gt;, vol. 9, no. 1, pp. 1–12, Apr. 2008, doi: 10.1186/1471-2105-9-184/FIGURES/3.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;M. McGann, “FRED pose prediction and virtual screening accuracy,” &lt;em&gt;J Chem Inf Model&lt;/em&gt;, vol. 51, no. 3, pp. 578–596, Mar. 2011, doi: 10.1021/CI100436P/SUPPL_FILE/CI100436P_SI_001.PDF.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;J. Fan, A. Fu, and L. Zhang, “Progress in molecular docking,” &lt;em&gt;Quantitative Biology&lt;/em&gt;, vol. 7, no. 2, pp. 83–89, Jun. 2019, doi: 10.1007/S40484-019-0172-Y/METRICS.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;F. Ding, S. Yin, and N. V. Dokholyan, “Rapid flexible docking using a stochastic rotamer library of ligands,” &lt;em&gt;J Chem Inf Model&lt;/em&gt;, vol. 50, no. 9, pp. 1623–1632, Sep. 2010, doi: 10.1021/CI100218T/ASSET/IMAGES/MEDIUM/CI-2010-00218T_0010.GIF.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C. N. Cavasotto, J. A. Kovacs, and R. A. Abagyan, “Representing receptor flexibility in ligand docking through relevant normal modes,” &lt;em&gt;J Am Chem Soc&lt;/em&gt;, vol. 127, no. 26, pp. 9632–9640, Jul. 2005, doi: 10.1021/JA042260C/SUPPL_FILE/JA042260CSI20050608_024422.PDF.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;R. Rosenfeld, S. Vajda, and C. DeLisi, “Flexible Docking and Design,” &lt;em&gt;
+&lt;/em&gt;, vol. 24, pp. 677–700, Nov. 2003, doi: 10.1146/ANNUREV.BB.24.060195.003333.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;M. Totrov and R. Abagyan, “Flexible ligand docking to multiple receptor conformations: a practical alternative,” &lt;em&gt;Curr Opin Struct Biol&lt;/em&gt;, vol. 18, no. 2, pp. 178–184, Apr. 2008, doi: 10.1016/J.SBI.2008.01.004.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Y. Pak and S. Wang, “Application of a Molecular Dynamics Simulation Method with a Generalized Effective Potential to the Flexible Molecular Docking Problems,” &lt;em&gt;Journal of Physical Chemistry B&lt;/em&gt;, vol. 104, no. 2, pp. 354–359, Jan. 1999, doi: 10.1021/JP993073H.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;N. S. Pagadala, K. Syed, and J. Tuszynski, “Software for molecular docking: a review,” &lt;em&gt;Biophysical Reviews 2017 9:2&lt;/em&gt;, vol. 9, no. 2, pp. 91–102, Jan. 2017, doi: 10.1007/S12551-016-0247-1.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;O. Trott and A. J. Olson, “AutoDock Vina: Improving the speed and accuracy of docking with a new scoring function, efficient optimization, and multithreading,” &lt;em&gt;J Comput Chem&lt;/em&gt;, vol. 31, no. 2, pp. 455–461, Jan. 2010, doi: 10.1002/JCC.21334.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;T. J. A. Ewing, S. Makino, A. G. Skillman, and I. D. Kuntz, “DOCK 4.0: Search strategies for automated molecular docking of flexible molecule databases,” &lt;em&gt;J Comput Aided Mol Des&lt;/em&gt;, vol. 15, no. 5, pp. 411–428, 2001, doi: 10.1023/A:1011115820450/METRICS.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;M. L. Verdonk, J. C. Cole, M. J. Hartshorn, C. W. Murray, and R. D. Taylor, “Improved protein–ligand docking using GOLD,” &lt;em&gt;Proteins: Structure, Function, and Bioinformatics&lt;/em&gt;, vol. 52, no. 4, pp. 609–623, Sep. 2003, doi: 10.1002/PROT.10465.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;R. A. Friesner &lt;em&gt;et al.&lt;/em&gt;, “Glide: A New Approach for Rapid, Accurate Docking and Scoring. 1. Method and Assessment of Docking Accuracy,” &lt;em&gt;J Med Chem&lt;/em&gt;, vol. 47, no. 7, pp. 1739–1749, Mar. 2004, doi: 10.1021/JM0306430/SUPPL_FILE/JM0306430_S.PDF.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C. C. G. Inc., “Molecular operating environment (MOE),” 2016, &lt;em&gt;Chemical Computing Group Inc. Montreal, QC, Canada&lt;/em&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;G. M. Morris &lt;em&gt;et al.&lt;/em&gt;, “AutoDock4 and AutoDockTools4: Automated docking with selective receptor flexibility,” &lt;em&gt;J Comput Chem&lt;/em&gt;, vol. 30, no. 16, pp. 2785–2791, Dec. 2009, doi: 10.1002/JCC.21256.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;B. Kramer, M. Rarey, and T. Lengauer, “Evaluation of the FLEXX Incremental Construction Algorithm for Protein-Ligand Docking”, doi: 10.1002/(SICI)1097-0134(19991101)37:2.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;M. McGann, “FRED pose prediction and virtual screening accuracy,” &lt;em&gt;J Chem Inf Model&lt;/em&gt;, vol. 51, no. 3, pp. 578–596, Mar. 2011, doi: 10.1021/CI100436P/SUPPL_FILE/CI100436P_SI_001.PDF.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A. N. Jain, “Surflex-Dock 2.1: Robust performance from ligand energetic modeling, ring flexibility, and knowledge-based search,” &lt;em&gt;J Comput Aided Mol Des&lt;/em&gt;, vol. 21, no. 5, pp. 281–306, Mar. 2007, doi: 10.1007/S10822-007-9114-2/METRICS.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;G. Bitencourt-Ferreira and W. F. de Azevedo, “Molegro virtual docker for docking,” &lt;em&gt;Methods in Molecular Biology&lt;/em&gt;, vol. 2053, pp. 149–167, 2019, doi: 10.1007/978-1-4939-9752-7_10/COVER.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;H. Kubinyi, “Drug research: myths, hype and reality,” &lt;em&gt;Nature Reviews Drug Discovery 2003 2:8&lt;/em&gt;, vol. 2, no. 8, pp. 665–668, 2003, doi: 10.1038/nrd1156.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;M. J. Waring &lt;em&gt;et al.&lt;/em&gt;, “An analysis of the attrition of drug candidates from four major pharmaceutical companies,” &lt;em&gt;Nature Reviews Drug Discovery 2015 14:7&lt;/em&gt;, vol. 14, no. 7, pp. 475–486, Jun. 2015, doi: 10.1038/nrd4609.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;L. L. G. Ferreira and A. D. Andricopulo, “ADMET modeling approaches in drug discovery,” &lt;em&gt;Drug Discov Today&lt;/em&gt;, vol. 24, no. 5, pp. 1157–1165, May 2019, doi: 10.1016/J.DRUDIS.2019.03.015.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;R. Thelingwani, “Integration of In Silico and In Vitro ADMET properties in lead identification and optimization of compounds for the treatment of parasitic diseases,” 2012.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;S. Kar and J. Leszczynski, “Open access in silico tools to predict the ADMET profiling of drug candidates,” &lt;em&gt;Expert Opin Drug Discov&lt;/em&gt;, vol. 15, no. 12, pp. 1473–1487, Dec. 2020, doi: 10.1080/17460441.2020.1798926.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Y. Wang &lt;em&gt;et al.&lt;/em&gt;, “In silico ADME/T modelling for rational drug design,” &lt;em&gt;Q Rev Biophys&lt;/em&gt;, vol. 48, no. 4, pp. 488–515, Jul. 2015, doi: 10.1017/S0033583515000190.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;G. Xiong &lt;em&gt;et al.&lt;/em&gt;, “ADMETlab 2.0: an integrated online platform for accurate and comprehensive predictions of ADMET properties,” &lt;em&gt;Nucleic Acids Res&lt;/em&gt;, vol. 49, no. W1, pp. W5–W14, Jul. 2021, doi: 10.1093/NAR/GKAB255.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A. Daina, O. Michielin, and V. Zoete, “SwissADME: a free web tool to evaluate pharmacokinetics, drug-likeness and medicinal chemistry friendliness of small molecules,” &lt;em&gt;Scientific Reports 2017 7:1&lt;/em&gt;, vol. 7, no. 1, pp. 1–13, Mar. 2017, doi: 10.1038/srep42717.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;D. E. V. Pires, T. L. Blundell, and D. B. Ascher, “pkCSM: Predicting small-molecule pharmacokinetic and toxicity properties using graph-based signatures,” &lt;em&gt;J Med Chem&lt;/em&gt;, vol. 58, no. 9, pp. 4066–4072, May 2015, doi: 10.1021/ACS.JMEDCHEM.5B00104/SUPPL_FILE/JM5B00104_SI_001.PDF.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;M. De Vivo, M. Masetti, G. Bottegoni, and A. Cavalli, “Role of Molecular Dynamics and Related Methods in Drug Discovery,” &lt;em&gt;J Med Chem&lt;/em&gt;, vol. 59, no. 9, pp. 4035–4061, May 2016, doi: 10.1021/ACS.JMEDCHEM.5B01684/ASSET/IMAGES/LARGE/JM-2015-016843_0006.JPEG.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;D. N. Theodorou, “Progress and outlook in Monte Carlo simulations,” &lt;em&gt;Ind Eng Chem Res&lt;/em&gt;, vol. 49, no. 7, pp. 3047–3058, Apr. 2010, doi: 10.1021/IE9019006/ASSET/IE9019006.FP.PNG_V03.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;R. Iftimie, P. Minary, and M. E. Tuckerman, “Ab initio molecular dynamics: Concepts, recent developments, and future trends,” &lt;em&gt;Proc Natl Acad Sci U S A&lt;/em&gt;, vol. 102, no. 19, pp. 6654–6659, May 2005, doi: 10.1073/PNAS.0500193102/SUPPL_FILE/00193FIG5.JPG.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;D. Frenkel and B. Smit, &lt;em&gt;Understanding molecular simulation: From algorithms to applications&lt;/em&gt;. 1996. doi: 10.1063/1.881812.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;J. R. Valverde, “Molecular Modelling: Principles and Applications,” &lt;em&gt;Brief Bioinform&lt;/em&gt;, vol. 2, no. 2, 2001, doi: 10.1093/bib/2.2.199.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;J. W. Ponder and D. A. Case, “Force fields for protein simulations,” &lt;em&gt;Adv Protein Chem&lt;/em&gt;, vol. 66, 2003, doi: 10.1016/S0065-3233(03)66002-X.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;P. S. Nerenberg and T. Head-Gordon, “New developments in force fields for biomolecular simulations,” 2018. doi: 10.1016/j.sbi.2018.02.002.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;J. A. Maier, C. Martinez, K. Kasavajhala, L. Wickstrom, K. E. Hauser, and C. Simmerling, “ff14SB: Improving the Accuracy of Protein Side Chain and Backbone Parameters from ff99SB,” &lt;em&gt;J Chem Theory Comput&lt;/em&gt;, vol. 11, no. 8, pp. 3696–3713, Jul. 2015, doi: 10.1021/ACS.JCTC.5B00255/SUPPL_FILE/CT5B00255_SI_001.PDF.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;J. Wang, R. M. Wolf, J. W. Caldwell, P. A. Kollman, and D. A. Case, “Development and testing of a general amber force field,” &lt;em&gt;J Comput Chem&lt;/em&gt;, vol. 25, no. 9, pp. 1157–1174, Jul. 2004, doi: 10.1002/JCC.20035.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;J. Huang and A. D. Mackerell, “CHARMM36 all-atom additive protein force field: Validation based on comparison to NMR data,” &lt;em&gt;J Comput Chem&lt;/em&gt;, vol. 34, no. 25, pp. 2135–2145, Sep. 2013, doi: 10.1002/JCC.23354.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;N. Schmid &lt;em&gt;et al.&lt;/em&gt;, “Definition and testing of the GROMOS force-field versions 54A7 and 54B7,” &lt;em&gt;European Biophysics Journal&lt;/em&gt;, vol. 40, no. 7, pp. 843–856, Jul. 2011, doi: 10.1007/S00249-011-0700-9/METRICS.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;E. Harder &lt;em&gt;et al.&lt;/em&gt;, “OPLS3: A Force Field Providing Broad Coverage of Drug-like Small Molecules and Proteins,” &lt;em&gt;J Chem Theory Comput&lt;/em&gt;, vol. 12, no. 1, pp. 281–296, Jan. 2016, doi: 10.1021/ACS.JCTC.5B00864/SUPPL_FILE/CT5B00864_SI_001.ZIP.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;S. J. Marrink, H. J. Risselada, S. Yefimov, D. P. Tieleman, and A. H. De Vries, “The MARTINI Force Field: Coarse Grained Model for Biomolecular Simulations,” &lt;em&gt;Journal of Physical Chemistry B&lt;/em&gt;, vol. 111, no. 27, pp. 7812–7824, Jul. 2007, doi: 10.1021/JP071097F.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C. Zhang &lt;em&gt;et al.&lt;/em&gt;, “AMOEBA Polarizable Atomic Multipole Force Field for Nucleic Acids,” &lt;em&gt;J Chem Theory Comput&lt;/em&gt;, vol. 14, no. 4, p. 2084, Apr. 2018, doi: 10.1021/ACS.JCTC.7B01169.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;R. Zadorozhnyi &lt;em&gt;et al.&lt;/em&gt;, “Determination of Histidine Protonation States in Proteins by Fast Magic Angle Spinning NMR,” &lt;em&gt;Front Mol Biosci&lt;/em&gt;, vol. 8, p. 767040, Dec. 2021, doi: 10.3389/FMOLB.2021.767040/BIBTEX.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;S. Horowitz and R. C. Trievel, “Carbon-oxygen hydrogen bonding in biological structure and function,” &lt;em&gt;Journal of Biological Chemistry&lt;/em&gt;, vol. 287, no. 50, pp. 41576–41582, Dec. 2012, doi: 10.1074/jbc.R112.418574.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;S. Genheden and U. Ryde, “The MM/PBSA and MM/GBSA methods to estimate ligand-binding affinities,” &lt;em&gt;Expert Opin Drug Discov&lt;/em&gt;, vol. 10, no. 5, p. 449, May 2015, doi: 10.1517/17460441.2015.1032936.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C. Mulakala and V. N. Viswanadhan, “Could MM-GBSA be accurate enough for calculation of absolute protein/ligand binding free energies?,” &lt;em&gt;J Mol Graph Model&lt;/em&gt;, vol. 46, pp. 41–51, Nov. 2013, doi: 10.1016/J.JMGM.2013.09.005.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;P. A. Kollman &lt;em&gt;et al.&lt;/em&gt;, “Calculating Structures and Free Energies of Complex Molecules: Combining Molecular Mechanics and Continuum Models,” &lt;em&gt;Acc Chem Res&lt;/em&gt;, vol. 33, no. 12, pp. 889–897, 2000, doi: 10.1021/AR000033J.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;H. Gohlke and D. A. Case, “Converging free energy estimates: MM-PB(GB)SA studies on the protein–protein complex Ras–Raf,” &lt;em&gt;J Comput Chem&lt;/em&gt;, vol. 25, no. 2, pp. 238–250, Jan. 2004, doi: 10.1002/JCC.10379.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;I. Massova and P. A. Kollman, “Combined molecular mechanical and continuum solvent approach (MM- PBSA/GBSA) to predict ligand binding,” &lt;em&gt;Perspectives in Drug Discovery and Design&lt;/em&gt;, vol. 18, no. 1, pp. 113–135, 2000, doi: 10.1023/A:1008763014207/METRICS.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;N. Homeyer and H. Gohlke, “Free Energy Calculations by the Molecular Mechanics Poisson−Boltzmann Surface Area Method,” &lt;em&gt;Mol Inform&lt;/em&gt;, vol. 31, no. 2, pp. 114–122, Feb. 2012, doi: 10.1002/MINF.201100135.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;J. Weiser, P. S. Shenkin, and W. C. Still, “Approximate atomic surfaces from linear combinations of pairwise overlaps (LCPO),” &lt;em&gt;J Comput Chem&lt;/em&gt;, vol. 20, no. 2, 1999, doi: 10.1002/(SICI)1096-987X(19990130)20:2&amp;lt;217::AID-JCC4&amp;gt;3.0.CO;2-A.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;L. Dong, X. Qu, Y. Zhao, and B. Wang, “Prediction of Binding Free Energy of Protein-Ligand Complexes with a Hybrid Molecular Mechanics/Generalized Born Surface Area and Machine Learning Method,” &lt;em&gt;ACS Omega&lt;/em&gt;, vol. 6, no. 48, pp. 32938–32947, Dec. 2021, doi: 10.1021/ACSOMEGA.1C04996/ASSET/IMAGES/LARGE/AO1C04996_0006.JPEG.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;F. Fogolari, A. Brigo, and H. Molinari, “The Poisson–Boltzmann equation for biomolecular electrostatics: a tool for structural biology,” &lt;em&gt;Journal of Molecular Recognition&lt;/em&gt;, vol. 15, no. 6, pp. 377–392, Nov. 2002, doi: 10.1002/JMR.577.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;D. Van Der Spoel, E. Lindahl, B. Hess, G. Groenhof, A. E. Mark, and H. J. C. Berendsen, “GROMACS: Fast, flexible, and free,” &lt;em&gt;J Comput Chem&lt;/em&gt;, vol. 26, no. 16, pp. 1701–1718, Dec. 2005, doi: 10.1002/JCC.20291.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;D. A. Case &lt;em&gt;et al.&lt;/em&gt;, “The Amber biomolecular simulation programs,” &lt;em&gt;J Comput Chem&lt;/em&gt;, vol. 26, no. 16, pp. 1668–1688, Dec. 2005, doi: 10.1002/JCC.20290.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;K. J. Bowers &lt;em&gt;et al.&lt;/em&gt;, “Scalable algorithms for molecular dynamics simulations on commodity clusters,” &lt;em&gt;Proceedings of the 2006 ACM/IEEE Conference on Supercomputing, SC’06&lt;/em&gt;, 2006, doi: 10.1145/1188455.1188544.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A. P. Thompson &lt;em&gt;et al.&lt;/em&gt;, “LAMMPS - a flexible simulation tool for particle-based materials modeling at the atomic, meso, and continuum scales,” &lt;em&gt;Comput Phys Commun&lt;/em&gt;, vol. 271, p. 108171, Feb. 2022, doi: 10.1016/J.CPC.2021.108171.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;J. C. Phillips &lt;em&gt;et al.&lt;/em&gt;, “Scalable molecular dynamics with NAMD,” &lt;em&gt;J Comput Chem&lt;/em&gt;, vol. 26, no. 16, pp. 1781–1802, Dec. 2005, doi: 10.1002/JCC.20289.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>QSARBoost</title>
+      <link>https://yboulaamane.github.io/project/qsarboost/</link>
+      <pubDate>Fri, 15 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/qsarboost/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>QSARBioPred</title>
+      <link>https://yboulaamane.github.io/project/qsarbiopred/</link>
+      <pubDate>Tue, 07 May 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/qsarbiopred/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Using PaDELPy to Generate Molecular Fingerprints for Machine Learning-Based QSAR</title>
+      <link>https://yboulaamane.github.io/blog/using-padelpy-generate-molecular-fingerprints-machine-learning-based-qsar/</link>
+      <pubDate>Wed, 15 Mar 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/using-padelpy-generate-molecular-fingerprints-machine-learning-based-qsar/</guid>
+      <description>&lt;p&gt;PaDELPy is a Python library that integrates the PaDEL-Descriptor molecular descriptor calculation software, allowing efficient generation of molecular fingerprints for machine learning-based quantitative structure-activity relationship (QSAR) models in drug discovery.&lt;/p&gt;
+&lt;p&gt;Machine learning models, created by training algorithms to recognize data patterns, can be either supervised or unsupervised, applied in classification, regression, and more. Here, we’ll explore using PaDELPy to generate fingerprints that are crucial in predictive QSAR modeling, specifically targeting molecular activity prediction within the HCV Drug dataset.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225259643-df0568cd-1cfe-4395-aa7e-980902108f25.png&#34; alt=&#34;Molecular Fingerprint&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;what-is-padelpy&#34;&gt;What Is PaDELPy?&lt;/h2&gt;
+&lt;p&gt;PaDELPy is a Python wrapper for the Java-based PaDEL-Descriptor software, streamlining molecular descriptor calculations. With PaDELPy, you can easily compute molecular fingerprints, avoiding the complexity of Java setup and reducing the time required for implementation.&lt;/p&gt;
+&lt;h2 id=&#34;getting-started-with-the-code&#34;&gt;Getting Started with the Code&lt;/h2&gt;
+&lt;p&gt;In this tutorial, we will create a machine learning model using Random Forest to predict molecular activity within the HCV Drug dataset. The dataset is available 
+.&lt;/p&gt;
+&lt;p&gt;To install the PaDELPy library, use the following:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Installing the library
+!pip install padelpy
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Download and configure XML data files required by PaDELPy:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Downloading XML data files
+!wget https://github.com/dataprofessor/padel/raw/main/fingerprints_xml.zip
+!unzip fingerprints_xml.zip
+
+
+# Listing and sorting downloaded files
+import glob
+xml_files = glob.glob(&amp;quot;*.xml&amp;quot;)
+xml_files.sort()
+xml_files
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Output:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[&#39;AtomPairs2DFingerprintCount.xml&#39;, &#39;AtomPairs2DFingerprinter.xml&#39;, &#39;EStateFingerprinter.xml&#39;, ...]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Create a list of available fingerprint types:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Creating a list of present files
+FP_list = [&#39;AtomPairs2DCount&#39;, &#39;AtomPairs2D&#39;, &#39;EState&#39;, &#39;CDKextended&#39;, &#39;CDK&#39;, &#39;CDKgraphonly&#39;, 
+		   &#39;KlekotaRothCount&#39;, &#39;KlekotaRoth&#39;, &#39;MACCS&#39;, &#39;PubChem&#39;, &#39;SubstructureCount&#39;, &#39;Substructure&#39;]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Create a data dictionary of file names for easy reference:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Creating Data Dictionary
+fp = dict(zip(FP_list, xml_files))
+fp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;After setting up, load the dataset:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Loading the dataset
+import pandas as pd
+df = pd.read_csv(&#39;https://raw.githubusercontent.com/dataprofessor/data/master/HCV_NS5B_Curated.csv&#39;)
+df.head()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Prepare the data by concatenating necessary columns:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Concatenating necessary columns
+df2 = pd.concat([df[&#39;CANONICAL_SMILES&#39;], df[&#39;CMPD_CHEMBLID&#39;]], axis=1)
+df2.to_csv(&#39;molecule.smi&#39;, sep=&#39;\t&#39;, index=False, header=False)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Select a fingerprint type and calculate descriptors:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Setting the fingerprint module
+from padelpy import padeldescriptor
+fingerprint = &#39;Substructure&#39;
+fingerprint_output_file = &#39;&#39;.join([fingerprint, &#39;.csv&#39;])  # Substructure.csv
+fingerprint_descriptortypes = fp[fingerprint]
+
+padeldescriptor(mol_dir=&#39;molecule.smi&#39;, 
+				d_file=fingerprint_output_file,
+				descriptortypes=fingerprint_descriptortypes,
+				detectaromaticity=True,
+				standardizenitro=True,
+				standardizetautomers=True,
+				threads=2,
+				removesalt=True,
+				log=True,
+				fingerprints=True)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Display calculated fingerprints:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;descriptors = pd.read_csv(fingerprint_output_file)
+descriptors.head()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Creating a Random Forest Model
+Using the processed data, create a Random Forest model for classification.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;X = descriptors.drop(&#39;Name&#39;, axis=1)
+y = df[&#39;Activity&#39;]  # Target variable
+
+# Removing low variance features
+from sklearn.feature_selection import VarianceThreshold
+
+def remove_low_variance(input_data, threshold=0.1):
+	selection = VarianceThreshold(threshold)
+	selection.fit(input_data)
+	return input_data[input_data.columns[selection.get_support(indices=True)]]
+
+X = remove_low_variance(X, threshold=0.1)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Split data into training and testing sets:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Splitting into Train and Test sets
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Train the Random Forest model:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;from sklearn.ensemble import RandomForestClassifier
+model = RandomForestClassifier(n_estimators=500, random_state=42)
+model.fit(X_train, y_train)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Evaluate model performance using Matthews Correlation Coefficient (MCC):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Making predictions
+y_train_pred = model.predict(X_train)
+y_test_pred = model.predict(X_test)
+
+
+# Calculating MCC for train and test
+from sklearn.metrics import matthews_corrcoef
+mcc_train = matthews_corrcoef(y_train, y_train_pred)
+mcc_test = matthews_corrcoef(y_test, y_test_pred)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Perform 5-fold cross-validation:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import pandas as pd
+performance_metrics = pd.DataFrame({
+	&#39;Model&#39;: [&#39;Random Forest&#39;],
+	&#39;MCC_Train&#39;: [mcc_train],
+	&#39;MCC_CV&#39;: [mcc_cv],
+	&#39;MCC_Test&#39;: [mcc_test]
+})
+performance_metrics
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Consolidate performance metrics into a single DataFrame:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import pandas as pd
+performance_metrics = pd.DataFrame({
+	&#39;Model&#39;: [&#39;Random Forest&#39;],
+	&#39;MCC_Train&#39;: [mcc_train],
+	&#39;MCC_CV&#39;: [mcc_cv],
+	&#39;MCC_Test&#39;: [mcc_test]
+})
+performance_metrics
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;In this tutorial, we explored using PaDELPy to calculate molecular fingerprints, then developed a Random Forest model to predict molecular drug activity. The high Matthews Correlation Coefficient values suggest that this model is effective on the current dataset, though other algorithms could also be evaluated for further optimization.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

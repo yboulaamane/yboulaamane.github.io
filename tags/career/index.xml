@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Career | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/career/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/career/index.xml" rel="self" type="application/rss+xml" />
+    <description>Career</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sun, 16 Oct 2022 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Career</title>
+      <link>https://yboulaamane.github.io/tags/career/</link>
+    </image>
+    
+    <item>
+      <title>Supervised vs. Unsupervised Methods in Machine Learning</title>
+      <link>https://yboulaamane.github.io/blog/supervised-vs-unsupervised-methods-machine-learning/</link>
+      <pubDate>Sun, 16 Oct 2022 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/supervised-vs-unsupervised-methods-machine-learning/</guid>
+      <description>&lt;p&gt;The growth of biomedical datasets in chemistry and life sciences has made machine learning an increasingly practical tool for drug discovery. Models trained on bioactivity and pharmacokinetic data can guide early-stage screening and reduce experimental burden.&lt;/p&gt;
+&lt;p&gt;Machine learning approaches fall into three broad categories based on the nature of the feedback available to the learning algorithm.&lt;/p&gt;
+&lt;h2 id=&#34;1-supervised-learning&#34;&gt;1. Supervised learning&lt;/h2&gt;
+&lt;p&gt;In supervised learning, a model is trained on a labeled dataset and learns to predict outcomes for new, unseen instances.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225256631-3a7927f8-0f0e-4c3a-9220-70bc0496e4db.png&#34; alt=&#34;Figure1&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 1: Example of a chemical dataset viewed with Pandas.&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The names up here which are called: molecule_chembl_id and smiles are called attributes. Other names such as standard_value represents the numerical values for each sample, whereas the class name represents a categorical value which can be either 1 (active) or 0 (inactive). The columns are called features which include the data. If we plot this data, and look at a single data point on a plot, it&amp;rsquo;ll have all of these attributes that would make a row on this chart also referred to as an observation. Looking directly at the value of the data, you can have two kinds. The first is numerical, when dealing with machine learning, the most commonly used data is numeric. The second is categorical, that is its non-numeric because it contains characters rather than numbers. In this case, it&amp;rsquo;s categorical because this dataset is made for classification.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225256633-ae720fd3-3c21-4cc5-bda4-4c4e8bdea928.png&#34; alt=&#34;Figure2&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 2: Supervised learning.&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Supervised learning covers two main task types. Classification predicts a discrete class label. Regression predicts a continuous value.&lt;/p&gt;
+&lt;h2 id=&#34;2-unsupervised-learning&#34;&gt;2. Unsupervised learning&lt;/h2&gt;
+&lt;p&gt;In unsupervised learning, the model operates on unlabeled data and identifies structure without prior knowledge of expected outcomes. Because there is no ground truth to guide training, these methods tend to be more complex to evaluate. Common techniques include dimensionality reduction, density estimation, market basket analysis, and clustering. Dimensionality reduction and feature selection help by removing redundant information, making underlying patterns more apparent.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://user-images.githubusercontent.com/7014404/225256636-fbbe6ac3-8726-46ff-aad4-9025c25bd75a.png&#34; alt=&#34;Figure3&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 3: Unsupervised learning tasks. Image by Dmytro Nikolaiev (medium.com/@andimid).&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Market basket analysis, on the other hand, is a modeling technique based upon the theory that if you buy a certain group of items, you&amp;rsquo;re more likely to buy another group of items.
+Density estimation is a very simple concept that is mostly used to explore the data to find some structure within it.
+Clustering is one of the most widely used unsupervised techniques, grouping data points by similarity. Applications include customer segmentation, pattern discovery, and anomaly detection.&lt;/p&gt;
+&lt;h2 id=&#34;bottom-line&#34;&gt;Bottom line&lt;/h2&gt;
+&lt;p&gt;The core distinction is that supervised learning requires labeled data, while unsupervised learning does not. Supervised methods cover classification and regression; unsupervised methods cover clustering, dimensionality reduction, and density estimation. Unsupervised learning has fewer standardized evaluation metrics, making it harder to assess whether the model output is meaningful.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

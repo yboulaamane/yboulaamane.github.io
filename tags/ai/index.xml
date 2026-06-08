@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ai | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/ai/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/ai/index.xml" rel="self" type="application/rss+xml" />
+    <description>Ai</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sat, 23 May 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Ai</title>
+      <link>https://yboulaamane.github.io/tags/ai/</link>
+    </image>
+    
+    <item>
+      <title>Beyond SMILES: The Evolving Landscape of Molecular Representations</title>
+      <link>https://yboulaamane.github.io/blog/beyond-smiles-the-evolving-landscape-of-molecular-representations/</link>
+      <pubDate>Sat, 23 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/beyond-smiles-the-evolving-landscape-of-molecular-representations/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;This post summarizes the key ideas from Zhang et al. (2026), &lt;em&gt;&amp;ldquo;Molecular Knowledge Representations in the Era of Artificial Intelligence,&amp;rdquo;&lt;/em&gt; a preprint published on ChemRxiv (DOI: 
+).&lt;/p&gt;&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-core-problem&#34;&gt;The Core Problem&lt;/h2&gt;
+&lt;p&gt;Molecules are quantum-mechanical objects. Their exact description is computationally intractable, and any real sample is a messy mixture of impurities, conformers, and side products. This means every representation of a molecule is, by necessity, an approximation — shaped by the interactions and length scales we care about.&lt;/p&gt;
+&lt;p&gt;The central challenge in modern chemical AI is therefore not just &lt;em&gt;encoding&lt;/em&gt; molecular structure, but doing so in ways that are &lt;strong&gt;simultaneously useful to machines and interpretable by humans&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Zhang et al. organize the landscape of molecular representations through the lens of topology, distinguishing three families: &lt;strong&gt;discrete&lt;/strong&gt;, &lt;strong&gt;continuous&lt;/strong&gt;, and &lt;strong&gt;hybrid&lt;/strong&gt;.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-three-families-of-representation&#34;&gt;The Three Families of Representation&lt;/h2&gt;
+
+&lt;svg viewBox=&#34;0 0 720 220&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; style=&#34;width:100%;max-width:720px;background:#ffffff;border-radius:8px;display:block;margin:1.5rem auto;&#34;&gt;
+  &lt;!-- Background --&gt;
+  &lt;rect width=&#34;720&#34; height=&#34;220&#34; fill=&#34;#ffffff&#34;/&gt;
+
+  &lt;!-- Discrete box --&gt;
+  &lt;rect x=&#34;30&#34; y=&#34;40&#34; width=&#34;190&#34; height=&#34;140&#34; rx=&#34;10&#34; fill=&#34;#EEF6FB&#34; stroke=&#34;#3A86B4&#34; stroke-width=&#34;2&#34;/&gt;
+  &lt;text x=&#34;125&#34; y=&#34;68&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;14&#34; font-weight=&#34;bold&#34; fill=&#34;#1A5276&#34;&gt;Discrete&lt;/text&gt;
+  &lt;text x=&#34;125&#34; y=&#34;92&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#333&#34;&gt;Graphs (atoms + bonds)&lt;/text&gt;
+  &lt;text x=&#34;125&#34; y=&#34;110&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#333&#34;&gt;Strings (SMILES, SELFIES)&lt;/text&gt;
+  &lt;text x=&#34;125&#34; y=&#34;128&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#333&#34;&gt;Fingerprints &amp;amp; descriptors&lt;/text&gt;
+  &lt;text x=&#34;125&#34; y=&#34;146&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#333&#34;&gt;Expert / rule-based systems&lt;/text&gt;
+  &lt;text x=&#34;125&#34; y=&#34;164&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#333&#34;&gt;Knowledge graphs&lt;/text&gt;
+
+  &lt;!-- Continuous box --&gt;
+  &lt;rect x=&#34;265&#34; y=&#34;40&#34; width=&#34;190&#34; height=&#34;140&#34; rx=&#34;10&#34; fill=&#34;#EAFAF1&#34; stroke=&#34;#27AE60&#34; stroke-width=&#34;2&#34;/&gt;
+  &lt;text x=&#34;360&#34; y=&#34;68&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;14&#34; font-weight=&#34;bold&#34; fill=&#34;#1D6A35&#34;&gt;Continuous&lt;/text&gt;
+  &lt;text x=&#34;360&#34; y=&#34;92&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#333&#34;&gt;Cartesian coordinates&lt;/text&gt;
+  &lt;text x=&#34;360&#34; y=&#34;110&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#333&#34;&gt;Coulomb matrices&lt;/text&gt;
+  &lt;text x=&#34;360&#34; y=&#34;128&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#333&#34;&gt;Neural embeddings (GNNs)&lt;/text&gt;
+  &lt;text x=&#34;360&#34; y=&#34;146&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#333&#34;&gt;Wavefunctions / PES&lt;/text&gt;
+  &lt;text x=&#34;360&#34; y=&#34;164&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#333&#34;&gt;Generative models&lt;/text&gt;
+
+  &lt;!-- Hybrid box --&gt;
+  &lt;rect x=&#34;500&#34; y=&#34;40&#34; width=&#34;190&#34; height=&#34;140&#34; rx=&#34;10&#34; fill=&#34;#FEF9E7&#34; stroke=&#34;#D4AC0D&#34; stroke-width=&#34;2&#34;/&gt;
+  &lt;text x=&#34;595&#34; y=&#34;68&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;14&#34; font-weight=&#34;bold&#34; fill=&#34;#7D6608&#34;&gt;Hybrid&lt;/text&gt;
+  &lt;text x=&#34;595&#34; y=&#34;92&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#333&#34;&gt;Large Language Models&lt;/text&gt;
+  &lt;text x=&#34;595&#34; y=&#34;110&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#333&#34;&gt;Retrieval-Augmented Gen.&lt;/text&gt;
+  &lt;text x=&#34;595&#34; y=&#34;128&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#333&#34;&gt;LLM-based agents&lt;/text&gt;
+  &lt;text x=&#34;595&#34; y=&#34;146&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#333&#34;&gt;Multimodal models&lt;/text&gt;
+  &lt;text x=&#34;595&#34; y=&#34;164&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#333&#34;&gt;Tool-using pipelines&lt;/text&gt;
+
+  &lt;!-- Arrows between boxes --&gt;
+  &lt;line x1=&#34;220&#34; y1=&#34;110&#34; x2=&#34;263&#34; y2=&#34;110&#34; stroke=&#34;#888&#34; stroke-width=&#34;1.5&#34; marker-end=&#34;url(#arr)&#34;/&gt;
+  &lt;line x1=&#34;455&#34; y1=&#34;110&#34; x2=&#34;498&#34; y2=&#34;110&#34; stroke=&#34;#888&#34; stroke-width=&#34;1.5&#34; marker-end=&#34;url(#arr)&#34;/&gt;
+  &lt;defs&gt;
+    &lt;marker id=&#34;arr&#34; markerWidth=&#34;8&#34; markerHeight=&#34;8&#34; refX=&#34;6&#34; refY=&#34;3&#34; orient=&#34;auto&#34;&gt;
+      &lt;path d=&#34;M0,0 L0,6 L8,3 z&#34; fill=&#34;#888&#34;/&gt;
+    &lt;/marker&gt;
+  &lt;/defs&gt;
+
+  &lt;!-- Bottom label --&gt;
+  &lt;text x=&#34;360&#34; y=&#34;208&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#666&#34; font-style=&#34;italic&#34;&gt;Interpretable ← — — — — — — — — → Computationally powerful&lt;/text&gt;
+&lt;/svg&gt;
+
+
+&lt;hr&gt;
+&lt;h2 id=&#34;discrete-representations&#34;&gt;Discrete Representations&lt;/h2&gt;
+&lt;p&gt;Discrete representations encode molecules as countable symbolic units. They are human-readable and traceable, making them foundational to both classical cheminformatics and rule-based AI.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Molecular graphs&lt;/strong&gt; represent atoms as nodes and bonds as edges. File formats like Molfile and tools like RDKit operate in this paradigm. Graph Neural Networks (GNNs) were built to process exactly this structure, preserving symmetries like atom-index invariance that string representations struggle with.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SMILES strings&lt;/strong&gt; are the dominant text encoding — a depth-first traversal of the molecular graph serialized into a linear sequence. Extensions like SELFIES guarantee that every string decodes to a valid molecule, making them popular for generative models. SMARTS and SMIRKS extend the grammar to encode reaction transformations and substructure queries.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Expert systems&lt;/strong&gt; like DENDRAL (1960s) and LHASA were the first to formalize chemical reasoning as explicit rule sets. Modern descendants like Chematica (now SYNTHIA) combine reaction templates with heuristics and cost functions for retrosynthesis planning. Knowledge graphs (e.g., OntoSpecies, ChEBI) take this further, linking entities via formal ontologies that support automated inference.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;continuous-representations&#34;&gt;Continuous Representations&lt;/h2&gt;
+&lt;p&gt;Continuous representations express molecular information as real-valued vectors or functions, enabling gradient-based optimization and learning.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Spatial representations&lt;/strong&gt; — Cartesian coordinates, Coulomb matrices, atomic symmetry functions — directly encode 3D geometry. They are essential for molecular dynamics, energy prediction, and conformer generation.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Neural network embeddings&lt;/strong&gt; are learned continuous representations. The key architectural choices follow the input modality: Transformers for strings, GNNs for graphs, equivariant networks for 3D coordinates. Equivariant GNNs like NequIP and MACE are particularly powerful because they build in physical symmetries (rotational, translational, permutational) by design.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Self-supervised learning&lt;/strong&gt; (SSL) addresses the chronic shortage of labelled chemical data. Models like ChemBERTa pre-train on millions of unlabelled SMILES using masked-token objectives, then fine-tune for downstream tasks. Contrastive learning adds another axis: pulling together representations of the same molecule expressed differently, and pushing apart distinct molecules.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Generative models&lt;/strong&gt; close the loop — rather than encoding known molecules, they sample novel structures from learned distributions. VAEs, diffusion models, and autoregressive language models have all been applied here, with 3D equivariant diffusion (e.g., EDM) pushing the frontier for structure-based drug design.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;hybrid-representations-the-llm-turn&#34;&gt;Hybrid Representations: The LLM Turn&lt;/h2&gt;
+
+&lt;svg viewBox=&#34;0 0 680 200&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; style=&#34;width:100%;max-width:680px;background:#ffffff;border-radius:8px;display:block;margin:1.5rem auto;&#34;&gt;
+  &lt;rect width=&#34;680&#34; height=&#34;200&#34; fill=&#34;#ffffff&#34;/&gt;
+
+  &lt;!-- Stages --&gt;
+  &lt;!-- Input --&gt;
+  &lt;rect x=&#34;20&#34; y=&#34;70&#34; width=&#34;120&#34; height=&#34;60&#34; rx=&#34;8&#34; fill=&#34;#FDEDEC&#34; stroke=&#34;#E74C3C&#34; stroke-width=&#34;1.5&#34;/&gt;
+  &lt;text x=&#34;80&#34; y=&#34;96&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;12&#34; font-weight=&#34;bold&#34; fill=&#34;#922B21&#34;&gt;User Input&lt;/text&gt;
+  &lt;text x=&#34;80&#34; y=&#34;114&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;10&#34; fill=&#34;#555&#34;&gt;Text / SMILES&lt;/text&gt;
+  &lt;text x=&#34;80&#34; y=&#34;128&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;10&#34; fill=&#34;#555&#34;&gt;Image / Data&lt;/text&gt;
+
+  &lt;!-- Tokenize --&gt;
+  &lt;rect x=&#34;170&#34; y=&#34;70&#34; width=&#34;120&#34; height=&#34;60&#34; rx=&#34;8&#34; fill=&#34;#EAF2FF&#34; stroke=&#34;#3498DB&#34; stroke-width=&#34;1.5&#34;/&gt;
+  &lt;text x=&#34;230&#34; y=&#34;96&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;12&#34; font-weight=&#34;bold&#34; fill=&#34;#1A5276&#34;&gt;Tokenize&lt;/text&gt;
+  &lt;text x=&#34;230&#34; y=&#34;114&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;10&#34; fill=&#34;#555&#34;&gt;Discrete → tokens&lt;/text&gt;
+  &lt;text x=&#34;230&#34; y=&#34;128&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;10&#34; fill=&#34;#555&#34;&gt;Embed → vectors&lt;/text&gt;
+
+  &lt;!-- Reason --&gt;
+  &lt;rect x=&#34;320&#34; y=&#34;70&#34; width=&#34;120&#34; height=&#34;60&#34; rx=&#34;8&#34; fill=&#34;#EAFAF1&#34; stroke=&#34;#27AE60&#34; stroke-width=&#34;1.5&#34;/&gt;
+  &lt;text x=&#34;380&#34; y=&#34;96&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;12&#34; font-weight=&#34;bold&#34; fill=&#34;#1D6A35&#34;&gt;Reason&lt;/text&gt;
+  &lt;text x=&#34;380&#34; y=&#34;114&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;10&#34; fill=&#34;#555&#34;&gt;Continuous latent&lt;/text&gt;
+  &lt;text x=&#34;380&#34; y=&#34;128&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;10&#34; fill=&#34;#555&#34;&gt;space + tools&lt;/text&gt;
+
+  &lt;!-- Output --&gt;
+  &lt;rect x=&#34;470&#34; y=&#34;70&#34; width=&#34;120&#34; height=&#34;60&#34; rx=&#34;8&#34; fill=&#34;#FEF9E7&#34; stroke=&#34;#D4AC0D&#34; stroke-width=&#34;1.5&#34;/&gt;
+  &lt;text x=&#34;530&#34; y=&#34;96&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;12&#34; font-weight=&#34;bold&#34; fill=&#34;#7D6608&#34;&gt;Output&lt;/text&gt;
+  &lt;text x=&#34;530&#34; y=&#34;114&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;10&#34; fill=&#34;#555&#34;&gt;Text / code&lt;/text&gt;
+  &lt;text x=&#34;530&#34; y=&#34;128&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;10&#34; fill=&#34;#555&#34;&gt;Tool calls / actions&lt;/text&gt;
+
+  &lt;!-- Arrows --&gt;
+  &lt;line x1=&#34;140&#34; y1=&#34;100&#34; x2=&#34;168&#34; y2=&#34;100&#34; stroke=&#34;#888&#34; stroke-width=&#34;1.5&#34; marker-end=&#34;url(#a2)&#34;/&gt;
+  &lt;line x1=&#34;290&#34; y1=&#34;100&#34; x2=&#34;318&#34; y2=&#34;100&#34; stroke=&#34;#888&#34; stroke-width=&#34;1.5&#34; marker-end=&#34;url(#a2)&#34;/&gt;
+  &lt;line x1=&#34;440&#34; y1=&#34;100&#34; x2=&#34;468&#34; y2=&#34;100&#34; stroke=&#34;#888&#34; stroke-width=&#34;1.5&#34; marker-end=&#34;url(#a2)&#34;/&gt;
+  &lt;defs&gt;
+    &lt;marker id=&#34;a2&#34; markerWidth=&#34;8&#34; markerHeight=&#34;8&#34; refX=&#34;6&#34; refY=&#34;3&#34; orient=&#34;auto&#34;&gt;
+      &lt;path d=&#34;M0,0 L0,6 L8,3 z&#34; fill=&#34;#888&#34;/&gt;
+    &lt;/marker&gt;
+  &lt;/defs&gt;
+
+  &lt;!-- Label --&gt;
+  &lt;text x=&#34;340&#34; y=&#34;165&#34; text-anchor=&#34;middle&#34; font-family=&#34;sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#888&#34; font-style=&#34;italic&#34;&gt;Discrete → Continuous → Discrete: the LLM pipeline&lt;/text&gt;
+&lt;/svg&gt;
+
+
+&lt;p&gt;LLMs like GPT-4, Gemini, Claude, and DeepSeek exemplify the hybrid paradigm: they convert discrete tokens into continuous embeddings, reason in that latent space, then decode back to discrete text. This discrete→continuous→discrete pipeline lets a single model operate over SMILES strings, natural language, and executable code simultaneously.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Key capabilities in chemistry:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Reaction prediction and retrosynthesis planning&lt;/li&gt;
+&lt;li&gt;Molecule captioning and property prediction&lt;/li&gt;
+&lt;li&gt;Translating natural language into executable lab protocols (e.g., XDL format)&lt;/li&gt;
+&lt;li&gt;Text-guided inverse molecular design&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Retrieval-Augmented Generation (RAG)&lt;/strong&gt; extends LLMs beyond their training cutoff by equipping them with queryable vector databases of chemical literature, reactions, and properties — yielding measurable gains on tasks like reaction condition prediction.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;LLM-based agents&lt;/strong&gt; go further still, using tool calls (RDKit, AutoDock, quantum chemistry codes) to act on the physical and digital world. Systems like ChemCrow (integrated with 18 expert tools) and CoScientist have demonstrated autonomous synthesis planning and execution. The Model Context Protocol (MCP) is emerging as a standardized interface connecting agents to domain-specific tools.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-big-picture&#34;&gt;The Big Picture&lt;/h2&gt;
+&lt;p&gt;The authors argue that representations exist on a spectrum between &lt;strong&gt;human interpretability&lt;/strong&gt; and &lt;strong&gt;machine utility&lt;/strong&gt;. No single representation dominates across all tasks:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Discrete representations&lt;/strong&gt; excel at transparency and rule-based reasoning.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Continuous representations&lt;/strong&gt; enable gradient-based learning and capture physical reality faithfully.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Hybrid LLM systems&lt;/strong&gt; bridge both, acting as universal connectors across representation types.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The frontier, they suggest, is co-designing representation ecosystems where humans and AI agents collaborate fluidly — moving from representations &lt;em&gt;for&lt;/em&gt; machines or &lt;em&gt;for&lt;/em&gt; humans, toward representations &lt;em&gt;with&lt;/em&gt; both.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+&lt;p&gt;Zhang, Z., Bai, J., Nakamura, Y., Wang, A., Leong, S. X., Zhang, S., Chen, P., Lo, A., Müller, M., Tom, G., Huang, M., Mantilla, L., Kang, Y., Bernales, V., &amp;amp; Aspuru-Guzik, A. (2026). &lt;em&gt;Molecular Knowledge Representations in the Era of Artificial Intelligence&lt;/em&gt;. ChemRxiv. 
+&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>What Agentic Engineering Means for Computational Drug Discovery</title>
+      <link>https://yboulaamane.github.io/blog/what-agentic-engineering-means-for-computational-drug-discovery/</link>
+      <pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/what-agentic-engineering-means-for-computational-drug-discovery/</guid>
+      <description>&lt;p&gt;Simon Willison recently appeared on 
+ to discuss what he calls the &lt;em&gt;November inflection point&lt;/em&gt;: the moment in late 2025 when frontier models crossed a threshold where agentic coding went from &amp;ldquo;mostly works if you watch carefully&amp;rdquo; to &amp;ldquo;almost always does what you asked.&amp;rdquo; His highlights post is 
+, but reading it through the lens of computational drug discovery, several themes land with unusual force.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-inflection-point-is-real-in-our-field-too&#34;&gt;The Inflection Point is Real in Our Field Too&lt;/h2&gt;
+&lt;p&gt;Willison frames November 2025 as the moment the promise of coding agents became practical: you can spin up an agent, describe what you want, and get something back that actually runs. For those of us building MD analysis pipelines, virtual screening workflows, or ML-based substrate classifiers, this rings true. What changed isn&amp;rsquo;t just raw model capability - it&amp;rsquo;s &lt;em&gt;reliability&lt;/em&gt;. An agent that gets it right 75% of the time creates more debugging work than it saves. One that gets it right 95% of the time fundamentally changes how you design a project.&lt;/p&gt;
+&lt;p&gt;In drug discovery, the code we write is usually not the point. The point is the science: does this compound dock with the right binding pose? Does this ML model generalize across CYP isoforms? The code is scaffolding. And if agents can build the scaffolding reliably, that frees researchers to focus on the parts that actually require domain expertise: choosing the right receptor ensemble, interpreting docking scores, deciding whether a geometric feature captures what you think it captures.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-bottleneck-has-moved-to-testing-and-thats-familiar-territory&#34;&gt;The Bottleneck Has Moved to Testing, and That&amp;rsquo;s Familiar Territory&lt;/h2&gt;
+&lt;p&gt;One of Willison&amp;rsquo;s most interesting observations is that the bottleneck in software development has shifted: implementation is no longer the slow part. Prototyping three different approaches now costs as much as prototyping one used to. The new constraint is &lt;em&gt;validation&lt;/em&gt; - how do you know which of your three prototypes is actually right?&lt;/p&gt;
+&lt;p&gt;This maps almost perfectly onto computational drug discovery, where validation has always been the hard part. It takes minutes to run a docking job. It takes weeks or months of wet lab work to find out if the predicted binder actually binds. The ratio of compute to experimental validation hasn&amp;rsquo;t changed just because the AI can write your AutoDock Vina wrapper faster. If anything, the pressure on experimental teams increases as computational throughput accelerates.&lt;/p&gt;
+&lt;p&gt;What does change is internal validation. It&amp;rsquo;s now cheap to try multiple featurization strategies for your ML model, run multiple docking protocols on your ensemble, or test three different clustering approaches on your MD trajectories, and compare them properly. The scientific judgment required to &lt;em&gt;interpret&lt;/em&gt; those comparisons doesn&amp;rsquo;t get cheaper, but you get more data to feed it.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;experience-amplification-not-experience-replacement&#34;&gt;Experience Amplification, Not Experience Replacement&lt;/h2&gt;
+&lt;p&gt;Willison cites a ThoughtWorks finding: AI tools benefit senior engineers and junior engineers most, while mid-career engineers face the most disruption. The reasoning is that senior engineers know &lt;em&gt;what&lt;/em&gt; to build and &lt;em&gt;how to evaluate&lt;/em&gt; what was built - they provide the judgment that guides the agent and the critical eye that catches its mistakes. Junior engineers benefit from having an endlessly patient collaborator that can explain concepts, demonstrate patterns, and scaffold early projects.&lt;/p&gt;
+&lt;p&gt;The parallel in computational drug discovery is direct. A postdoctoral researcher who understands force fields, binding free energies, the difference between RMSD and RMSF as quality metrics, or why a high docking score doesn&amp;rsquo;t mean a good drug candidate: that knowledge becomes &lt;em&gt;more&lt;/em&gt; valuable when an agent can rapidly implement whatever protocol you describe. The agent doesn&amp;rsquo;t know that your receptor is in an unusual conformational state, or that the crystallographic water in the binding site probably shouldn&amp;rsquo;t be stripped. You know that.&lt;/p&gt;
+&lt;p&gt;What could be disrupted is the middle ground: researchers who can run established pipelines competently but haven&amp;rsquo;t yet developed the scientific intuition to question their own results. If agents can run the pipelines, that skill alone is no longer a differentiator.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;responsible-vibe-coding-and-the-stakes-of-our-domain&#34;&gt;Responsible &amp;ldquo;Vibe Coding&amp;rdquo; and the Stakes of Our Domain&lt;/h2&gt;
+&lt;p&gt;Willison draws a clear line: vibe coding (rapidly assembling working software without deeply scrutinizing every line) is fine when only you are affected by any bugs. The moment other people depend on your output, you have to be more careful.&lt;/p&gt;
+&lt;p&gt;Drug discovery sits unambiguously on the &amp;ldquo;be more careful&amp;rdquo; side of that line. A virtual screening pipeline that silently uses the wrong protonation state, a feature extraction script that indexes atoms incorrectly, an ML model that leaks test set information through improper splitting: these errors don&amp;rsquo;t just waste compute time. They can misdirect medicinal chemistry efforts, consume experimental resources, and slow down projects with real human health implications downstream.&lt;/p&gt;
+&lt;p&gt;This doesn&amp;rsquo;t mean agents are inappropriate for the field. It means the validation discipline we already apply to our science needs to be applied to the code too. Write tests. Sanity-check intermediate outputs against known reference datasets. Treat agent-generated code with the same skepticism you&amp;rsquo;d apply to a script handed to you by a collaborator you respect but haven&amp;rsquo;t worked with before.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-new-bottleneck-can-we-ask-better-questions&#34;&gt;The New Bottleneck: Can We Ask Better Questions?&lt;/h2&gt;
+&lt;p&gt;The thread that runs through Willison&amp;rsquo;s entire conversation is this: the cost of &lt;em&gt;implementation&lt;/em&gt; is collapsing. What remains expensive is knowing what to implement and why. In computational drug discovery, this is the oldest truth in the field. CADD has always been able to generate enormous numbers of candidates; the limiting resource has always been the ability to prioritize them intelligently.&lt;/p&gt;
+&lt;p&gt;Agentic AI doesn&amp;rsquo;t solve the prioritization problem. But it does mean that a researcher with genuine scientific judgment - about target biology, about the chemical space worth exploring, about what a binding pose is actually telling you - can execute on that judgment faster and at greater scale than before. The field has always needed people who can think at the interface of chemistry, biology, and computation. That&amp;rsquo;s not going away. If anything, it matters more.&lt;/p&gt;
+&lt;p&gt;The inflection point Willison describes is real, and it&amp;rsquo;s arriving in computational drug discovery the same way it&amp;rsquo;s arriving everywhere else. The question is whether we use it to accelerate science or just to accelerate the production of numbers.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Episode: 
+, Lenny&amp;rsquo;s Podcast, April 2026. Simon Willison&amp;rsquo;s highlights post: 
+.&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,79 @@
+<svg width="100%" viewBox="0 0 680 600" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>PDB structure selection flowchart</title>
+<desc>Step-by-step decision flowchart for selecting the right PDB structure.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<style>
+text { font-family: Arial, Helvetica, sans-serif; }
+.h  { font-size:14px; font-weight:700; }
+.s  { font-size:12px; font-weight:400; }
+.bw { font-size:12px; font-weight:700; }
+.halo { stroke:#fff; stroke-width:4; paint-order:stroke fill; }
+.halo-teal  { stroke:#E1F5EE; stroke-width:4; paint-order:stroke fill; }
+.halo-purple{ stroke:#EEEDFE; stroke-width:4; paint-order:stroke fill; }
+.halo-coral { stroke:#FAECE7; stroke-width:4; paint-order:stroke fill; }
+.halo-green { stroke:#EAF3DE; stroke-width:4; paint-order:stroke fill; }
+</style>
+</defs>
+
+<rect x="40" y="16" width="600" height="568" rx="16" fill="none" stroke="#1D9E75" stroke-width="0.5" stroke-dasharray="6 4" opacity="0.4"/>
+
+<rect x="160" y="30" width="360" height="56" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
+<circle cx="190" cy="58" r="13" fill="#1D9E75"/>
+<text class="bw halo" x="190" y="62" text-anchor="middle" dominant-baseline="central" fill="#111">1</text>
+<text class="h halo-teal" x="370" y="50" text-anchor="middle" dominant-baseline="central" fill="#111">Search by UniProt accession</text>
+<text class="s halo-teal" x="370" y="68" text-anchor="middle" dominant-baseline="central" fill="#111">Confirm target organism</text>
+
+<line x1="340" y1="86" x2="340" y2="110" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+<rect x="160" y="110" width="360" height="56" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
+<circle cx="190" cy="138" r="13" fill="#1D9E75"/>
+<text class="bw halo" x="190" y="142" text-anchor="middle" dominant-baseline="central" fill="#111">2</text>
+<text class="h halo-teal" x="370" y="130" text-anchor="middle" dominant-baseline="central" fill="#111">Check for engineered mutations</text>
+<text class="s halo-teal" x="370" y="148" text-anchor="middle" dominant-baseline="central" fill="#111">Inspect active site in sequence viewer</text>
+
+<line x1="340" y1="166" x2="340" y2="190" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+<rect x="160" y="190" width="360" height="56" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
+<circle cx="190" cy="218" r="13" fill="#1D9E75"/>
+<text class="bw halo" x="190" y="222" text-anchor="middle" dominant-baseline="central" fill="#111">3</text>
+<text class="h halo-teal" x="370" y="210" text-anchor="middle" dominant-baseline="central" fill="#111">Verify loop completeness</text>
+<text class="s halo-teal" x="370" y="228" text-anchor="middle" dominant-baseline="central" fill="#111">Note gaps in electron density</text>
+
+<line x1="340" y1="246" x2="340" y2="270" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+<rect x="150" y="270" width="380" height="48" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+<text class="h halo-purple" x="340" y="296" text-anchor="middle" dominant-baseline="central" fill="#111">X-ray structure available?</text>
+
+<path d="M182 294 L90 294 L90 362" fill="none" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+<text class="s halo" x="134" y="286" text-anchor="middle" fill="#111">No</text>
+
+<path d="M498 294 L590 294 L590 362" fill="none" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+<text class="s halo" x="546" y="286" text-anchor="middle" fill="#111">Yes</text>
+
+<rect x="48" y="362" width="126" height="56" rx="10" fill="#FAECE7" stroke="#D85A30" stroke-width="1"/>
+<text class="h halo-coral" x="111" y="382" text-anchor="middle" dominant-baseline="central" fill="#111">Use NMR</text>
+<text class="s halo-coral" x="111" y="400" text-anchor="middle" dominant-baseline="central" fill="#111">IDPs only; one model</text>
+
+<rect x="516" y="362" width="126" height="56" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
+<text class="h halo-teal" x="579" y="382" text-anchor="middle" dominant-baseline="central" fill="#111">Below 2.5 Å</text>
+<text class="s halo-teal" x="579" y="400" text-anchor="middle" dominant-baseline="central" fill="#111">Check R-free</text>
+
+<path d="M90 418 L90 458 L340 458" fill="none" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+<path d="M590 418 L590 458 L340 458" fill="none" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+<rect x="150" y="458" width="380" height="48" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+<circle cx="180" cy="482" r="13" fill="#534AB7"/>
+<text class="bw halo" x="180" y="486" text-anchor="middle" dominant-baseline="central" fill="#111">4</text>
+<text class="h halo-purple" x="360" y="484" text-anchor="middle" dominant-baseline="central" fill="#111">Download biological assembly</text>
+
+<line x1="340" y1="506" x2="340" y2="530" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+<rect x="160" y="530" width="360" height="48" rx="10" fill="#EAF3DE" stroke="#3B6D11" stroke-width="1"/>
+<circle cx="190" cy="554" r="13" fill="#3B6D11"/>
+<text class="bw halo" x="190" y="558" text-anchor="middle" dominant-baseline="central" fill="#111">5</text>
+<text class="h halo-green" x="370" y="556" text-anchor="middle" dominant-baseline="central" fill="#111">Save as .cif, not .pdb</text>
+
+</svg>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Artificial Intelligence | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/artificial-intelligence/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/artificial-intelligence/index.xml" rel="self" type="application/rss+xml" />
+    <description>Artificial Intelligence</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 01 Jul 2025 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Artificial Intelligence</title>
+      <link>https://yboulaamane.github.io/tags/artificial-intelligence/</link>
+    </image>
+    
+    <item>
+      <title>AI &#43; Chemistry: Building Drug Discovery Pipelines with Free Tools</title>
+      <link>https://yboulaamane.github.io/blog/ai-chemistry-building-drug-discovery-pipelines-with-free-tools/</link>
+      <pubDate>Tue, 01 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/ai-chemistry-building-drug-discovery-pipelines-with-free-tools/</guid>
+      <description>&lt;p&gt;A complete drug discovery pipeline can now be built entirely with free, open-source tools. From bioactivity data retrieval to ML model training and 3D visualization, the ecosystem covers every step. To make this concrete, this post walks through a pipeline targeting the ABL kinase (c-Abl tyrosine kinase, the target of imatinib), with working code at each stage.&lt;/p&gt;
+&lt;h2 id=&#34;from-data-to-discovery-the-open-source-pipeline-case-study-abl-kinase&#34;&gt;From Data to Discovery: The Open-Source Pipeline (Case Study: ABL Kinase)&lt;/h2&gt;
+&lt;p&gt;The goal: identify new inhibitors of ABL kinase, a key oncology target (Bcr-Abl drives chronic myeloid leukemia). The pipeline covers:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Gather known bioactivity data for ABL&lt;/li&gt;
+&lt;li&gt;Featurize and analyze molecules&lt;/li&gt;
+&lt;li&gt;Train an AI model to predict new inhibitors&lt;/li&gt;
+&lt;li&gt;Convert and prepare compounds for simulation&lt;/li&gt;
+&lt;li&gt;Visualize how they bind&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;All steps use open resources:&lt;/p&gt;
+&lt;h3 id=&#34;open-data-chembl&#34;&gt;Open Data (ChEMBL)&lt;/h3&gt;
+&lt;p&gt;ABL bioactivity data can be retrieved from ChEMBL, an open database of drug-like molecules and their biological activities with millions of measured compound-target data points. ChEMBL’s web services or bulk downloads provide IC50/Ki values for all compounds tested against ABL, which Pandas can then filter and tabulate.&lt;/p&gt;
+&lt;h3 id=&#34;data-handling-pandas--numpy&#34;&gt;Data Handling (Pandas &amp;amp; NumPy)&lt;/h3&gt;
+&lt;p&gt;With our ABL dataset in hand (e.g. as a CSV of SMILES and activity labels), we use Pandas to clean and manipulate it and NumPy for any numerical computing. These “classics” form the backbone of any custom pipeline, e.g., grouping data, normalizing values, splitting into train/test sets. They might not be drug discovery-specific, but their flexibility is indispensable. We might do:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import pandas as pd
+df = pd.read_csv(&amp;quot;ABL_bioactivity.csv&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;rdkit--the-unsung-hero-of-cheminformatics&#34;&gt;RDKit – The Unsung Hero of Cheminformatics&lt;/h2&gt;
+&lt;p&gt;If you&amp;rsquo;re doing anything with molecules in Python, chances are RDKit is working behind the scenes. RDKit is an open-source cheminformatics toolkit widely used for tasks like generating molecular fingerprints, performing substructure searches, computing descriptors, and manipulating chemical structures.&lt;/p&gt;
+&lt;p&gt;In our ABL example, we use RDKit to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Generate Morgan fingerprints&lt;/li&gt;
+&lt;li&gt;Perform substructure searches&lt;/li&gt;
+&lt;li&gt;Compute molecular descriptors&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;code-example&#34;&gt;Code Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;from rdkit import Chem, DataStructs
+from rdkit.Chem import AllChem
+
+imatinib_smiles = &amp;quot;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)NC(=O)c4ccc(cc4)CN5CCN(CC5)C&amp;quot;
+nilotinib_smiles = &amp;quot;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)C(=O)Nc4cc(cc(c4)n5cc(nc5)C)C(F)(F)F&amp;quot;
+
+mol1 = Chem.MolFromSmiles(imatinib_smiles)
+mol2 = Chem.MolFromSmiles(nilotinib_smiles)
+
+fp1 = AllChem.GetMorganFingerprintAsBitVect(mol1, radius=2, nBits=2048)
+fp2 = AllChem.GetMorganFingerprintAsBitVect(mol2, radius=2, nBits=2048)
+
+sim = DataStructs.TanimotoSimilarity(fp1, fp2)
+print(f&amp;quot;Tanimoto similarity: {sim:.2f}&amp;quot;)
+
+query = Chem.MolFromSmarts(&amp;quot;c1ccc(cc1)Nc2nccc(n2)&amp;quot;)
+match = mol1.HasSubstructMatch(query)
+print(&amp;quot;Substructure match:&amp;quot;, match)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;deepchem--ai-made-beautifully-simple&#34;&gt;DeepChem – AI Made Beautifully Simple&lt;/h2&gt;
+&lt;p&gt;DeepChem is an open-source library that brings advanced models like GCNs and multitask networks to your fingertips. It’s built on TensorFlow/PyTorch but hides the complexity.&lt;/p&gt;
+&lt;h3 id=&#34;code-example-1&#34;&gt;Code Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;import deepchem as dc
+import numpy as np
+
+smiles_list = [
+&amp;quot;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)NC(=O)c4ccc(cc4)CN5CCN(CC5)C&amp;quot;,  # active
+&amp;quot;CCOC(=O)c1ccc(cc1)N&amp;quot;,  # inactive
+]
+labels = np.array([1, 0])
+
+featurizer = dc.feat.MolGraphConvFeaturizer()
+X = featurizer.featurize(smiles_list)
+y = labels
+
+dataset = dc.data.NumpyDataset(X, y)
+
+model = dc.models.GraphConvModel(n_tasks=1, mode=&#39;classification&#39;, metrics=[dc.metrics.Metric(dc.metrics.roc_auc_score)])
+model.fit(dataset, nb_epoch=20)
+
+pred_probs = model.predict(dataset)
+print(pred_probs)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;open-babel--convert-like-a-pro&#34;&gt;Open Babel – Convert Like a Pro&lt;/h2&gt;
+&lt;p&gt;Open Babel helps switch between formats like SMILES, SDF, PDB, etc.&lt;/p&gt;
+&lt;h3 id=&#34;code-example-2&#34;&gt;Code Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;from openbabel import pybel
+
+smiles = &amp;quot;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)NC(=O)c4ccc(cc4)CN5CCN(CC5)C&amp;quot;
+mol = pybel.readstring(&amp;quot;smi&amp;quot;, smiles)
+mol.addh()
+mol.make3D()
+mol.write(&amp;quot;sdf&amp;quot;, &amp;quot;imatinib_3D.sdf&amp;quot;, overwrite=True)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;pymol--visualize-what-ai-discovers&#34;&gt;PyMOL – Visualize What AI Discovers&lt;/h2&gt;
+&lt;p&gt;PyMOL is great for inspecting protein–ligand complexes and generating publication-quality figures.&lt;/p&gt;
+&lt;h3 id=&#34;code-example-3&#34;&gt;Code Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;import pymol2
+
+with pymol2.PyMOL() as pymol:
+	cmd = pymol.cmd
+	cmd.load(&amp;quot;ABL_kinase.pdb&amp;quot;, &amp;quot;protein&amp;quot;)
+	cmd.load(&amp;quot;imatinib_3D.sdf&amp;quot;, &amp;quot;ligand&amp;quot;)
+	cmd.hide(&amp;quot;everything&amp;quot;)
+	cmd.show(&amp;quot;cartoon&amp;quot;, &amp;quot;protein&amp;quot;)
+	cmd.show(&amp;quot;sticks&amp;quot;, &amp;quot;ligand&amp;quot;)
+	cmd.zoom(&amp;quot;ligand&amp;quot;, 5)
+	cmd.png(&amp;quot;abl_imatinib.png&amp;quot;, width=800, height=600, ray=1)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;chemprop--graph-neural-networks-made-easy&#34;&gt;Chemprop – Graph Neural Networks Made Easy&lt;/h2&gt;
+&lt;p&gt;Chemprop offers fast training of MPNNs for tasks like QSAR and virtual screening.&lt;/p&gt;
+&lt;h3 id=&#34;cli-example&#34;&gt;CLI Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;chemprop_train --data_path abl_activity.csv --smiles_column smiles --target_columns active \
+           --dataset_type classification --save_dir abl_model
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;python-example&#34;&gt;Python Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;from chemprop.train import run_training
+
+params = {
+&amp;quot;data_path&amp;quot;: &amp;quot;abl_activity.csv&amp;quot;,
+&amp;quot;smiles_column&amp;quot;: &amp;quot;smiles&amp;quot;,
+&amp;quot;target_columns&amp;quot;: [&amp;quot;active&amp;quot;],
+&amp;quot;dataset_type&amp;quot;: &amp;quot;classification&amp;quot;,
+&amp;quot;save_dir&amp;quot;: &amp;quot;abl_model&amp;quot;,
+&amp;quot;epochs&amp;quot;: 30
+}
+run_training(params)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-classics-pandas-numpy-scikit-learn--data-science-backbone&#34;&gt;The Classics: Pandas, NumPy, Scikit-Learn – Data Science Backbone&lt;/h2&gt;
+&lt;p&gt;These libraries handle everything from preprocessing to baseline models.&lt;/p&gt;
+&lt;h3 id=&#34;example-random-forest&#34;&gt;Example Random Forest:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+
+X = [list(map(int, fp.ToBitString())) for fp in [fp1, fp2]]
+y = labels
+
+X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=0)
+model = RandomForestClassifier(n_estimators=100).fit(X_train, y_train)
+print(&amp;quot;Validation accuracy:&amp;quot;, model.score(X_val, y_val))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-open-source-revolution-in-action&#34;&gt;The Open-Source Revolution in Action&lt;/h2&gt;
+&lt;p&gt;An end-to-end drug discovery pipeline can be built with open-source tools at every step, each covering a distinct role:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ChEMBL and PubChem for bioactivity data&lt;/li&gt;
+&lt;li&gt;RDKit for cheminformatics and structure manipulation&lt;/li&gt;
+&lt;li&gt;DeepChem and Chemprop for ML-based activity prediction&lt;/li&gt;
+&lt;li&gt;Open Babel for format conversion&lt;/li&gt;
+&lt;li&gt;PyMOL for 3D visualization and pose inspection&lt;/li&gt;
+&lt;li&gt;Pandas, NumPy, and scikit-learn for data handling and baseline models&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;All of these are free, actively maintained, and installable with a single command. The community contributions mean new algorithms and best practices are integrated quickly. This makes a competitive computational pipeline accessible to academic labs and startups without proprietary software costs.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Structural Bioinformatics | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/structural-bioinformatics/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/structural-bioinformatics/index.xml" rel="self" type="application/rss+xml" />
+    <description>Structural Bioinformatics</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sun, 12 Mar 2023 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Structural Bioinformatics</title>
+      <link>https://yboulaamane.github.io/tags/structural-bioinformatics/</link>
+    </image>
+    
+    <item>
+      <title>Understanding Molecular Dynamics Simulations</title>
+      <link>https://yboulaamane.github.io/blog/understanding-molecular-dynamics-simulations/</link>
+      <pubDate>Sun, 12 Mar 2023 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/understanding-molecular-dynamics-simulations/</guid>
+      <description>&lt;p&gt;Molecular Dynamics (MD) simulation is a computational technique for studying the behavior of complex molecular systems at atomic resolution.
+MD works by constructing an initial configuration of a system, including the positions, velocities, and masses of all atoms or molecules. The simulation calculates the forces acting on each particle from its interactions with neighbors.&lt;/p&gt;
+&lt;p&gt;These forces update the positions and velocities of each particle over a small time step, typically in the femtosecond to picosecond range. Repeating this process over many steps allows the system to evolve over time.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://raw.githubusercontent.com/yboulaamane/yboulaamane.github.io/615fbbb664d302cce6cb72ed92b1e228ca3f45ec/_blog/5post-1.png&#34; alt=&#34;Figure1&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;b&gt;Figure 1:  Example MD simulation output plots&lt;/b&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;MD simulation provides insights into molecular systems that are difficult or impossible to study experimentally. In structural biology, it is used to study protein dynamics, including conformational changes, ligand binding, and intermolecular interactions. By simulating atomic-level motion, researchers can connect protein structure to function in ways that static experimental structures cannot.&lt;/p&gt;
+&lt;p&gt;MD simulation is also widely used in the field of materials science. It can model the behavior of polymers, ceramics, metals, and other materials, providing insight into their mechanical properties, stability, and behavior under different conditions. By simulating the behavior of materials at the atomic scale, researchers can develop a deeper understanding of how they behave and how they can be optimized for specific applications.&lt;/p&gt;
+&lt;p&gt;A key strength of MD is its ability to handle systems with large numbers of particles. Proteins, which contain thousands of atoms, are difficult to characterize experimentally at this resolution. MD allows detailed study of such systems, including structure, dynamics, and function.&lt;/p&gt;
+&lt;p&gt;Another advantage of MD simulation is its ability to simulate systems under a wide range of conditions, including different temperatures, pressures, and chemical environments. This makes it a powerful tool for studying how systems behave under different conditions and how they respond to changes in their environment.&lt;/p&gt;
+&lt;p&gt;While MD simulation has its limitations, such as accurately modeling the interactions between particles and the computational cost, advances in computing technology have made it more accessible. Researchers are constantly developing new algorithms and techniques to improve the accuracy and efficiency of simulations.&lt;/p&gt;
+&lt;p&gt;Common outputs from MD simulations include trajectories (particle positions over time), energy plots, radial distribution functions, and density profiles. Together, these give a quantitative picture of system stability, solvation, and structural evolution.&lt;/p&gt;
+&lt;p&gt;MD simulation is broadly applicable across structural biology, materials science, and computational drug discovery. As hardware and algorithms continue to improve, it remains one of the most informative tools for studying molecular behavior at atomistic resolution.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

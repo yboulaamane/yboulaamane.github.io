@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Molecular Modelling | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/molecular-modelling/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/molecular-modelling/index.xml" rel="self" type="application/rss+xml" />
+    <description>Molecular Modelling</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 08 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Molecular Modelling</title>
+      <link>https://yboulaamane.github.io/tags/molecular-modelling/</link>
+    </image>
+    
+    <item>
+      <title>A History of Graph Neural Networks in Drug Discovery</title>
+      <link>https://yboulaamane.github.io/blog/a-history-of-graph-neural-networks-in-drug-discovery/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/a-history-of-graph-neural-networks-in-drug-discovery/</guid>
+      <description>&lt;p&gt;Graphs in drug discovery have gone from a quiet background tool to one of the main ways we think about molecules, proteins, and their interactions. This post walks through that story: how the field moved from fingerprints and QSAR to today&amp;rsquo;s 3D, attention-based graph neural networks operating directly on protein-ligand complexes.&lt;/p&gt;
+&lt;h2 id=&#34;before-deep-learning-graphs-hiding-in-plain-sight&#34;&gt;Before Deep Learning: Graphs Hiding in Plain Sight&lt;/h2&gt;
+&lt;p&gt;Long before anyone said &amp;ldquo;graph neural network,&amp;rdquo; chemoinformatics was already thinking in graphs. A small molecule is naturally a graph: atoms are nodes, bonds are edges. Classical fingerprints like ECFP/Morgan and many QSAR descriptors essentially encode local graph neighborhoods into fixed-length vectors. Kernel methods on graphs also appeared well before deep GNNs, using hand-crafted features and similarity measures rather than learned message passing.&lt;/p&gt;
+&lt;p&gt;In protein-ligand modeling, researchers built interaction graphs: bipartite graphs of ligand atoms or residues connected to protein residues if they were in contact, then fed summary descriptors of those graphs into traditional machine learning models. Graphs were there, but the graph structure was not learned end-to-end. It was one step in a largely manual feature pipeline.&lt;/p&gt;
+&lt;h2 id=&#34;the-first-wave-molecules-as-graphs&#34;&gt;The First Wave: Molecules as Graphs&lt;/h2&gt;
+&lt;p&gt;Around the mid-2010s, deep learning began to absorb graph structure directly. Message passing neural networks, graph convolutional networks (GCN), and graph attention networks (GAT) emerged as ways to learn from arbitrary graphs. In drug discovery, the first impact was on ligand-only problems: predicting solubility, toxicity, activity, or ADMET endpoints from the molecular graph.&lt;/p&gt;
+&lt;p&gt;Instead of computing fingerprints by hand, models learned node and edge embeddings and iteratively propagated information along bonds. This matched chemists&amp;rsquo; intuition: properties depend on how atoms communicate through bonds and how local environments are arranged. For several years, many &amp;ldquo;GNN in drug discovery&amp;rdquo; papers stopped here: GNNs as better QSAR on ligand graphs, with protein information coming from sequences, profiles, or being ignored entirely.&lt;/p&gt;
+&lt;h2 id=&#34;from-ligands-to-complexes&#34;&gt;From Ligands to Complexes&lt;/h2&gt;
+&lt;p&gt;A key shift came when researchers started treating protein-ligand complexes themselves as graphs. Rather than separate models for ligand and protein, the complex became a joint graph or a pair of interacting graphs.&lt;/p&gt;
+&lt;p&gt;Several design patterns emerged:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Protein and ligand as separate graphs with interaction edges connecting residues and atoms within a distance cutoff.&lt;/li&gt;
+&lt;li&gt;Unified interaction graphs where both protein and ligand atoms live in one graph, with edges encoding contacts, distances, and interaction types.&lt;/li&gt;
+&lt;li&gt;Structure-aware interactive GNNs that pass messages not only within the ligand or protein, but also across protein-ligand edges based on 3D geometry.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This step is conceptually important: the binding site environment, not just the ligand, becomes part of the learnable graph. Distance features, contact types, and physico-chemical interactions (H-bonds, hydrophobics, metal coordination) can all be encoded as edge features. Attention and message passing mechanisms then decide which contacts matter most.&lt;/p&gt;
+&lt;h2 id=&#34;geometry-physics-and-attention&#34;&gt;Geometry, Physics, and Attention&lt;/h2&gt;
+&lt;p&gt;As complex-level GNNs proliferated, three themes solidified.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3D geometry became central.&lt;/strong&gt; Models began using distance encodings, radial basis functions, or full SE(3)-equivariant architectures to respect spatial symmetry and exploit precise atomic coordinates. This makes graph models analogous to physics-inspired scoring functions, but with learnable parameters.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Edge semantics grew richer.&lt;/strong&gt; Edges no longer meant just &amp;ldquo;bond&amp;rdquo; or &amp;ldquo;within X angstroms.&amp;rdquo; They carried labels for specific interaction classes: hydrogen bonds, pi-pi stacking, hydrophobic contacts, metal coordination. This is particularly natural in systems like cytochromes, where a small set of chemical interactions (Fe coordination, certain C-H distances) are mechanistically dominant.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Attention mechanisms took a larger role.&lt;/strong&gt; GAT-style layers use learned attention coefficients to weight neighbor contributions, letting the network emphasize key contacts while down-weighting noisy ones. At the graph level, attentive pooling or multiple instance learning over subgraphs (poses, pockets, conformers) helps the model select which parts of the input to trust.&lt;/p&gt;
+&lt;h2 id=&#34;ensembles-poses-and-mil-where-the-field-is-now&#34;&gt;Ensembles, Poses, and MIL: Where the Field Is Now&lt;/h2&gt;
+&lt;p&gt;Docking and MD rarely provide a single &amp;ldquo;true&amp;rdquo; complex; they yield an ensemble of poses. A modern and increasingly explored direction is to treat each pose as a graph instance and apply multiple instance learning (MIL) over the set of poses for a compound.&lt;/p&gt;
+&lt;p&gt;A typical pipeline looks like this:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Build one protein-ligand graph per pose, with rich node and edge features, using an edge-aware GAT (such as EdgeGATConv) for message passing.&lt;/li&gt;
+&lt;li&gt;Read out each pose graph to a pose-level embedding.&lt;/li&gt;
+&lt;li&gt;Use attention-based MIL (ABMIL) to aggregate pose embeddings into a compound-level representation, learning which pose or poses are most informative for binding or substrate classification.&lt;/li&gt;
+&lt;li&gt;Predict substrate status or binding affinity from that aggregated embedding.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This pipeline extends the history in a natural direction: from ligand graphs to protein-ligand complex graphs, from a single static complex to ensembles of complexes, and from fixed pooling to learnable attention-based selection over poses.&lt;/p&gt;
+&lt;p&gt;It also marries ensemble docking, which has long been used in drug discovery, with modern graph and attention machinery. Rather than manually choosing the best pose by docking score, the model learns what a productive pose looks like.&lt;/p&gt;
+&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+&lt;p&gt;The arc is clear. Graphs were implicit in chemoinformatics from the beginning. Deep learning made them explicit and learnable. Complex-level modeling brought in the protein environment. Geometric and equivariant architectures grounded models in physical reality. And MIL-over-poses frameworks now allow models to reason over entire conformational ensembles rather than single snapshots.&lt;/p&gt;
+&lt;p&gt;Each step expanded what the model could see and what it could learn to ignore.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

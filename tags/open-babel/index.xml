@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Open Babel | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/open-babel/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/open-babel/index.xml" rel="self" type="application/rss+xml" />
+    <description>Open Babel</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 23 Sep 2025 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Open Babel</title>
+      <link>https://yboulaamane.github.io/tags/open-babel/</link>
+    </image>
+    
+    <item>
+      <title>Energy Minimization with Open Babel: Practical Guide for Ligand Preparation</title>
+      <link>https://yboulaamane.github.io/blog/energy-minimization-with-open-babel-practical-guide-for-ligand-preparation/</link>
+      <pubDate>Tue, 23 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/energy-minimization-with-open-babel-practical-guide-for-ligand-preparation/</guid>
+      <description>&lt;h1 id=&#34;energy-minimization-with-open-babel-a-practical-guide-for-computational-chemists&#34;&gt;Energy Minimization with Open Babel: A Practical Guide for Computational Chemists&lt;/h1&gt;
+&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Before any molecular docking or molecular dynamics simulation, &lt;strong&gt;energy minimization&lt;/strong&gt; is a crucial preprocessing step. It helps relax the structure, remove steric clashes, and bring the molecule closer to a physically meaningful conformation. While commercial tools like Chem3D are often used, &lt;strong&gt;Open Babel&lt;/strong&gt; offers a free and versatile alternative.&lt;/p&gt;
+&lt;p&gt;In this post, I’ll walk through how to perform energy minimization in Open Babel, discuss the available force fields and algorithms, and highlight best practices from the perspective of computational chemistry.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;why-energy-minimization-matters&#34;&gt;Why Energy Minimization Matters&lt;/h2&gt;
+&lt;p&gt;Ligand structures downloaded from databases or drawn manually often contain unrealistic bond lengths, angles, or steric overlaps. Docking such conformations may bias results or even prevent convergence. Energy minimization ensures:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;More realistic starting geometry&lt;/li&gt;
+&lt;li&gt;Reduced steric clashes&lt;/li&gt;
+&lt;li&gt;Improved stability in docking and MD workflows&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;open-babels-obminimize-command&#34;&gt;Open Babel’s &lt;code&gt;obminimize&lt;/code&gt; Command&lt;/h2&gt;
+&lt;p&gt;The &lt;strong&gt;&lt;code&gt;obminimize&lt;/code&gt;&lt;/strong&gt; tool in Open Babel performs energy minimization directly from the command line. Its general syntax is:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;obminimize [options] input_file
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Key options include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-ff&lt;/code&gt;	: Choose force field&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-sd&lt;/code&gt;	: Steepest descent algorithm&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-cg&lt;/code&gt;	: Conjugate gradient algorithm (default)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-h&lt;/code&gt;	: Add hydrogens&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-n&lt;/code&gt;	: Maximum steps (default: 2500)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-o&lt;/code&gt;	: Output format (PDB, MOL2, SDF, etc.)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;comparing-force-fields-in-open-babel&#34;&gt;Comparing Force Fields in Open Babel&lt;/h2&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Force Field&lt;/th&gt;
+          &lt;th&gt;Typical Use&lt;/th&gt;
+          &lt;th&gt;Strengths&lt;/th&gt;
+          &lt;th&gt;Weaknesses&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;GAFF&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;General drug-like molecules&lt;/td&gt;
+          &lt;td&gt;AMBER-compatible&lt;/td&gt;
+          &lt;td&gt;Less optimized for small ligands alone&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Ghemical&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Education, small molecules&lt;/td&gt;
+          &lt;td&gt;Lightweight&lt;/td&gt;
+          &lt;td&gt;Limited accuracy&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;MMFF94&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Small organic ligands&lt;/td&gt;
+          &lt;td&gt;Well-validated, reliable&lt;/td&gt;
+          &lt;td&gt;Slightly heavier computationally&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;MMFF94s&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Variant of MMFF94&lt;/td&gt;
+          &lt;td&gt;Better torsion handling&lt;/td&gt;
+          &lt;td&gt;Similar cost to MMFF94&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;UFF&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Broad coverage (organics, inorganics, metals)&lt;/td&gt;
+          &lt;td&gt;Universal element support&lt;/td&gt;
+          &lt;td&gt;Less accurate for organics&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Recommendation:&lt;/strong&gt; For drug-like ligands, &lt;strong&gt;MMFF94&lt;/strong&gt; (or MMFF94s) is the best choice.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;minimization-algorithms-sd-vs-cg&#34;&gt;Minimization Algorithms: SD vs CG&lt;/h2&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Algorithm&lt;/th&gt;
+          &lt;th&gt;Principle&lt;/th&gt;
+          &lt;th&gt;Pros&lt;/th&gt;
+          &lt;th&gt;Cons&lt;/th&gt;
+          &lt;th&gt;Use Case&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Steepest Descent (SD)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Moves along steepest energy gradient&lt;/td&gt;
+          &lt;td&gt;Robust, removes high-energy clashes quickly&lt;/td&gt;
+          &lt;td&gt;Slow near convergence&lt;/td&gt;
+          &lt;td&gt;First relaxation&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Conjugate Gradient (CG)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Uses gradient + past directions for efficiency&lt;/td&gt;
+          &lt;td&gt;Fast near minimum, fewer steps needed&lt;/td&gt;
+          &lt;td&gt;Can fail if starting far from minimum&lt;/td&gt;
+          &lt;td&gt;Fine minimization (default)&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Best practice:&lt;/strong&gt; Start with &lt;strong&gt;SD&lt;/strong&gt; to resolve bad geometries, then switch to &lt;strong&gt;CG&lt;/strong&gt; for efficient convergence.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;example-workflows&#34;&gt;Example Workflows&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Basic minimization with MMFF94 + SD:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;obminimize -sd -ff MMFF94 -h ligand.mol2 -o pdb ligand_min.pdb&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Longer minimization with more steps:&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Alternative force field (UFF) for metal complexes:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;obminimize -cg -ff UFF metal_complex.mol2 -o sdf metal_min.sdf&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Energy minimization is a foundational step in computational chemistry pipelines. Open Babel’s &lt;code&gt;obminimize&lt;/code&gt; provides a free, flexible, and reliable solution to prepare ligands for docking and MD simulations. By choosing the right &lt;strong&gt;force field&lt;/strong&gt; and &lt;strong&gt;algorithm&lt;/strong&gt;, researchers can ensure accurate starting geometries and reduce artifacts in downstream analyses.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
