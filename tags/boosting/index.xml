@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Boosting | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/boosting/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/boosting/index.xml" rel="self" type="application/rss+xml" />
+    <description>Boosting</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Fri, 15 Aug 2025 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Boosting</title>
+      <link>https://yboulaamane.github.io/tags/boosting/</link>
+    </image>
+    
+    <item>
+      <title>QSARBoost</title>
+      <link>https://yboulaamane.github.io/project/qsarboost/</link>
+      <pubDate>Fri, 15 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/qsarboost/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

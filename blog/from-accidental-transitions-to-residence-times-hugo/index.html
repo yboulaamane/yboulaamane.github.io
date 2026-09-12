@@ -1,0 +1,2903 @@
+<!doctype html>
+<!-- This site was created with Hugo Blox. https://hugoblox.com -->
+<!-- Last Published: September 11, 2026 --><html lang="en-us" dir="ltr"
+      data-wc-theme-default="system">
+  
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="generator" content="Hugo Blox Builder 0.4.2" />
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Yassir Boulaamane" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="A historical and practical look at how molecular dynamics evolved from forcing rare conformational transitions to discovering ligand-egress pathways and estimating relative drug-target residence times." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="http://localhost:1313/blog/from-accidental-transitions-to-residence-times-hugo/" />
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="/css/themes/blue.min.css" />
+  
+
+  
+  
+    
+    <link href="/dist/wc.min.66412b998ac08468152d24203c4b87b9cee6bcf511d07b4d040d809cecafd615.css" rel="stylesheet" />
+  
+
+  
+  
+  
+
+  
+
+  <script>
+     
+    window.hbb = {
+       defaultTheme: document.documentElement.dataset.wcThemeDefault,
+       setDarkTheme: () => {
+        document.documentElement.classList.add("dark");
+        document.documentElement.style.colorScheme = "dark";
+      },
+       setLightTheme: () => {
+        document.documentElement.classList.remove("dark");
+        document.documentElement.style.colorScheme = "light";
+      }
+    }
+
+    console.debug(`Default Hugo Blox Builder theme is ${window.hbb.defaultTheme}`);
+
+    if ("wc-color-theme" in localStorage) {
+      localStorage.getItem("wc-color-theme") === "dark" ? window.hbb.setDarkTheme() : window.hbb.setLightTheme();
+    } else {
+      window.hbb.defaultTheme === "dark" ? window.hbb.setDarkTheme() : window.hbb.setLightTheme();
+      if (window.hbb.defaultTheme === "system") {
+        window.matchMedia("(prefers-color-scheme: dark)").matches ? window.hbb.setDarkTheme() : window.hbb.setLightTheme();
+      }
+    }
+  </script>
+
+  <script>
+    
+    document.addEventListener('DOMContentLoaded', function () {
+      
+      let checkboxes = document.querySelectorAll('li input[type=\'checkbox\'][disabled]');
+      checkboxes.forEach(e => {
+        e.parentElement.parentElement.classList.add('task-list');
+      });
+
+      
+      const liNodes = document.querySelectorAll('.task-list li');
+      liNodes.forEach(nodes => {
+        let textNodes = Array.from(nodes.childNodes).filter(node => node.nodeType === 3 && node.textContent.trim().length > 1);
+        if (textNodes.length > 0) {
+          const span = document.createElement('label');
+          textNodes[0].after(span);  
+          span.appendChild(nodes.querySelector('input[type=\'checkbox\']'));
+          span.appendChild(textNodes[0]);
+        }
+      });
+    });
+  </script>
+
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+  <link rel="icon" type="image/png" href="/media/icon_hu_5b9deb501aeab0c7.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu_cc92b57ff025c448.png" />
+
+  <link rel="canonical" href="http://localhost:1313/blog/from-accidental-transitions-to-residence-times-hugo/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@yassir_tw" />
+    <meta property="twitter:creator" content="@yassir_tw" />
+  
+  <meta property="og:site_name" content="Yassir Boulaamane" />
+  <meta property="og:url" content="http://localhost:1313/blog/from-accidental-transitions-to-residence-times-hugo/" />
+  <meta property="og:title" content="From Accidental Transitions to Residence Times | Yassir Boulaamane" />
+  <meta property="og:description" content="A historical and practical look at how molecular dynamics evolved from forcing rare conformational transitions to discovering ligand-egress pathways and estimating relative drug-target residence times." /><meta property="og:image" content="http://localhost:1313/media/icon_hu_4d696a8ace2a642b.png" />
+    <meta property="twitter:image" content="http://localhost:1313/media/icon_hu_4d696a8ace2a642b.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2026-09-11T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2026-09-11T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/blog/from-accidental-transitions-to-residence-times-hugo/"
+  },
+  "headline": "From Accidental Transitions to Residence Times",
+  
+  "datePublished": "2026-09-11T00:00:00Z",
+  "dateModified": "2026-09-11T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Yassir Boulaamane"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Yassir Boulaamane",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/media/icon_hu_d671a3d3d3979562.png"
+    }
+  },
+  "description": "A historical and practical look at how molecular dynamics evolved from forcing rare conformational transitions to discovering ligand-egress pathways and estimating relative drug-target residence times."
+}
+</script>
+
+  
+
+  
+
+
+  <title>From Accidental Transitions to Residence Times | Yassir Boulaamane</title>
+
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <style>
+    @font-face {
+      font-family: 'Inter var';
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+      src: url(/dist/font/Inter.var.woff2) format(woff2);
+    }
+  </style>
+
+  
+
+  
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+<link type="text/css" rel="stylesheet" href="/dist/pagefind/pagefind-ui.be766eb419317a14ec769d216e9779bfe8f3737c80e780f4ba0dafb57a41a482.css" integrity="sha256-vnZutBkxehTsdp0hbpd5v&#43;jzc3yA54D0ug2vtXpBpII=" />
+
+
+<script src="/dist/pagefind/pagefind-ui.87693d7c6f2b3b347ce359d0ede762c033419f0a32b22ce508c335a81d841f1b.js" integrity="sha256-h2k9fG8rOzR841nQ7ediwDNBnwoysizlCMM1qB2EHxs="></script>
+
+
+<script>window.hbb.pagefind = {"baseUrl":"/"};</script>
+
+<style>
+  html.dark {
+    --pagefind-ui-primary: #eeeeee;
+    --pagefind-ui-text: #eeeeee;
+    --pagefind-ui-background: #152028;
+    --pagefind-ui-border: #152028;
+    --pagefind-ui-tag: #152028;
+  }
+
+   
+  .search-close > svg {
+    height: calc(64px * var(--pagefind-ui-scale));
+    width: calc(64px * var(--pagefind-ui-scale));
+  }
+</style>
+
+<script>
+  
+  let searchWrapper = null;
+
+  window.addEventListener('DOMContentLoaded', (event) => {
+    
+    new PagefindUI({
+      element: "#search",
+      showSubResults: true,
+      baseUrl: window.hbb.pagefind.baseUrl,
+      bundlePath: window.hbb.pagefind.baseUrl + "pagefind/",
+    });
+
+    
+    searchWrapper = document.getElementById('search-wrapper');
+
+    
+    let triggers = document.querySelectorAll('[data-search-toggle]');
+    triggers.forEach(trigger =>
+      trigger.addEventListener('click', handleSearchToggle)
+    );
+  });
+
+  function handleSearchToggle(event) {
+    if (!searchWrapper) return;
+
+    const isHidden = searchWrapper.classList.contains('hidden');
+    searchWrapper.classList.toggle('hidden');
+    document.body.style.overflow = isHidden ? 'hidden' : '';
+
+    const searchInput = searchWrapper.querySelector("input");
+    if (searchInput) {
+      searchInput.value = "";
+      searchInput.focus();
+    }
+
+    if (!searchWrapper.classList.contains('hidden')) {
+      let clearTrigger = document.querySelector('.pagefind-ui__search-clear');
+
+      if (clearTrigger && !clearTrigger.hasAttribute('listenerOnClick')) {
+        clearTrigger.setAttribute('listenerOnClick', 'true');
+
+        clearTrigger.addEventListener('click', () => {
+          searchInput.focus();
+        });
+      }
+    }
+  }
+
+  
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && searchWrapper && !searchWrapper.classList.contains('hidden')) {
+      searchWrapper.classList.add('hidden');
+    }
+  });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  <script
+    defer
+    src="/js/hugo-blox-en.min.js"
+    integrity=""
+  ></script>
+
+  
+  
+
+
+
+
+
+
+
+
+  
+    
+      
+      <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+      
+    
+  
+
+
+
+
+</head>
+
+  <body class="dark:bg-hb-dark dark:text-white page-wrapper" id="top">
+    <div id="page-bg"></div>
+    <div class="page-header sticky top-0 z-30">
+      
+      
+      
+        
+        
+        
+          <header id="site-header" class="header">
+  <nav class="navbar px-3 flex justify-left">
+    <div class="order-0 h-100">
+      
+      <a class="navbar-brand" href="/" title="Yassir Boulaamane">
+        Yassir Boulaamane
+      </a>
+    </div>
+    
+    <input id="nav-toggle" type="checkbox" class="hidden" />
+    <label
+      for="nav-toggle"
+      class="order-3 cursor-pointer flex items-center lg:hidden text-dark dark:text-white lg:order-1">
+      <svg id="show-button" class="h-6 fill-current block" viewBox="0 0 20 20">
+        <title>Open Menu</title>
+        <path d="M0 3h20v2H0V3z m0 6h20v2H0V9z m0 6h20v2H0V0z"></path>
+      </svg>
+      <svg id="hide-button" class="h-6 fill-current hidden" viewBox="0 0 20 20">
+        <title>Close Menu</title>
+        <polygon
+          points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2"
+          transform="rotate(45 10 10)"></polygon>
+      </svg>
+    </label>
+    
+
+    
+    
+    <ul
+      id="nav-menu"
+      class="navbar-nav order-3 hidden lg:flex w-full pb-6 lg:order-1 lg:w-auto lg:space-x-2 lg:pb-0 xl:space-x-8 justify-left
+      ">
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/"
+        >Bio</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/#publications"
+        >Publications</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/#conferences"
+        >Conferences</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/blog"
+        >Blog</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/cv"
+        >CV</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/projects"
+        >Projects</a
+        >
+      </li>
+      
+      
+      
+    </ul>
+
+    <div class="order-1 ml-auto flex items-center md:order-2 lg:ml-0">
+
+      
+      
+      
+      <button
+        aria-label="toggle search"
+        class="text-black hover:text-primary  inline-block px-3 text-xl dark:text-white"
+        data-search-toggle>
+        <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512" fill="currentColor"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+      </button>
+      
+
+      
+      
+      <div class="px-3 text-black hover:text-primary-700 dark:text-white dark:hover:text-primary-300
+            [&.active]:font-bold [&.active]:text-black/90 dark:[&.active]:text-white">
+        <button class="theme-toggle mt-1" accesskey="t" title="appearance">
+          <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+               stroke-linejoin="round" class="dark:hidden">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+               stroke-linejoin="round" class=" dark:block [&:not(dark)]:hidden">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+      
+
+      
+      
+
+      
+      
+    </div>
+  </nav>
+</header>
+
+<div
+  id="search-wrapper"
+  class="hidden fixed inset-0 z-50 bg-white dark:bg-gray-900 flex flex-col overflow-hidden"
+>
+  <div class="flex justify-end p-3">
+    <button
+      aria-label="search"
+      class="search-close text-black hover:text-primary dark:text-white"
+      data-search-toggle
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <div id="search" class="flex-1 overflow-y-auto p-3">
+    
+  </div>
+</div>
+
+
+        
+      
+    </div>
+    <div class="page-body  my-10">
+      
+
+
+
+
+
+<div class="mx-auto flex max-w-screen-xl">
+  
+
+
+
+<aside class="hb-sidebar-container max-lg:[transform:translate3d(0,-100%,0)] lg:hidden xl:block">
+  
+  <div class="px-4 pt-4 lg:hidden">
+    
+    
+  </div>
+  <div class="hb-scrollbar lg:h-[calc(100vh-var(--navbar-height))]">
+    <ul class="flex flex-col gap-1 lg:hidden">
+      
+      
+        <li class="open"><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/"
+    
+  >Blog
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col open"><a
+    class="hb-sidebar-custom-link
+      sidebar-active-item bg-primary-100 font-semibold text-primary-800 dark:bg-primary-300 dark:text-primary-900"
+    href="/blog/from-accidental-transitions-to-residence-times-hugo/"
+    
+  >From Accidental Transitions to Residence Times
+    </a>
+  
+    <ul class="hb-sidebar-mobile-toc"><li>
+              <a
+                href="#1994-if-the-endpoint-is-known-drive-the-system-toward-it"
+                class="hb-docs-link"
+              >1994: If the endpoint is known, drive the system toward it</a>
+            </li>
+          <li>
+              <a
+                href="#2000-susanna-l%c3%bcdemann-and-the-search-for-invisible-p450-tunnels"
+                class="hb-docs-link"
+              >2000: Susanna Lüdemann and the search for invisible P450 tunnels</a>
+            </li>
+          <li>
+              <a
+                href="#from-tunnel-discovery-to-a-general-ligand-egress-method"
+                class="hb-docs-link"
+              >From tunnel discovery to a general ligand-egress method</a>
+            </li>
+          <li>
+              <a
+                href="#2013-pacs-md-replaces-forcing-with-selection"
+                class="hb-docs-link"
+              >2013: PaCS-MD replaces forcing with selection</a>
+            </li>
+          <li>
+              <a
+                href="#2018-from-ligand-escape-to-residence-time"
+                class="hb-docs-link"
+              >2018: From ligand escape to residence time</a>
+            </li>
+          <li>
+              <a
+                href="#pathway-discovery-and-kinetics-are-different-scientific-problems"
+                class="hb-docs-link"
+              >Pathway discovery and kinetics are different scientific problems</a>
+            </li>
+          <li>
+              <a
+                href="#why-this-story-is-particularly-relevant-to-cyp-enzymes"
+                class="hb-docs-link"
+              >Why this story is particularly relevant to CYP enzymes</a>
+            </li>
+          <li>
+              <a
+                href="#from-trajectories-to-molecular-descriptors"
+                class="hb-docs-link"
+              >From trajectories to molecular descriptors</a>
+            </li>
+          <li>
+              <a
+                href="#from-accidental-events-to-designed-computational-experiments"
+                class="hb-docs-link"
+              >From accidental events to designed computational experiments</a>
+            </li>
+          <li>
+              <a
+                href="#final-perspective"
+                class="hb-docs-link"
+              >Final perspective</a>
+            </li>
+          <li>
+              <a
+                href="#references"
+                class="hb-docs-link"
+              >References</a>
+            </li>
+          </ul>
+  
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/from-prompts-to-systems-ai-engineering-2023-2026/"
+    
+  >From Prompts to Systems: How AI Engineering Changed Between 2023 and 2026
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/claude-code-practical-workflow/"
+    
+  >Getting Real Work Out of Claude Code: A Practical Workflow Guide
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/reproducing-transition-metal-catalyzed-mechanisms-dft-tutorial/"
+    
+  >DFT Reproduction of Gold(III)-Mediated Selenocysteine Arylation: An ORCA Tutorial
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/making-ai-work-in-discovery-chemistry-optibrium-webinar/"
+    
+  >Making AI Work in Discovery Chemistry: Precision, Trust, and Practical Value
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/shifting-focus-from-model-size-to-rigorous-evaluation/"
+    
+  >Beyond Parameter Counts: The Shift Toward Rigorous Evaluation in Scientific AI
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/protein-descriptors/"
+    
+  >Protein Descriptors for Machine Learning in Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/graph-neural-networks-and-dgl-a-beginners-guide/"
+    
+  >Graph Neural Networks and DGL: A Beginner&#39;s Guide
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/ensemble-docking/"
+    
+  >Ensemble Docking for Binding and Activity Prediction
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/agentic-ai-and-multi-agent-systems-in-drug-discovery/"
+    
+  >Beyond Static Models: Agentic AI and Multi-Agent Systems in Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/building-a-3d-pharmacophore-model-from-pdb-data-a-free-python-workflow/"
+    
+  >Building a 3D Pharmacophore Model from PDB Data: A Free Python Workflow
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/most-accurate-semi-empirical-partial-charges-for-molecular-docking/"
+    
+  >Choosing the Right Partial Charges for Molecular Docking: AM1-BCC, PM6 and Beyond
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/reproducible-is-not-robust-why-one-umap-seed-isnt-enough/"
+    
+  >Reproducible ≠ Robust: Why One UMAP Seed Isn&#39;t Enough to Trust a Split
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/you-are-not-an-impostor-agentic-coding-and-the-new-computational-scientist/"
+    
+  >You Are Not an Impostor: Agentic Coding and the New Computational Scientist
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/does-data-leakage-inflate-binding-affinity-gnns/"
+    
+  >Does data leakage really inflate binding-affinity GNNs? A laptop-scale reproduction
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/a-history-of-graph-neural-networks-in-drug-discovery/"
+    
+  >A History of Graph Neural Networks in Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/a-practical-guide-to-qsar-model-validation-internal-cross-and-external-checks/"
+    
+  >A Practical Guide to QSAR Model Validation: Internal, Cross, and External Checks
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/beyond-smiles-the-evolving-landscape-of-molecular-representations/"
+    
+  >Beyond SMILES: The Evolving Landscape of Molecular Representations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/choosing-the-right-pdb-structure-a-systematic-guide-for-docking-and-md-simulations/"
+    
+  >Choosing the Right PDB Structure: A Systematic Guide for Docking and MD Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/computational-strategies-for-accelerating-drug-discovery/"
+    
+  >Computational Strategies for Accelerating Drug Discovery: A Comprehensive Review
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/point-cloud-classification-with-graph-neural-networks-using-pytorch-geometric/"
+    
+  >Point Cloud Classification with Graph Neural Networks Using PyTorch Geometric
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/what-agentic-engineering-means-for-computational-drug-discovery/"
+    
+  >What Agentic Engineering Means for Computational Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/getting-started-with-graph-neural-networks-for-protein-ligand-complexes-using-dgl/"
+    
+  >Getting Started with Graph Neural Networks for Protein–Ligand Complexes Using DGL
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/beyond-2d-fingerprints-3d-protein-ligand-interaction-encoding-for-ml/"
+    
+  >Beyond 2D Fingerprints: Encoding Protein-Ligand Interactions for Machine Learning
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/understanding-binding-energetics-in-molecular-docking/"
+    
+  >Understanding Binding Energetics in Molecular Docking
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/practical-system-preparation-tips-for-molecular-dynamics-simulations/"
+    
+  >Practical System Preparation Tips for Molecular Dynamics Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/"
+    
+  >Stop Using B3LYP/6-31G*: Critical Pitfalls in Modern DFT Calculations and How to Avoid Them
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/ten-critical-pitfalls-in-molecular-dynamics-simulations-and-strategies-for-mitigation/"
+    
+  >Ten Critical Pitfalls in Molecular Dynamics Simulations and Strategies for Mitigation
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/unlocking-the-undruggable-how-biotechnology-is-rewriting-drug-discovery/"
+    
+  >Unlocking the Undruggable: How Biotechnology Is Rewriting Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/how-to-use-datawarrior-for-drug-discovery-key-workflows-from-the-villoutreix-tutorials/"
+    
+  >How to Use DataWarrior for Drug Discovery: Key Workflows From the Villoutreix Tutorials
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/energy-minimization-with-open-babel-practical-guide-for-ligand-preparation/"
+    
+  >Energy Minimization with Open Babel: Practical Guide for Ligand Preparation
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/a-quick-guide-to-temperature-replica-exchange-molecular-dynamics/"
+    
+  >A Quick Guide to Temperature Replica Exchange Molecular Dynamics
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/principal-component-analysis-and-free-energy-landscape-mapping-using-gromacs/"
+    
+  >Principal Component Analysis and Free Energy Landscape Mapping Using GROMACS
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/validating-molecular-docking-poses-with-dft-a-quick-guide/"
+    
+  >Validating Molecular Docking Poses with DFT: A Quick Guide
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/ai-chemistry-building-drug-discovery-pipelines-with-free-tools/"
+    
+  >AI &#43; Chemistry: Building Drug Discovery Pipelines with Free Tools
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/an-in-depth-guide-to-md-simulation-and-analysis-of-a-protein-ligand-complex/"
+    
+  >Step-by-Step MD Simulation of a Protein–Ligand Complex with GROMACS
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/molecular-simulation-in-drug-discovery-a-strategic-guide-to-core-methods/"
+    
+  >Molecular Simulation in Drug Discovery: A Strategic Guide to Core Methods
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/computational-drug-repurposing-with-multiscale-interactomes/"
+    
+  >Computational Drug Repurposing with Multiscale Interactomes
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/how-to-validate-alphafold-structures/"
+    
+  >How to Validate AlphaFold Structures
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/a-comprehensive-guide-to-scientific-writing-and-publishing/"
+    
+  >A Comprehensive Guide to Scientific Writing and Publishing
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/interpretable-machine-learning-model-as-a-key-to-understanding-bbb-permeability/"
+    
+  >Interpretable Machine Learning as a Key to Understanding BBB Permeability
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/3d-qsar-general-workflow-with-key-metrics-insights-from-xu-et-al-2020/"
+    
+  >How to build and validate 3D-QSAR models - Insights from Xu et al., 2020
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/a-comprehensive-guide-to-hybrid-assembly-pipeline-for-genomic-sequencing/"
+    
+  >A Comprehensive Guide to Hybrid Assembly Pipeline for Genomic Sequencing
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/data-driven-chemistry-how-data-science-empowers-drug-discovery/"
+    
+  >Data-Driven Chemistry: How Data Science Empowers Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/using-padelpy-generate-molecular-fingerprints-machine-learning-based-qsar/"
+    
+  >Using PaDELPy to Generate Molecular Fingerprints for Machine Learning-Based QSAR
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/understanding-molecular-dynamics-simulations/"
+    
+  >Understanding Molecular Dynamics Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/determining-the-appropriate-length-for-protein-ligand-md-simulations/"
+    
+  >How Long Should Molecular Dynamics Simulations Run? A Practical Guide
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/supervised-vs-unsupervised-methods-machine-learning/"
+    
+  >Supervised vs. Unsupervised Methods in Machine Learning
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/chemical-databases-machine-learning-drug-discovery/"
+    
+  >Chemical Databases Every ML Scientist Should Know for Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/perform-data-curation-classify-bioactivity-data-chembl-database/"
+    
+  >How to Perform Data Curation and Classify Bioactivity Data on ChEMBL Database
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/"
+    
+  >Conferences
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2026-09-06-poster-3/"
+    
+  >Combined enhanced conformational sampling and protein-ligand dockings on CYP3A4 improves in silico prediction of drug metabolism
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2024-12-20-presentation-5/"
+    
+  >Computational screening of natural products as tryptophan 2,3-dioxygenase inhibitors: Insights from machine learning QSAR, molecular docking, ADMET, and molecular dynamics simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2024-10-31-poster-2/"
+    
+  >Antibiotic discovery with artificial intelligence for the treatment of Acinetobacter baumannii infections
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2023-10-06-presentation-4/"
+    
+  >Enhanced accuracy in predicting drug blood-brain barrier permeability with a Machine Learning Ensemble model
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2022-10-09-presentation-3/"
+    
+  >QSAR and molecular modeling studies for the discovery of natural products as multi-target-directed drugs for Parkinson&#39;s disease
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2021-12-27-presentation-2/"
+    
+  >Computational studies of African Natural Products Databases to identify natural dual-target-directed antiparkinsonian drugs
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2021-12-27-poster-1/"
+    
+  >Machine Learning model to predict potential Monoamine Oxidase B inhibitors from Cannabis Compound Database
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2021-06-23-presentation-1/"
+    
+  >Docking-based virtual screening and ADME evaluation of caffeine-based phytochemicals as inhibitors of Monoamine Oxidase B
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/"
+    
+  >Publications
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/ijms27157025/"
+    
+  >QSAR-Guided Virtual Screening and Molecular Dynamics Reveal Olaparib as a Repurposing Lead Against α-Synuclein Aggregation
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/ijms27156677/"
+    
+  >FDA-Approved Drug Repurposing as p53 Mutants Rescue Candidates Using Structure-Based Virtual Screening and Molecular Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/ijms27146476/"
+    
+  >Repurposing FDA-Approved Drugs as Nav1.7 Channel Modulators: An Integrated Structure-Based Virtual Screening and Molecular Dynamics Study
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/ijms27114786/"
+    
+  >ARumenamides as Multitarget Ion Channel Modulators: Insights from Fenestration-Focused Docking, ADMET Profiling, and Molecular Dynamics
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/jafc-6c01340/"
+    
+  >Odorant-Binding Protein Interactions with Herbivore-Induced Volatiles Drive Behavioral Attraction of Harmonia axyridis (Coleoptera: Coccinellidae) to Tuta Absoluta-Infested Tomato Plant
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/moldivers-11504/"
+    
+  >Repurposing DrugBank compounds as NAD-dependent deacetylase sirtuin 2 inhibitors via QSAR modelling with gradient boosting algorithms and all-atom molecular simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/molstruc-145636/"
+    
+  >Anti-cancer and dual inhibitory potential of PI3K/AKT and Ras/MAPK/ERK signalling of a novel zinc (II) trinuclear complex with tetradentate schiff base ligand and azido ion in prostate adenocarcinoma: synthesis, in silico and in vitro evaluation
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/biomedicines13112605/"
+    
+  >Drug Repurposing for AML: Structure-Based Virtual Screening and Molecular Simulations of FDA-Approved Compounds with Polypharmacological Potential
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/cbm-25005505/"
+    
+  >Computational screening of natural products as tryptophan 2,3-dioxygenase inhibitors: Insights from CNN-based QSAR, molecular docking, ADMET, and molecular dynamics simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/lianbs-142-090/"
+    
+  >Virtual Screening and Identification of Natural Molecules as Promising Quorum Sensing Inhibitors against Pseudomonas aeruginosa
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/slct-202403473/"
+    
+  >Computational Investigation of Phytochemicals from Aloysia citriodora as Drug Targets for Parkinson&#39;s Disease-Associated Proteins
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/bns-01625/"
+    
+  >Metal and Metal Oxide Nanoparticles: Computational Analysis of Their Interactions and Antibacterial Activities Against Pseudomonas aeruginosa
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/fchem-1449165/"
+    
+  >Computational exploration of acefylline derivatives as MAO-B inhibitors for Parkinson&#39;s disease: insights from molecular docking, DFT, ADMET, and molecular dynamics approaches
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/chemica-01074/"
+    
+  >In silico Discovery of Dual Ligands Targeting MAO-B and AA2AR from African Natural Products Using Pharmacophore Modelling, Molecular Docking, and Molecular Dynamics Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/lianbs-134-176/"
+    
+  >Identification of Natural Inhibitors of SARS-CoV-2 Main Protease (Mpro) via Structure-Based Virtual Screening and Molecular Dynamics Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/prmcm-100495/"
+    
+  >Dendrobium nobile alkaloids modulate calcium dysregulation and neuroinflammation in Alzheimer&#39;s disease: A bioinformatic analysis
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/msystems-00325-24/"
+    
+  >Antibiotic discovery with artificial intelligence for the treatment of Acinetobacter baumannii infections
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/jbsd-2270753/"
+    
+  >Identification of novel dual acting ligands targeting the adenosine A2A and serotonin 5-HT1A receptors
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/jbsd-2260879/"
+    
+  >Exploring natural products as multi-target-directed drugs for Parkinson&#39;s disease: an in-silico approach integrating QSAR, pharmacophore modeling, and molecular dynamics simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/moldivers-10691/"
+    
+  >Probing the molecular mechanisms of α-synuclein inhibitors unveils promising natural candidates through machine-learning QSAR, pharmacophore modeling, and molecular dynamics simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/jbsd-2209650/"
+    
+  >Chemical library design, QSAR modeling and molecular dynamics simulations of naturally occurring coumarins as dual inhibitors of MAO-B and AChE
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/book-chapter-1/"
+    
+  >Insights into the Structure-Activity Relationship of Alkynyl-Coumarinyl Ethers as Selective MAO-B Inhibitors Using Molecular Docking
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/slct-202201572/"
+    
+  >β-amino carbonyl derivatives: Synthesis, Molecular Docking, ADMET, Molecular Dynamic and Herbicidal studies
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/jib-2021-0027/"
+    
+  >In silico studies of natural product-like caffeine derivatives as potential MAO-B inhibitors/AA2AR antagonists for the treatment of Parkinson&#39;s disease
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/jbsd-2033643/"
+    
+  >Structural exploration of selected C6 and C7-substituted coumarin isomers as selective MAO-B inhibitors
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/"
+    
+  >Projects
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/biolatent/"
+    
+  >BioLatent
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/learncadd/"
+    
+  >Learn CADD
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/qsarboost/"
+    
+  >QSARBoost
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/vinascreen/"
+    
+  >VinaScreen
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/qsarbiopred/"
+    
+  >QSARBioPred
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/ensemblebbb/"
+    
+  >EnsembleBBB
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/awesomedrugdiscovery/"
+    
+  >Awesome Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/artemisiadb/"
+    
+  >ArtemisiaDB
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/coumarindb/"
+    
+  >CoumarinDB
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/projects/"
+    
+  >Projects
+    </a></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/cv/"
+    
+  >CV
+    </a></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/teaching/"
+    
+  >Teaching
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/teaching/js/"
+    
+  >Learn JavaScript
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/teaching/python/"
+    
+  >Learn Python
+    </a>
+              
+            </li></ul>
+      </div></li>
+    </ul>
+
+    <div class="max-xl:hidden h-0 w-64 shrink-0"></div></div>
+
+</aside>
+  
+
+<nav class="hb-toc order-last hidden w-64 shrink-0 xl:block print:hidden px-4" aria-label="table of contents">
+  
+
+
+
+
+
+
+
+
+
+
+
+  <div class="hb-scrollbar text-sm [hyphens:auto] sticky top-16 overflow-y-auto pr-4 pt-6 max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] -mr-4 rtl:-ml-4"><p class="mb-4 font-semibold tracking-tight">On this page</p><ul>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#1994-if-the-endpoint-is-known-drive-the-system-toward-it">1994: If the endpoint is known, drive the system toward it</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#2000-susanna-l%c3%bcdemann-and-the-search-for-invisible-p450-tunnels">2000: Susanna Lüdemann and the search for invisible P450 tunnels</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#what-the-original-random-expulsion-md-found">What the original Random Expulsion MD found</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#a-historical-naming-trap-remd-then-is-not-remd-now">A historical naming trap: REMD then is not REMD now</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#from-tunnel-discovery-to-a-general-ligand-egress-method">From tunnel discovery to a general ligand-egress method</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#2013-pacs-md-replaces-forcing-with-selection">2013: PaCS-MD replaces forcing with selection</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#why-the-progress-coordinate-matters">Why the progress coordinate matters</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#when-pacs-md-was-turned-toward-ligand-dissociation">When PaCS-MD was turned toward ligand dissociation</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#2018-from-ligand-escape-to-residence-time">2018: From ligand escape to residence time</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#what-%cf%84ramd-demonstrated">What τRAMD demonstrated</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#relative-kinetics-not-a-magic-stopwatch">Relative kinetics, not a magic stopwatch</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#pathway-discovery-and-kinetics-are-different-scientific-problems">Pathway discovery and kinetics are different scientific problems</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#why-this-story-is-particularly-relevant-to-cyp-enzymes">Why this story is particularly relevant to CYP enzymes</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#from-trajectories-to-molecular-descriptors">From trajectories to molecular descriptors</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#from-accidental-events-to-designed-computational-experiments">From accidental events to designed computational experiments</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#final-perspective">Final perspective</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#references">References</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#additional-papers-discussed">Additional papers discussed</a>
+      </li></ul>
+
+  
+  
+    
+    
+  
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  </nav>
+
+
+  <article class="w-full break-words flex min-h-[calc(100vh-var(--navbar-height))] min-w-0 justify-center pb-8 pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+    <main class="w-full min-w-0 max-w-6xl px-6 pt-4 md:px-12">
+
+      
+
+      <h1 class="mt-2 text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100">From Accidental Transitions to Residence Times</h1>
+
+      <div class="mt-4 mb-16">
+      <div class="text-gray-500 dark:text-gray-300 text-sm flex items-center flex-wrap gap-y-2"><span class="mr-1">Sep 11, 2026</span>
+        
+
+        
+        <span class="mx-1">·</span>
+        <span class="mx-1">
+          17 min read
+        </span>
+        
+        </div>
+
+        <div class="mt-3">
+          
+
+
+
+
+
+        </div>
+      </div>
+
+
+
+      
+      
+      
+
+      
+      
+
+      <div class="prose prose-slate lg:prose-xl dark:prose-invert">
+        <p>Molecular dynamics promises something close to a movie of molecular life. Atoms move, bonds flex, side chains rotate, proteins breathe, and ligands explore their molecular environment.</p>
+<p>The problem is that many of the events we care most about in drug discovery are <strong>rare</strong>.</p>
+<p>A conventional MD simulation can spend its entire trajectory exploring one metastable basin while a large conformational transition, ligand-binding event, or ligand dissociation remains hidden behind a free-energy barrier. The event is physically possible, but its probability within the accessible simulation time may simply be too low.</p>
+<p>This creates a fundamental paradox: we use molecular dynamics to understand molecular motion, yet some of the most biologically important motions may never occur during the simulations we can practically run.</p>
+<p>Over the past three decades, several methods have approached this problem from different directions. <strong>Targeted molecular dynamics (TMD)</strong> asked how a protein might move between two known structures. <strong>Random Expulsion Molecular Dynamics</strong>, later generally called <strong>Random Acceleration Molecular Dynamics (RAMD)</strong>, asked how a ligand might escape from a buried active site when the exit route itself was unknown. <strong>Parallel Cascade Selection Molecular Dynamics (PaCS-MD)</strong> replaced waiting for one lucky trajectory with repeated rounds of short simulations and selection. Finally, <strong>τRAMD</strong> transformed ensembles of accelerated ligand escapes into a practical approach for comparing drug-target residence times.</p>
+<p>The question gradually changed from:</p>
+<p><strong>Can we make the event happen?</strong></p>
+<p>into:</p>
+<p><strong>Can we discover how it happens?</strong></p>
+<p>and eventually:</p>
+<p><strong>Can accelerated trajectories tell us something quantitative about kinetics?</strong></p>
+<figure style="margin:2rem 0;">
+<svg viewBox="0 0 1040 270" role="img" aria-labelledby="timeline-title timeline-desc" style="width:100%;height:auto;display:block;">
+  <title id="timeline-title">Evolution of rare-event molecular dynamics methods</title>
+  <desc id="timeline-desc">Timeline from targeted molecular dynamics in 1994, through Random Expulsion Molecular Dynamics in 2000 and PaCS-MD in 2013, to tau-RAMD in 2018.</desc>
+  <defs>
+    <marker id="arrow-timeline" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/></marker>
+  </defs>
+  <line x1="115" y1="102" x2="925" y2="102" stroke="currentColor" stroke-width="2" opacity="0.6" marker-end="url(#arrow-timeline)"/>
+  <g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+    <circle cx="135" cy="102" r="9"/><circle cx="390" cy="102" r="9"/><circle cx="650" cy="102" r="9"/><circle cx="900" cy="102" r="9"/>
+    <text x="135" y="58" font-size="19" font-weight="700">1994 · TMD</text>
+    <text x="135" y="137" font-size="15">Known endpoint</text><text x="135" y="158" font-size="15">Drive toward target</text>
+    <text x="390" y="42" font-size="19" font-weight="700">2000 · Random Expulsion MD</text>
+    <text x="390" y="63" font-size="14">historical REMD → RAMD</text>
+    <text x="390" y="137" font-size="15">Unknown exit route</text><text x="390" y="158" font-size="15">Randomly directed force</text>
+    <text x="650" y="58" font-size="19" font-weight="700">2013 · PaCS-MD</text>
+    <text x="650" y="137" font-size="15">Many short MD runs</text><text x="650" y="158" font-size="15">Select + reseed progress</text>
+    <text x="900" y="58" font-size="19" font-weight="700">2018 · τRAMD</text>
+    <text x="900" y="137" font-size="15">Ensembles of escapes</text><text x="900" y="158" font-size="15">Relative residence-time ranking</text>
+    <text x="520" y="224" font-size="17" font-weight="600">Path generation → route discovery → adaptive rare-event sampling → comparative kinetics</text>
+  </g>
+</svg>
+<figcaption><strong>Figure 1.</strong> A simplified conceptual timeline. The methods are not replacements for one another; each changes what question can be asked of a rare molecular event.</figcaption>
+</figure>
+<hr>
+<h2 id="1994-if-the-endpoint-is-known-drive-the-system-toward-it">1994: If the endpoint is known, drive the system toward it</h2>
+<p>In 1994, Schlitter, Engels, and Krüger introduced <strong>Targeted Molecular Dynamics</strong>, or TMD.</p>
+<p>Their starting observation was straightforward: biologically relevant conformational transitions may occur only accidentally during ordinary MD, or may require simulation conditions far from those normally used experimentally. Rather than waiting for a spontaneous transition, TMD introduces a time-dependent structural restraint that progressively drives the system toward a known target conformation.</p>
+<p>If an open and closed experimental structure are available, for example, TMD can generate a possible pathway connecting them.</p>
+<p>This answers an important question:</p>
+<blockquote>
+<p><strong>What structural sequence could connect state A to state B?</strong></p></blockquote>
+<p>But TMD also introduced a distinction that remains central to enhanced sampling today. Because the target structure is specified in advance and the trajectory is actively driven toward it, the resulting pathway is not necessarily the pathway that would occur most frequently under unbiased equilibrium conditions.</p>
+<p>TMD is therefore useful for generating mechanistic hypotheses, identifying moving protein regions, and exploring possible intermediates. It is not, by itself, a direct measurement of natural transition kinetics.</p>
+<p>That distinction between <strong>finding a pathway</strong> and <strong>measuring its probability or timescale</strong> becomes increasingly important in the methods that followed.</p>
+<hr>
+<h2 id="2000-susanna-lüdemann-and-the-search-for-invisible-p450-tunnels">2000: Susanna Lüdemann and the search for invisible P450 tunnels</h2>
+<p>Six years later, <strong>Susanna K. Lüdemann, Valère Lounnas, and Rebecca C. Wade</strong> confronted a different rare-event problem.</p>
+<p>Their system was cytochrome P450cam.</p>
+<p>P450 enzymes contain a deeply buried catalytic heme, creating an apparently simple but mechanistically important question:</p>
+<blockquote>
+<p><strong>How does a substrate actually reach the active site, and how does the product get back out?</strong></p></blockquote>
+<p>Crystal structures provide static snapshots of the protein, but they do not necessarily reveal transient channels that appear only as side chains move or protein regions fluctuate. For P450cam, conventional structures did not reveal one obvious route that could explain substrate access and product egress, and spontaneous entry or exit was not something that could simply be expected to occur during accessible conventional MD.</p>
+<p>Lüdemann and colleagues therefore introduced <strong>Random Expulsion Molecular Dynamics</strong>.</p>
+<p>At the time, they abbreviated it <strong>REMD</strong>.</p>
+<p>Instead of defining a destination or predetermined tunnel, the method applies an additional force to the ligand in a randomly chosen direction. If the ligand makes sufficient progress, the direction is maintained. If it becomes trapped, a new random direction is selected.</p>
+<p>The idea is simple:</p>
+<blockquote>
+<p><strong>Do not tell the ligand which tunnel to use. Encourage it to escape and see which routes the protein allows.</strong></p></blockquote>
+<p>This makes Random Expulsion MD conceptually different from TMD. TMD begins with a known structural destination. Random Expulsion MD begins with a buried ligand and asks the protein to reveal possible exits.</p>
+<figure style="margin:2rem 0;">
+<svg viewBox="0 0 1040 390" role="img" aria-labelledby="ramd-title ramd-desc" style="width:100%;height:auto;display:block;">
+  <title id="ramd-title">Random Expulsion or Random Acceleration Molecular Dynamics workflow</title>
+  <desc id="ramd-desc">A ligand in a buried active site receives a random force. Progress is checked periodically. If progress is insufficient the force direction is changed, otherwise it is kept until an exit pathway is observed.</desc>
+  <defs><marker id="arrow-ramd" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/></marker></defs>
+  <g fill="none" stroke="currentColor" stroke-width="2">
+    <rect x="55" y="115" width="180" height="90" rx="16"/><rect x="300" y="115" width="180" height="90" rx="16"/><rect x="545" y="105" width="180" height="110" rx="16"/><rect x="800" y="115" width="180" height="90" rx="16"/>
+    <line x1="235" y1="160" x2="292" y2="160" marker-end="url(#arrow-ramd)"/><line x1="480" y1="160" x2="537" y2="160" marker-end="url(#arrow-ramd)"/><line x1="725" y1="160" x2="792" y2="160" marker-end="url(#arrow-ramd)"/>
+    <path d="M635 215 C635 300, 390 300, 390 213" marker-end="url(#arrow-ramd)" opacity="0.75"/>
+  </g>
+  <g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+    <text x="145" y="145" font-size="18" font-weight="700">Bound ligand</text><text x="145" y="173" font-size="15">buried active site</text>
+    <text x="390" y="145" font-size="18" font-weight="700">Apply force</text><text x="390" y="173" font-size="15">random direction</text>
+    <text x="635" y="142" font-size="18" font-weight="700">Enough progress?</text><text x="635" y="172" font-size="15">check ligand displacement</text><text x="635" y="195" font-size="15">over a defined interval</text>
+    <text x="890" y="145" font-size="18" font-weight="700">Escape</text><text x="890" y="173" font-size="15">record pathway</text>
+    <text x="520" y="327" font-size="15">No → choose a new random direction</text>
+    <text x="757" y="145" font-size="14">Yes</text>
+    <text x="520" y="365" font-size="15" font-weight="600">Repeat many trajectories to identify recurring channels, gates and transient interactions.</text>
+  </g>
+</svg>
+<figcaption><strong>Figure 2.</strong> Core idea behind the original Random Expulsion MD and modern RAMD family. The artificial force makes escape observable without specifying an exit tunnel in advance.</figcaption>
+</figure>
+<h3 id="what-the-original-random-expulsion-md-found">What the original Random Expulsion MD found</h3>
+<p>The simulations revealed <strong>three major ligand-exit pathway classes</strong> in P450cam. Importantly, one corresponded to a channel that had already been suggested from crystallographic and site-directed mutagenesis evidence, providing independent support that the accelerated simulations were identifying biologically meaningful routes.</p>
+<p>The study also challenged another hypothesis. A water-filled channel had previously been suggested as a possible product-exit route, but ligand escape through that pathway was not observed under the simulated conditions.</p>
+<p>The simulations further suggested that P450cam did not require a dramatic global opening of the protein to release camphor. Relatively modest backbone rearrangements, together with side-chain rotations and perturbation of local interactions, could create sufficient space for ligand passage.</p>
+<p>That result remains conceptually important. A buried active site does not necessarily require the whole protein to swing open like a door. <strong>Transient local fluctuations can create pathways that barely exist in a static crystal structure.</strong></p>
+<p>Random Expulsion MD therefore helped establish an idea that is now central to molecular simulation: functional pathways can emerge from ensembles of transient protein conformations rather than from one obvious static tunnel.</p>
+<h3 id="a-historical-naming-trap-remd-then-is-not-remd-now">A historical naming trap: REMD then is not REMD now</h3>
+<p>There is an unfortunate terminology problem for anyone reading this literature today.</p>
+<p>In the Lüdemann paper, <strong>REMD means Random Expulsion Molecular Dynamics</strong>.</p>
+<p>Today, however, <strong>REMD almost always means Replica Exchange Molecular Dynamics</strong>.</p>
+<p>These are completely different methods.</p>
+<p>Replica Exchange Molecular Dynamics runs multiple replicas of a molecular system under different conditions, most commonly different temperatures, and periodically attempts exchanges between replicas using an appropriate statistical acceptance criterion. High-temperature replicas cross barriers more readily, while exchanges help lower-temperature replicas explore configurations that would otherwise be difficult to reach. The widely cited molecular-dynamics formulation by Sugita and Okamoto appeared in 1999.</p>
+<p>To avoid the acronym collision, Random Expulsion Molecular Dynamics became more commonly referred to as <strong>Random Acceleration Molecular Dynamics (RAMD)</strong>. Modern RAMD therefore traces directly back to the method introduced by Lüdemann, Lounnas, and Wade.</p>
+<p>When reading older literature, the context matters:</p>
+<blockquote>
+<p><strong>REMD in an early P450 ligand-egress paper may mean Random Expulsion MD. REMD in most modern enhanced-sampling papers means Replica Exchange MD.</strong></p></blockquote>
+<p>Same acronym, fundamentally different purpose and sampling strategy.</p>
+<hr>
+<h2 id="from-tunnel-discovery-to-a-general-ligand-egress-method">From tunnel discovery to a general ligand-egress method</h2>
+<p>The significance of the Lüdemann study extends beyond P450cam.</p>
+<p>RAMD introduced a computational strategy for a general class of problems:</p>
+<ul>
+<li>a ligand is buried inside a protein;</li>
+<li>the exit pathway is unknown;</li>
+<li>spontaneous dissociation is too slow to observe;</li>
+<li>one wants to discover possible routes without prescribing a specific tunnel.</li>
+</ul>
+<p>Repeated trajectories can reveal recurring channels, gating residues, transient interactions, steric bottlenecks, hydration changes, and alternative molecular mechanisms.</p>
+<p>The method therefore turns ligand dissociation from a rare accident into an event that can be sampled repeatedly.</p>
+<p>But there is an important limitation: <strong>the extra force changes the dynamics</strong>. The nanoseconds required for a ligand to escape during RAMD are not automatically the ligand&rsquo;s physical residence time.</p>
+<p>At this stage, RAMD was primarily a <strong>pathway-discovery method</strong>.</p>
+<p>The next conceptual advance used a very different way of spending computational effort.</p>
+<hr>
+<h2 id="2013-pacs-md-replaces-forcing-with-selection">2013: PaCS-MD replaces forcing with selection</h2>
+<p>In 2013, Ryuhei Harada and Akio Kitao introduced <strong>Parallel Cascade Selection Molecular Dynamics</strong>, or PaCS-MD.</p>
+<p>The rare-event problem was the same, but the solution was fundamentally different.</p>
+<p>PaCS-MD does not continuously push the system with an additional external force. Instead, it runs many short conventional MD trajectories in parallel. At the end of each cycle, structures that have progressed furthest toward the event of interest are selected. Those structures are assigned new velocities and used to initiate another generation of short trajectories.</p>
+<p>The procedure becomes:</p>
+<p><strong>short MD → selection → reseeding → short MD → selection → reseeding</strong></p>
+<p>until the desired state is reached.</p>
+<p>The distinction is important. In RAMD, acceleration comes from an added force acting on the ligand. In PaCS-MD, acceleration comes primarily from <strong>which trajectories are allowed to continue</strong>.</p>
+<p>Each individual segment can therefore be an ordinary MD trajectory without a continuous steering force. However, this does <strong>not</strong> make the overall PaCS-MD ensemble equivalent to unbiased equilibrium sampling. Repeated selection changes which trajectories survive.</p>
+<h3 id="why-the-progress-coordinate-matters">Why the progress coordinate matters</h3>
+<p>Harada and Kitao demonstrated PaCS-MD using folding of the ten-residue protein chignolin and the open-to-closed transition of T4 lysozyme. Repeated cycles of short simulations were sufficient to reach structures close to the desired product states.</p>
+<p>The approach occupies an interesting middle ground between brute-force MD and continuously steered simulations.</p>
+<p>But its main strength also creates its main vulnerability: something must determine which trajectories are considered promising.</p>
+<p>That means PaCS-MD depends on a <strong>progress coordinate or selection criterion</strong>. If that coordinate is poorly chosen, the method may favor structures that appear geometrically closer to the target while overlooking mechanistically important alternatives.</p>
+<p>This is a broader lesson in enhanced sampling: <strong>accelerating sampling is only part of the problem; defining meaningful progress can be equally difficult.</strong></p>
+<h3 id="when-pacs-md-was-turned-toward-ligand-dissociation">When PaCS-MD was turned toward ligand dissociation</h3>
+<p>Tran, Takemura, Kuwata, and Kitao subsequently applied PaCS-MD to dissociation of tri-N-acetyl-D-glucosamine from hen egg-white lysozyme.</p>
+<p>The contrast with conventional simulation illustrates why such methods are useful. The complex remained bound throughout a <strong>1-μs conventional MD simulation</strong>, whereas PaCS-MD generated dissociation on approximately the \(10^0\)-\(10^1\) ns scale of accumulated simulation time.</p>
+<p>The method repeatedly selected structures showing greater ligand separation and launched new short trajectories from those states. This form is often referred to as <strong>dissociation PaCS-MD</strong>, or <strong>dPaCS-MD</strong>.</p>
+<p>Generating a pathway also need not be the final step. The resulting states can be subjected to statistical analysis, including Markov state models, to move from trajectory generation toward free-energy or kinetic interpretation.</p>
+<figure style="margin:2rem 0;">
+<svg viewBox="0 0 1080 470" role="img" aria-labelledby="compare-title compare-desc" style="width:100%;height:auto;display:block;">
+  <title id="compare-title">RAMD and dissociation PaCS-MD compared</title>
+  <desc id="compare-desc">RAMD accelerates ligand escape using an external randomly directed force. Dissociation PaCS-MD runs multiple short unbiased molecular dynamics segments, selects structures that have progressed toward dissociation, reseeds them, and repeats.</desc>
+  <defs><marker id="arrow-compare" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/></marker></defs>
+  <line x1="540" y1="40" x2="540" y2="420" stroke="currentColor" stroke-width="1.5" opacity="0.25"/>
+  <g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+    <text x="270" y="55" font-size="22" font-weight="700">RAMD</text><text x="810" y="55" font-size="22" font-weight="700">dPaCS-MD</text>
+  </g>
+  <g fill="none" stroke="currentColor" stroke-width="2">
+    <rect x="70" y="100" width="180" height="72" rx="14"/><rect x="325" y="100" width="160" height="72" rx="14"/><line x1="250" y1="136" x2="317" y2="136" marker-end="url(#arrow-compare)"/>
+    <rect x="595" y="90" width="150" height="72" rx="14"/><rect x="805" y="90" width="190" height="72" rx="14"/><line x1="745" y1="126" x2="797" y2="126" marker-end="url(#arrow-compare)"/>
+    <rect x="700" y="220" width="190" height="72" rx="14"/><line x1="900" y1="162" x2="820" y2="212" marker-end="url(#arrow-compare)"/><path d="M795 292 C795 345, 670 345, 670 170" marker-end="url(#arrow-compare)" opacity="0.75"/>
+  </g>
+  <g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+    <text x="160" y="128" font-size="17" font-weight="700">Bound ligand</text><text x="160" y="151" font-size="14">starting complex</text>
+    <text x="405" y="128" font-size="17" font-weight="700">Random force</text><text x="405" y="151" font-size="14">redirect if trapped</text>
+    <text x="270" y="230" font-size="16">External force changes the dynamics</text><text x="270" y="260" font-size="16">Strength: rapid route discovery</text><text x="270" y="290" font-size="16">Sensitivity: force / RAMD parameters</text>
+    <text x="670" y="118" font-size="17" font-weight="700">Many short</text><text x="670" y="141" font-size="14">MD trajectories</text>
+    <text x="900" y="118" font-size="17" font-weight="700">Rank progress</text><text x="900" y="141" font-size="14">select snapshots</text>
+    <text x="795" y="248" font-size="17" font-weight="700">Reseed</text><text x="795" y="271" font-size="14">new velocities + repeat</text>
+    <text x="810" y="380" font-size="16">No continuous steering force</text><text x="810" y="410" font-size="16">Sensitivity: progress coordinate</text>
+    <text x="540" y="455" font-size="16" font-weight="700">Neither raw accelerated simulation time is automatically a physical dissociation time.</text>
+  </g>
+</svg>
+<figcaption><strong>Figure 3.</strong> RAMD and dPaCS-MD make the same rare event observable using different mechanisms. RAMD adds a force; dPaCS-MD adds selection between short trajectories.</figcaption>
+</figure>
+<hr>
+<h2 id="2018-from-ligand-escape-to-residence-time">2018: From ligand escape to residence time</h2>
+<p>Discovering how a ligand leaves a protein is useful. Medicinal chemistry, however, often wants another quantity:</p>
+<blockquote>
+<p><strong>How long does the ligand remain bound?</strong></p></blockquote>
+<p>For a simple first-order dissociation process, residence time is related to the dissociation rate by</p>
+$$
+\tau = \frac{1}{k_{\mathrm{off}}}
+$$<p>Two ligands can have similar equilibrium affinity while exhibiting very different association and dissociation kinetics. Residence time can therefore provide information that is not captured by a single equilibrium binding free energy.</p>
+<p>The problem is computational. Ligand dissociation can occur on timescales far beyond those routinely accessible to conventional atomistic MD.</p>
+<p>Kokh and colleagues addressed this problem using <strong>τRAMD</strong>.</p>
+<p>Rather than interpreting one accelerated escape trajectory, τRAMD performs many RAMD simulations initiated from an equilibrated protein-ligand ensemble and analyzes the distribution of accelerated dissociation times.</p>
+<p>The conceptual shift is from:</p>
+<p><strong>Which route does the ligand take?</strong></p>
+<p>to:</p>
+<p><strong>Across many accelerated exits, does one ligand consistently require longer to dissociate than another?</strong></p>
+<h3 id="what-τramd-demonstrated">What τRAMD demonstrated</h3>
+<p>The original 2018 study investigated <strong>70 drug-like inhibitors of the N-terminal domain of HSP90α</strong>.</p>
+<p>For <strong>78% of the compounds</strong>, the computed relative residence times were within approximately a factor of <strong>2.3</strong> of experiment, with still better agreement within related congeneric series.</p>
+<p>This matters because τRAMD does not require direct simulation of the experimental dissociation timescale. Instead, it asks whether <strong>accelerated escape statistics preserve enough information about the underlying molecular barriers to rank compounds comparatively</strong>.</p>
+<p>The trajectories can also be mechanistically informative. Transient polar contacts, steric bottlenecks, protein rearrangements, and intermediate interactions can help explain why one ligand repeatedly takes longer to escape than another.</p>
+<p>RAMD had therefore evolved from a tool for finding hidden P450 tunnels into a method capable of addressing a question directly relevant to drug optimization.</p>
+<h3 id="relative-kinetics-not-a-magic-stopwatch">Relative kinetics, not a magic stopwatch</h3>
+<p>The artificial force still accelerates dissociation.</p>
+<p>A ligand leaving after 2 ns in a τRAMD trajectory does <strong>not</strong> mean its experimental residence time is 2 ns.</p>
+<p>Instead, accelerated dissociation statistics are compared across compounds under a consistent protocol. τRAMD is therefore most naturally treated as a <strong>relative residence-time ranking method</strong>, particularly when comparing structurally related ligands.</p>
+<p>Its reliability also depends on the starting complex, the conformational ensemble, force-field quality, RAMD parameters, and adequate replicate sampling.</p>
+<p>This distinction is critical because enhanced sampling can easily produce visually convincing molecular movies. A convincing movie is not automatically a quantitative kinetic measurement.</p>
+<hr>
+<h2 id="pathway-discovery-and-kinetics-are-different-scientific-problems">Pathway discovery and kinetics are different scientific problems</h2>
+<p>The historical progression from TMD to RAMD, PaCS-MD, and τRAMD reveals an important hierarchy.</p>
+<ol>
+<li><strong>Pathway generation:</strong> Can the rare event be made observable?</li>
+<li><strong>Mechanistic reproducibility:</strong> Do the same gates, contacts, or intermediates recur across trajectories?</li>
+<li><strong>Relative ranking:</strong> Can compounds be compared consistently under the same accelerated protocol?</li>
+<li><strong>Physical kinetics:</strong> Can transition statistics be connected to experimental rates and timescales?</li>
+</ol>
+<p>These levels require progressively stronger assumptions and statistical treatment.</p>
+<p>A single accelerated trajectory may reveal a plausible pathway. An ensemble can reveal recurring mechanisms. A calibrated protocol may rank compounds. But physical rate constants generally require methods specifically designed to connect transition statistics with physical time, such as <strong>Markov state models, milestoning, weighted ensemble methods</strong>, or related kinetic frameworks.</p>
+<p>The fundamental lesson is simple:</p>
+<blockquote>
+<p><strong>The statistical meaning of a molecular trajectory depends on how that trajectory was generated.</strong></p></blockquote>
+<hr>
+<h2 id="why-this-story-is-particularly-relevant-to-cyp-enzymes">Why this story is particularly relevant to CYP enzymes</h2>
+<p>Cytochrome P450 enzymes remain an especially interesting application because ligand behavior involves much more than binding affinity.</p>
+<p>For metabolism to occur, a substrate must first reach the active site. It must sample orientations compatible with productive chemistry. A metabolically susceptible atom must approach the reactive heme species with appropriate geometry. The enzyme can reorganize around the substrate. After chemistry occurs, the product must eventually leave.</p>
+<p>For highly flexible P450s such as <strong>CYP3A4</strong>, this produces an interconnected network of conformational dynamics, ligand access, productive orientation, chemistry, and egress.</p>
+<p>Static docking captures only a subset of that process.</p>
+<figure style="margin:2rem 0;">
+<svg viewBox="0 0 1120 360" role="img" aria-labelledby="cyp-title cyp-desc" style="width:100%;height:auto;display:block;">
+  <title id="cyp-title">Conceptual CYP450 substrate journey and suitable computational methods</title>
+  <desc id="cyp-desc">A substrate moves from bulk solvent or membrane through access channels to the active site, samples productive heme geometry, undergoes chemistry, and the product exits. RAMD and PaCS-MD are positioned around access and egress, docking and MD around active-site organization, and quantum or reactivity methods around chemistry.</desc>
+  <defs><marker id="arrow-cyp" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/></marker></defs>
+  <g fill="none" stroke="currentColor" stroke-width="2">
+    <rect x="25" y="105" width="155" height="80" rx="14"/><rect x="225" y="105" width="155" height="80" rx="14"/><rect x="425" y="105" width="155" height="80" rx="14"/><rect x="625" y="105" width="155" height="80" rx="14"/><rect x="825" y="105" width="155" height="80" rx="14"/>
+    <line x1="180" y1="145" x2="217" y2="145" marker-end="url(#arrow-cyp)"/><line x1="380" y1="145" x2="417" y2="145" marker-end="url(#arrow-cyp)"/><line x1="580" y1="145" x2="617" y2="145" marker-end="url(#arrow-cyp)"/><line x1="780" y1="145" x2="817" y2="145" marker-end="url(#arrow-cyp)"/>
+    <path d="M900 190 C900 270, 305 270, 305 193" stroke-dasharray="6 5" marker-end="url(#arrow-cyp)" opacity="0.65"/>
+  </g>
+  <g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+    <text x="102" y="134" font-size="17" font-weight="700">Bulk / membrane</text><text x="102" y="159" font-size="14">substrate encounter</text>
+    <text x="302" y="134" font-size="17" font-weight="700">Access channel</text><text x="302" y="159" font-size="14">gates + hydration</text>
+    <text x="502" y="134" font-size="17" font-weight="700">Active site</text><text x="502" y="159" font-size="14">pose ensemble</text>
+    <text x="702" y="126" font-size="17" font-weight="700">Productive</text><text x="702" y="149" font-size="17" font-weight="700">heme geometry</text><text x="702" y="171" font-size="14">near-attack state</text>
+    <text x="902" y="134" font-size="17" font-weight="700">Chemistry</text><text x="902" y="159" font-size="14">oxidation + product</text>
+    <text x="302" y="225" font-size="14" font-weight="600">RAMD / dPaCS-MD</text>
+    <text x="502" y="225" font-size="14" font-weight="600">Docking / MD</text>
+    <text x="702" y="225" font-size="14" font-weight="600">Geometry + reactivity</text>
+    <text x="902" y="225" font-size="14" font-weight="600">QM / chemical models</text>
+    <text x="540" y="318" font-size="16" font-weight="700">Product egress closes the cycle: pathway dynamics are one part of metabolism, not a proxy for turnover.</text>
+  </g>
+</svg>
+<figcaption><strong>Figure 4.</strong> A simplified CYP450 substrate journey. Different computational methods probe different parts of the process; no single observable captures metabolism as a whole.</figcaption>
+</figure>
+<p>Methods such as RAMD or dPaCS-MD can provide complementary information about access channels, exit pathways, gating residues, hydration patterns, and ligand-dependent protein rearrangements.</p>
+<p>But one distinction must remain clear:</p>
+<blockquote>
+<p><strong>Residence time is not metabolic turnover.</strong></p></blockquote>
+<p>A ligand that remains bound for a long time is not necessarily metabolized rapidly. Conversely, rapid ligand escape does not automatically imply poor metabolism.</p>
+<p>P450 catalysis additionally depends on productive orientation, accessibility of candidate sites of metabolism, intrinsic chemical reactivity, the state of the catalytic heme, and progression through the catalytic cycle.</p>
+<p>Access and egress dynamics are therefore <strong>pieces of the metabolic mechanism</strong>, not substitutes for chemistry.</p>
+<hr>
+<h2 id="from-trajectories-to-molecular-descriptors">From trajectories to molecular descriptors</h2>
+<p>One particularly interesting future direction is to stop treating enhanced-sampling simulations merely as movies.</p>
+<p>A ligand-egress trajectory contains much more information than its final escape time:</p>
+<ul>
+<li>transient protein-ligand contacts;</li>
+<li>gate-opening events;</li>
+<li>water rearrangements;</li>
+<li>changes in ligand orientation;</li>
+<li>temporary metastable states;</li>
+<li>residue movements;</li>
+<li>pathway identity;</li>
+<li>steric bottlenecks.</li>
+</ul>
+<p>These properties can be transformed into quantitative molecular representations. Protein-ligand interaction fingerprints, pathway fingerprints, contact graphs, water-network descriptors, residue mobility features, and learned trajectory embeddings could potentially distinguish mechanisms or help predict kinetic behavior.</p>
+<p>Machine-learning analyses of τRAMD trajectories have already illustrated this direction by using transient interaction information to help explain and predict residence-time behavior.</p>
+<p>This creates an interesting convergence between molecular simulation and machine learning. Rather than asking ML to replace physics-based simulation, <strong>simulation can generate mechanistically informed features that are absent from conventional molecular representations</strong>.</p>
+<p>The challenge is validation. Trajectory-derived features can be high-dimensional and protocol-dependent. Replicates, parameter-sensitivity analysis, independent test systems, and experimental kinetic data remain essential.</p>
+<hr>
+<h2 id="from-accidental-events-to-designed-computational-experiments">From accidental events to designed computational experiments</h2>
+<p>Looking back, the progression is remarkably clear.</p>
+<p><strong>TMD asked:</strong> How might two known protein structures be connected?</p>
+<p><strong>Random Expulsion MD asked:</strong> How might a ligand escape when the route is unknown?</p>
+<p><strong>PaCS-MD asked:</strong> Can we repeatedly select promising short trajectories instead of waiting for one lucky long simulation?</p>
+<p><strong>τRAMD asked:</strong> Can ensembles of accelerated escapes preserve enough information to compare ligand residence times?</p>
+<p>The methods are different, but they all attack the same underlying problem.</p>
+<p>Rare molecular events are often too important to ignore and too slow to wait for.</p>
+<p>The solution has therefore been to redesign the computational experiment.</p>
+<hr>
+<h2 id="final-perspective">Final perspective</h2>
+<p>&ldquo;Accidental transitions&rdquo; is a useful description of a major limitation of conventional molecular dynamics.</p>
+<p>A protein may be capable of opening. A ligand may be capable of leaving. A substrate may have several possible tunnels. But during the finite trajectory we happen to run, none of those events may occur.</p>
+<p>The methods discussed here replace passive waiting with different forms of directed computational exploration.</p>
+<p>TMD guides the system toward a known endpoint.</p>
+<p>Random Expulsion MD, now generally called RAMD, searches for unknown ligand pathways using randomly directed acceleration.</p>
+<p>PaCS-MD reallocates simulation effort toward trajectories already progressing toward a rare event.</p>
+<p>τRAMD uses ensembles of accelerated exits to extract comparative kinetic information.</p>
+<p>Their evolution also reflects a broader maturation of molecular simulation. The goal is no longer simply to generate an impressive trajectory. The goal is to understand <strong>what the trajectory represents statistically, whether its mechanism is reproducible, and which experimental observable it can legitimately inform</strong>.</p>
+<p>For drug discovery, that leads to three complementary questions:</p>
+<p><strong>Thermodynamics:</strong> How favorable is the bound state?</p>
+<p><strong>Mechanism:</strong> How does the system move between states?</p>
+<p><strong>Kinetics:</strong> How quickly do those transitions occur?</p>
+<p>The most useful molecular-simulation workflows increasingly try to connect all three while keeping the assumptions and uncertainty of each layer explicit.</p>
+<hr>
+<h2 id="references">References</h2>
+<ol>
+<li>
+<p>Schlitter, J.; Engels, M.; Krüger, P. &ldquo;Targeted Molecular Dynamics: A New Approach for Searching Pathways of Conformational Transitions.&rdquo; <em>Journal of Molecular Graphics</em> <strong>1994</strong>, 12, 84-89. <a href="https://doi.org/10.1016/0263-7855%2894%2980072-3" target="_blank" rel="noopener">https://doi.org/10.1016/0263-7855(94)80072-3</a></p>
+</li>
+<li>
+<p>Lüdemann, S. K.; Lounnas, V.; Wade, R. C. &ldquo;How Do Substrates Enter and Products Exit the Buried Active Site of Cytochrome P450cam? 1. Random Expulsion Molecular Dynamics Investigation of Ligand Access Channels and Mechanisms.&rdquo; <em>Journal of Molecular Biology</em> <strong>2000</strong>, 303, 797-811. <a href="https://doi.org/10.1006/jmbi.2000.4154" target="_blank" rel="noopener">https://doi.org/10.1006/jmbi.2000.4154</a></p>
+</li>
+<li>
+<p>Harada, R.; Kitao, A. &ldquo;Parallel Cascade Selection Molecular Dynamics (PaCS-MD) to Generate Conformational Transition Pathway.&rdquo; <em>The Journal of Chemical Physics</em> <strong>2013</strong>, 139, 035103. <a href="https://doi.org/10.1063/1.4813023" target="_blank" rel="noopener">https://doi.org/10.1063/1.4813023</a></p>
+</li>
+<li>
+<p>Kokh, D. B.; et al. &ldquo;Estimation of Drug-Target Residence Times by τ-Random Acceleration Molecular Dynamics Simulations.&rdquo; <em>Journal of Chemical Theory and Computation</em> <strong>2018</strong>, 14, 3859-3869. <a href="https://doi.org/10.1021/acs.jctc.8b00230" target="_blank" rel="noopener">https://doi.org/10.1021/acs.jctc.8b00230</a></p>
+</li>
+</ol>
+<h3 id="additional-papers-discussed">Additional papers discussed</h3>
+<ol start="5">
+<li>
+<p>Tran, D. P.; Takemura, K.; Kuwata, K.; Kitao, A. &ldquo;Protein-Ligand Dissociation Simulated by Parallel Cascade Selection Molecular Dynamics.&rdquo; <em>Journal of Chemical Theory and Computation</em> <strong>2018</strong>, 14, 404-417. <a href="https://doi.org/10.1021/acs.jctc.7b00504" target="_blank" rel="noopener">https://doi.org/10.1021/acs.jctc.7b00504</a></p>
+</li>
+<li>
+<p>Sugita, Y.; Okamoto, Y. &ldquo;Replica-Exchange Molecular Dynamics Method for Protein Folding.&rdquo; <em>Chemical Physics Letters</em> <strong>1999</strong>, 314, 141-151. <a href="https://doi.org/10.1016/S0009-2614%2899%2901123-9" target="_blank" rel="noopener">https://doi.org/10.1016/S0009-2614(99)01123-9</a></p>
+</li>
+</ol>
+
+      </div>
+
+      
+  <time class="mt-12 mb-8 block text-xs text-gray-500 ltr:text-right rtl:text-left dark:text-gray-400" datetime="2026-09-11T00:00:00.000Z">
+    <span>Last updated on</span>
+    Sep 11, 2026</time>
+
+      <div class="container mx-auto prose prose-slate lg:prose-xl dark:prose-invert mt-5">
+        
+        <div class="max-w-prose print:hidden">
+  
+  
+
+  
+<div class="flex justify-center">
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/molecular-dynamics/">Molecular Dynamics</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/enhanced-sampling/">Enhanced Sampling</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/ramd/">RAMD</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/pacs-md/">PaCS-MD</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/residence-time/">Residence Time</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/cytochrome-p450/">Cytochrome P450</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/drug-discovery/">Drug Discovery</a>
+  
+</div>
+
+
+  
+<section class="flex flex-row flex-wrap justify-center pt-4 text-xl">
+  
+
+  
+  
+  
+  
+  
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="https://twitter.com/intent/tweet?url=http%3A%2F%2Flocalhost%3A1313%2Fblog%2Ffrom-accidental-transitions-to-residence-times-hugo%2F&amp;text=From&#43;Accidental&#43;Transitions&#43;to&#43;Residence&#43;Times"
+    title="X"
+    aria-label="X"
+    id="share-link-x"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+  </a>
+  
+
+  
+  
+  
+  
+  
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="https://www.facebook.com/sharer.php?u=http%3A%2F%2Flocalhost%3A1313%2Fblog%2Ffrom-accidental-transitions-to-residence-times-hugo%2F&amp;t=From&#43;Accidental&#43;Transitions&#43;to&#43;Residence&#43;Times"
+    title="Facebook"
+    aria-label="Facebook"
+    id="share-link-facebook"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+  </a>
+  
+
+  
+  
+  
+  
+  
+  
+    
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="mailto:?subject=From%20Accidental%20Transitions%20to%20Residence%20Times&amp;body=http%3A%2F%2Flocalhost%3A1313%2Fblog%2Ffrom-accidental-transitions-to-residence-times-hugo%2F"
+    title="Email"
+    aria-label="Email"
+    id="share-link-email"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M16.5 12a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25"/></svg>
+  </a>
+  
+
+  
+  
+  
+  
+  
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="https://www.linkedin.com/shareArticle?url=http%3A%2F%2Flocalhost%3A1313%2Fblog%2Ffrom-accidental-transitions-to-residence-times-hugo%2F&amp;title=From&#43;Accidental&#43;Transitions&#43;to&#43;Residence&#43;Times"
+    title="LinkedIn"
+    aria-label="LinkedIn"
+    id="share-link-linkedin"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+  </a>
+  
+
+  
+  
+  
+  
+  
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="whatsapp://send?text=From&#43;Accidental&#43;Transitions&#43;to&#43;Residence&#43;Times%20http%3A%2F%2Flocalhost%3A1313%2Fblog%2Ffrom-accidental-transitions-to-residence-times-hugo%2F"
+    title="WhatsApp"
+    aria-label="WhatsApp"
+    id="share-link-whatsapp"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="m187.58 144.84-32-16a8 8 0 0 0-8 .5l-14.69 9.8a40.55 40.55 0 0 1-16-16l9.8-14.69a8 8 0 0 0 .5-8l-16-32A8 8 0 0 0 104 64a40 40 0 0 0-40 40 88.1 88.1 0 0 0 88 88 40 40 0 0 0 40-40 8 8 0 0 0-4.42-7.16ZM152 176a72.08 72.08 0 0 1-72-72 24 24 0 0 1 19.29-23.54l11.48 23L101 118a8 8 0 0 0-.73 7.51 56.47 56.47 0 0 0 30.15 30.15A8 8 0 0 0 138 155l14.61-9.74 23 11.48A24 24 0 0 1 152 176ZM128 24a104 104 0 0 0-91.82 152.88l-11.35 34.05a16 16 0 0 0 20.24 20.24l34.05-11.35A104 104 0 1 0 128 24Zm0 192a87.87 87.87 0 0 1-44.06-11.81 8 8 0 0 0-6.54-.67L40 216l12.47-37.4a8 8 0 0 0-.66-6.54A88 88 0 1 1 128 216Z"/></svg>
+  </a>
+  
+</section>
+
+
+  
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+
+<div class="flex pt-12 pb-4">
+  
+  
+  <img
+    class="mr-4 h-24 w-24 rounded-full"
+    width="96"
+    height="96"
+    alt="Yassir Boulaamane"
+  src="/author/yassir-boulaamane/avatar_hu_9aa8ce6cf147a32a.jpg"
+  loading="lazy"
+  />
+  
+  <div class="place-self-center">
+    <div class="text-[0.6rem] uppercase leading-3 text-neutral-500 dark:text-neutral-400">
+      Authors
+    </div>
+    <div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">
+      <a href="http://localhost:1313/" class="no-underline">
+      Yassir Boulaamane
+      </a>
+    </div>
+
+    
+    <div class="text-sm font-bold text-neutral-700 dark:text-neutral-300">
+    Postdoctoral Researcher
+    </div>
+    
+
+
+    
+
+    <div class="text-2xl sm:text-lg pt-1">
+
+      
+<div class="flex flex-wrap text-neutral-500 dark:text-neutral-300">
+  
+    
+    
+    
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="mailto:yassir.boulaamane@uab.cat"
+      
+      aria-label="At-Symbol"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M16.5 12a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://twitter.com/yassir_tw"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Brands/X"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://github.com/yboulaamane"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Brands/Github"
+    ><svg style="height: 1em;" fill="currentColor" viewBox="3 3 18 18"><path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://www.linkedin.com/in/yassir-boulaamane"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Brands/Linkedin"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://scholar.google.com/citations?user=L_EMgLcAAAAJ"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Academicons/Google-Scholar"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M343.759 106.662V79.43L363.524 64h-213.89L20.476 176.274h85.656a82.339 82.339 0 0 0-.219 6.225c0 20.845 7.22 38.087 21.672 51.861c14.453 13.797 32.252 20.648 53.327 20.648c4.923 0 9.75-.368 14.438-1.024c-2.907 6.5-4.374 12.523-4.374 18.142c0 9.875 4.499 20.43 13.467 31.642c-39.234 2.67-68.061 9.732-86.437 21.163c-10.531 6.5-19 14.704-25.39 24.531c-6.391 9.9-9.578 20.515-9.578 31.962c0 9.648 2.062 18.336 6.219 26.062c4.156 7.726 9.578 14.07 16.312 18.984c6.718 4.968 14.469 9.101 23.219 12.469c8.734 3.344 17.406 5.718 26.061 7.062A167.052 167.052 0 0 0 180.555 448c13.469 0 26.953-1.734 40.547-5.187c13.562-3.485 26.28-8.642 38.171-15.493c11.86-6.805 21.515-16.086 28.922-27.718c7.39-11.68 11.094-24.805 11.094-39.336c0-11.016-2.25-21.039-6.75-30.14c-4.468-9.073-9.938-16.542-16.452-22.345c-6.501-5.813-13-11.155-19.516-15.968c-6.5-4.845-12-9.75-16.468-14.813c-4.485-5.046-6.735-10.054-6.735-14.984c0-4.921 1.734-9.672 5.216-14.265c3.455-4.61 7.674-9.048 12.61-13.306c4.937-4.25 9.875-8.968 14.796-14.133c4.922-5.147 9.141-11.827 12.61-20.008c3.485-8.18 5.203-17.445 5.203-27.757c0-13.453-2.547-24.46-7.547-33.314c-.594-1.022-1.218-1.803-1.875-3.022l56.907-46.672v17.119c-7.393.93-6.624 5.345-6.624 10.635V245.96c0 5.958 4.875 10.834 10.834 10.834h3.989c5.958 0 10.833-4.875 10.833-10.834V117.293c0-5.277.778-9.688-6.561-10.63zm-107.36 222.48c1.14.75 3.704 2.78 7.718 6.038c4.05 3.243 6.797 5.695 8.266 7.414a443.553 443.553 0 0 1 6.376 7.547c2.813 3.375 4.718 6.304 5.718 8.734c1 2.477 2.016 5.461 3.047 8.946a38.27 38.27 0 0 1 1.485 10.562c0 17.048-6.564 29.68-19.656 37.859c-13.125 8.18-28.767 12.274-46.938 12.274c-9.187 0-18.203-1.093-27.063-3.196c-8.843-2.116-17.311-5.336-25.39-9.601c-8.078-4.258-14.577-10.204-19.5-17.797c-4.938-7.64-7.407-16.415-7.407-26.25c0-10.32 2.797-19.29 8.422-26.906c5.594-7.625 12.938-13.391 22.032-17.315c9.063-3.946 18.25-6.742 27.562-8.398a157.865 157.865 0 0 1 28.438-2.555c4.47 0 7.936.25 10.405.696c.455.219 3.032 2.07 7.735 5.563c4.704 3.462 7.625 5.595 8.75 6.384zm-3.359-100.579c-7.406 8.86-17.734 13.288-30.953 13.288c-11.86 0-22.298-4.764-31.266-14.312c-9-9.523-15.422-20.328-19.344-32.43c-3.937-12.109-5.906-23.984-5.906-35.648c0-13.694 3.596-25.352 10.781-34.976c7.187-9.65 17.5-14.485 30.938-14.485c11.875 0 22.374 5.038 31.437 15.157c9.094 10.085 15.61 21.413 19.517 33.968c3.922 12.54 5.873 24.53 5.873 35.984c0 13.446-3.702 24.61-11.076 33.454z"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://orcid.org/0000-0002-2939-7772"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Academicons/Orcid"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M336.62 194.538c-7.13-3.328-13.866-5.56-20.253-6.614c-6.365-1.095-16.574-1.612-30.71-1.612h-36.704v152.747h37.634c14.673 0 26.081-1.013 34.224-3.017c8.142-2.004 14.921-4.526 20.356-7.626a69.448 69.448 0 0 0 14.942-11.388c14.488-14.714 21.742-33.273 21.742-55.717c0-22.052-7.44-40.052-22.341-53.982c-5.498-5.166-11.822-9.444-18.89-12.793zM256 8C119.022 8 8 119.042 8 256s111.022 248 248 248s248-111.042 248-248S392.978 8 256 8Zm-82.336 357.513h-29.389V160.148h29.389zM158.95 138.696c-11.14 0-20.213-9.01-20.213-20.212c0-11.118 9.052-20.191 20.213-20.191c11.18 0 20.232 9.052 20.232 20.191a20.194 20.194 0 0 1-20.232 20.212zm241.386 163.597c-5.29 12.545-12.834 23.581-22.65 33.088c-9.982 9.837-21.597 17.194-34.844 22.196c-7.75 3.017-14.839 5.063-21.307 6.117c-6.49 1.013-18.828 1.509-37.076 1.509h-64.956V160.148h69.233c27.962 0 50.034 4.154 66.32 12.545c16.265 8.37 29.181 20.728 38.792 36.972c9.61 16.265 14.425 34.018 14.425 53.196c.023 13.765-2.666 26.908-7.936 39.432z"/></svg></a>
+  
+</div>
+
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+  
+  
+    
+    
+    
+      
+      
+    
+<div class="pt-1 no-prose w-full">
+  <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+  <div class="flex flex-col md:flex-row flex-nowrap justify-between gap-5 pt-2">
+    <div class="">
+      
+    </div>
+    <div class="">
+      
+        <a class="group flex text-right no-underline" href="/blog/from-prompts-to-systems-ai-engineering-2023-2026/">
+          <span class="flex flex-col">
+            <span
+              class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+            >From Prompts to Systems: How AI Engineering Changed Between 2023 and 2026</span
+            >
+            <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+              
+                Aug 11, 2026
+              
+            </span>
+          </span>
+          <span
+            class="mt-[-0.3rem] ms-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+          ><span class="ltr:inline">&rarr;</span></span>
+        </a>
+      
+    </div>
+  </div>
+</div>
+
+
+
+  
+
+
+  
+
+
+
+</div>
+
+      </div>
+
+    </main>
+  </article>
+</div>
+
+    </div>
+    <div class="page-footer">
+      <footer class="container mx-auto flex flex-col justify-items-center text-sm leading-6 mt-24 mb-4 text-slate-700 dark:text-slate-200">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+
+  
+  
+    
+  
+  
+    
+  
+
+  
+
+  
+  <p class="powered-by text-center">
+    © 2026 Yassir Boulaamane, PhD. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
+  </p>
+  
+
+  <p class="powered-by footer-license-icons">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank" aria-label="Creative Commons">
+      <i class="fab fa-creative-commons fa-2x" aria-hidden="true"></i>
+      <i class="fab fa-creative-commons-by fa-2x" aria-hidden="true"></i>
+      
+        <i class="fab fa-creative-commons-nc fa-2x" aria-hidden="true"></i>
+      
+      
+        <i class="fab fa-creative-commons-nd fa-2x" aria-hidden="true"></i>
+      
+    </a>
+  </p>
+
+
+
+
+
+  <p class="powered-by text-center">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://hugoblox.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Hugo Blox Builder</a> — the free, <a href="https://github.com/HugoBlox/hugo-blox-builder" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+
+</footer>
+
+    </div>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Benchmarking | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/benchmarking/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/benchmarking/index.xml" rel="self" type="application/rss+xml" />
+    <description>Benchmarking</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Thu, 16 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Benchmarking</title>
+      <link>https://yboulaamane.github.io/tags/benchmarking/</link>
+    </image>
+    
+    <item>
+      <title>BioLatent</title>
+      <link>https://yboulaamane.github.io/project/biolatent/</link>
+      <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/biolatent/</guid>
+      <description>&lt;p&gt;An open-access registry, selection wizard, and interactive benchmark dashboard for chemical and biological vector representations. Indexes foundation models across five modalities: small molecules, proteins, complexes, chemical reactions, and nucleic acids, with a programmatic JSON API.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/project/</link>
+      <atom:link href="https://yboulaamane.github.io/project/index.xml" rel="self" type="application/rss+xml" />
+    <description>Projects</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Thu, 16 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Projects</title>
+      <link>https://yboulaamane.github.io/project/</link>
+    </image>
+    
+    <item>
+      <title>BioLatent</title>
+      <link>https://yboulaamane.github.io/project/biolatent/</link>
+      <pubDate>Thu, 16 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/biolatent/</guid>
+      <description>&lt;p&gt;An open-access registry, selection wizard, and interactive benchmark dashboard for chemical and biological vector representations. Indexes foundation models across five modalities: small molecules, proteins, complexes, chemical reactions, and nucleic acids, with a programmatic JSON API.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Learn CADD</title>
+      <link>https://yboulaamane.github.io/project/learncadd/</link>
+      <pubDate>Wed, 24 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/learncadd/</guid>
+      <description>&lt;p&gt;An interactive, visual, first-principles web guide to computer-aided drug design. Covers 18 modules across ligand-receptor binding, molecular docking, pharmacophore modeling, QSAR, molecular dynamics, generative design, and ADMET prediction, each with hands-on browser playgrounds.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>QSARBoost</title>
+      <link>https://yboulaamane.github.io/project/qsarboost/</link>
+      <pubDate>Sat, 09 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/qsarboost/</guid>
+      <description>&lt;p&gt;A flexible Python framework for building, validating, and applying gradient boosting-based QSAR models, with built-in support for molecular fingerprints, hyperparameter optimization, and model interpretation.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>VinaScreen</title>
+      <link>https://yboulaamane.github.io/project/vinascreen/</link>
+      <pubDate>Thu, 07 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/vinascreen/</guid>
+      <description>&lt;p&gt;An automated Python script for structure-based virtual screening with AutoDock Vina, handling batch ligand preparation, parallel docking, and result parsing for large compound libraries.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>QSARBioPred</title>
+      <link>https://yboulaamane.github.io/project/qsarbiopred/</link>
+      <pubDate>Tue, 20 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/qsarbiopred/</guid>
+      <description>&lt;p&gt;A Jupyter Notebook pipeline for building QSAR classification models for bioactivity prediction, supporting descriptor calculation, feature selection, model training, and applicability domain assessment.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>EnsembleBBB</title>
+      <link>https://yboulaamane.github.io/project/ensemblebbb/</link>
+      <pubDate>Tue, 13 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/ensemblebbb/</guid>
+      <description>&lt;p&gt;A machine learning ensemble model for predicting drug blood-brain barrier permeability, deployed as an interactive Streamlit web application for rapid compound screening.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Awesome Drug Discovery</title>
+      <link>https://yboulaamane.github.io/project/awesomedrugdiscovery/</link>
+      <pubDate>Tue, 16 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/awesomedrugdiscovery/</guid>
+      <description>&lt;p&gt;A curated resource list of computational methods for drug discovery, covering molecular modeling tools, machine learning frameworks, databases, and open-source pipelines organized by application area.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ArtemisiaDB</title>
+      <link>https://yboulaamane.github.io/project/artemisiadb/</link>
+      <pubDate>Mon, 28 Feb 2022 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/artemisiadb/</guid>
+      <description>&lt;p&gt;A curated database of secondary metabolites isolated from Artemisia L. species, providing chemical structures, molecular properties, and screening-ready compound libraries for virtual screening campaigns against therapeutic targets.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CoumarinDB</title>
+      <link>https://yboulaamane.github.io/project/coumarindb/</link>
+      <pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/coumarindb/</guid>
+      <description>&lt;p&gt;A manually curated database of naturally occurring coumarins, compiling chemical structures, physicochemical descriptors, and source organism data to support computational screening and structure-activity studies.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

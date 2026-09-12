@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Artificial Intelligence | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/artificial-intelligence/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/artificial-intelligence/index.xml" rel="self" type="application/rss+xml" />
+    <description>Artificial Intelligence</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 21 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Artificial Intelligence</title>
+      <link>https://yboulaamane.github.io/tags/artificial-intelligence/</link>
+    </image>
+    
+    <item>
+      <title>Beyond Parameter Counts: The Shift Toward Rigorous Evaluation in Scientific AI</title>
+      <link>https://yboulaamane.github.io/blog/shifting-focus-from-model-size-to-rigorous-evaluation/</link>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/shifting-focus-from-model-size-to-rigorous-evaluation/</guid>
+      <description>&lt;p&gt;The evaluation of artificial intelligence in drug discovery is transitioning from a focus on model scale to validation of output quality. While foundation models and deep learning architectures in structural biology have grown in parameters and database size, their translation to experimental pipelines remains limited by physical inconsistencies. Generated structural models that appear plausible can harbor steric clashes, display poor thermodynamic stability, or fail to fold in vitro.&lt;/p&gt;
+&lt;p&gt;Ensuring the utility of scientific AI requires rigorous, multi-tiered evaluation frameworks that test physical consistency, out-of-distribution generalization, and biological viability.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;limits-of-classical-metrics&#34;&gt;Limits of Classical Metrics&lt;/h2&gt;
+&lt;p&gt;Traditional machine learning benchmarks rely on statistical reconstruction. In structural biology, structure prediction accuracy is often measured by root-mean-square deviation (RMSD) from static target structures, while sequence generators are evaluated on sequence perplexity.&lt;/p&gt;
+&lt;p&gt;These metrics do not capture physical or chemical viability. A predicted complex can report a low backbone RMSD while placing atoms in overlapping coordinates, violating electrostatic constraints, or displaying unstable conformations. Modern evaluation frameworks address this by assessing models along three key axes:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Functional Utility:&lt;/strong&gt; Validation of the target biological function (such as ligand binding, inhibition, or activation) in vitro.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Operational Robustness:&lt;/strong&gt; Accuracy across diverse target families and novel domain classes without performance degradation.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Representational Integrity:&lt;/strong&gt; Adherence to physical, chemical, and thermodynamic laws, including correct chirality, bond angles, and torsion angles.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-scientific-ai-evaluation-hierarchy&#34;&gt;The Scientific AI Evaluation Hierarchy&lt;/h2&gt;
+&lt;p&gt;Evaluating these models systematically requires a hierarchical structure. Models must satisfy base physical constraints before being assessed on complex biological activity.&lt;/p&gt;
+
+&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 800 380&#34; width=&#34;100%&#34; height=&#34;100%&#34;&gt;
+  &lt;defs&gt;
+    &lt;!-- Gradients --&gt;
+    &lt;linearGradient id=&#34;level1&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#EF4444&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#B91C1C&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;level2&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#F59E0B&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#B45309&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;level3&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#10B981&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#047857&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;level4&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#3B82F6&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#1D4ED8&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;filter id=&#34;shadow&#34; x=&#34;-5%&#34; y=&#34;-5%&#34; width=&#34;110%&#34; height=&#34;110%&#34;&gt;
+      &lt;feDropShadow dx=&#34;1&#34; dy=&#34;3&#34; stdDeviation=&#34;3&#34; flood-opacity=&#34;0.1&#34; /&gt;
+    &lt;/filter&gt;
+  &lt;/defs&gt;
+
+  &lt;style&gt;
+    .header-text { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 800; font-size: 20px; fill: #111827; }
+    .level-title { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 14px; fill: #FFFFFF; }
+    .level-desc { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 500; font-size: 11px; fill: #F9FAFB; }
+    .side-title { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 12px; fill: #374151; }
+    .side-desc { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-size: 11px; fill: #6B7280; }
+  &lt;/style&gt;
+
+  &lt;!-- Background --&gt;
+  &lt;rect width=&#34;800&#34; height=&#34;380&#34; fill=&#34;#F9FAFB&#34; rx=&#34;12&#34; /&gt;
+
+  &lt;text x=&#34;30&#34; y=&#34;35&#34; class=&#34;header-text&#34;&gt;The Scientific AI Evaluation Hierarchy&lt;/text&gt;
+
+  &lt;!-- Level 4: Functional Utility (Top) --&gt;
+  &lt;g transform=&#34;translate(250, 60)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;polygon points=&#34;150,0 0,60 300,60&#34; fill=&#34;url(#level4)&#34; /&gt;
+    &lt;text x=&#34;150&#34; y=&#34;42&#34; class=&#34;level-title&#34; text-anchor=&#34;middle&#34;&gt;Level 4: Functional Utility&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;g transform=&#34;translate(570, 75)&#34;&gt;
+    &lt;text x=&#34;0&#34; y=&#34;15&#34; class=&#34;side-title&#34;&gt;Real-World Efficacy&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;30&#34; class=&#34;side-desc&#34;&gt;• Experimental binding assays&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;45&#34; class=&#34;side-desc&#34;&gt;• Functional cell-line modulation&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Level 3: Biophysical Developability --&gt;
+  &lt;g transform=&#34;translate(200, 125)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;polygon points=&#34;50,0 250,0 280,60 20,60&#34; fill=&#34;url(#level3)&#34; /&gt;
+    &lt;text x=&#34;150&#34; y=&#34;35&#34; class=&#34;level-title&#34; text-anchor=&#34;middle&#34;&gt;Level 3: Biophysical Developability&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;g transform=&#34;translate(570, 140)&#34;&gt;
+    &lt;text x=&#34;0&#34; y=&#34;15&#34; class=&#34;side-title&#34;&gt;Manufacturability &amp;amp; Safety&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;30&#34; class=&#34;side-desc&#34;&gt;• Aggregation &amp;amp; clearing rates&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;45&#34; class=&#34;side-desc&#34;&gt;• Thermal stability &amp;amp; solubility&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Level 2: Generalization &amp; Leakage Control --&gt;
+  &lt;g transform=&#34;translate(150, 190)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;polygon points=&#34;50,0 250,0 275,60 25,60&#34; fill=&#34;url(#level2)&#34; /&gt;
+    &lt;text x=&#34;150&#34; y=&#34;35&#34; class=&#34;level-title&#34; text-anchor=&#34;middle&#34;&gt;Level 2: Generalization Control&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;g transform=&#34;translate(570, 205)&#34;&gt;
+    &lt;text x=&#34;0&#34; y=&#34;15&#34; class=&#34;side-title&#34;&gt;Out-of-Distribution Tests&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;30&#34; class=&#34;side-desc&#34;&gt;• Homology clustering splits&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;45&#34; class=&#34;side-desc&#34;&gt;• Zero-shot novel target space&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Level 1: Physical &amp; Factual Grounding --&gt;
+  &lt;g transform=&#34;translate(100, 255)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;polygon points=&#34;50,0 250,0 270,70 30,70&#34; fill=&#34;url(#level1)&#34; /&gt;
+    &lt;text x=&#34;150&#34; y=&#34;35&#34; class=&#34;level-title&#34; text-anchor=&#34;middle&#34;&gt;Level 1: Grounding &amp;amp; Integrity&lt;/text&gt;
+    &lt;text x=&#34;150&#34; y=&#34;52&#34; class=&#34;level-desc&#34; text-anchor=&#34;middle&#34;&gt;Steric clashes, chirality, database citations&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;g transform=&#34;translate(570, 275)&#34;&gt;
+    &lt;text x=&#34;0&#34; y=&#34;15&#34; class=&#34;side-title&#34;&gt;Base Constraints&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;30&#34; class=&#34;side-desc&#34;&gt;• Valid bond angles &amp;amp; torsion&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;45&#34; class=&#34;side-desc&#34;&gt;• No citation hallucinations&lt;/text&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+
+
+&lt;hr&gt;
+&lt;h2 id=&#34;generalization-vs-rote-memorization&#34;&gt;Generalization vs. Rote Memorization&lt;/h2&gt;
+&lt;p&gt;A key challenge in scientific machine learning is data leakage. Because public repositories such as the Protein Data Bank (PDB) are highly redundant, random train-test partitions frequently contain homologous structures. Consequently, models can achieve high accuracy by memorizing training patterns rather than learning underlying biophysical principles.&lt;/p&gt;
+&lt;p&gt;To address this, next-generation benchmarks enforce strict &lt;strong&gt;out-of-distribution (OOD) validation&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Homology Clustering:&lt;/strong&gt; Partitioning datasets based on sequence identity. For example, testing models exclusively on proteins sharing less than 30% sequence identity with any training instance.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Zero-Shot Novel Scaffolds:&lt;/strong&gt; Evaluating model performance on de novo designed proteins or chemical classes that do not exist in the training set.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Leakage Diagnostics:&lt;/strong&gt; Running ablations (such as comparing full complex predictions against pocket-only or ligand-only baselines) to check if models learn true interactions or rely on target identity patterns.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;closing-the-loop-biophysical-developability&#34;&gt;Closing the Loop: Biophysical Developability&lt;/h2&gt;
+&lt;p&gt;In drug discovery, binding affinity represents only one parameter of interest. To serve as a viable therapeutic agent, a candidate molecule must satisfy a multi-parameter &lt;strong&gt;developability profile&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Solubility &amp;amp; Hydrophobicity:&lt;/strong&gt; Maintaining stability in aqueous solution without precipitation.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Aggregation Propensity:&lt;/strong&gt; Resisting self-association and the formation of high-molecular-weight aggregates.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Thermal Stability:&lt;/strong&gt; Retaining structural integrity across temperatures (measured via melting temperature, $T_m$).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Manufacturability:&lt;/strong&gt; Exhibiting high expression yields in host production systems.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;AI assessment methodologies now incorporate automated physical screening. Rather than relying on static docking score ranking, candidate compounds are prioritized using automated, high-throughput biophysical assays that measure solubility, stability, and clearing kinetics.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;evaluating-autonomous-agents-and-reasoning-llms&#34;&gt;Evaluating Autonomous Agents and Reasoning LLMs&lt;/h2&gt;
+&lt;p&gt;Recent AI applications in chemistry employ Large Language Models (LLMs) as autonomous agents. Rather than limiting tasks to property prediction, these agents perform multi-step scientific workflows, including literature reviews, database queries, and structural tool execution via protocols such as the Model Context Protocol.&lt;/p&gt;
+&lt;p&gt;Evaluating these systems requires auditing their reasoning pathways and operational integrity:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Hallucination Mitigation:&lt;/strong&gt; Verifying that all generated scientific claims and intermediate planning steps reflect established physical chemistry.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Citation Grounding:&lt;/strong&gt; Implementing Retrieval-Augmented Generation (RAG) to trace assertions back to peer-reviewed literature or databases (such as UniProt, ChEMBL, or PubMed).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Factual Traceability:&lt;/strong&gt; Documenting and reviewing decision lineage across multi-agent loops to verify chemical and biological feasibility.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;outlook&#34;&gt;Outlook&lt;/h2&gt;
+&lt;p&gt;The translational impact of machine learning in molecular sciences depends on the development of rigorous, transparent, and reproducible evaluation standards. Public benchmarks (similar to CAFA) and open data infrastructures (such as EMBL-EBI and RCSB PDB) provide the necessary foundation. Subjecting machine learning predictions to strict physical and experimental validation is essential to translate in silico models into candidate therapeutics.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Beyond Static Models: Agentic AI and Multi-Agent Systems in Drug Discovery</title>
+      <link>https://yboulaamane.github.io/blog/agentic-ai-and-multi-agent-systems-in-drug-discovery/</link>
+      <pubDate>Tue, 23 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/agentic-ai-and-multi-agent-systems-in-drug-discovery/</guid>
+      <description>&lt;p&gt;For most of the last decade, &amp;ldquo;AI in drug discovery&amp;rdquo; effectively meant &lt;strong&gt;static prediction&lt;/strong&gt;: train a model on a curated dataset, feed it molecules, read off a number - a predicted activity, a solubility, a toxicity flag. Useful, but passive. The model never decided &lt;em&gt;what&lt;/em&gt; to compute next, never picked up a tool, and never questioned its own output.&lt;/p&gt;
+&lt;p&gt;That assumption is now out of date. A new class of systems treats the language model not as a predictor but as a &lt;strong&gt;reasoning controller&lt;/strong&gt; - an agent that decomposes a goal, writes and runs code, calls external tools like docking engines and quantum chemistry packages, inspects the results, and revises its own plan. When several such agents collaborate - one proposing strategies, another implementing them, a third critiquing the output like a peer reviewer - you get a &lt;strong&gt;multi-agent system&lt;/strong&gt;, and the workflow starts to resemble an automated research loop rather than a single forward pass.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/agentic-drug-discovery/agentic-loop.svg&#34; alt=&#34;The agentic loop&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+
+&lt;em&gt;The core pattern: plan → act (write code, call tools) → observe → critique, then iterate. The Model Context Protocol (MCP) layer is what lets the agent reach real scientific tools and databases.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;This post explains what actually changed, the design patterns that make it work, and five open-source projects on GitHub that put these ideas into practice. It closes with the part the hype usually omits: where this breaks down.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;what-actually-changed&#34;&gt;What actually changed&lt;/h2&gt;
+&lt;p&gt;Three capabilities, layered on top of ordinary LLMs, do most of the work.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1. Tool use.&lt;/strong&gt; Instead of answering from parametric memory, the agent emits a structured call to an external tool - run a docking job, compute partial charges, query a database - and feeds the result back into its reasoning. The chemistry is still done by the specialised tool; the LLM orchestrates it.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. The Model Context Protocol (MCP).&lt;/strong&gt; 
+ is an open standard for exposing tools, data sources, and functions to an LLM through a uniform interface. Before MCP, every integration was bespoke. With it, a docking engine, a UniProt query, or an ADMET predictor can be published once as an &lt;strong&gt;MCP server&lt;/strong&gt; and reused across any MCP-aware agent - which is why several of the projects below ship as MCP servers rather than monolithic apps.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3. Retrieval-augmented generation (RAG).&lt;/strong&gt; Rather than fine-tuning a model on proprietary chemistry (expensive and quickly stale), the agent retrieves relevant facts from external databases at query time and reasons over them. This grounds outputs in real data and makes provenance auditable - important when a prediction has to survive scrutiny.&lt;/p&gt;
+&lt;p&gt;Together these turn a frozen model into something that can act, look up ground truth, and correct course.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-design-patterns&#34;&gt;The design patterns&lt;/h2&gt;
+&lt;p&gt;Most agentic drug-discovery systems are variations on a few recurring architectures. Recognising them makes any new project easier to evaluate.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Planner / executor.&lt;/strong&gt; One agent operates at a high level of abstraction - laying out a discovery strategy - while a second translates each step into concrete, executable code. Separating &amp;ldquo;what to do&amp;rdquo; from &amp;ldquo;how to do it&amp;rdquo; keeps the reasoning legible and the code focused.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Multi-agent critique.&lt;/strong&gt; A generator proposes a hypothesis or molecule; a separate critic agent challenges it, checks it against constraints, and sends it back for revision. The adversarial framing catches errors a single pass would miss.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;RAG-grounded reasoning.&lt;/strong&gt; Agents are wired to authoritative sources so claims are anchored in retrieved evidence rather than generated from memory.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tool-augmented control.&lt;/strong&gt; The LLM is a controller over a toolbox - docking, molecular dynamics, QM, property predictors - and contributes orchestration and interpretation, not the underlying physics.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Keep these in mind as a lens for the projects that follow.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;five-open-source-agents-worth-examining&#34;&gt;Five open-source agents worth examining&lt;/h2&gt;
+&lt;p&gt;The projects below are concrete implementations of the patterns above. They are research-grade and evolve quickly, so &lt;strong&gt;verify the repository URL, license, and current status before depending on any of them&lt;/strong&gt; - links and capabilities drift.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/agentic-drug-discovery/agents-landscape.svg&#34; alt=&#34;Five agents at a glance&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+
+&lt;em&gt;The five projects, coloured by their dominant design pattern.&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&#34;1-cladd---genentech&#34;&gt;1. CLADD - &lt;em&gt;Genentech&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;A &lt;strong&gt;multi-agent, RAG-driven&lt;/strong&gt; framework that connects LLMs to biochemical databases without task-specific fine-tuning. Multiple agents collaborate to contextualise a molecule from retrieved data and produce property estimates such as toxicity and binding affinity, with the retrieval step keeping the reasoning grounded in real records.
+🔗 
+&lt;/p&gt;
+&lt;h3 id=&#34;2-agentd---hoon-ock&#34;&gt;2. AgentD - &lt;em&gt;hoon-ock&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;An end-to-end agent for &lt;strong&gt;molecular design, virtual screening, and SMILES refinement&lt;/strong&gt;. It folds drug-likeness filters (Lipinski, Veber) directly into the loop and can generate 3D protein–ligand structures via Boltz. It runs as an &lt;strong&gt;MCP server&lt;/strong&gt;, so its capabilities can be plugged into other MCP-aware clients.
+🔗 
+&lt;/p&gt;
+&lt;h3 id=&#34;3-drugagent---fermiq&#34;&gt;3. DrugAgent - &lt;em&gt;FermiQ&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;A clean &lt;strong&gt;planner/executor&lt;/strong&gt; split. An &amp;ldquo;LLM Planner&amp;rdquo; formulates high-level discovery strategies; an &amp;ldquo;LLM Instructor&amp;rdquo; turns each into executable Python - for example, assembling and running an ADMET evaluation. Dividing labour between strategy and implementation keeps both halves auditable.
+🔗 
+&lt;/p&gt;
+&lt;h3 id=&#34;4-deda---drug-evaluation-and-discovery-agent&#34;&gt;4. DEDA - &lt;em&gt;Drug Evaluation and Discovery Agent&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;A &lt;strong&gt;local, MCP-based&lt;/strong&gt; assistant focused on bioinformatics and molecular pathways - effectively a domain-specialised chat agent. It translates plain-English commands into queries against resources like &lt;strong&gt;UniProt&lt;/strong&gt; and &lt;strong&gt;AlphaFold&lt;/strong&gt; and supports real-time binding-pocket mapping.
+🔗 
+&lt;/p&gt;
+&lt;h3 id=&#34;5-scientific-agent-skills---k-dense-ai&#34;&gt;5. Scientific Agent Skills - &lt;em&gt;K-Dense-AI&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;Less a single agent than a &lt;strong&gt;skill library&lt;/strong&gt; that turns a general LLM (Claude, Gemini, and others) into a scientific operator. It bundles 140+ ready-made skills connecting agents to 70+ scientific databases, spanning tasks from molecular dynamics to genomics to docking.
+🔗 
+&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-lineage-this-didnt-appear-from-nowhere&#34;&gt;The lineage: this didn&amp;rsquo;t appear from nowhere&lt;/h2&gt;
+&lt;p&gt;It&amp;rsquo;s worth situating these tools in the prior work that established the paradigm, because the ideas are a few years old even if the MCP packaging is new.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;ChemCrow&lt;/strong&gt; (Bran et al., 2024) coupled an LLM to a suite of expert chemistry tools and showed it could plan and execute synthesis and discovery tasks - an early, influential demonstration that tool-augmented LLMs outperform the bare model on real chemical problems.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Coscientist&lt;/strong&gt; (Boiko et al., &lt;em&gt;Nature&lt;/em&gt;, 2023) used a GPT-4-based agent to autonomously plan and carry out experiments, including driving physical lab hardware - a landmark for closed-loop autonomous experimentation.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The five projects above inherit directly from this lineage; the recent additions are the &lt;strong&gt;standardisation (MCP)&lt;/strong&gt; and the &lt;strong&gt;multi-agent collaboration&lt;/strong&gt; that make such systems easier to assemble and extend.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-caveats-the-hype-skips&#34;&gt;The caveats the hype skips&lt;/h2&gt;
+&lt;p&gt;Agentic systems are powerful, but they are not a substitute for judgment, and treating them as one is how pipelines produce confident nonsense.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Hallucination still happens - now with tools.&lt;/strong&gt; Grounding reduces fabrication but doesn&amp;rsquo;t eliminate it. An agent can call the right tool with the wrong arguments, or misinterpret a correct result. Outputs need validation, not trust.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The physics lives in the tools, not the LLM.&lt;/strong&gt; A docking score is only as good as the docking engine and its setup. The agent&amp;rsquo;s reasoning cannot rescue a poorly prepared receptor or bad charges (a recurring theme - see the 
+).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Reproducibility is hard.&lt;/strong&gt; Non-deterministic LLM behaviour makes runs difficult to reproduce exactly. Pin model versions, log every tool call and its inputs, and treat agent transcripts as part of the experimental record.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cost and latency add up.&lt;/strong&gt; Multi-agent loops with critique steps can issue many model calls per task; this matters at virtual-screening scale.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Research-grade maturity.&lt;/strong&gt; Most of these repositories are young and fast-moving. Check the license, the test coverage, and how actively the project is maintained before building on it.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The right framing is augmentation: these agents are excellent at orchestrating tedious multi-tool workflows, drafting analysis code, and surfacing candidates - while the scientist sets the question, validates the chemistry, and owns the conclusions.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;takeaway&#34;&gt;Takeaway&lt;/h2&gt;
+&lt;p&gt;The shift from static models to agentic, tool-using systems is real and substantive: with &lt;strong&gt;MCP&lt;/strong&gt; for standardised tool access, &lt;strong&gt;RAG&lt;/strong&gt; for grounding, and &lt;strong&gt;multi-agent&lt;/strong&gt; collaboration for planning and self-critique, AI is moving from answering questions to &lt;em&gt;running workflows&lt;/em&gt;. The five open-source projects here are a good entry point for seeing how that looks in practice - clone one, read how it wires the LLM to its tools, and you&amp;rsquo;ll understand the pattern far better than any summary can convey. Just keep the validation discipline of a computational chemist: the agent accelerates the work, but you still answer for the result.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>You Are Not an Impostor: Agentic Coding and the New Computational Scientist</title>
+      <link>https://yboulaamane.github.io/blog/you-are-not-an-impostor-agentic-coding-and-the-new-computational-scientist/</link>
+      <pubDate>Tue, 23 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/you-are-not-an-impostor-agentic-coding-and-the-new-computational-scientist/</guid>
+      <description>&lt;p&gt;A few weeks ago, I found myself staring at a beautifully optimized, multi-step pipeline that had just resolved a massive bottleneck in my research. It handled everything: parsing a messy SDF file of a diverse small-molecule library, calculating a suite of custom structural descriptors, running a molecular docking simulation across a target protein pocket, and feeding those scores into a customized PyTorch graph neural network (GNN).&lt;/p&gt;
+&lt;p&gt;It was elegant, parallelized, and it worked flawlessly on the first try.&lt;/p&gt;
+&lt;p&gt;And I hadn&amp;rsquo;t written a single line of it.&lt;/p&gt;
+&lt;p&gt;As a researcher working at the intersection of cheminformatics, molecular modeling, and machine learning, my days are traded in the currency of computational throughput. When agentic coding tools (AI systems that don&amp;rsquo;t just autocomplete a line but actively plan, execute, and self-debug entire multi-step software workflows) became robust enough to handle scientific data, I adopted them immediately. I went from spending two days wrestling with boilerplate data cleaning and RDKit syntax errors to executing the same tasks in twenty minutes.&lt;/p&gt;
+&lt;p&gt;But instead of feeling like a visionary, I felt a familiar, cold weight in my chest: impostor syndrome. If an agent is doing the heavy lifting of data engineering, modeling architecture, and script debugging, what exactly am I doing? Am I still a computational scientist, or am I just a glorified prompt manager? If you find yourself in this loop, relying heavily on AI agents while worrying that your technical credibility is evaporating, it&amp;rsquo;s time to unpack what is actually happening.&lt;/p&gt;
+&lt;p&gt;We aren&amp;rsquo;t cheating. We are living through a massive, permanent shift in what it means to possess scientific expertise.&lt;/p&gt;
+&lt;h2 id=&#34;the-cult-of-the-computational-struggle&#34;&gt;The Cult of the Computational Struggle&lt;/h2&gt;
+&lt;p&gt;Computational science has long suffered from a toxic equation: Scientific Value = Struggle x Code Compilation Time. We are conditioned to believe that the worth of our insights is directly tied to the technical friction we endured to produce them. If you didn&amp;rsquo;t spend four hours crying over an out-of-memory error during a feature extraction step, a broken CUDA environment setup, or a bizarre RDKit sanitization error on a macrocycle, did you really earn the resulting insight?&lt;/p&gt;
+&lt;p&gt;This is a logical fallacy driven by nostalgia. Every generation of computational scientists experiences a moment where the &amp;ldquo;hard way&amp;rdquo; becomes the &amp;ldquo;old way.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;When the first commercial molecular mechanics software arrived, legacy quantum chemists thought people running classical force fields were cutting corners. When open-source tools like Biopython and Scikit-learn launched, traditional programmers worried that junior scientists were just copy-pasting their way through complex statistical modeling. The same pattern has played out in genomics, structural biology, and climate modeling.&lt;/p&gt;
+&lt;p&gt;Agentic coding is simply the next layer of abstraction. The agent eliminates what is known as accidental complexity (the tedious boilerplate, the API changes, writing the code to format your inputs) so you can focus entirely on essential complexity: the underlying physics, the biological hypothesis, the validity of the generative design.&lt;/p&gt;
+&lt;p&gt;Struggle is not a metric of scientific rigor.&lt;/p&gt;
+&lt;h2 id=&#34;the-shift-from-code-builder-to-scientific-architect&#34;&gt;The Shift from Code Builder to Scientific Architect&lt;/h2&gt;
+&lt;p&gt;To survive this transition without losing your mind, you have to fundamentally re-evaluate your role. In the era of AI-driven research, you are no longer the bricklayer; you are the architect.&lt;/p&gt;
+&lt;p&gt;An AI agent can generate 500 lines of syntactically perfect Python to train an active learning loop, but it has absolutely no concept of why it is doing so. It doesn&amp;rsquo;t understand the biochemical nuance of a specific allosteric binding pocket or the conformational dynamics of a flexible enzyme. It doesn&amp;rsquo;t understand the structural alerts that make a hit a metabolic nightmare in vivo. It cannot anticipate the synthetic accessibility constraints of a compound, the ecological hazard profile of an agrochemical scaffold, or the off-target risks buried in a resistance mechanism.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Role&lt;/th&gt;
+          &lt;th&gt;The AI Agent&lt;/th&gt;
+          &lt;th&gt;You (The Scientist)&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Execution&lt;/td&gt;
+          &lt;td&gt;High-speed script generation, feature extraction, and boilerplate modeling setups.&lt;/td&gt;
+          &lt;td&gt;Strategic intentionality, physical parameter setting, and target selection.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Context&lt;/td&gt;
+          &lt;td&gt;Limited to the immediate training data and prompt window.&lt;/td&gt;
+          &lt;td&gt;Deep domain knowledge, mechanistic intuition, and experimental reality.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Critical View&lt;/td&gt;
+          &lt;td&gt;Will happily hallucinate flawed statistical relationships or unphysical structures.&lt;/td&gt;
+          &lt;td&gt;Evaluates systemic scientific truth, physical reality, and translational viability.&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The value you bring to your lab or organization is not your ability to memorize PyTorch or OpenMM commands. Your value is your scientific taste, your domain judgment, and your clinical or mechanistic skepticism.&lt;/p&gt;
+&lt;h2 id=&#34;maintaining-autonomy-the-careless-assistant-protocol&#34;&gt;Maintaining Autonomy: The &amp;ldquo;Careless Assistant&amp;rdquo; Protocol&lt;/h2&gt;
+&lt;p&gt;The anxiety of agentic workflows stems from a loss of agency. When you passively consume code generated by an agent, you naturally feel disconnected from the science. The antidote to impostor syndrome isn&amp;rsquo;t to stop using the tool: it&amp;rsquo;s to change how you govern it.&lt;/p&gt;
+&lt;p&gt;Treat the AI agent exactly like a brilliant, lightning-fast, but occasionally reckless junior research assistant.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Code Review Rule:&lt;/strong&gt; Never run agentic code blindly. Read through it line by line. If you don&amp;rsquo;t understand an optimization algorithm or a custom loss function it implemented, make it explain its math. Add your own documentation. You must be able to defend that script to your PI, a reviewer, or a cross-functional project team as if you typed it yourself.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Aggressive Validation:&lt;/strong&gt; Shift your cognitive energy from writing code to validating it. Build robust sanity checks. Use small synthetic datasets with known properties to verify that the agent&amp;rsquo;s code outputs exactly what the underlying science dictates. In molecular modeling, this means checking docking poses for physical sense; in genomics, it means confirming variant calls against ground truth.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Protect the Core:&lt;/strong&gt; Identify the intellectual heart of your research (the novel scoring function, the custom physical constraints, the unique mathematical tweak to a model) and direct that with hyper-specificity. Let the agent handle the boring infrastructure: file conversions, model training loops, plotting PCA clusters. This keeps your scientific mind sharp while outsourcing the friction.&lt;/p&gt;
+&lt;h2 id=&#34;the-scientists-of-tomorrow&#34;&gt;The Scientists of Tomorrow&lt;/h2&gt;
+&lt;p&gt;The leaders of computational science and ML-driven discovery pipelines in the coming years will not be judged by how fast they can manually type scripts. They will be judged by their scale of thought.&lt;/p&gt;
+&lt;p&gt;By leveraging agentic workflows today, you are not falling behind; you are learning how to manage an incredibly highly leveraged discovery engine. You are training for a world where the distance between a novel scientific hypothesis and an executable computational experiment is compressed to near-zero.&lt;/p&gt;
+&lt;p&gt;If a tool allows you to screen five times as many virtual libraries, run ten times as many molecular dynamics trajectories, or train twenty more generative models in a single week, you haven&amp;rsquo;t downgraded your intellect. You have upgraded your bandwidth.&lt;/p&gt;
+&lt;p&gt;You are not an impostor. You are just doing science at the speed of the present.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>AI &#43; Chemistry: Building Drug Discovery Pipelines with Free Tools</title>
+      <link>https://yboulaamane.github.io/blog/ai-chemistry-building-drug-discovery-pipelines-with-free-tools/</link>
+      <pubDate>Tue, 01 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/ai-chemistry-building-drug-discovery-pipelines-with-free-tools/</guid>
+      <description>&lt;p&gt;A complete drug discovery pipeline can now be built entirely with free, open-source tools. From bioactivity data retrieval to ML model training and 3D visualization, the ecosystem covers every step. To make this concrete, this post walks through a pipeline targeting the ABL kinase (c-Abl tyrosine kinase, the target of imatinib), with working code at each stage.&lt;/p&gt;
+&lt;h2 id=&#34;from-data-to-discovery-the-open-source-pipeline-case-study-abl-kinase&#34;&gt;From Data to Discovery: The Open-Source Pipeline (Case Study: ABL Kinase)&lt;/h2&gt;
+&lt;p&gt;The goal: identify new inhibitors of ABL kinase, a key oncology target (Bcr-Abl drives chronic myeloid leukemia). The pipeline covers:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Gather known bioactivity data for ABL&lt;/li&gt;
+&lt;li&gt;Featurize and analyze molecules&lt;/li&gt;
+&lt;li&gt;Train an AI model to predict new inhibitors&lt;/li&gt;
+&lt;li&gt;Convert and prepare compounds for simulation&lt;/li&gt;
+&lt;li&gt;Visualize how they bind&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;All steps use open resources:&lt;/p&gt;
+&lt;h3 id=&#34;open-data-chembl&#34;&gt;Open Data (ChEMBL)&lt;/h3&gt;
+&lt;p&gt;ABL bioactivity data can be retrieved from ChEMBL, an open database of drug-like molecules and their biological activities with millions of measured compound-target data points. ChEMBL’s web services or bulk downloads provide IC50/Ki values for all compounds tested against ABL, which Pandas can then filter and tabulate.&lt;/p&gt;
+&lt;h3 id=&#34;data-handling-pandas--numpy&#34;&gt;Data Handling (Pandas &amp;amp; NumPy)&lt;/h3&gt;
+&lt;p&gt;With our ABL dataset in hand (e.g. as a CSV of SMILES and activity labels), we use Pandas to clean and manipulate it and NumPy for any numerical computing. These “classics” form the backbone of any custom pipeline, e.g., grouping data, normalizing values, splitting into train/test sets. They might not be drug discovery-specific, but their flexibility is indispensable. We might do:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import pandas as pd
+df = pd.read_csv(&amp;quot;ABL_bioactivity.csv&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;rdkit--the-unsung-hero-of-cheminformatics&#34;&gt;RDKit – The Unsung Hero of Cheminformatics&lt;/h2&gt;
+&lt;p&gt;If you&amp;rsquo;re doing anything with molecules in Python, chances are RDKit is working behind the scenes. RDKit is an open-source cheminformatics toolkit widely used for tasks like generating molecular fingerprints, performing substructure searches, computing descriptors, and manipulating chemical structures.&lt;/p&gt;
+&lt;p&gt;In our ABL example, we use RDKit to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Generate Morgan fingerprints&lt;/li&gt;
+&lt;li&gt;Perform substructure searches&lt;/li&gt;
+&lt;li&gt;Compute molecular descriptors&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;code-example&#34;&gt;Code Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;from rdkit import Chem, DataStructs
+from rdkit.Chem import AllChem
+
+imatinib_smiles = &amp;quot;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)NC(=O)c4ccc(cc4)CN5CCN(CC5)C&amp;quot;
+nilotinib_smiles = &amp;quot;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)C(=O)Nc4cc(cc(c4)n5cc(nc5)C)C(F)(F)F&amp;quot;
+
+mol1 = Chem.MolFromSmiles(imatinib_smiles)
+mol2 = Chem.MolFromSmiles(nilotinib_smiles)
+
+fp1 = AllChem.GetMorganFingerprintAsBitVect(mol1, radius=2, nBits=2048)
+fp2 = AllChem.GetMorganFingerprintAsBitVect(mol2, radius=2, nBits=2048)
+
+sim = DataStructs.TanimotoSimilarity(fp1, fp2)
+print(f&amp;quot;Tanimoto similarity: {sim:.2f}&amp;quot;)
+
+query = Chem.MolFromSmarts(&amp;quot;c1ccc(cc1)Nc2nccc(n2)&amp;quot;)
+match = mol1.HasSubstructMatch(query)
+print(&amp;quot;Substructure match:&amp;quot;, match)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;deepchem--ai-made-beautifully-simple&#34;&gt;DeepChem – AI Made Beautifully Simple&lt;/h2&gt;
+&lt;p&gt;DeepChem is an open-source library that brings advanced models like GCNs and multitask networks to your fingertips. It’s built on TensorFlow/PyTorch but hides the complexity.&lt;/p&gt;
+&lt;h3 id=&#34;code-example-1&#34;&gt;Code Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;import deepchem as dc
+import numpy as np
+
+smiles_list = [
+&amp;quot;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)NC(=O)c4ccc(cc4)CN5CCN(CC5)C&amp;quot;,  # active
+&amp;quot;CCOC(=O)c1ccc(cc1)N&amp;quot;,  # inactive
+]
+labels = np.array([1, 0])
+
+featurizer = dc.feat.MolGraphConvFeaturizer()
+X = featurizer.featurize(smiles_list)
+y = labels
+
+dataset = dc.data.NumpyDataset(X, y)
+
+model = dc.models.GraphConvModel(n_tasks=1, mode=&#39;classification&#39;, metrics=[dc.metrics.Metric(dc.metrics.roc_auc_score)])
+model.fit(dataset, nb_epoch=20)
+
+pred_probs = model.predict(dataset)
+print(pred_probs)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;open-babel--convert-like-a-pro&#34;&gt;Open Babel – Convert Like a Pro&lt;/h2&gt;
+&lt;p&gt;Open Babel helps switch between formats like SMILES, SDF, PDB, etc.&lt;/p&gt;
+&lt;h3 id=&#34;code-example-2&#34;&gt;Code Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;from openbabel import pybel
+
+smiles = &amp;quot;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)NC(=O)c4ccc(cc4)CN5CCN(CC5)C&amp;quot;
+mol = pybel.readstring(&amp;quot;smi&amp;quot;, smiles)
+mol.addh()
+mol.make3D()
+mol.write(&amp;quot;sdf&amp;quot;, &amp;quot;imatinib_3D.sdf&amp;quot;, overwrite=True)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;pymol--visualize-what-ai-discovers&#34;&gt;PyMOL – Visualize What AI Discovers&lt;/h2&gt;
+&lt;p&gt;PyMOL is great for inspecting protein–ligand complexes and generating publication-quality figures.&lt;/p&gt;
+&lt;h3 id=&#34;code-example-3&#34;&gt;Code Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;import pymol2
+
+with pymol2.PyMOL() as pymol:
+	cmd = pymol.cmd
+	cmd.load(&amp;quot;ABL_kinase.pdb&amp;quot;, &amp;quot;protein&amp;quot;)
+	cmd.load(&amp;quot;imatinib_3D.sdf&amp;quot;, &amp;quot;ligand&amp;quot;)
+	cmd.hide(&amp;quot;everything&amp;quot;)
+	cmd.show(&amp;quot;cartoon&amp;quot;, &amp;quot;protein&amp;quot;)
+	cmd.show(&amp;quot;sticks&amp;quot;, &amp;quot;ligand&amp;quot;)
+	cmd.zoom(&amp;quot;ligand&amp;quot;, 5)
+	cmd.png(&amp;quot;abl_imatinib.png&amp;quot;, width=800, height=600, ray=1)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;chemprop--graph-neural-networks-made-easy&#34;&gt;Chemprop – Graph Neural Networks Made Easy&lt;/h2&gt;
+&lt;p&gt;Chemprop offers fast training of MPNNs for tasks like QSAR and virtual screening.&lt;/p&gt;
+&lt;h3 id=&#34;cli-example&#34;&gt;CLI Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;chemprop_train --data_path abl_activity.csv --smiles_column smiles --target_columns active \
+           --dataset_type classification --save_dir abl_model
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;python-example&#34;&gt;Python Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;from chemprop.train import run_training
+
+params = {
+&amp;quot;data_path&amp;quot;: &amp;quot;abl_activity.csv&amp;quot;,
+&amp;quot;smiles_column&amp;quot;: &amp;quot;smiles&amp;quot;,
+&amp;quot;target_columns&amp;quot;: [&amp;quot;active&amp;quot;],
+&amp;quot;dataset_type&amp;quot;: &amp;quot;classification&amp;quot;,
+&amp;quot;save_dir&amp;quot;: &amp;quot;abl_model&amp;quot;,
+&amp;quot;epochs&amp;quot;: 30
+}
+run_training(params)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-classics-pandas-numpy-scikit-learn--data-science-backbone&#34;&gt;The Classics: Pandas, NumPy, Scikit-Learn – Data Science Backbone&lt;/h2&gt;
+&lt;p&gt;These libraries handle everything from preprocessing to baseline models.&lt;/p&gt;
+&lt;h3 id=&#34;example-random-forest&#34;&gt;Example Random Forest:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+
+X = [list(map(int, fp.ToBitString())) for fp in [fp1, fp2]]
+y = labels
+
+X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=0)
+model = RandomForestClassifier(n_estimators=100).fit(X_train, y_train)
+print(&amp;quot;Validation accuracy:&amp;quot;, model.score(X_val, y_val))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-open-source-revolution-in-action&#34;&gt;The Open-Source Revolution in Action&lt;/h2&gt;
+&lt;p&gt;An end-to-end drug discovery pipeline can be built with open-source tools at every step, each covering a distinct role:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ChEMBL and PubChem for bioactivity data&lt;/li&gt;
+&lt;li&gt;RDKit for cheminformatics and structure manipulation&lt;/li&gt;
+&lt;li&gt;DeepChem and Chemprop for ML-based activity prediction&lt;/li&gt;
+&lt;li&gt;Open Babel for format conversion&lt;/li&gt;
+&lt;li&gt;PyMOL for 3D visualization and pose inspection&lt;/li&gt;
+&lt;li&gt;Pandas, NumPy, and scikit-learn for data handling and baseline models&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;All of these are free, actively maintained, and installable with a single command. The community contributions mean new algorithms and best practices are integrated quickly. This makes a competitive computational pipeline accessible to academic labs and startups without proprietary software costs.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

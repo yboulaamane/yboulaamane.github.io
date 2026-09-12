@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Model Evaluation | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/model-evaluation/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/model-evaluation/index.xml" rel="self" type="application/rss+xml" />
+    <description>Model Evaluation</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 21 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Model Evaluation</title>
+      <link>https://yboulaamane.github.io/tags/model-evaluation/</link>
+    </image>
+    
+    <item>
+      <title>Beyond Parameter Counts: The Shift Toward Rigorous Evaluation in Scientific AI</title>
+      <link>https://yboulaamane.github.io/blog/shifting-focus-from-model-size-to-rigorous-evaluation/</link>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/shifting-focus-from-model-size-to-rigorous-evaluation/</guid>
+      <description>&lt;p&gt;The evaluation of artificial intelligence in drug discovery is transitioning from a focus on model scale to validation of output quality. While foundation models and deep learning architectures in structural biology have grown in parameters and database size, their translation to experimental pipelines remains limited by physical inconsistencies. Generated structural models that appear plausible can harbor steric clashes, display poor thermodynamic stability, or fail to fold in vitro.&lt;/p&gt;
+&lt;p&gt;Ensuring the utility of scientific AI requires rigorous, multi-tiered evaluation frameworks that test physical consistency, out-of-distribution generalization, and biological viability.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;limits-of-classical-metrics&#34;&gt;Limits of Classical Metrics&lt;/h2&gt;
+&lt;p&gt;Traditional machine learning benchmarks rely on statistical reconstruction. In structural biology, structure prediction accuracy is often measured by root-mean-square deviation (RMSD) from static target structures, while sequence generators are evaluated on sequence perplexity.&lt;/p&gt;
+&lt;p&gt;These metrics do not capture physical or chemical viability. A predicted complex can report a low backbone RMSD while placing atoms in overlapping coordinates, violating electrostatic constraints, or displaying unstable conformations. Modern evaluation frameworks address this by assessing models along three key axes:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Functional Utility:&lt;/strong&gt; Validation of the target biological function (such as ligand binding, inhibition, or activation) in vitro.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Operational Robustness:&lt;/strong&gt; Accuracy across diverse target families and novel domain classes without performance degradation.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Representational Integrity:&lt;/strong&gt; Adherence to physical, chemical, and thermodynamic laws, including correct chirality, bond angles, and torsion angles.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-scientific-ai-evaluation-hierarchy&#34;&gt;The Scientific AI Evaluation Hierarchy&lt;/h2&gt;
+&lt;p&gt;Evaluating these models systematically requires a hierarchical structure. Models must satisfy base physical constraints before being assessed on complex biological activity.&lt;/p&gt;
+
+&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 800 380&#34; width=&#34;100%&#34; height=&#34;100%&#34;&gt;
+  &lt;defs&gt;
+    &lt;!-- Gradients --&gt;
+    &lt;linearGradient id=&#34;level1&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#EF4444&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#B91C1C&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;level2&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#F59E0B&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#B45309&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;level3&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#10B981&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#047857&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;level4&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#3B82F6&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#1D4ED8&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;filter id=&#34;shadow&#34; x=&#34;-5%&#34; y=&#34;-5%&#34; width=&#34;110%&#34; height=&#34;110%&#34;&gt;
+      &lt;feDropShadow dx=&#34;1&#34; dy=&#34;3&#34; stdDeviation=&#34;3&#34; flood-opacity=&#34;0.1&#34; /&gt;
+    &lt;/filter&gt;
+  &lt;/defs&gt;
+
+  &lt;style&gt;
+    .header-text { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 800; font-size: 20px; fill: #111827; }
+    .level-title { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 14px; fill: #FFFFFF; }
+    .level-desc { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 500; font-size: 11px; fill: #F9FAFB; }
+    .side-title { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 12px; fill: #374151; }
+    .side-desc { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-size: 11px; fill: #6B7280; }
+  &lt;/style&gt;
+
+  &lt;!-- Background --&gt;
+  &lt;rect width=&#34;800&#34; height=&#34;380&#34; fill=&#34;#F9FAFB&#34; rx=&#34;12&#34; /&gt;
+
+  &lt;text x=&#34;30&#34; y=&#34;35&#34; class=&#34;header-text&#34;&gt;The Scientific AI Evaluation Hierarchy&lt;/text&gt;
+
+  &lt;!-- Level 4: Functional Utility (Top) --&gt;
+  &lt;g transform=&#34;translate(250, 60)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;polygon points=&#34;150,0 0,60 300,60&#34; fill=&#34;url(#level4)&#34; /&gt;
+    &lt;text x=&#34;150&#34; y=&#34;42&#34; class=&#34;level-title&#34; text-anchor=&#34;middle&#34;&gt;Level 4: Functional Utility&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;g transform=&#34;translate(570, 75)&#34;&gt;
+    &lt;text x=&#34;0&#34; y=&#34;15&#34; class=&#34;side-title&#34;&gt;Real-World Efficacy&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;30&#34; class=&#34;side-desc&#34;&gt;• Experimental binding assays&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;45&#34; class=&#34;side-desc&#34;&gt;• Functional cell-line modulation&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Level 3: Biophysical Developability --&gt;
+  &lt;g transform=&#34;translate(200, 125)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;polygon points=&#34;50,0 250,0 280,60 20,60&#34; fill=&#34;url(#level3)&#34; /&gt;
+    &lt;text x=&#34;150&#34; y=&#34;35&#34; class=&#34;level-title&#34; text-anchor=&#34;middle&#34;&gt;Level 3: Biophysical Developability&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;g transform=&#34;translate(570, 140)&#34;&gt;
+    &lt;text x=&#34;0&#34; y=&#34;15&#34; class=&#34;side-title&#34;&gt;Manufacturability &amp;amp; Safety&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;30&#34; class=&#34;side-desc&#34;&gt;• Aggregation &amp;amp; clearing rates&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;45&#34; class=&#34;side-desc&#34;&gt;• Thermal stability &amp;amp; solubility&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Level 2: Generalization &amp; Leakage Control --&gt;
+  &lt;g transform=&#34;translate(150, 190)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;polygon points=&#34;50,0 250,0 275,60 25,60&#34; fill=&#34;url(#level2)&#34; /&gt;
+    &lt;text x=&#34;150&#34; y=&#34;35&#34; class=&#34;level-title&#34; text-anchor=&#34;middle&#34;&gt;Level 2: Generalization Control&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;g transform=&#34;translate(570, 205)&#34;&gt;
+    &lt;text x=&#34;0&#34; y=&#34;15&#34; class=&#34;side-title&#34;&gt;Out-of-Distribution Tests&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;30&#34; class=&#34;side-desc&#34;&gt;• Homology clustering splits&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;45&#34; class=&#34;side-desc&#34;&gt;• Zero-shot novel target space&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Level 1: Physical &amp; Factual Grounding --&gt;
+  &lt;g transform=&#34;translate(100, 255)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;polygon points=&#34;50,0 250,0 270,70 30,70&#34; fill=&#34;url(#level1)&#34; /&gt;
+    &lt;text x=&#34;150&#34; y=&#34;35&#34; class=&#34;level-title&#34; text-anchor=&#34;middle&#34;&gt;Level 1: Grounding &amp;amp; Integrity&lt;/text&gt;
+    &lt;text x=&#34;150&#34; y=&#34;52&#34; class=&#34;level-desc&#34; text-anchor=&#34;middle&#34;&gt;Steric clashes, chirality, database citations&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;g transform=&#34;translate(570, 275)&#34;&gt;
+    &lt;text x=&#34;0&#34; y=&#34;15&#34; class=&#34;side-title&#34;&gt;Base Constraints&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;30&#34; class=&#34;side-desc&#34;&gt;• Valid bond angles &amp;amp; torsion&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;45&#34; class=&#34;side-desc&#34;&gt;• No citation hallucinations&lt;/text&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+
+
+&lt;hr&gt;
+&lt;h2 id=&#34;generalization-vs-rote-memorization&#34;&gt;Generalization vs. Rote Memorization&lt;/h2&gt;
+&lt;p&gt;A key challenge in scientific machine learning is data leakage. Because public repositories such as the Protein Data Bank (PDB) are highly redundant, random train-test partitions frequently contain homologous structures. Consequently, models can achieve high accuracy by memorizing training patterns rather than learning underlying biophysical principles.&lt;/p&gt;
+&lt;p&gt;To address this, next-generation benchmarks enforce strict &lt;strong&gt;out-of-distribution (OOD) validation&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Homology Clustering:&lt;/strong&gt; Partitioning datasets based on sequence identity. For example, testing models exclusively on proteins sharing less than 30% sequence identity with any training instance.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Zero-Shot Novel Scaffolds:&lt;/strong&gt; Evaluating model performance on de novo designed proteins or chemical classes that do not exist in the training set.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Leakage Diagnostics:&lt;/strong&gt; Running ablations (such as comparing full complex predictions against pocket-only or ligand-only baselines) to check if models learn true interactions or rely on target identity patterns.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;closing-the-loop-biophysical-developability&#34;&gt;Closing the Loop: Biophysical Developability&lt;/h2&gt;
+&lt;p&gt;In drug discovery, binding affinity represents only one parameter of interest. To serve as a viable therapeutic agent, a candidate molecule must satisfy a multi-parameter &lt;strong&gt;developability profile&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Solubility &amp;amp; Hydrophobicity:&lt;/strong&gt; Maintaining stability in aqueous solution without precipitation.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Aggregation Propensity:&lt;/strong&gt; Resisting self-association and the formation of high-molecular-weight aggregates.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Thermal Stability:&lt;/strong&gt; Retaining structural integrity across temperatures (measured via melting temperature, $T_m$).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Manufacturability:&lt;/strong&gt; Exhibiting high expression yields in host production systems.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;AI assessment methodologies now incorporate automated physical screening. Rather than relying on static docking score ranking, candidate compounds are prioritized using automated, high-throughput biophysical assays that measure solubility, stability, and clearing kinetics.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;evaluating-autonomous-agents-and-reasoning-llms&#34;&gt;Evaluating Autonomous Agents and Reasoning LLMs&lt;/h2&gt;
+&lt;p&gt;Recent AI applications in chemistry employ Large Language Models (LLMs) as autonomous agents. Rather than limiting tasks to property prediction, these agents perform multi-step scientific workflows, including literature reviews, database queries, and structural tool execution via protocols such as the Model Context Protocol.&lt;/p&gt;
+&lt;p&gt;Evaluating these systems requires auditing their reasoning pathways and operational integrity:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Hallucination Mitigation:&lt;/strong&gt; Verifying that all generated scientific claims and intermediate planning steps reflect established physical chemistry.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Citation Grounding:&lt;/strong&gt; Implementing Retrieval-Augmented Generation (RAG) to trace assertions back to peer-reviewed literature or databases (such as UniProt, ChEMBL, or PubMed).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Factual Traceability:&lt;/strong&gt; Documenting and reviewing decision lineage across multi-agent loops to verify chemical and biological feasibility.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;outlook&#34;&gt;Outlook&lt;/h2&gt;
+&lt;p&gt;The translational impact of machine learning in molecular sciences depends on the development of rigorous, transparent, and reproducible evaluation standards. Public benchmarks (similar to CAFA) and open data infrastructures (such as EMBL-EBI and RCSB PDB) provide the necessary foundation. Subjecting machine learning predictions to strict physical and experimental validation is essential to translate in silico models into candidate therapeutics.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

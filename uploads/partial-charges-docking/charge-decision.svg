@@ -1,0 +1,48 @@
+<svg viewBox="0 0 860 470" width="860" height="470" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="860" height="470" fill="#f8fafc"/>
+  <text x="430" y="36" text-anchor="middle" font-size="20" font-weight="800" fill="#0f172a">Which charge method should I use?</text>
+
+  <!-- start -->
+  <rect x="330" y="62" width="200" height="48" rx="24" fill="#0f172a"/>
+  <text x="430" y="91" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">What's the task?</text>
+
+  <!-- branch 1: screening -->
+  <path d="M360,110 C250,140 150,150 120,168" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+  <rect x="40" y="172" width="200" height="60" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="140" y="197" text-anchor="middle" font-size="12.5" font-weight="700" fill="#334155">Fast pre-filter /</text>
+  <text x="140" y="215" text-anchor="middle" font-size="12.5" font-weight="700" fill="#334155">huge library triage</text>
+  <path d="M140,232 L140,268" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+  <rect x="55" y="272" width="170" height="52" rx="12" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="140" y="296" text-anchor="middle" font-size="13" font-weight="800" fill="#b91c1c">Gasteiger</text>
+  <text x="140" y="313" text-anchor="middle" font-size="10.5" fill="#94a3b8">never for final scoring</text>
+
+  <!-- branch 2: general docking -->
+  <path d="M430,110 L430,168" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+  <rect x="330" y="172" width="200" height="60" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="430" y="197" text-anchor="middle" font-size="12.5" font-weight="700" fill="#334155">General docking /</text>
+  <text x="430" y="215" text-anchor="middle" font-size="12.5" font-weight="700" fill="#334155">high-throughput VS</text>
+  <path d="M430,232 L430,268" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+  <rect x="345" y="272" width="170" height="52" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="430" y="296" text-anchor="middle" font-size="13.5" font-weight="800" fill="#15803d">AM1-BCC ★</text>
+  <text x="430" y="313" text-anchor="middle" font-size="10.5" fill="#94a3b8">Antechamber / QUACPAC</text>
+
+  <!-- branch 3: lead opt -->
+  <path d="M500,110 C610,140 710,150 740,168" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+  <rect x="620" y="172" width="200" height="60" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="720" y="197" text-anchor="middle" font-size="12.5" font-weight="700" fill="#334155">Lead optimization /</text>
+  <text x="720" y="215" text-anchor="middle" font-size="12.5" font-weight="700" fill="#334155">critical H-bonds, dipoles</text>
+  <path d="M720,232 L720,268" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+  <rect x="635" y="272" width="170" height="52" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="720" y="296" text-anchor="middle" font-size="13" font-weight="800" fill="#1d4ed8">PM6 or RESP</text>
+  <text x="720" y="313" text-anchor="middle" font-size="10.5" fill="#94a3b8">MOPAC / QM, when warranted</text>
+
+  <!-- footer note -->
+  <rect x="120" y="370" width="620" height="56" rx="12" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="430" y="394" text-anchor="middle" font-size="12.5" fill="#92400e">AM1 / PM3 are legacy fallbacks only — reach for them when neither</text>
+  <text x="430" y="412" text-anchor="middle" font-size="12.5" fill="#92400e">AM1-BCC nor PM6 is available in your toolchain.</text>
+</svg>

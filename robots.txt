@@ -1,0 +1,3 @@
+User-agent: *
+
+Sitemap: https://yboulaamane.github.io/sitemap.xml

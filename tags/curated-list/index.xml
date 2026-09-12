@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Curated List | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/curated-list/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/curated-list/index.xml" rel="self" type="application/rss+xml" />
+    <description>Curated List</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 16 Jan 2024 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Curated List</title>
+      <link>https://yboulaamane.github.io/tags/curated-list/</link>
+    </image>
+    
+    <item>
+      <title>Awesome Drug Discovery</title>
+      <link>https://yboulaamane.github.io/project/awesomedrugdiscovery/</link>
+      <pubDate>Tue, 16 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/awesomedrugdiscovery/</guid>
+      <description>&lt;p&gt;A curated resource list of computational methods for drug discovery, covering molecular modeling tools, machine learning frameworks, databases, and open-source pipelines organized by application area.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Artemisia | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/artemisia/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/artemisia/index.xml" rel="self" type="application/rss+xml" />
+    <description>Artemisia</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 28 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Artemisia</title>
+      <link>https://yboulaamane.github.io/tags/artemisia/</link>
+    </image>
+    
+    <item>
+      <title>ArtemisiaDB</title>
+      <link>https://yboulaamane.github.io/project/artemisiadb/</link>
+      <pubDate>Mon, 28 Feb 2022 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/artemisiadb/</guid>
+      <description>&lt;p&gt;A curated database of secondary metabolites isolated from Artemisia L. species, providing chemical structures, molecular properties, and screening-ready compound libraries for virtual screening campaigns against therapeutic targets.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

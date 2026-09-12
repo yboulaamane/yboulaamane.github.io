@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bioactivity | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/bioactivity/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/bioactivity/index.xml" rel="self" type="application/rss+xml" />
+    <description>Bioactivity</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 20 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Bioactivity</title>
+      <link>https://yboulaamane.github.io/tags/bioactivity/</link>
+    </image>
+    
+    <item>
+      <title>QSARBioPred</title>
+      <link>https://yboulaamane.github.io/project/qsarbiopred/</link>
+      <pubDate>Tue, 20 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/qsarbiopred/</guid>
+      <description>&lt;p&gt;A Jupyter Notebook pipeline for building QSAR classification models for bioactivity prediction, supporting descriptor calculation, feature selection, model training, and applicability domain assessment.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

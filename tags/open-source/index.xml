@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Open Source | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/open-source/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/open-source/index.xml" rel="self" type="application/rss+xml" />
+    <description>Open Source</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 23 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Open Source</title>
+      <link>https://yboulaamane.github.io/tags/open-source/</link>
+    </image>
+    
+    <item>
+      <title>Beyond Static Models: Agentic AI and Multi-Agent Systems in Drug Discovery</title>
+      <link>https://yboulaamane.github.io/blog/agentic-ai-and-multi-agent-systems-in-drug-discovery/</link>
+      <pubDate>Tue, 23 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/agentic-ai-and-multi-agent-systems-in-drug-discovery/</guid>
+      <description>&lt;p&gt;For most of the last decade, &amp;ldquo;AI in drug discovery&amp;rdquo; effectively meant &lt;strong&gt;static prediction&lt;/strong&gt;: train a model on a curated dataset, feed it molecules, read off a number - a predicted activity, a solubility, a toxicity flag. Useful, but passive. The model never decided &lt;em&gt;what&lt;/em&gt; to compute next, never picked up a tool, and never questioned its own output.&lt;/p&gt;
+&lt;p&gt;That assumption is now out of date. A new class of systems treats the language model not as a predictor but as a &lt;strong&gt;reasoning controller&lt;/strong&gt; - an agent that decomposes a goal, writes and runs code, calls external tools like docking engines and quantum chemistry packages, inspects the results, and revises its own plan. When several such agents collaborate - one proposing strategies, another implementing them, a third critiquing the output like a peer reviewer - you get a &lt;strong&gt;multi-agent system&lt;/strong&gt;, and the workflow starts to resemble an automated research loop rather than a single forward pass.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/agentic-drug-discovery/agentic-loop.svg&#34; alt=&#34;The agentic loop&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+
+&lt;em&gt;The core pattern: plan → act (write code, call tools) → observe → critique, then iterate. The Model Context Protocol (MCP) layer is what lets the agent reach real scientific tools and databases.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;This post explains what actually changed, the design patterns that make it work, and five open-source projects on GitHub that put these ideas into practice. It closes with the part the hype usually omits: where this breaks down.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;what-actually-changed&#34;&gt;What actually changed&lt;/h2&gt;
+&lt;p&gt;Three capabilities, layered on top of ordinary LLMs, do most of the work.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1. Tool use.&lt;/strong&gt; Instead of answering from parametric memory, the agent emits a structured call to an external tool - run a docking job, compute partial charges, query a database - and feeds the result back into its reasoning. The chemistry is still done by the specialised tool; the LLM orchestrates it.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. The Model Context Protocol (MCP).&lt;/strong&gt; 
+ is an open standard for exposing tools, data sources, and functions to an LLM through a uniform interface. Before MCP, every integration was bespoke. With it, a docking engine, a UniProt query, or an ADMET predictor can be published once as an &lt;strong&gt;MCP server&lt;/strong&gt; and reused across any MCP-aware agent - which is why several of the projects below ship as MCP servers rather than monolithic apps.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3. Retrieval-augmented generation (RAG).&lt;/strong&gt; Rather than fine-tuning a model on proprietary chemistry (expensive and quickly stale), the agent retrieves relevant facts from external databases at query time and reasons over them. This grounds outputs in real data and makes provenance auditable - important when a prediction has to survive scrutiny.&lt;/p&gt;
+&lt;p&gt;Together these turn a frozen model into something that can act, look up ground truth, and correct course.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-design-patterns&#34;&gt;The design patterns&lt;/h2&gt;
+&lt;p&gt;Most agentic drug-discovery systems are variations on a few recurring architectures. Recognising them makes any new project easier to evaluate.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Planner / executor.&lt;/strong&gt; One agent operates at a high level of abstraction - laying out a discovery strategy - while a second translates each step into concrete, executable code. Separating &amp;ldquo;what to do&amp;rdquo; from &amp;ldquo;how to do it&amp;rdquo; keeps the reasoning legible and the code focused.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Multi-agent critique.&lt;/strong&gt; A generator proposes a hypothesis or molecule; a separate critic agent challenges it, checks it against constraints, and sends it back for revision. The adversarial framing catches errors a single pass would miss.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;RAG-grounded reasoning.&lt;/strong&gt; Agents are wired to authoritative sources so claims are anchored in retrieved evidence rather than generated from memory.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tool-augmented control.&lt;/strong&gt; The LLM is a controller over a toolbox - docking, molecular dynamics, QM, property predictors - and contributes orchestration and interpretation, not the underlying physics.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Keep these in mind as a lens for the projects that follow.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;five-open-source-agents-worth-examining&#34;&gt;Five open-source agents worth examining&lt;/h2&gt;
+&lt;p&gt;The projects below are concrete implementations of the patterns above. They are research-grade and evolve quickly, so &lt;strong&gt;verify the repository URL, license, and current status before depending on any of them&lt;/strong&gt; - links and capabilities drift.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/agentic-drug-discovery/agents-landscape.svg&#34; alt=&#34;Five agents at a glance&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+
+&lt;em&gt;The five projects, coloured by their dominant design pattern.&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&#34;1-cladd---genentech&#34;&gt;1. CLADD - &lt;em&gt;Genentech&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;A &lt;strong&gt;multi-agent, RAG-driven&lt;/strong&gt; framework that connects LLMs to biochemical databases without task-specific fine-tuning. Multiple agents collaborate to contextualise a molecule from retrieved data and produce property estimates such as toxicity and binding affinity, with the retrieval step keeping the reasoning grounded in real records.
+🔗 
+&lt;/p&gt;
+&lt;h3 id=&#34;2-agentd---hoon-ock&#34;&gt;2. AgentD - &lt;em&gt;hoon-ock&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;An end-to-end agent for &lt;strong&gt;molecular design, virtual screening, and SMILES refinement&lt;/strong&gt;. It folds drug-likeness filters (Lipinski, Veber) directly into the loop and can generate 3D protein–ligand structures via Boltz. It runs as an &lt;strong&gt;MCP server&lt;/strong&gt;, so its capabilities can be plugged into other MCP-aware clients.
+🔗 
+&lt;/p&gt;
+&lt;h3 id=&#34;3-drugagent---fermiq&#34;&gt;3. DrugAgent - &lt;em&gt;FermiQ&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;A clean &lt;strong&gt;planner/executor&lt;/strong&gt; split. An &amp;ldquo;LLM Planner&amp;rdquo; formulates high-level discovery strategies; an &amp;ldquo;LLM Instructor&amp;rdquo; turns each into executable Python - for example, assembling and running an ADMET evaluation. Dividing labour between strategy and implementation keeps both halves auditable.
+🔗 
+&lt;/p&gt;
+&lt;h3 id=&#34;4-deda---drug-evaluation-and-discovery-agent&#34;&gt;4. DEDA - &lt;em&gt;Drug Evaluation and Discovery Agent&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;A &lt;strong&gt;local, MCP-based&lt;/strong&gt; assistant focused on bioinformatics and molecular pathways - effectively a domain-specialised chat agent. It translates plain-English commands into queries against resources like &lt;strong&gt;UniProt&lt;/strong&gt; and &lt;strong&gt;AlphaFold&lt;/strong&gt; and supports real-time binding-pocket mapping.
+🔗 
+&lt;/p&gt;
+&lt;h3 id=&#34;5-scientific-agent-skills---k-dense-ai&#34;&gt;5. Scientific Agent Skills - &lt;em&gt;K-Dense-AI&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;Less a single agent than a &lt;strong&gt;skill library&lt;/strong&gt; that turns a general LLM (Claude, Gemini, and others) into a scientific operator. It bundles 140+ ready-made skills connecting agents to 70+ scientific databases, spanning tasks from molecular dynamics to genomics to docking.
+🔗 
+&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-lineage-this-didnt-appear-from-nowhere&#34;&gt;The lineage: this didn&amp;rsquo;t appear from nowhere&lt;/h2&gt;
+&lt;p&gt;It&amp;rsquo;s worth situating these tools in the prior work that established the paradigm, because the ideas are a few years old even if the MCP packaging is new.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;ChemCrow&lt;/strong&gt; (Bran et al., 2024) coupled an LLM to a suite of expert chemistry tools and showed it could plan and execute synthesis and discovery tasks - an early, influential demonstration that tool-augmented LLMs outperform the bare model on real chemical problems.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Coscientist&lt;/strong&gt; (Boiko et al., &lt;em&gt;Nature&lt;/em&gt;, 2023) used a GPT-4-based agent to autonomously plan and carry out experiments, including driving physical lab hardware - a landmark for closed-loop autonomous experimentation.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The five projects above inherit directly from this lineage; the recent additions are the &lt;strong&gt;standardisation (MCP)&lt;/strong&gt; and the &lt;strong&gt;multi-agent collaboration&lt;/strong&gt; that make such systems easier to assemble and extend.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-caveats-the-hype-skips&#34;&gt;The caveats the hype skips&lt;/h2&gt;
+&lt;p&gt;Agentic systems are powerful, but they are not a substitute for judgment, and treating them as one is how pipelines produce confident nonsense.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Hallucination still happens - now with tools.&lt;/strong&gt; Grounding reduces fabrication but doesn&amp;rsquo;t eliminate it. An agent can call the right tool with the wrong arguments, or misinterpret a correct result. Outputs need validation, not trust.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The physics lives in the tools, not the LLM.&lt;/strong&gt; A docking score is only as good as the docking engine and its setup. The agent&amp;rsquo;s reasoning cannot rescue a poorly prepared receptor or bad charges (a recurring theme - see the 
+).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Reproducibility is hard.&lt;/strong&gt; Non-deterministic LLM behaviour makes runs difficult to reproduce exactly. Pin model versions, log every tool call and its inputs, and treat agent transcripts as part of the experimental record.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cost and latency add up.&lt;/strong&gt; Multi-agent loops with critique steps can issue many model calls per task; this matters at virtual-screening scale.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Research-grade maturity.&lt;/strong&gt; Most of these repositories are young and fast-moving. Check the license, the test coverage, and how actively the project is maintained before building on it.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The right framing is augmentation: these agents are excellent at orchestrating tedious multi-tool workflows, drafting analysis code, and surfacing candidates - while the scientist sets the question, validates the chemistry, and owns the conclusions.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;takeaway&#34;&gt;Takeaway&lt;/h2&gt;
+&lt;p&gt;The shift from static models to agentic, tool-using systems is real and substantive: with &lt;strong&gt;MCP&lt;/strong&gt; for standardised tool access, &lt;strong&gt;RAG&lt;/strong&gt; for grounding, and &lt;strong&gt;multi-agent&lt;/strong&gt; collaboration for planning and self-critique, AI is moving from answering questions to &lt;em&gt;running workflows&lt;/em&gt;. The five open-source projects here are a good entry point for seeing how that looks in practice - clone one, read how it wires the LLM to its tools, and you&amp;rsquo;ll understand the pattern far better than any summary can convey. Just keep the validation discipline of a computational chemist: the agent accelerates the work, but you still answer for the result.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Building a 3D Pharmacophore Model from PDB Data: A Free Python Workflow</title>
+      <link>https://yboulaamane.github.io/blog/building-a-3d-pharmacophore-model-from-pdb-data-a-free-python-workflow/</link>
+      <pubDate>Tue, 23 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/building-a-3d-pharmacophore-model-from-pdb-data-a-free-python-workflow/</guid>
+      <description>&lt;p&gt;I used to wonder how computational chemists extract an actionable drug-design &lt;em&gt;blueprint&lt;/em&gt; directly from raw biological data. A protein-ligand crystal structure is just a list of atoms and coordinates - how do you get from that to a reusable query you can throw at millions of candidate molecules?&lt;/p&gt;
+&lt;p&gt;The answer is a &lt;strong&gt;3D pharmacophore&lt;/strong&gt;: an abstract spatial map of the chemical features a molecule &lt;em&gt;must&lt;/em&gt; present to bind a target - hydrogen-bond donors and acceptors, aromatic rings, hydrophobic contacts - and the geometric relationships between them. This post walks through an example Python pipeline that builds a &lt;strong&gt;ligand-based&lt;/strong&gt; pharmacophore from PDB data, end to end, using only free, open-source tools.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/pharmacophore-pdb/pipeline-overview.svg&#34; alt=&#34;Pipeline overview&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+
+&lt;em&gt;The five stages: mine, align, cluster, featurize, and consensus. Every box is an open-source library.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;The whole idea rests on a simple insight: if many different ligands all bind the &lt;em&gt;same&lt;/em&gt; pocket, the chemical features they &lt;strong&gt;share in 3D space&lt;/strong&gt; are probably the ones that matter. So the strategy is to collect lots of bound ligands, physically overlay them, and find the features they agree on.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-mining-the-protein-data-bank&#34;&gt;1. Mining the Protein Data Bank&lt;/h2&gt;
+&lt;p&gt;The pipeline starts by asking the 
+ for every structure of our target protein. Rather than scrape the website, we hit the &lt;strong&gt;GraphQL search API&lt;/strong&gt; and let &lt;code&gt;biotite&lt;/code&gt; fetch the structures.&lt;/p&gt;
+&lt;p&gt;The key here is &lt;strong&gt;strict quality control&lt;/strong&gt;. We don&amp;rsquo;t want every structure - we want crystallographically reliable ones with a genuine drug-like ligand bound:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;resolved by &lt;strong&gt;X-ray crystallography&lt;/strong&gt;,&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;resolution ≤ 3.0 Å&lt;/strong&gt; (anything coarser and atom positions get unreliable),&lt;/li&gt;
+&lt;li&gt;a sensible &lt;strong&gt;chain configuration&lt;/strong&gt;,&lt;/li&gt;
+&lt;li&gt;and the presence of a &lt;strong&gt;non-polymer ligand &amp;gt; 100 Da&lt;/strong&gt; (filtering out ions, water, and buffer components).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;requests&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;biotite.database.rcsb&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;rcsb&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;UNIPROT_ID&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;P00533&amp;#34;&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# e.g. EGFR&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Build a composite query against the RCSB search API&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;rcsb&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;CompositeQuery&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;rcsb&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;FieldQuery&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;s2&#34;&gt;&amp;#34;rcsb_polymer_entity_container_identifiers.&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;s2&#34;&gt;&amp;#34;reference_sequence_identifiers.database_accession&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;n&#34;&gt;exact_match&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;UNIPROT_ID&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;rcsb&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;FieldQuery&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;exptl.method&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;exact_match&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;X-RAY DIFFRACTION&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;rcsb&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;FieldQuery&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;s2&#34;&gt;&amp;#34;rcsb_entry_info.resolution_combined&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;less_or_equal&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;3.0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;rcsb&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;FieldQuery&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;s2&#34;&gt;&amp;#34;chem_comp.formula_weight&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;greater&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;100&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# drug-like ligand&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;],&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;operator&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;and&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;pdb_ids&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;rcsb&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;search&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;query&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;sa&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pdb_ids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; structures passed QC: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pdb_ids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; ...&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The output is a curated list of PDB IDs - the raw material for everything that follows.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;2-extraction-and-3d-alignment&#34;&gt;2. Extraction and 3D alignment&lt;/h2&gt;
+&lt;p&gt;With the structures in hand, &lt;code&gt;MDAnalysis&lt;/code&gt; parses each file and splits it into its components: the &lt;strong&gt;protein&lt;/strong&gt; on one side, the &lt;strong&gt;ligand&lt;/strong&gt; on the other.&lt;/p&gt;
+&lt;p&gt;The crucial step is &lt;strong&gt;3D superposition&lt;/strong&gt;. Each crystal structure lives in its own arbitrary coordinate frame, so the ligands are scattered across space and cannot be compared directly. We fix this by aligning every protein&amp;rsquo;s &lt;strong&gt;C-alpha backbone&lt;/strong&gt; onto a single high-resolution reference structure. Because the binding pockets are rigid relative to the fold, aligning the proteins drags all the bound ligands into a &lt;strong&gt;common coordinate space&lt;/strong&gt; - physically overlaid in the same pocket.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;MDAnalysis&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;mda&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;MDAnalysis.analysis&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;align&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;ref&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mda&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Universe&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;reference.pdb&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;          &lt;span class=&#34;c1&#34;&gt;# high-resolution template&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;aligned_ligands&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pdb_id&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pdb_ids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;mobile&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mda&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Universe&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;sa&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pdb_id&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;.pdb&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;# superpose Cα backbones onto the reference&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;align&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;alignto&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;mobile&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ref&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;select&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;name CA&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;match_atoms&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;False&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;# the ligand now sits in the reference frame&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;ligand&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mobile&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;select_atoms&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;not protein and not resname HOH&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;aligned_ligands&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ligand&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;positions&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;copy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;())&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After this stage, every ligand&amp;rsquo;s atomic coordinates are expressed in the same frame - ready to be compared, clustered, and merged.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;3-spatial-clustering-with-dbscan&#34;&gt;3. Spatial clustering with DBSCAN&lt;/h2&gt;
+&lt;p&gt;There&amp;rsquo;s a catch. Ligands don&amp;rsquo;t always bind the same place. A protein may have an &lt;strong&gt;orthosteric&lt;/strong&gt; site (the main active site) and one or more &lt;strong&gt;allosteric&lt;/strong&gt; sites, and our QC filter happily collected ligands from all of them. Overlaid, they form distinct clouds of atoms in space.&lt;/p&gt;
+&lt;p&gt;To isolate the pocket we actually care about, the pipeline runs &lt;strong&gt;DBSCAN&lt;/strong&gt; - a density-based clustering algorithm - on the pooled 3D coordinates of all aligned ligand atoms. DBSCAN is ideal here because it finds clusters of arbitrary shape &lt;em&gt;and&lt;/em&gt; labels sparse outliers as noise, without us having to specify the number of sites in advance.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/pharmacophore-pdb/dbscan-clustering.svg&#34; alt=&#34;DBSCAN binding-site separation&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+
+&lt;em&gt;DBSCAN groups overlaid ligand atoms by spatial density, cleanly separating the orthosteric &amp;ldquo;hot&amp;rdquo; pocket from an allosteric site and discarding scattered noise.&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;numpy&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;np&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.cluster&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;DBSCAN&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# pool every atom from every aligned ligand&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;all_coords&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;np&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vstack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;aligned_ligands&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;db&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;DBSCAN&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;eps&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;4.0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;min_samples&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;fit&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;all_coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;labels&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;db&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;labels_&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# keep the densest cluster - our target pocket&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;valid&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;labels&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;labels&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;target_label&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;np&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bincount&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;valid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;argmax&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;pocket_mask&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;labels&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;target_label&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;sa&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Target pocket holds &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pocket_mask&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; atoms &amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;sa&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;across &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;valid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; detected site(s)&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We keep only the ligands sitting in the densest cluster - the orthosteric pocket - and move on with those.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;4-feature-extraction-and-bond-correction&#34;&gt;4. Feature extraction and bond correction&lt;/h2&gt;
+&lt;p&gt;Now a notorious gotcha. &lt;strong&gt;PDB files do not reliably store bond orders.&lt;/strong&gt; An aromatic ring, a carbonyl, a carboxylate - they all come back as ambiguous single bonds. Feed that straight into a cheminformatics toolkit and your chemistry is silently wrong, which poisons every feature you extract afterward.&lt;/p&gt;
+&lt;p&gt;The fix is to treat the trustworthy &lt;strong&gt;2D chemistry&lt;/strong&gt; (a SMILES string from the PDB&amp;rsquo;s chemical component dictionary) as ground truth, and transfer its bond orders onto the 3D coordinates. RDKit does this with &lt;code&gt;AssignBondOrdersFromTemplate&lt;/code&gt;, with &lt;code&gt;rdFMCS&lt;/code&gt; available to reconcile partial or mismatched atoms via a maximum-common-substructure match.&lt;/p&gt;
+&lt;p&gt;Once the molecule is sanitized, RDKit&amp;rsquo;s &lt;strong&gt;feature factory&lt;/strong&gt; sweeps the 3D structure and tags every pharmacophoric point - donors, acceptors, aromatics, hydrophobes - with its type and coordinates.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;rdkit&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Chem&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;rdkit.Chem&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AllChem&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;rdkit.Chem&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ChemicalFeatures&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;rdkit&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;RDConfig&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;os&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 1. fix bond orders using the 2D SMILES as a template&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;template&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Chem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MolFromSmiles&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ligand_smiles&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;          &lt;span class=&#34;c1&#34;&gt;# correct chemistry&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;mol_3d&lt;/span&gt;   &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Chem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MolFromPDBFile&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;ligand.pdb&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;removeHs&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;False&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;mol&lt;/span&gt;      &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AllChem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;AssignBondOrdersFromTemplate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;template&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mol_3d&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Chem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SanitizeMol&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mol&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 2. map pharmacophoric features in 3D&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;fdef&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;RDConfig&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;RDDataDir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;BaseFeatures.fdef&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;factory&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ChemicalFeatures&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BuildFeatureFactory&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;fdef&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;features&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;conf&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mol&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GetConformer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;f&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;factory&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GetFeaturesForMol&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mol&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;pos&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GetPos&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;features&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GetFamily&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(),&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pos&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pos&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pos&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;z&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# e.g. (&amp;#39;Donor&amp;#39;, (12.3, 4.1, -2.0)), (&amp;#39;Aromatic&amp;#39;, (...)), ...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Repeat this for every ligand in the target cluster and you accumulate a big cloud of typed feature points - many noisy, many redundant, but collectively encoding what binding &lt;em&gt;looks like&lt;/em&gt; for this target.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;5-generating-the-consensus-model-with-k-means&#34;&gt;5. Generating the consensus model with k-means&lt;/h2&gt;
+&lt;p&gt;A cloud of thousands of individual features isn&amp;rsquo;t a model - it&amp;rsquo;s the raw data for one. The final step distills it into a clean, minimal &lt;strong&gt;ensemble&lt;/strong&gt; that represents the binding mode shared by the &lt;em&gt;majority&lt;/em&gt; of active ligands.&lt;/p&gt;
+&lt;p&gt;The pipeline groups the pooled features &lt;strong&gt;by type&lt;/strong&gt; (all acceptors together, all donors together, and so on) and runs &lt;strong&gt;k-means&lt;/strong&gt; on the 3D coordinates within each group. Each resulting centroid is a candidate consensus feature. Centroids supported by only a handful of ligands are discarded as low-frequency noise; the ones the population agrees on survive.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/pharmacophore-pdb/consensus-pharmacophore.svg&#34; alt=&#34;Consensus pharmacophore&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+
+&lt;em&gt;Per-ligand features (faint) collapse into a small set of consensus centroids (bold). The distances between them define the geometric query.&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;numpy&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;np&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;collections&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;defaultdict&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.cluster&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;KMeans&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# group every feature point by family&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;by_type&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;defaultdict&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;family&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;coord&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;all_features&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;by_type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;family&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;coord&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;n_ligands&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;target_cluster_ligands&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;consensus&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;family&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;coords&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;by_type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;items&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;coords&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;np&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;array&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;k&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;max&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;round&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n_ligands&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;# ~1 site per ligand&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;km&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;KMeans&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n_clusters&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;k&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n_init&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;auto&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;fit&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;range&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;k&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;members&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;km&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;labels_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;c1&#34;&gt;# keep only features shared by the majority&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;members&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.5&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n_ligands&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;n&#34;&gt;consensus&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;family&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;km&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cluster_centers_&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;family&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;center&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;consensus&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;sa&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;family&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;10s&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; at &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;np&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;round&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;center&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;What comes out is a short, interpretable list: a handful of typed features with precise 3D coordinates and well-defined distances between them.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-payoff&#34;&gt;The payoff&lt;/h2&gt;
+&lt;p&gt;The final output is a compact, accurate &lt;strong&gt;3D spatial map of the essential binding features&lt;/strong&gt; for the target - derived entirely from public structural data, with no licensed software anywhere in the chain.&lt;/p&gt;
+&lt;p&gt;From here it&amp;rsquo;s ready to &lt;strong&gt;deploy in a virtual screening campaign&lt;/strong&gt;: encode the consensus features and their inter-feature distances as a geometric query, then scan large compound libraries (ZINC, Enamine REAL, your in-house collection) for novel scaffolds that match the same spatial pattern - fresh chemistry that satisfies the same binding logic as the known actives. 🚀&lt;/p&gt;
+&lt;p&gt;The beauty of the approach is that every stage is a well-supported open-source library doing what it does best:&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Stage&lt;/th&gt;
+          &lt;th&gt;Job&lt;/th&gt;
+          &lt;th&gt;Tool&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;1. Mine&lt;/td&gt;
+          &lt;td&gt;Query and download QC-filtered structures&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;biotite&lt;/code&gt; + RCSB GraphQL&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;2. Align&lt;/td&gt;
+          &lt;td&gt;Parse and superpose pockets in 3D&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;MDAnalysis&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;3. Cluster&lt;/td&gt;
+          &lt;td&gt;Separate binding sites&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;scikit-learn&lt;/code&gt; (DBSCAN)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;4. Featurize&lt;/td&gt;
+          &lt;td&gt;Fix bonds, extract features&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;RDKit&lt;/code&gt; (rdFMCS, FeatureFactory)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;5. Consensus&lt;/td&gt;
+          &lt;td&gt;Distill the shared model&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;scikit-learn&lt;/code&gt; (k-means)&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;No proprietary suite required - just Python and a curated stack of free libraries, turning raw PDB coordinates into a drug-design blueprint.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>AI &#43; Chemistry: Building Drug Discovery Pipelines with Free Tools</title>
+      <link>https://yboulaamane.github.io/blog/ai-chemistry-building-drug-discovery-pipelines-with-free-tools/</link>
+      <pubDate>Tue, 01 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/ai-chemistry-building-drug-discovery-pipelines-with-free-tools/</guid>
+      <description>&lt;p&gt;A complete drug discovery pipeline can now be built entirely with free, open-source tools. From bioactivity data retrieval to ML model training and 3D visualization, the ecosystem covers every step. To make this concrete, this post walks through a pipeline targeting the ABL kinase (c-Abl tyrosine kinase, the target of imatinib), with working code at each stage.&lt;/p&gt;
+&lt;h2 id=&#34;from-data-to-discovery-the-open-source-pipeline-case-study-abl-kinase&#34;&gt;From Data to Discovery: The Open-Source Pipeline (Case Study: ABL Kinase)&lt;/h2&gt;
+&lt;p&gt;The goal: identify new inhibitors of ABL kinase, a key oncology target (Bcr-Abl drives chronic myeloid leukemia). The pipeline covers:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Gather known bioactivity data for ABL&lt;/li&gt;
+&lt;li&gt;Featurize and analyze molecules&lt;/li&gt;
+&lt;li&gt;Train an AI model to predict new inhibitors&lt;/li&gt;
+&lt;li&gt;Convert and prepare compounds for simulation&lt;/li&gt;
+&lt;li&gt;Visualize how they bind&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;All steps use open resources:&lt;/p&gt;
+&lt;h3 id=&#34;open-data-chembl&#34;&gt;Open Data (ChEMBL)&lt;/h3&gt;
+&lt;p&gt;ABL bioactivity data can be retrieved from ChEMBL, an open database of drug-like molecules and their biological activities with millions of measured compound-target data points. ChEMBL’s web services or bulk downloads provide IC50/Ki values for all compounds tested against ABL, which Pandas can then filter and tabulate.&lt;/p&gt;
+&lt;h3 id=&#34;data-handling-pandas--numpy&#34;&gt;Data Handling (Pandas &amp;amp; NumPy)&lt;/h3&gt;
+&lt;p&gt;With our ABL dataset in hand (e.g. as a CSV of SMILES and activity labels), we use Pandas to clean and manipulate it and NumPy for any numerical computing. These “classics” form the backbone of any custom pipeline, e.g., grouping data, normalizing values, splitting into train/test sets. They might not be drug discovery-specific, but their flexibility is indispensable. We might do:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import pandas as pd
+df = pd.read_csv(&amp;quot;ABL_bioactivity.csv&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;rdkit--the-unsung-hero-of-cheminformatics&#34;&gt;RDKit – The Unsung Hero of Cheminformatics&lt;/h2&gt;
+&lt;p&gt;If you&amp;rsquo;re doing anything with molecules in Python, chances are RDKit is working behind the scenes. RDKit is an open-source cheminformatics toolkit widely used for tasks like generating molecular fingerprints, performing substructure searches, computing descriptors, and manipulating chemical structures.&lt;/p&gt;
+&lt;p&gt;In our ABL example, we use RDKit to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Generate Morgan fingerprints&lt;/li&gt;
+&lt;li&gt;Perform substructure searches&lt;/li&gt;
+&lt;li&gt;Compute molecular descriptors&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;code-example&#34;&gt;Code Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;from rdkit import Chem, DataStructs
+from rdkit.Chem import AllChem
+
+imatinib_smiles = &amp;quot;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)NC(=O)c4ccc(cc4)CN5CCN(CC5)C&amp;quot;
+nilotinib_smiles = &amp;quot;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)C(=O)Nc4cc(cc(c4)n5cc(nc5)C)C(F)(F)F&amp;quot;
+
+mol1 = Chem.MolFromSmiles(imatinib_smiles)
+mol2 = Chem.MolFromSmiles(nilotinib_smiles)
+
+fp1 = AllChem.GetMorganFingerprintAsBitVect(mol1, radius=2, nBits=2048)
+fp2 = AllChem.GetMorganFingerprintAsBitVect(mol2, radius=2, nBits=2048)
+
+sim = DataStructs.TanimotoSimilarity(fp1, fp2)
+print(f&amp;quot;Tanimoto similarity: {sim:.2f}&amp;quot;)
+
+query = Chem.MolFromSmarts(&amp;quot;c1ccc(cc1)Nc2nccc(n2)&amp;quot;)
+match = mol1.HasSubstructMatch(query)
+print(&amp;quot;Substructure match:&amp;quot;, match)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;deepchem--ai-made-beautifully-simple&#34;&gt;DeepChem – AI Made Beautifully Simple&lt;/h2&gt;
+&lt;p&gt;DeepChem is an open-source library that brings advanced models like GCNs and multitask networks to your fingertips. It’s built on TensorFlow/PyTorch but hides the complexity.&lt;/p&gt;
+&lt;h3 id=&#34;code-example-1&#34;&gt;Code Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;import deepchem as dc
+import numpy as np
+
+smiles_list = [
+&amp;quot;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)NC(=O)c4ccc(cc4)CN5CCN(CC5)C&amp;quot;,  # active
+&amp;quot;CCOC(=O)c1ccc(cc1)N&amp;quot;,  # inactive
+]
+labels = np.array([1, 0])
+
+featurizer = dc.feat.MolGraphConvFeaturizer()
+X = featurizer.featurize(smiles_list)
+y = labels
+
+dataset = dc.data.NumpyDataset(X, y)
+
+model = dc.models.GraphConvModel(n_tasks=1, mode=&#39;classification&#39;, metrics=[dc.metrics.Metric(dc.metrics.roc_auc_score)])
+model.fit(dataset, nb_epoch=20)
+
+pred_probs = model.predict(dataset)
+print(pred_probs)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;open-babel--convert-like-a-pro&#34;&gt;Open Babel – Convert Like a Pro&lt;/h2&gt;
+&lt;p&gt;Open Babel helps switch between formats like SMILES, SDF, PDB, etc.&lt;/p&gt;
+&lt;h3 id=&#34;code-example-2&#34;&gt;Code Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;from openbabel import pybel
+
+smiles = &amp;quot;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)NC(=O)c4ccc(cc4)CN5CCN(CC5)C&amp;quot;
+mol = pybel.readstring(&amp;quot;smi&amp;quot;, smiles)
+mol.addh()
+mol.make3D()
+mol.write(&amp;quot;sdf&amp;quot;, &amp;quot;imatinib_3D.sdf&amp;quot;, overwrite=True)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;pymol--visualize-what-ai-discovers&#34;&gt;PyMOL – Visualize What AI Discovers&lt;/h2&gt;
+&lt;p&gt;PyMOL is great for inspecting protein–ligand complexes and generating publication-quality figures.&lt;/p&gt;
+&lt;h3 id=&#34;code-example-3&#34;&gt;Code Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;import pymol2
+
+with pymol2.PyMOL() as pymol:
+	cmd = pymol.cmd
+	cmd.load(&amp;quot;ABL_kinase.pdb&amp;quot;, &amp;quot;protein&amp;quot;)
+	cmd.load(&amp;quot;imatinib_3D.sdf&amp;quot;, &amp;quot;ligand&amp;quot;)
+	cmd.hide(&amp;quot;everything&amp;quot;)
+	cmd.show(&amp;quot;cartoon&amp;quot;, &amp;quot;protein&amp;quot;)
+	cmd.show(&amp;quot;sticks&amp;quot;, &amp;quot;ligand&amp;quot;)
+	cmd.zoom(&amp;quot;ligand&amp;quot;, 5)
+	cmd.png(&amp;quot;abl_imatinib.png&amp;quot;, width=800, height=600, ray=1)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;chemprop--graph-neural-networks-made-easy&#34;&gt;Chemprop – Graph Neural Networks Made Easy&lt;/h2&gt;
+&lt;p&gt;Chemprop offers fast training of MPNNs for tasks like QSAR and virtual screening.&lt;/p&gt;
+&lt;h3 id=&#34;cli-example&#34;&gt;CLI Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;chemprop_train --data_path abl_activity.csv --smiles_column smiles --target_columns active \
+           --dataset_type classification --save_dir abl_model
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;python-example&#34;&gt;Python Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;from chemprop.train import run_training
+
+params = {
+&amp;quot;data_path&amp;quot;: &amp;quot;abl_activity.csv&amp;quot;,
+&amp;quot;smiles_column&amp;quot;: &amp;quot;smiles&amp;quot;,
+&amp;quot;target_columns&amp;quot;: [&amp;quot;active&amp;quot;],
+&amp;quot;dataset_type&amp;quot;: &amp;quot;classification&amp;quot;,
+&amp;quot;save_dir&amp;quot;: &amp;quot;abl_model&amp;quot;,
+&amp;quot;epochs&amp;quot;: 30
+}
+run_training(params)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-classics-pandas-numpy-scikit-learn--data-science-backbone&#34;&gt;The Classics: Pandas, NumPy, Scikit-Learn – Data Science Backbone&lt;/h2&gt;
+&lt;p&gt;These libraries handle everything from preprocessing to baseline models.&lt;/p&gt;
+&lt;h3 id=&#34;example-random-forest&#34;&gt;Example Random Forest:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+
+X = [list(map(int, fp.ToBitString())) for fp in [fp1, fp2]]
+y = labels
+
+X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=0)
+model = RandomForestClassifier(n_estimators=100).fit(X_train, y_train)
+print(&amp;quot;Validation accuracy:&amp;quot;, model.score(X_val, y_val))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-open-source-revolution-in-action&#34;&gt;The Open-Source Revolution in Action&lt;/h2&gt;
+&lt;p&gt;An end-to-end drug discovery pipeline can be built with open-source tools at every step, each covering a distinct role:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ChEMBL and PubChem for bioactivity data&lt;/li&gt;
+&lt;li&gt;RDKit for cheminformatics and structure manipulation&lt;/li&gt;
+&lt;li&gt;DeepChem and Chemprop for ML-based activity prediction&lt;/li&gt;
+&lt;li&gt;Open Babel for format conversion&lt;/li&gt;
+&lt;li&gt;PyMOL for 3D visualization and pose inspection&lt;/li&gt;
+&lt;li&gt;Pandas, NumPy, and scikit-learn for data handling and baseline models&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;All of these are free, actively maintained, and installable with a single command. The community contributions mean new algorithms and best practices are integrated quickly. This makes a competitive computational pipeline accessible to academic labs and startups without proprietary software costs.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

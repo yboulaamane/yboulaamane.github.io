@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Agentic Coding | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/agentic-coding/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/agentic-coding/index.xml" rel="self" type="application/rss+xml" />
+    <description>Agentic Coding</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sun, 02 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Agentic Coding</title>
+      <link>https://yboulaamane.github.io/tags/agentic-coding/</link>
+    </image>
+    
+    <item>
+      <title>Getting Real Work Out of Claude Code: A Practical Workflow Guide</title>
+      <link>https://yboulaamane.github.io/blog/claude-code-practical-workflow/</link>
+      <pubDate>Sun, 02 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/claude-code-practical-workflow/</guid>
+      <description>&lt;p&gt;Claude Code is an agentic coding tool: it reads a repo, plans, edits files, runs commands, executes tests, and calls external tools. It is terminal-based but editor-agnostic, and works over SSH and inside tmux.&lt;/p&gt;
+&lt;p&gt;The single idea worth internalizing:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Model quality sets the ceiling. Context, tools, feedback, and permission settings decide where you actually land.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;Five levers, in rough order of impact:&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Lever&lt;/th&gt;
+          &lt;th&gt;What it means&lt;/th&gt;
+          &lt;th&gt;Cost to set up&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Verification&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Claude can check its own output (tests, types, screenshots, logs)&lt;/td&gt;
+          &lt;td&gt;Medium, highest payoff&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Context&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Architecture, commands, conventions in &lt;code&gt;CLAUDE.md&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Low&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Planning&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Investigate and propose before editing&lt;/td&gt;
+          &lt;td&gt;Free&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Tools&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Shell, git, internal CLIs, MCP servers, browser&lt;/td&gt;
+          &lt;td&gt;Low to medium&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Controlled autonomy&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Permission modes matched to task risk&lt;/td&gt;
+          &lt;td&gt;Low&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-start-with-questions-not-edits&#34;&gt;1. Start with questions, not edits&lt;/h2&gt;
+&lt;p&gt;Before asking for changes, ask about the repo. It is zero-risk and it teaches you how much Claude infers on its own.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;How does authentication work here? Identify entry points, middleware, models, and tests.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Why does this function take so many arguments? Check git history for when each was added.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Which tests cover this feature?
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Claude can go past text search into call sites, tests, commit history, and linked issues. This is the fastest path through unfamiliar or legacy code.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;2-give-full-context-in-the-first-turn&#34;&gt;2. Give full context in the first turn&lt;/h2&gt;
+&lt;p&gt;Short prompts are the most common self-inflicted problem. State the goal, the constraints, and how you will judge the result:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Goal: add rate limiting to /api/login
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Constraints: don&amp;#39;t touch the DB schema, keep the auth flow unchanged, use the existing Redis
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Acceptance: unit tests pass, 429 returned after 5 attempts in 60s
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If Claude asks a lot of clarifying questions or drifts, the brief was usually incomplete. Voice dictation helps here mostly because spoken instructions carry more context than typed ones.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;3-plan-before-large-changes&#34;&gt;3. Plan before large changes&lt;/h2&gt;
+&lt;p&gt;Enter plan mode with &lt;code&gt;Shift+Tab&lt;/code&gt;, iterate on the plan, then switch to execution. Two questions decide how much process a task needs:&lt;/p&gt;
+
+&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; width=&#34;100%&#34; viewBox=&#34;0 0 680 470&#34; role=&#34;img&#34;&gt;
+&lt;style&gt;
+.t{font:400 14px -apple-system,BlinkMacSystemFont,&#34;Segoe UI&#34;,Helvetica,Arial,sans-serif;fill:#3d3d3a}
+.ts{font:400 12px -apple-system,BlinkMacSystemFont,&#34;Segoe UI&#34;,Helvetica,Arial,sans-serif;fill:#73726c}
+.th{font:500 14px -apple-system,BlinkMacSystemFont,&#34;Segoe UI&#34;,Helvetica,Arial,sans-serif;fill:#3d3d3a}
+.box{fill:#faf9f5;stroke:#b4b2a9}
+.arr{stroke:#73726c;stroke-width:1.5;fill:none}
+.c-purple rect,rect.c-purple{fill:#EEEDFE;stroke:#534AB7}
+.c-purple .th{fill:#3C3489}.c-purple .ts{fill:#534AB7}
+.c-teal rect,rect.c-teal{fill:#E1F5EE;stroke:#0F6E56}
+.c-teal .th{fill:#085041}.c-teal .ts{fill:#0F6E56}
+.c-gray rect,rect.c-gray{fill:#F1EFE8;stroke:#5F5E5A}
+.c-gray .th{fill:#444441}.c-gray .ts{fill:#5F5E5A}
+.c-amber rect,rect.c-amber{fill:#FAEEDA;stroke:#854F0B}
+.c-amber .th{fill:#633806}.c-amber .ts{fill:#854F0B}
+@media (prefers-color-scheme:dark){
+.t,.th{fill:#c2c0b6}.ts{fill:#9c9a92}
+.box{fill:#2b2a27;stroke:#5F5E5A}
+.arr{stroke:#9c9a92}
+.c-purple rect,rect.c-purple{fill:#3C3489;stroke:#AFA9EC}
+.c-purple .th{fill:#CECBF6}.c-purple .ts{fill:#AFA9EC}
+.c-teal rect,rect.c-teal{fill:#085041;stroke:#5DCAA5}
+.c-teal .th{fill:#9FE1CB}.c-teal .ts{fill:#5DCAA5}
+.c-gray rect,rect.c-gray{fill:#444441;stroke:#B4B2A9}
+.c-gray .th{fill:#D3D1C7}.c-gray .ts{fill:#B4B2A9}
+.c-amber rect,rect.c-amber{fill:#633806;stroke:#EF9F27}
+.c-amber .th{fill:#FAC775}.c-amber .ts{fill:#EF9F27}
+}
+&lt;/style&gt;
+&lt;defs&gt;&lt;marker id=&#34;arrow&#34; viewBox=&#34;0 0 10 10&#34; refX=&#34;8&#34; refY=&#34;5&#34; markerWidth=&#34;6&#34; markerHeight=&#34;6&#34; orient=&#34;auto-start-reverse&#34;&gt;&lt;path d=&#34;M2 1L8 5L2 9&#34; fill=&#34;none&#34; stroke=&#34;context-stroke&#34; stroke-width=&#34;1.5&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;&lt;/marker&gt;&lt;/defs&gt;
+&lt;title&gt;Choosing how much process a Claude Code task needs&lt;/title&gt;&lt;desc&gt;A decision tree. Start with a new task. If the scope is not clear and bounded, use plan mode first and approve before editing; if it is, implement directly. Then ask whether Claude can verify the result. If not, build the check first using tests, types or a browser. If it can, let it iterate through run, observe and revise.&lt;/desc&gt;
+&lt;rect class=&#34;box&#34; x=&#34;280&#34; y=&#34;30&#34; width=&#34;120&#34; height=&#34;44&#34; rx=&#34;8&#34; stroke-width=&#34;0.5&#34;/&gt;&lt;text class=&#34;th&#34; x=&#34;340&#34; y=&#34;52&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;New task&lt;/text&gt;
+&lt;line x1=&#34;340&#34; y1=&#34;74&#34; x2=&#34;340&#34; y2=&#34;94&#34; class=&#34;arr&#34; marker-end=&#34;url(#arrow)&#34;/&gt;
+&lt;rect class=&#34;box&#34; x=&#34;220&#34; y=&#34;100&#34; width=&#34;240&#34; height=&#34;44&#34; rx=&#34;8&#34; stroke-width=&#34;0.5&#34;/&gt;&lt;text class=&#34;th&#34; x=&#34;340&#34; y=&#34;122&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;Scope clear and bounded?&lt;/text&gt;
+&lt;path d=&#34;M340 144 L340 170 L140 170 L140 190&#34; class=&#34;arr&#34; marker-end=&#34;url(#arrow)&#34;/&gt;
+&lt;path d=&#34;M340 144 L340 170 L540 170 L540 190&#34; class=&#34;arr&#34; marker-end=&#34;url(#arrow)&#34;/&gt;
+&lt;text class=&#34;ts&#34; x=&#34;152&#34; y=&#34;188&#34;&gt;no&lt;/text&gt;
+&lt;text class=&#34;ts&#34; x=&#34;552&#34; y=&#34;188&#34;&gt;yes&lt;/text&gt;
+&lt;g class=&#34;c-teal&#34;&gt;&lt;rect x=&#34;50&#34; y=&#34;196&#34; width=&#34;180&#34; height=&#34;56&#34; rx=&#34;8&#34; stroke-width=&#34;0.5&#34;/&gt;&lt;text class=&#34;th&#34; x=&#34;140&#34; y=&#34;216&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;Plan mode first&lt;/text&gt;&lt;text class=&#34;ts&#34; x=&#34;140&#34; y=&#34;236&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;approve before editing&lt;/text&gt;&lt;/g&gt;
+&lt;g class=&#34;c-teal&#34;&gt;&lt;rect x=&#34;450&#34; y=&#34;196&#34; width=&#34;180&#34; height=&#34;56&#34; rx=&#34;8&#34; stroke-width=&#34;0.5&#34;/&gt;&lt;text class=&#34;th&#34; x=&#34;540&#34; y=&#34;216&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;Implement directly&lt;/text&gt;&lt;text class=&#34;ts&#34; x=&#34;540&#34; y=&#34;236&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;small, well-defined&lt;/text&gt;&lt;/g&gt;
+&lt;path d=&#34;M140 252 L140 276 L340 276&#34; class=&#34;arr&#34;/&gt;
+&lt;path d=&#34;M540 252 L540 276 L340 276&#34; class=&#34;arr&#34;/&gt;
+&lt;line x1=&#34;340&#34; y1=&#34;276&#34; x2=&#34;340&#34; y2=&#34;290&#34; class=&#34;arr&#34; marker-end=&#34;url(#arrow)&#34;/&gt;
+&lt;rect class=&#34;box&#34; x=&#34;200&#34; y=&#34;296&#34; width=&#34;280&#34; height=&#34;44&#34; rx=&#34;8&#34; stroke-width=&#34;0.5&#34;/&gt;&lt;text class=&#34;th&#34; x=&#34;340&#34; y=&#34;318&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;Can Claude verify the result?&lt;/text&gt;
+&lt;path d=&#34;M340 340 L340 366 L140 366 L140 386&#34; class=&#34;arr&#34; marker-end=&#34;url(#arrow)&#34;/&gt;
+&lt;path d=&#34;M340 340 L340 366 L540 366 L540 386&#34; class=&#34;arr&#34; marker-end=&#34;url(#arrow)&#34;/&gt;
+&lt;text class=&#34;ts&#34; x=&#34;152&#34; y=&#34;384&#34;&gt;no&lt;/text&gt;
+&lt;text class=&#34;ts&#34; x=&#34;552&#34; y=&#34;384&#34;&gt;yes&lt;/text&gt;
+&lt;g class=&#34;c-teal&#34;&gt;&lt;rect x=&#34;50&#34; y=&#34;392&#34; width=&#34;180&#34; height=&#34;56&#34; rx=&#34;8&#34; stroke-width=&#34;0.5&#34;/&gt;&lt;text class=&#34;th&#34; x=&#34;140&#34; y=&#34;412&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;Build the check first&lt;/text&gt;&lt;text class=&#34;ts&#34; x=&#34;140&#34; y=&#34;432&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;tests, types, browser&lt;/text&gt;&lt;/g&gt;
+&lt;g class=&#34;c-teal&#34;&gt;&lt;rect x=&#34;450&#34; y=&#34;392&#34; width=&#34;180&#34; height=&#34;56&#34; rx=&#34;8&#34; stroke-width=&#34;0.5&#34;/&gt;&lt;text class=&#34;th&#34; x=&#34;540&#34; y=&#34;412&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;Let it iterate&lt;/text&gt;&lt;text class=&#34;ts&#34; x=&#34;540&#34; y=&#34;432&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;run, observe, revise&lt;/text&gt;&lt;/g&gt;
+&lt;/svg&gt;
+
+
+&lt;p&gt;In table form:&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Task&lt;/th&gt;
+          &lt;th&gt;Approach&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Rename, small fix&lt;/td&gt;
+          &lt;td&gt;Implement directly&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Bug with a known test&lt;/td&gt;
+          &lt;td&gt;Implement and verify&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Cross-cutting feature&lt;/td&gt;
+          &lt;td&gt;Plan first, approve, then implement&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Architectural change&lt;/td&gt;
+          &lt;td&gt;Explore, plan with trade-offs, approve, implement, validate&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Planning catches misread requirements before they become 400 lines of wrong code.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;4-verification-is-the-highest-leverage-investment&#34;&gt;4. Verification is the highest-leverage investment&lt;/h2&gt;
+&lt;p&gt;Without feedback, Claude is predicting. With feedback, it iterates. Quality improvements of 2x to 3x are typical when a robust verification loop exists.&lt;/p&gt;
+&lt;p&gt;Sources of feedback, in rough order of setup cost: type checks and linters, unit and integration tests, build commands, application logs and API responses, browser screenshots, simulators.&lt;/p&gt;
+
+&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; width=&#34;100%&#34; viewBox=&#34;0 0 680 220&#34; role=&#34;img&#34;&gt;
+&lt;style&gt;
+.t{font:400 14px -apple-system,BlinkMacSystemFont,&#34;Segoe UI&#34;,Helvetica,Arial,sans-serif;fill:#3d3d3a}
+.ts{font:400 12px -apple-system,BlinkMacSystemFont,&#34;Segoe UI&#34;,Helvetica,Arial,sans-serif;fill:#73726c}
+.th{font:500 14px -apple-system,BlinkMacSystemFont,&#34;Segoe UI&#34;,Helvetica,Arial,sans-serif;fill:#3d3d3a}
+.box{fill:#faf9f5;stroke:#b4b2a9}
+.arr{stroke:#73726c;stroke-width:1.5;fill:none}
+.c-purple rect,rect.c-purple{fill:#EEEDFE;stroke:#534AB7}
+.c-purple .th{fill:#3C3489}.c-purple .ts{fill:#534AB7}
+.c-teal rect,rect.c-teal{fill:#E1F5EE;stroke:#0F6E56}
+.c-teal .th{fill:#085041}.c-teal .ts{fill:#0F6E56}
+.c-gray rect,rect.c-gray{fill:#F1EFE8;stroke:#5F5E5A}
+.c-gray .th{fill:#444441}.c-gray .ts{fill:#5F5E5A}
+.c-amber rect,rect.c-amber{fill:#FAEEDA;stroke:#854F0B}
+.c-amber .th{fill:#633806}.c-amber .ts{fill:#854F0B}
+@media (prefers-color-scheme:dark){
+.t,.th{fill:#c2c0b6}.ts{fill:#9c9a92}
+.box{fill:#2b2a27;stroke:#5F5E5A}
+.arr{stroke:#9c9a92}
+.c-purple rect,rect.c-purple{fill:#3C3489;stroke:#AFA9EC}
+.c-purple .th{fill:#CECBF6}.c-purple .ts{fill:#AFA9EC}
+.c-teal rect,rect.c-teal{fill:#085041;stroke:#5DCAA5}
+.c-teal .th{fill:#9FE1CB}.c-teal .ts{fill:#5DCAA5}
+.c-gray rect,rect.c-gray{fill:#444441;stroke:#B4B2A9}
+.c-gray .th{fill:#D3D1C7}.c-gray .ts{fill:#B4B2A9}
+.c-amber rect,rect.c-amber{fill:#633806;stroke:#EF9F27}
+.c-amber .th{fill:#FAC775}.c-amber .ts{fill:#EF9F27}
+}
+&lt;/style&gt;
+&lt;defs&gt;&lt;marker id=&#34;arrow&#34; viewBox=&#34;0 0 10 10&#34; refX=&#34;8&#34; refY=&#34;5&#34; markerWidth=&#34;6&#34; markerHeight=&#34;6&#34; orient=&#34;auto-start-reverse&#34;&gt;&lt;path d=&#34;M2 1L8 5L2 9&#34; fill=&#34;none&#34; stroke=&#34;context-stroke&#34; stroke-width=&#34;1.5&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;&lt;/marker&gt;&lt;/defs&gt;
+&lt;title&gt;The verification loop in Claude Code&lt;/title&gt;&lt;desc&gt;Five stages, implement, run, observe, diagnose and revise, connected left to right with a return arrow from revise back to implement. Implement and revise are generation steps, observe and diagnose are verification steps.&lt;/desc&gt;
+&lt;g class=&#34;c-purple&#34;&gt;&lt;rect x=&#34;40&#34; y=&#34;60&#34; width=&#34;96&#34; height=&#34;44&#34; rx=&#34;8&#34; stroke-width=&#34;0.5&#34;/&gt;&lt;text class=&#34;th&#34; x=&#34;88&#34; y=&#34;82&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;Implement&lt;/text&gt;&lt;/g&gt;
+&lt;g class=&#34;c-gray&#34;&gt;&lt;rect x=&#34;166&#34; y=&#34;60&#34; width=&#34;96&#34; height=&#34;44&#34; rx=&#34;8&#34; stroke-width=&#34;0.5&#34;/&gt;&lt;text class=&#34;th&#34; x=&#34;214&#34; y=&#34;82&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;Run&lt;/text&gt;&lt;/g&gt;
+&lt;g class=&#34;c-teal&#34;&gt;&lt;rect x=&#34;292&#34; y=&#34;60&#34; width=&#34;96&#34; height=&#34;44&#34; rx=&#34;8&#34; stroke-width=&#34;0.5&#34;/&gt;&lt;text class=&#34;th&#34; x=&#34;340&#34; y=&#34;82&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;Observe&lt;/text&gt;&lt;/g&gt;
+&lt;g class=&#34;c-teal&#34;&gt;&lt;rect x=&#34;418&#34; y=&#34;60&#34; width=&#34;96&#34; height=&#34;44&#34; rx=&#34;8&#34; stroke-width=&#34;0.5&#34;/&gt;&lt;text class=&#34;th&#34; x=&#34;466&#34; y=&#34;82&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;Diagnose&lt;/text&gt;&lt;/g&gt;
+&lt;g class=&#34;c-purple&#34;&gt;&lt;rect x=&#34;544&#34; y=&#34;60&#34; width=&#34;96&#34; height=&#34;44&#34; rx=&#34;8&#34; stroke-width=&#34;0.5&#34;/&gt;&lt;text class=&#34;th&#34; x=&#34;592&#34; y=&#34;82&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;Revise&lt;/text&gt;&lt;/g&gt;
+&lt;line x1=&#34;136&#34; y1=&#34;82&#34; x2=&#34;160&#34; y2=&#34;82&#34; class=&#34;arr&#34; marker-end=&#34;url(#arrow)&#34;/&gt;
+&lt;line x1=&#34;262&#34; y1=&#34;82&#34; x2=&#34;286&#34; y2=&#34;82&#34; class=&#34;arr&#34; marker-end=&#34;url(#arrow)&#34;/&gt;
+&lt;line x1=&#34;388&#34; y1=&#34;82&#34; x2=&#34;412&#34; y2=&#34;82&#34; class=&#34;arr&#34; marker-end=&#34;url(#arrow)&#34;/&gt;
+&lt;line x1=&#34;514&#34; y1=&#34;82&#34; x2=&#34;538&#34; y2=&#34;82&#34; class=&#34;arr&#34; marker-end=&#34;url(#arrow)&#34;/&gt;
+&lt;path d=&#34;M592 104 L592 144 L88 144 L88 110&#34; class=&#34;arr&#34; marker-end=&#34;url(#arrow)&#34;/&gt;
+&lt;text class=&#34;ts&#34; x=&#34;340&#34; y=&#34;166&#34; text-anchor=&#34;middle&#34;&gt;Repeats until the checks pass&lt;/text&gt;
+&lt;rect class=&#34;c-purple&#34; x=&#34;250&#34; y=&#34;186&#34; width=&#34;10&#34; height=&#34;10&#34; rx=&#34;2&#34; stroke-width=&#34;0.5&#34;/&gt;
+&lt;text class=&#34;ts&#34; x=&#34;266&#34; y=&#34;195&#34;&gt;generate&lt;/text&gt;
+&lt;rect class=&#34;c-teal&#34; x=&#34;370&#34; y=&#34;186&#34; width=&#34;10&#34; height=&#34;10&#34; rx=&#34;2&#34; stroke-width=&#34;0.5&#34;/&gt;
+&lt;text class=&#34;ts&#34; x=&#34;386&#34; y=&#34;195&#34;&gt;verify&lt;/text&gt;
+&lt;/svg&gt;
+
+
+&lt;p&gt;For web UI, the Claude in Chrome extension provides a capable, token-efficient solution. Hand it a mock-up, let it launch the app, take a screenshot, compare, and revise.&lt;/p&gt;
+&lt;p&gt;The core design question for any workflow: &lt;strong&gt;how will Claude know whether the result is correct?&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;5-persist-context-in-claudemd&#34;&gt;5. Persist context in &lt;code&gt;CLAUDE.md&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;Loaded at session start. Include information that would otherwise be retyped every session:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;gh&#34;&gt;# Project overview
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;gh&#34;&gt;&lt;/span&gt;Web application and API.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;gu&#34;&gt;## Directories
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;gu&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;sb&#34;&gt;`src/api`&lt;/span&gt;: handlers
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;sb&#34;&gt;`src/services`&lt;/span&gt;: business logic
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;sb&#34;&gt;`tests`&lt;/span&gt;: integration tests
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;gu&#34;&gt;## Commands
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;gu&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;-&lt;/span&gt; Test: &lt;span class=&#34;sb&#34;&gt;`npm test`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;-&lt;/span&gt; Single test: &lt;span class=&#34;sb&#34;&gt;`npm test -- &amp;lt;name&amp;gt;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;-&lt;/span&gt; Typecheck: &lt;span class=&#34;sb&#34;&gt;`npm run typecheck`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;gu&#34;&gt;## Rules
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;gu&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;-&lt;/span&gt; Keep handlers thin, logic in services
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;-&lt;/span&gt; Add a test for every bug fix
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;-&lt;/span&gt; Do not hand-edit generated files
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Key principles for effective memory configuration:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Keep it under roughly 200 lines.&lt;/strong&gt; Memory consumes context every turn, and long files reduce rule adherence.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Layer configuration:&lt;/strong&gt; enterprise policy, user (&lt;code&gt;~/.claude/CLAUDE.md&lt;/code&gt;), project (&lt;code&gt;./CLAUDE.md&lt;/code&gt;), local, and nested subdirectory files loaded only when Claude reads files in that subtree.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Commit the project file.&lt;/strong&gt; Keep personal preferences in user memory, local machine details in a gitignored file.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;#&lt;/code&gt; prefix&lt;/strong&gt; adds a memory mid-session and prompts for which file to save it to. Use it when Claude repeats a mistake.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Auto memory&lt;/strong&gt; maintains notes from corrections in &lt;code&gt;~/.claude/projects/&amp;lt;proj&amp;gt;/memory/&lt;/code&gt;. Check &lt;code&gt;/memory&lt;/code&gt; to view active entries.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;/init&lt;/code&gt;&lt;/strong&gt; bootstraps a first draft from your codebase.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Add a rule when it reflects a true project invariant, not after a single isolated mistake.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;6-tools-beyond-the-shell&#34;&gt;6. Tools beyond the shell&lt;/h2&gt;
+&lt;p&gt;Claude infers standard git workflows without procedural prompting. A simple instruction like &lt;em&gt;&amp;ldquo;Commit, push, open a PR&amp;rdquo;&lt;/em&gt; is usually sufficient.&lt;/p&gt;
+&lt;p&gt;For internal CLIs, direct the model to read the help output:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Use the `deploy-tool` CLI for this. Run `deploy-tool --help` first.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Document the CLI pattern in &lt;code&gt;CLAUDE.md&lt;/code&gt; so it does not need to be rediscovered in future sessions.&lt;/p&gt;
+&lt;p&gt;MCP servers connect Claude to issue trackers, monitoring, internal databases, documentation, and design tools. The main value is access to the same information sources the team already uses.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;7-turn-repeated-prompts-into-slash-commands&#34;&gt;7. Turn repeated prompts into slash commands&lt;/h2&gt;
+&lt;p&gt;Workflows performed multiple times a day belong in &lt;code&gt;.claude/commands/&lt;/code&gt;, checked into git:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;/review-pr&lt;/code&gt;, &lt;code&gt;/commit-push-pr&lt;/code&gt;, &lt;code&gt;/prepare-release&lt;/code&gt;, &lt;code&gt;/label-issue&lt;/code&gt;, &lt;code&gt;/run-security-check&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Commands can embed inline bash to precompute context and cut a round trip. Configure once, share with the team.&lt;/p&gt;
+&lt;p&gt;Subagents protect the main context window. Use a subagent when you want the result of a subtask without its intermediate steps polluting your main session.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;8-permission-modes&#34;&gt;8. Permission modes&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;Shift+Tab&lt;/code&gt; cycles modes. The default configuration includes:&lt;/p&gt;
+
+&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; width=&#34;100%&#34; viewBox=&#34;0 0 680 210&#34; role=&#34;img&#34;&gt;
+&lt;style&gt;
+.t{font:400 14px -apple-system,BlinkMacSystemFont,&#34;Segoe UI&#34;,Helvetica,Arial,sans-serif;fill:#3d3d3a}
+.ts{font:400 12px -apple-system,BlinkMacSystemFont,&#34;Segoe UI&#34;,Helvetica,Arial,sans-serif;fill:#73726c}
+.th{font:500 14px -apple-system,BlinkMacSystemFont,&#34;Segoe UI&#34;,Helvetica,Arial,sans-serif;fill:#3d3d3a}
+.box{fill:#faf9f5;stroke:#b4b2a9}
+.arr{stroke:#73726c;stroke-width:1.5;fill:none}
+.c-purple rect,rect.c-purple{fill:#EEEDFE;stroke:#534AB7}
+.c-purple .th{fill:#3C3489}.c-purple .ts{fill:#534AB7}
+.c-teal rect,rect.c-teal{fill:#E1F5EE;stroke:#0F6E56}
+.c-teal .th{fill:#085041}.c-teal .ts{fill:#0F6E56}
+.c-gray rect,rect.c-gray{fill:#F1EFE8;stroke:#5F5E5A}
+.c-gray .th{fill:#444441}.c-gray .ts{fill:#5F5E5A}
+.c-amber rect,rect.c-amber{fill:#FAEEDA;stroke:#854F0B}
+.c-amber .th{fill:#633806}.c-amber .ts{fill:#854F0B}
+@media (prefers-color-scheme:dark){
+.t,.th{fill:#c2c0b6}.ts{fill:#9c9a92}
+.box{fill:#2b2a27;stroke:#5F5E5A}
+.arr{stroke:#9c9a92}
+.c-purple rect,rect.c-purple{fill:#3C3489;stroke:#AFA9EC}
+.c-purple .th{fill:#CECBF6}.c-purple .ts{fill:#AFA9EC}
+.c-teal rect,rect.c-teal{fill:#085041;stroke:#5DCAA5}
+.c-teal .th{fill:#9FE1CB}.c-teal .ts{fill:#5DCAA5}
+.c-gray rect,rect.c-gray{fill:#444441;stroke:#B4B2A9}
+.c-gray .th{fill:#D3D1C7}.c-gray .ts{fill:#B4B2A9}
+.c-amber rect,rect.c-amber{fill:#633806;stroke:#EF9F27}
+.c-amber .th{fill:#FAC775}.c-amber .ts{fill:#EF9F27}
+}
+&lt;/style&gt;
+&lt;defs&gt;&lt;marker id=&#34;arrow&#34; viewBox=&#34;0 0 10 10&#34; refX=&#34;8&#34; refY=&#34;5&#34; markerWidth=&#34;6&#34; markerHeight=&#34;6&#34; orient=&#34;auto-start-reverse&#34;&gt;&lt;path d=&#34;M2 1L8 5L2 9&#34; fill=&#34;none&#34; stroke=&#34;context-stroke&#34; stroke-width=&#34;1.5&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;&lt;/marker&gt;&lt;/defs&gt;
+&lt;title&gt;Claude Code permission mode cycle&lt;/title&gt;&lt;desc&gt;Shift plus Tab cycles through four modes in order: default which always prompts, acceptEdits where file edits pass automatically, plan where no edits are made, and auto where a classifier gates each action. Auto is opt-in and only appears once enabled.&lt;/desc&gt;
+&lt;g class=&#34;c-gray&#34;&gt;&lt;rect x=&#34;40&#34; y=&#34;50&#34; width=&#34;128&#34; height=&#34;56&#34; rx=&#34;8&#34; stroke-width=&#34;0.5&#34;/&gt;&lt;text class=&#34;th&#34; x=&#34;104&#34; y=&#34;70&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;default&lt;/text&gt;&lt;text class=&#34;ts&#34; x=&#34;104&#34; y=&#34;90&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;always prompts&lt;/text&gt;&lt;/g&gt;
+&lt;g class=&#34;c-gray&#34;&gt;&lt;rect x=&#34;197&#34; y=&#34;50&#34; width=&#34;128&#34; height=&#34;56&#34; rx=&#34;8&#34; stroke-width=&#34;0.5&#34;/&gt;&lt;text class=&#34;th&#34; x=&#34;261&#34; y=&#34;70&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;acceptEdits&lt;/text&gt;&lt;text class=&#34;ts&#34; x=&#34;261&#34; y=&#34;90&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;edits auto-pass&lt;/text&gt;&lt;/g&gt;
+&lt;g class=&#34;c-gray&#34;&gt;&lt;rect x=&#34;354&#34; y=&#34;50&#34; width=&#34;128&#34; height=&#34;56&#34; rx=&#34;8&#34; stroke-width=&#34;0.5&#34;/&gt;&lt;text class=&#34;th&#34; x=&#34;418&#34; y=&#34;70&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;plan&lt;/text&gt;&lt;text class=&#34;ts&#34; x=&#34;418&#34; y=&#34;90&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;no edits made&lt;/text&gt;&lt;/g&gt;
+&lt;g class=&#34;c-amber&#34;&gt;&lt;rect x=&#34;511&#34; y=&#34;50&#34; width=&#34;128&#34; height=&#34;56&#34; rx=&#34;8&#34; stroke-width=&#34;0.5&#34;/&gt;&lt;text class=&#34;th&#34; x=&#34;575&#34; y=&#34;70&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;auto&lt;/text&gt;&lt;text class=&#34;ts&#34; x=&#34;575&#34; y=&#34;90&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;central&#34;&gt;auto-gated&lt;/text&gt;&lt;/g&gt;
+&lt;line x1=&#34;168&#34; y1=&#34;78&#34; x2=&#34;191&#34; y2=&#34;78&#34; class=&#34;arr&#34; marker-end=&#34;url(#arrow)&#34;/&gt;
+&lt;line x1=&#34;325&#34; y1=&#34;78&#34; x2=&#34;348&#34; y2=&#34;78&#34; class=&#34;arr&#34; marker-end=&#34;url(#arrow)&#34;/&gt;
+&lt;line x1=&#34;482&#34; y1=&#34;78&#34; x2=&#34;505&#34; y2=&#34;78&#34; class=&#34;arr&#34; marker-end=&#34;url(#arrow)&#34;/&gt;
+&lt;path d=&#34;M575 106 L575 146 L104 146 L104 112&#34; class=&#34;arr&#34; marker-end=&#34;url(#arrow)&#34;/&gt;
+&lt;text class=&#34;ts&#34; x=&#34;340&#34; y=&#34;168&#34; text-anchor=&#34;middle&#34;&gt;Shift+Tab steps through the cycle&lt;/text&gt;
+&lt;rect class=&#34;c-amber&#34; x=&#34;248&#34; y=&#34;188&#34; width=&#34;10&#34; height=&#34;10&#34; rx=&#34;2&#34; stroke-width=&#34;0.5&#34;/&gt;
+&lt;text class=&#34;ts&#34; x=&#34;264&#34; y=&#34;197&#34;&gt;opt-in, absent until enabled&lt;/text&gt;
+&lt;/svg&gt;
+
+
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Mode&lt;/th&gt;
+          &lt;th&gt;Behavior&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;default&lt;/code&gt; (Manual)&lt;/td&gt;
+          &lt;td&gt;Prompts for edits and commands&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;acceptEdits&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;File edits auto-approved, commands still prompt&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;plan&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Investigates and proposes, no edits&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;auto&lt;/code&gt; (if enabled)&lt;/td&gt;
+          &lt;td&gt;A classifier decides per action; reads, edits, and safe commands pass, risky ones block&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;bypassPermissions&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Sandboxes and containers only&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Auto mode serves as the recommended replacement for &lt;code&gt;--dangerously-skip-permissions&lt;/code&gt;. It auto-blocks operations like &lt;code&gt;curl | bash&lt;/code&gt;, force-pushing to main, production deployments, and mass deletions. It includes a safety circuit breaker that reverts back to manual prompting after repeated blocked actions.&lt;/p&gt;
+&lt;p&gt;Start restricted on complex or unclear tasks, loosening permissions once direction is confirmed.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;9-shortcuts-worth-muscle-memory&#34;&gt;9. Shortcuts worth muscle memory&lt;/h2&gt;
+&lt;p&gt;Check &lt;code&gt;?&lt;/code&gt; on an empty prompt to confirm shortcuts for your installed version.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Key&lt;/th&gt;
+          &lt;th&gt;Function&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;Shift+Tab&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Cycle permission modes&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;Esc&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Interrupt mid-turn, retain progress, redirect agent&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;Esc Esc&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Clear input draft, or open the rewind menu on empty prompt&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;Ctrl+O&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Toggle transcript viewer with full tool detail&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;Ctrl+R&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Reverse search prompt history&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;Ctrl+B&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Background a running command (twice in tmux)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;Ctrl+T&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Toggle task checklist&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;#&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Add a memory&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;@&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Reference a file, directory, or URL&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;!&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Shell mode: runs locally, output enters context&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;/btw&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Ask a side question that bypasses conversation history&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;10-headless-use&#34;&gt;10. Headless use&lt;/h2&gt;
+&lt;p&gt;Executing &lt;code&gt;claude -p&lt;/code&gt; (or &lt;code&gt;--print&lt;/code&gt;) transforms the tool into a composable Unix utility with JSON or streaming output and per-invocation tool restrictions:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;some-command &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; claude -p &lt;span class=&#34;s2&#34;&gt;&amp;#34;Analyze this output and identify the likely failure&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;some-command &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; claude -p &lt;span class=&#34;s2&#34;&gt;&amp;#34;Return findings as JSON&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; jq &lt;span class=&#34;s1&#34;&gt;&amp;#39;.findings&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Useful for CI failure triage, log summarization, diff review, issue classification, and release note generation.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;11-parallel-sessions&#34;&gt;11. Parallel sessions&lt;/h2&gt;
+&lt;p&gt;Multiple terminals, tmux sessions, or git worktrees provide isolated workspaces for concurrent agents. Avoid having two active agents share a single working tree.&lt;/p&gt;
+&lt;p&gt;Parallelism pays off when each task has clear boundaries and independent verification loops.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;common-failure-modes&#34;&gt;Common failure modes&lt;/h2&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Mistake&lt;/th&gt;
+          &lt;th&gt;Fix&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Single giant implementation prompt&lt;/td&gt;
+          &lt;td&gt;Explore and plan first&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Missing feedback loops&lt;/td&gt;
+          &lt;td&gt;Add tests, types, build, or browser checks&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Re-explaining project architecture&lt;/td&gt;
+          &lt;td&gt;Maintain &lt;code&gt;CLAUDE.md&lt;/code&gt;, use &lt;code&gt;#&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Unshared local configurations&lt;/td&gt;
+          &lt;td&gt;Commit commands, MCP configs, and permissions&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Approving every trivial edit&lt;/td&gt;
+          &lt;td&gt;Switch to &lt;code&gt;acceptEdits&lt;/code&gt; or &lt;code&gt;auto&lt;/code&gt; once on track&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Granting full autonomy initially&lt;/td&gt;
+          &lt;td&gt;Transition after the plan is confirmed&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Using as a basic search engine&lt;/td&gt;
+          &lt;td&gt;Request an engineering process, not a simple lookup&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;adoption-path&#34;&gt;Adoption path&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Codebase Q&amp;amp;A and onboarding&lt;/li&gt;
+&lt;li&gt;Small bounded changes with existing tests&lt;/li&gt;
+&lt;li&gt;Planning required for larger features&lt;/li&gt;
+&lt;li&gt;Short shared &lt;code&gt;CLAUDE.md&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Slash commands and MCP config in the repo&lt;/li&gt;
+&lt;li&gt;Automated verification loops&lt;/li&gt;
+&lt;li&gt;Headless use in CI and scripts&lt;/li&gt;
+&lt;li&gt;Parallel sessions on isolated worktrees&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Each stage should be stabilized before adopting subsequent automation levels.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;summary-principles&#34;&gt;Summary Principles&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Verification is Key:&lt;/strong&gt; Quality relies heavily on feedback loops (typechecks, tests, logs, or browser screenshots).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Context Management:&lt;/strong&gt; Maintain &lt;code&gt;CLAUDE.md&lt;/code&gt; under 200 lines to ensure high instruction adherence.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Controlled Autonomy:&lt;/strong&gt; Match permission modes to task risk, starting in plan mode for complex tasks and relaxing permissions as confidence grows.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

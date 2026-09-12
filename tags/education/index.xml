@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Education | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/education/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/education/index.xml" rel="self" type="application/rss+xml" />
+    <description>Education</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 24 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Education</title>
+      <link>https://yboulaamane.github.io/tags/education/</link>
+    </image>
+    
+    <item>
+      <title>Learn CADD</title>
+      <link>https://yboulaamane.github.io/project/learncadd/</link>
+      <pubDate>Wed, 24 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/learncadd/</guid>
+      <description>&lt;p&gt;An interactive, visual, first-principles web guide to computer-aided drug design. Covers 18 modules across ligand-receptor binding, molecular docking, pharmacophore modeling, QSAR, molecular dynamics, generative design, and ADMET prediction, each with hands-on browser playgrounds.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

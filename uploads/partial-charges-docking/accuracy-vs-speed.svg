@@ -1,0 +1,59 @@
+<svg viewBox="0 0 760 560" width="760" height="560" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="760" height="560" fill="#f8fafc"/>
+  <text x="380" y="36" text-anchor="middle" font-size="20" font-weight="800" fill="#0f172a">Partial-charge methods: accuracy vs. speed</text>
+  <text x="380" y="58" text-anchor="middle" font-size="12.5" fill="#64748b">The upper-right is the docking sweet spot — accurate and fast enough to scale</text>
+
+  <!-- plot frame -->
+  <rect x="90" y="80" width="600" height="400" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+
+  <!-- sweet-spot shading (high accuracy, high speed) -->
+  <rect x="430" y="80" width="260" height="200" fill="#16a34a" opacity="0.07"/>
+
+  <!-- axes labels -->
+  <text x="390" y="515" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">Speed  →  (faster)</text>
+  <text x="34" y="280" text-anchor="middle" font-size="14" font-weight="700" fill="#334155" transform="rotate(-90 34 280)">Electrostatic accuracy  →</text>
+
+  <!-- gridlines -->
+  <g stroke="#e2e8f0" stroke-width="1">
+    <line x1="90" y1="180" x2="690" y2="180"/>
+    <line x1="90" y1="280" x2="690" y2="280"/>
+    <line x1="90" y1="380" x2="690" y2="380"/>
+    <line x1="240" y1="80" x2="240" y2="480"/>
+    <line x1="390" y1="80" x2="390" y2="480"/>
+    <line x1="540" y1="80" x2="540" y2="480"/>
+  </g>
+
+  <!-- points -->
+  <!-- RESP: very high accuracy, slow -->
+  <g>
+    <circle cx="150" cy="110" r="13" fill="#7c3aed"/>
+    <text x="170" y="108" font-size="13.5" font-weight="700" fill="#0f172a">RESP</text>
+    <text x="170" y="124" font-size="11" fill="#64748b">excellent but expensive</text>
+  </g>
+  <!-- AM1-BCC: high accuracy, fast -->
+  <g>
+    <circle cx="600" cy="150" r="15" fill="#16a34a"/>
+    <text x="540" y="138" font-size="13.5" font-weight="800" fill="#15803d">AM1-BCC ★</text>
+    <text x="540" y="154" font-size="11" fill="#64748b">best balance</text>
+  </g>
+  <!-- PM6: high accuracy, medium -->
+  <g>
+    <circle cx="430" cy="175" r="14" fill="#2563eb"/>
+    <text x="450" y="173" font-size="13.5" font-weight="700" fill="#1d4ed8">PM6</text>
+    <text x="450" y="189" font-size="11" fill="#64748b">strong on H-bonds</text>
+  </g>
+  <!-- AM1/PM3: moderate, fast -->
+  <g>
+    <circle cx="585" cy="330" r="13" fill="#f59e0b"/>
+    <text x="500" y="328" font-size="13" font-weight="700" fill="#b45309">AM1 / PM3</text>
+    <text x="500" y="344" font-size="11" fill="#64748b">outdated</text>
+  </g>
+  <!-- Gasteiger: low accuracy, very fast -->
+  <g>
+    <circle cx="650" cy="430" r="13" fill="#ef4444"/>
+    <text x="560" y="428" font-size="13" font-weight="700" fill="#b91c1c">Gasteiger</text>
+    <text x="560" y="444" font-size="11" fill="#64748b">screening only</text>
+  </g>
+
+  <text x="560" y="270" text-anchor="middle" font-size="12.5" font-weight="700" fill="#16a34a" opacity="0.8">docking sweet spot</text>
+</svg>
