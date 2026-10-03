@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Agents | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/agents/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/agents/index.xml" rel="self" type="application/rss+xml" />
+    <description>Agents</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 23 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Agents</title>
+      <link>https://yboulaamane.github.io/tags/agents/</link>
+    </image>
+    
+    <item>
+      <title>Beyond Static Models: Agentic AI and Multi-Agent Systems in Drug Discovery</title>
+      <link>https://yboulaamane.github.io/blog/agentic-ai-and-multi-agent-systems-in-drug-discovery/</link>
+      <pubDate>Tue, 23 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/agentic-ai-and-multi-agent-systems-in-drug-discovery/</guid>
+      <description>&lt;p&gt;For most of the last decade, &amp;ldquo;AI in drug discovery&amp;rdquo; effectively meant &lt;strong&gt;static prediction&lt;/strong&gt;: train a model on a curated dataset, feed it molecules, read off a number - a predicted activity, a solubility, a toxicity flag. Useful, but passive. The model never decided &lt;em&gt;what&lt;/em&gt; to compute next, never picked up a tool, and never questioned its own output.&lt;/p&gt;
+&lt;p&gt;That assumption is now out of date. A new class of systems treats the language model not as a predictor but as a &lt;strong&gt;reasoning controller&lt;/strong&gt; - an agent that decomposes a goal, writes and runs code, calls external tools like docking engines and quantum chemistry packages, inspects the results, and revises its own plan. When several such agents collaborate - one proposing strategies, another implementing them, a third critiquing the output like a peer reviewer - you get a &lt;strong&gt;multi-agent system&lt;/strong&gt;, and the workflow starts to resemble an automated research loop rather than a single forward pass.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/agentic-drug-discovery/agentic-loop.svg&#34; alt=&#34;The agentic loop&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+
+&lt;em&gt;The core pattern: plan → act (write code, call tools) → observe → critique, then iterate. The Model Context Protocol (MCP) layer is what lets the agent reach real scientific tools and databases.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;This post explains what actually changed, the design patterns that make it work, and five open-source projects on GitHub that put these ideas into practice. It closes with the part the hype usually omits: where this breaks down.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;what-actually-changed&#34;&gt;What actually changed&lt;/h2&gt;
+&lt;p&gt;Three capabilities, layered on top of ordinary LLMs, do most of the work.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1. Tool use.&lt;/strong&gt; Instead of answering from parametric memory, the agent emits a structured call to an external tool - run a docking job, compute partial charges, query a database - and feeds the result back into its reasoning. The chemistry is still done by the specialised tool; the LLM orchestrates it.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. The Model Context Protocol (MCP).&lt;/strong&gt; 
+ is an open standard for exposing tools, data sources, and functions to an LLM through a uniform interface. Before MCP, every integration was bespoke. With it, a docking engine, a UniProt query, or an ADMET predictor can be published once as an &lt;strong&gt;MCP server&lt;/strong&gt; and reused across any MCP-aware agent - which is why several of the projects below ship as MCP servers rather than monolithic apps.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3. Retrieval-augmented generation (RAG).&lt;/strong&gt; Rather than fine-tuning a model on proprietary chemistry (expensive and quickly stale), the agent retrieves relevant facts from external databases at query time and reasons over them. This grounds outputs in real data and makes provenance auditable - important when a prediction has to survive scrutiny.&lt;/p&gt;
+&lt;p&gt;Together these turn a frozen model into something that can act, look up ground truth, and correct course.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-design-patterns&#34;&gt;The design patterns&lt;/h2&gt;
+&lt;p&gt;Most agentic drug-discovery systems are variations on a few recurring architectures. Recognising them makes any new project easier to evaluate.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Planner / executor.&lt;/strong&gt; One agent operates at a high level of abstraction - laying out a discovery strategy - while a second translates each step into concrete, executable code. Separating &amp;ldquo;what to do&amp;rdquo; from &amp;ldquo;how to do it&amp;rdquo; keeps the reasoning legible and the code focused.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Multi-agent critique.&lt;/strong&gt; A generator proposes a hypothesis or molecule; a separate critic agent challenges it, checks it against constraints, and sends it back for revision. The adversarial framing catches errors a single pass would miss.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;RAG-grounded reasoning.&lt;/strong&gt; Agents are wired to authoritative sources so claims are anchored in retrieved evidence rather than generated from memory.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tool-augmented control.&lt;/strong&gt; The LLM is a controller over a toolbox - docking, molecular dynamics, QM, property predictors - and contributes orchestration and interpretation, not the underlying physics.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Keep these in mind as a lens for the projects that follow.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;five-open-source-agents-worth-examining&#34;&gt;Five open-source agents worth examining&lt;/h2&gt;
+&lt;p&gt;The projects below are concrete implementations of the patterns above. They are research-grade and evolve quickly, so &lt;strong&gt;verify the repository URL, license, and current status before depending on any of them&lt;/strong&gt; - links and capabilities drift.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;flex justify-center	&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://yboulaamane.github.io/uploads/agentic-drug-discovery/agents-landscape.svg&#34; alt=&#34;Five agents at a glance&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+
+&lt;em&gt;The five projects, coloured by their dominant design pattern.&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&#34;1-cladd---genentech&#34;&gt;1. CLADD - &lt;em&gt;Genentech&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;A &lt;strong&gt;multi-agent, RAG-driven&lt;/strong&gt; framework that connects LLMs to biochemical databases without task-specific fine-tuning. Multiple agents collaborate to contextualise a molecule from retrieved data and produce property estimates such as toxicity and binding affinity, with the retrieval step keeping the reasoning grounded in real records.
+🔗 
+&lt;/p&gt;
+&lt;h3 id=&#34;2-agentd---hoon-ock&#34;&gt;2. AgentD - &lt;em&gt;hoon-ock&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;An end-to-end agent for &lt;strong&gt;molecular design, virtual screening, and SMILES refinement&lt;/strong&gt;. It folds drug-likeness filters (Lipinski, Veber) directly into the loop and can generate 3D protein–ligand structures via Boltz. It runs as an &lt;strong&gt;MCP server&lt;/strong&gt;, so its capabilities can be plugged into other MCP-aware clients.
+🔗 
+&lt;/p&gt;
+&lt;h3 id=&#34;3-drugagent---fermiq&#34;&gt;3. DrugAgent - &lt;em&gt;FermiQ&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;A clean &lt;strong&gt;planner/executor&lt;/strong&gt; split. An &amp;ldquo;LLM Planner&amp;rdquo; formulates high-level discovery strategies; an &amp;ldquo;LLM Instructor&amp;rdquo; turns each into executable Python - for example, assembling and running an ADMET evaluation. Dividing labour between strategy and implementation keeps both halves auditable.
+🔗 
+&lt;/p&gt;
+&lt;h3 id=&#34;4-deda---drug-evaluation-and-discovery-agent&#34;&gt;4. DEDA - &lt;em&gt;Drug Evaluation and Discovery Agent&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;A &lt;strong&gt;local, MCP-based&lt;/strong&gt; assistant focused on bioinformatics and molecular pathways - effectively a domain-specialised chat agent. It translates plain-English commands into queries against resources like &lt;strong&gt;UniProt&lt;/strong&gt; and &lt;strong&gt;AlphaFold&lt;/strong&gt; and supports real-time binding-pocket mapping.
+🔗 
+&lt;/p&gt;
+&lt;h3 id=&#34;5-scientific-agent-skills---k-dense-ai&#34;&gt;5. Scientific Agent Skills - &lt;em&gt;K-Dense-AI&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;Less a single agent than a &lt;strong&gt;skill library&lt;/strong&gt; that turns a general LLM (Claude, Gemini, and others) into a scientific operator. It bundles 140+ ready-made skills connecting agents to 70+ scientific databases, spanning tasks from molecular dynamics to genomics to docking.
+🔗 
+&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-lineage-this-didnt-appear-from-nowhere&#34;&gt;The lineage: this didn&amp;rsquo;t appear from nowhere&lt;/h2&gt;
+&lt;p&gt;It&amp;rsquo;s worth situating these tools in the prior work that established the paradigm, because the ideas are a few years old even if the MCP packaging is new.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;ChemCrow&lt;/strong&gt; (Bran et al., 2024) coupled an LLM to a suite of expert chemistry tools and showed it could plan and execute synthesis and discovery tasks - an early, influential demonstration that tool-augmented LLMs outperform the bare model on real chemical problems.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Coscientist&lt;/strong&gt; (Boiko et al., &lt;em&gt;Nature&lt;/em&gt;, 2023) used a GPT-4-based agent to autonomously plan and carry out experiments, including driving physical lab hardware - a landmark for closed-loop autonomous experimentation.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The five projects above inherit directly from this lineage; the recent additions are the &lt;strong&gt;standardisation (MCP)&lt;/strong&gt; and the &lt;strong&gt;multi-agent collaboration&lt;/strong&gt; that make such systems easier to assemble and extend.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-caveats-the-hype-skips&#34;&gt;The caveats the hype skips&lt;/h2&gt;
+&lt;p&gt;Agentic systems are powerful, but they are not a substitute for judgment, and treating them as one is how pipelines produce confident nonsense.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Hallucination still happens - now with tools.&lt;/strong&gt; Grounding reduces fabrication but doesn&amp;rsquo;t eliminate it. An agent can call the right tool with the wrong arguments, or misinterpret a correct result. Outputs need validation, not trust.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The physics lives in the tools, not the LLM.&lt;/strong&gt; A docking score is only as good as the docking engine and its setup. The agent&amp;rsquo;s reasoning cannot rescue a poorly prepared receptor or bad charges (a recurring theme - see the 
+).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Reproducibility is hard.&lt;/strong&gt; Non-deterministic LLM behaviour makes runs difficult to reproduce exactly. Pin model versions, log every tool call and its inputs, and treat agent transcripts as part of the experimental record.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cost and latency add up.&lt;/strong&gt; Multi-agent loops with critique steps can issue many model calls per task; this matters at virtual-screening scale.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Research-grade maturity.&lt;/strong&gt; Most of these repositories are young and fast-moving. Check the license, the test coverage, and how actively the project is maintained before building on it.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The right framing is augmentation: these agents are excellent at orchestrating tedious multi-tool workflows, drafting analysis code, and surfacing candidates - while the scientist sets the question, validates the chemistry, and owns the conclusions.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;takeaway&#34;&gt;Takeaway&lt;/h2&gt;
+&lt;p&gt;The shift from static models to agentic, tool-using systems is real and substantive: with &lt;strong&gt;MCP&lt;/strong&gt; for standardised tool access, &lt;strong&gt;RAG&lt;/strong&gt; for grounding, and &lt;strong&gt;multi-agent&lt;/strong&gt; collaboration for planning and self-critique, AI is moving from answering questions to &lt;em&gt;running workflows&lt;/em&gt;. The five open-source projects here are a good entry point for seeing how that looks in practice - clone one, read how it wires the LLM to its tools, and you&amp;rsquo;ll understand the pattern far better than any summary can convey. Just keep the validation discipline of a computational chemist: the agent accelerates the work, but you still answer for the result.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

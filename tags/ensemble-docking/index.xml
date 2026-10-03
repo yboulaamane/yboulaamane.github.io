@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ensemble Docking | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/ensemble-docking/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/ensemble-docking/index.xml" rel="self" type="application/rss+xml" />
+    <description>Ensemble Docking</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sun, 05 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Ensemble Docking</title>
+      <link>https://yboulaamane.github.io/tags/ensemble-docking/</link>
+    </image>
+    
+    <item>
+      <title>Ensemble Docking for Binding and Activity Prediction</title>
+      <link>https://yboulaamane.github.io/blog/ensemble-docking/</link>
+      <pubDate>Sun, 05 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/ensemble-docking/</guid>
+      <description>&lt;p&gt;Flexible macromolecular targets exist as dynamic conformational ensembles rather than static structures. Docking against a single crystal structure can bias results toward a specific conformer and fail to identify active ligands. Ensemble docking addresses this limitation by screening ligands against a diverse set of protein conformations extracted from molecular dynamics (MD) trajectories, producing a statistical distribution of binding scores that reflects solution behavior.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;methodological-overview&#34;&gt;Methodological Overview&lt;/h2&gt;
+&lt;p&gt;Ensemble docking screens library compounds against multiple target conformations to incorporate receptor flexibility.&lt;/p&gt;
+
+&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 800 350&#34; width=&#34;100%&#34; height=&#34;100%&#34;&gt;
+  &lt;defs&gt;
+    &lt;!-- Gradients --&gt;
+    &lt;linearGradient id=&#34;blueGrad&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#4F46E5&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#06B6D4&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;purpleGrad&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#7C3AED&#34; offfset=&#34;100%&#34;/&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#EC4899&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;grayGrad&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#9CA3AF&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#4B5563&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;!-- Drop Shadow --&gt;
+    &lt;filter id=&#34;shadow&#34; x=&#34;-5%&#34; y=&#34;-5%&#34; width=&#34;110%&#34; height=&#34;110%&#34;&gt;
+      &lt;feDropShadow dx=&#34;2&#34; dy=&#34;4&#34; stdDeviation=&#34;4&#34; flood-opacity=&#34;0.15&#34; /&gt;
+    &lt;/filter&gt;
+  &lt;/defs&gt;
+
+  &lt;style&gt;
+    .title { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 18px; fill: #1F2937; }
+    .subtitle { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-size: 12px; fill: #6B7280; }
+    .label { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 600; font-size: 14px; fill: #374151; }
+    .desc { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-size: 12px; fill: #4B5563; }
+    .badge { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 11px; fill: #FFFFFF; }
+    .card-title { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 15px; }
+  &lt;/style&gt;
+
+  &lt;!-- Background Canvas --&gt;
+  &lt;rect width=&#34;800&#34; height=&#34;350&#34; fill=&#34;#F9FAFB&#34; rx=&#34;12&#34; /&gt;
+
+  &lt;!-- Left Panel: Single Structure --&gt;
+  &lt;g transform=&#34;translate(40, 40)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;rect width=&#34;320&#34; height=&#34;270&#34; rx=&#34;8&#34; fill=&#34;#FFFFFF&#34; stroke=&#34;#E5E7EB&#34; stroke-width=&#34;1&#34; /&gt;
+    &lt;rect width=&#34;320&#34; height=&#34;8&#34; rx=&#34;4&#34; fill=&#34;url(#grayGrad)&#34; /&gt;
+    
+    &lt;text x=&#34;20&#34; y=&#34;35&#34; class=&#34;card-title&#34; fill=&#34;#374151&#34;&gt;Single-Structure Docking&lt;/text&gt;
+    &lt;text x=&#34;20&#34; y=&#34;55&#34; class=&#34;subtitle&#34;&gt;Standard static approach&lt;/text&gt;
+    
+    &lt;!-- Cartoon Protein Structure --&gt;
+    &lt;g transform=&#34;translate(40, 75)&#34;&gt;
+      &lt;path d=&#34;M 20 60 C 20 20, 80 20, 100 50 C 120 80, 180 40, 200 80 C 220 120, 160 160, 110 130 C 60 100, 20 100, 20 60 Z&#34; 
+            fill=&#34;#E5E7EB&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;2&#34; stroke-dasharray=&#34;4 2&#34; /&gt;
+      &lt;path d=&#34;M 90 70 C 110 50, 130 90, 150 70&#34; fill=&#34;none&#34; stroke=&#34;#EF4444&#34; stroke-width=&#34;3&#34; /&gt;
+      &lt;text x=&#34;95&#34; y=&#34;115&#34; class=&#34;label&#34; fill=&#34;#EF4444&#34;&gt;Active Site&lt;/text&gt;
+    &lt;/g&gt;
+
+    &lt;!-- Bullet points --&gt;
+    &lt;circle cx=&#34;30&#34; cy=&#34;215&#34; r=&#34;3&#34; fill=&#34;#9CA3AF&#34; /&gt;
+    &lt;text x=&#34;42&#34; y=&#34;219&#34; class=&#34;desc&#34;&gt;Uses a single crystal structure (PDB)&lt;/text&gt;
+    
+    &lt;circle cx=&#34;30&#34; cy=&#34;235&#34; r=&#34;3&#34; fill=&#34;#9CA3AF&#34; /&gt;
+    &lt;text x=&#34;42&#34; y=&#34;239&#34; class=&#34;desc&#34;&gt;Ignores target flexibility and loop dynamics&lt;/text&gt;
+    
+    &lt;circle cx=&#34;30&#34; cy=&#34;255&#34; r=&#34;3&#34; fill=&#34;#EF4444&#34; /&gt;
+    &lt;text x=&#34;42&#34; y=&#34;259&#34; class=&#34;desc&#34; font-weight=&#34;bold&#34;&gt;Biased towards co-crystallized ligand&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Right Panel: Ensemble Docking --&gt;
+  &lt;g transform=&#34;translate(440, 40)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;rect width=&#34;320&#34; height=&#34;270&#34; rx=&#34;8&#34; fill=&#34;#FFFFFF&#34; stroke=&#34;#E5E7EB&#34; stroke-width=&#34;1&#34; /&gt;
+    &lt;rect width=&#34;320&#34; height=&#34;8&#34; rx=&#34;4&#34; fill=&#34;url(#blueGrad)&#34; /&gt;
+    
+    &lt;text x=&#34;20&#34; y=&#34;35&#34; class=&#34;card-title&#34; fill=&#34;#4F46E5&#34;&gt;Ensemble Docking&lt;/text&gt;
+    &lt;text x=&#34;20&#34; y=&#34;55&#34; class=&#34;subtitle&#34;&gt;Dynamic conformational approach&lt;/text&gt;
+    
+    &lt;!-- Three small overlapping proteins representing snapshots --&gt;
+    &lt;g transform=&#34;translate(40, 75)&#34;&gt;
+      &lt;!-- Conformer 1 --&gt;
+      &lt;path d=&#34;M 10 50 C 10 20, 60 10, 80 40 C 100 70, 150 30, 170 70 C 190 110, 130 140, 90 110 C 50 80, 10 90, 10 50 Z&#34; 
+            fill=&#34;#EEF2F6&#34; stroke=&#34;#A5B4FC&#34; stroke-width=&#34;1.5&#34; opacity=&#34;0.6&#34; /&gt;
+      
+      &lt;!-- Conformer 2 --&gt;
+      &lt;path d=&#34;M 25 65 C 25 35, 75 15, 95 45 C 115 75, 165 45, 185 85 C 205 125, 145 145, 105 125 C 65 105, 25 95, 25 65 Z&#34; 
+            fill=&#34;#E0E7FF&#34; stroke=&#34;#818CF8&#34; stroke-width=&#34;1.5&#34; opacity=&#34;0.8&#34; /&gt;
+            
+      &lt;!-- Conformer 3 (Top/Main) --&gt;
+      &lt;path d=&#34;M 40 60 C 40 20, 90 20, 110 50 C 130 80, 180 50, 200 90 C 220 130, 160 150, 120 120 C 70 90, 40 100, 40 60 Z&#34; 
+            fill=&#34;url(#blueGrad)&#34; fill-opacity=&#34;0.15&#34; stroke=&#34;url(#blueGrad)&#34; stroke-width=&#34;2.5&#34; /&gt;
+      
+      &lt;!-- Docked Ligand snapshots --&gt;
+      &lt;path d=&#34;M 95 65 L 110 80 L 125 70&#34; fill=&#34;none&#34; stroke=&#34;#4F46E5&#34; stroke-width=&#34;3&#34; /&gt;
+      &lt;path d=&#34;M 98 75 L 112 85 L 130 75&#34; fill=&#34;none&#34; stroke=&#34;#06B6D4&#34; stroke-width=&#34;2&#34; opacity=&#34;0.7&#34; /&gt;
+      &lt;path d=&#34;M 92 60 L 105 72 L 120 62&#34; fill=&#34;none&#34; stroke=&#34;#7C3AED&#34; stroke-width=&#34;2&#34; opacity=&#34;0.7&#34; /&gt;
+      
+      &lt;text x=&#34;85&#34; y=&#34;115&#34; class=&#34;label&#34; fill=&#34;#4F46E5&#34; font-size=&#34;11&#34;&gt;MD Conformations&lt;/text&gt;
+    &lt;/g&gt;
+
+    &lt;!-- Bullet points --&gt;
+    &lt;circle cx=&#34;30&#34; cy=&#34;215&#34; r=&#34;3&#34; fill=&#34;#4F46E5&#34; /&gt;
+    &lt;text x=&#34;42&#34; y=&#34;219&#34; class=&#34;desc&#34;&gt;Extracts snapshots from MD trajectories&lt;/text&gt;
+    
+    &lt;circle cx=&#34;30&#34; cy=&#34;235&#34; r=&#34;3&#34; fill=&#34;#4F46E5&#34; /&gt;
+    &lt;text x=&#34;42&#34; y=&#34;239&#34; class=&#34;desc&#34;&gt;Captures multiple open/closed active states&lt;/text&gt;
+    
+    &lt;circle cx=&#34;30&#34; cy=&#34;255&#34; r=&#34;3&#34; fill=&#34;#06B6D4&#34; /&gt;
+    &lt;text x=&#34;42&#34; y=&#34;259&#34; class=&#34;desc&#34; font-weight=&#34;bold&#34;&gt;Yields statistical distribution of scores&lt;/text&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+
+
+&lt;p&gt;Ensemble docking methods originated with dynamic pharmacophores for HIV integrase in 1999 and the Relaxed Complex Scheme (RCS) in 2002. Subsequent developments established structural clustering for frame selection, enhanced sampling (aMD, REMD, GaMD) for ensemble generation, and machine learning methods for conformer selection.&lt;/p&gt;
+&lt;p&gt;These workflows have been applied to allosteric modulators, protein-protein interaction modulators, efflux pumps, and coagulation targets. However, the approach involves key limitations:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Sampling Limitations:&lt;/strong&gt; Ensemble quality depends entirely on trajectory length and coverage; undersampled molecular dynamics simulations will omit relevant conformational states.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Conformational Selection vs Induced Fit:&lt;/strong&gt; Modeling assumptions differ depending on whether ligand binding proceeds via conformational selection or induced fit, which is difficult to distinguish in silico.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Elevated False Positive Rates:&lt;/strong&gt; Docking against large conformational ensembles increases the probability of identifying spurious, low-energy ligand poses by chance.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;developmental-directions&#34;&gt;Developmental Directions&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Exascale computing to scale up conformational sampling.&lt;/li&gt;
+&lt;li&gt;Markov State Models (MSMs) to define the conformational landscape quantitatively.&lt;/li&gt;
+&lt;li&gt;Machine learning algorithms to prioritize and filter target conformers.&lt;/li&gt;
+&lt;li&gt;Integration of biophysical experimental data (NMR, HDX-MS) with simulation.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;machine-learning-integration&#34;&gt;Machine Learning Integration&lt;/h2&gt;
+&lt;p&gt;Machine learning models process the high volume of generated docked poses by performing score refinement, conformer prioritization, or learning dynamic binding patterns directly from trajectories.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Resource&lt;/th&gt;
+          &lt;th&gt;Role&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;EDock-ML&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;ML-based scoring and selection layered on top of ensemble docking outputs&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;ML-augmented docking&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;ML methods applied to highly flexible targets&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Protein dynamics + ML binding&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Learning binding behavior from dynamics rather than static structures&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;ML-ensemble-docking (code)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Reference implementation combining simulation and machine learning&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;trajectory-processing-and-conformer-selection&#34;&gt;Trajectory Processing and Conformer Selection&lt;/h2&gt;
+&lt;p&gt;Docking against every frame of a microsecond-scale trajectory is computationally inefficient due to structural redundancy. High-throughput pipelines cluster trajectories to extract a representative subset of target conformations prior to docking.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Tool&lt;/th&gt;
+          &lt;th&gt;Role&lt;/th&gt;
+          &lt;th&gt;Link&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;BitQT&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;GaMD clustering; state identification and representative conformer extraction&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;PLEC fingerprints&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Interaction fingerprints for protein-ligand contacts, via DGL-LifeSci&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;RDF descriptors&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Radial distribution function descriptors&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Embeddings&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;SMILES, Boltz, and per-snapshot protein-ligand frame embeddings&lt;/td&gt;
+          &lt;td&gt;
+&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;BitQT&lt;/strong&gt; clusters GaMD trajectories to reduce the conformational space to representative states. &lt;strong&gt;PLEC fingerprints&lt;/strong&gt; and &lt;strong&gt;RDF descriptors&lt;/strong&gt; characterize the binding mode at each docked pose, generating features for downstream machine learning models.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;dataset-curation-and-quality-control&#34;&gt;Dataset Curation and Quality Control&lt;/h2&gt;
+&lt;p&gt;Training data selection dictates predictive performance. When building models for flexible targets:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Incorporate diverse reference ligands:&lt;/strong&gt; Include active compounds identified from literature rather than relying solely on co-crystallized ligands, which biases datasets toward easily crystallized chemical spaces.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Build curated reference sets:&lt;/strong&gt; Ensure structural diversity across training compounds.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Combine multiple feature classes:&lt;/strong&gt; Integrate docking scores with QM/MM descriptors and machine learning embeddings instead of using single descriptors.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;[!WARNING]
+&lt;strong&gt;Caveat regarding initial structures:&lt;/strong&gt; When selecting starting crystal structures from public databases, verify resolution metrics, loop completeness, and coordinate errors. Validate covariance analyses rather than relying on default parameters.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-integrated-workflow&#34;&gt;The integrated workflow&lt;/h2&gt;
+&lt;p&gt;Putting the pieces above in sequence:&lt;/p&gt;
+
+&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 850 420&#34; width=&#34;100%&#34; height=&#34;100%&#34;&gt;
+  &lt;defs&gt;
+    &lt;!-- Gradients --&gt;
+    &lt;linearGradient id=&#34;stepGrad&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#4F46E5&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#7C3AED&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;arrowGrad&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;0%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#7C3AED&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#06B6D4&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;!-- Filter --&gt;
+    &lt;filter id=&#34;shadow&#34; x=&#34;-10%&#34; y=&#34;-10%&#34; width=&#34;120%&#34; height=&#34;120%&#34;&gt;
+      &lt;feDropShadow dx=&#34;1&#34; dy=&#34;3&#34; stdDeviation=&#34;3&#34; flood-opacity=&#34;0.1&#34; /&gt;
+    &lt;/filter&gt;
+  &lt;/defs&gt;
+
+  &lt;style&gt;
+    .title { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 16px; fill: #1F2937; }
+    .label { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 12px; fill: #FFFFFF; }
+    .sublabel-card { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 400; font-size: 11px; fill: #E0E7FF; }
+    .text-num { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 800; font-size: 16px; fill: rgba(255, 255, 255, 0.4); }
+    .desc { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-size: 11px; fill: #4B5563; font-weight: 500; }
+    .header-text { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 800; font-size: 20px; fill: #111827; }
+  &lt;/style&gt;
+
+  &lt;!-- Background --&gt;
+  &lt;rect width=&#34;850&#34; height=&#34;420&#34; fill=&#34;#F9FAFB&#34; rx=&#34;12&#34; /&gt;
+
+  &lt;text x=&#34;30&#34; y=&#34;35&#34; class=&#34;header-text&#34;&gt;Integrated Ensemble Docking &amp;amp; ML Workflow&lt;/text&gt;
+
+  &lt;!-- ROW 1 (Steps 1-4) --&gt;
+  &lt;!-- Step 1 --&gt;
+  &lt;g transform=&#34;translate(20, 70)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;rect width=&#34;180&#34; height=&#34;125&#34; rx=&#34;8&#34; fill=&#34;url(#stepGrad)&#34; /&gt;
+    &lt;text x=&#34;15&#34; y=&#34;32&#34; class=&#34;text-num&#34;&gt;01&lt;/text&gt;
+    &lt;text x=&#34;15&#34; y=&#34;58&#34; class=&#34;label&#34;&gt;MD / GaMD&lt;/text&gt;
+    &lt;text x=&#34;15&#34; y=&#34;76&#34; class=&#34;label&#34;&gt;Sampling&lt;/text&gt;
+    &lt;rect x=&#34;0&#34; y=&#34;100&#34; width=&#34;180&#34; height=&#34;25&#34; fill=&#34;#312E81&#34; opacity=&#34;0.3&#34; /&gt;
+    &lt;text x=&#34;15&#34; y=&#34;116&#34; font-family=&#34;Inter&#34; font-size=&#34;10&#34; fill=&#34;#E0E7FF&#34;&gt;Conformational sampling&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Arrow 1 -&gt; 2 --&gt;
+  &lt;path d=&#34;M 200 132 L 225 132&#34; fill=&#34;none&#34; stroke=&#34;#A5B4FC&#34; stroke-width=&#34;3&#34; marker-end=&#34;url(#arrow)&#34; /&gt;
+  
+  &lt;!-- Step 2 --&gt;
+  &lt;g transform=&#34;translate(225, 70)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;rect width=&#34;180&#34; height=&#34;125&#34; rx=&#34;8&#34; fill=&#34;url(#stepGrad)&#34; /&gt;
+    &lt;text x=&#34;15&#34; y=&#34;32&#34; class=&#34;text-num&#34;&gt;02&lt;/text&gt;
+    &lt;text x=&#34;15&#34; y=&#34;58&#34; class=&#34;label&#34;&gt;BitQT Clustering&lt;/text&gt;
+    &lt;text x=&#34;15&#34; y=&#34;76&#34; class=&#34;sublabel-card&#34;&gt;Representative Snapshots&lt;/text&gt;
+    &lt;rect x=&#34;0&#34; y=&#34;100&#34; width=&#34;180&#34; height=&#34;25&#34; fill=&#34;#312E81&#34; opacity=&#34;0.3&#34; /&gt;
+    &lt;text x=&#34;15&#34; y=&#34;116&#34; font-family=&#34;Inter&#34; font-size=&#34;10&#34; fill=&#34;#E0E7FF&#34;&gt;Reduce dimensionality&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Arrow 2 -&gt; 3 --&gt;
+  &lt;path d=&#34;M 405 132 L 430 132&#34; fill=&#34;none&#34; stroke=&#34;#A5B4FC&#34; stroke-width=&#34;3&#34; /&gt;
+
+  &lt;!-- Step 3 --&gt;
+  &lt;g transform=&#34;translate(430, 70)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;rect width=&#34;180&#34; height=&#34;125&#34; rx=&#34;8&#34; fill=&#34;url(#stepGrad)&#34; /&gt;
+    &lt;text x=&#34;15&#34; y=&#34;32&#34; class=&#34;text-num&#34;&gt;03&lt;/text&gt;
+    &lt;text x=&#34;15&#34; y=&#34;58&#34; class=&#34;label&#34;&gt;Ensemble Docking&lt;/text&gt;
+    &lt;text x=&#34;15&#34; y=&#34;76&#34; class=&#34;sublabel-card&#34;&gt;Multiple Conformers&lt;/text&gt;
+    &lt;rect x=&#34;0&#34; y=&#34;100&#34; width=&#34;180&#34; height=&#34;25&#34; fill=&#34;#312E81&#34; opacity=&#34;0.3&#34; /&gt;
+    &lt;text x=&#34;15&#34; y=&#34;116&#34; font-family=&#34;Inter&#34; font-size=&#34;10&#34; fill=&#34;#E0E7FF&#34;&gt;Dock ligand to snapshot set&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Arrow 3 -&gt; 4 --&gt;
+  &lt;path d=&#34;M 610 132 L 635 132&#34; fill=&#34;none&#34; stroke=&#34;#A5B4FC&#34; stroke-width=&#34;3&#34; /&gt;
+
+  &lt;!-- Step 4 --&gt;
+  &lt;g transform=&#34;translate(635, 70)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;rect width=&#34;180&#34; height=&#34;125&#34; rx=&#34;8&#34; fill=&#34;url(#stepGrad)&#34; /&gt;
+    &lt;text x=&#34;15&#34; y=&#34;32&#34; class=&#34;text-num&#34;&gt;04&lt;/text&gt;
+    &lt;text x=&#34;15&#34; y=&#34;58&#34; class=&#34;label&#34;&gt;Interaction FPs&lt;/text&gt;
+    &lt;text x=&#34;15&#34; y=&#34;76&#34; class=&#34;sublabel-card&#34;&gt;PLEC / BINANA Contacts&lt;/text&gt;
+    &lt;rect x=&#34;0&#34; y=&#34;100&#34; width=&#34;180&#34; height=&#34;25&#34; fill=&#34;#312E81&#34; opacity=&#34;0.3&#34; /&gt;
+    &lt;text x=&#34;15&#34; y=&#34;116&#34; font-family=&#34;Inter&#34; font-size=&#34;10&#34; fill=&#34;#E0E7FF&#34;&gt;Convert poses to features&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Arrow 4 -&gt; 5 (Zigzag down) --&gt;
+  &lt;path d=&#34;M 725 195 L 725 222 L 110 222 L 110 250&#34; fill=&#34;none&#34; stroke=&#34;#A5B4FC&#34; stroke-dasharray=&#34;4 4&#34; stroke-width=&#34;2&#34; /&gt;
+
+  &lt;!-- ROW 2 (Steps 5-8) --&gt;
+  &lt;!-- Step 5 --&gt;
+  &lt;g transform=&#34;translate(20, 250)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;rect width=&#34;180&#34; height=&#34;125&#34; rx=&#34;8&#34; fill=&#34;url(#stepGrad)&#34; /&gt;
+    &lt;text x=&#34;15&#34; y=&#34;32&#34; class=&#34;text-num&#34;&gt;05&lt;/text&gt;
+    &lt;text x=&#34;15&#34; y=&#34;58&#34; class=&#34;label&#34;&gt;QM/MM Calculations&lt;/text&gt;
+    &lt;text x=&#34;15&#34; y=&#34;76&#34; class=&#34;sublabel-card&#34;&gt;Selected Snapshots Only&lt;/text&gt;
+    &lt;rect x=&#34;0&#34; y=&#34;100&#34; width=&#34;180&#34; height=&#34;25&#34; fill=&#34;#312E81&#34; opacity=&#34;0.3&#34; /&gt;
+    &lt;text x=&#34;15&#34; y=&#34;116&#34; font-family=&#34;Inter&#34; font-size=&#34;10&#34; fill=&#34;#E0E7FF&#34;&gt;ORCA + MoBioTools&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Arrow 5 -&gt; 6 --&gt;
+  &lt;path d=&#34;M 200 312 L 225 312&#34; fill=&#34;none&#34; stroke=&#34;#A5B4FC&#34; stroke-width=&#34;3&#34; /&gt;
+
+  &lt;!-- Step 6 --&gt;
+  &lt;g transform=&#34;translate(225, 250)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;rect width=&#34;180&#34; height=&#34;125&#34; rx=&#34;8&#34; fill=&#34;url(#stepGrad)&#34; /&gt;
+    &lt;text x=&#34;15&#34; y=&#34;32&#34; class=&#34;text-num&#34;&gt;06&lt;/text&gt;
+    &lt;text x=&#34;15&#34; y=&#34;58&#34; class=&#34;label&#34;&gt;Descriptors&lt;/text&gt;
+    &lt;text x=&#34;15&#34; y=&#34;76&#34; class=&#34;sublabel-card&#34;&gt;&amp;amp; Embeddings&lt;/text&gt;
+    &lt;rect x=&#34;0&#34; y=&#34;100&#34; width=&#34;180&#34; height=&#34;25&#34; fill=&#34;#312E81&#34; opacity=&#34;0.3&#34; /&gt;
+    &lt;text x=&#34;15&#34; y=&#34;116&#34; font-family=&#34;Inter&#34; font-size=&#34;10&#34; fill=&#34;#E0E7FF&#34;&gt;SMILES, Boltz, Protein LMs&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Arrow 6 -&gt; 7 --&gt;
+  &lt;path d=&#34;M 405 312 L 430 312&#34; fill=&#34;none&#34; stroke=&#34;#A5B4FC&#34; stroke-width=&#34;3&#34; /&gt;
+
+  &lt;!-- Step 7 --&gt;
+  &lt;g transform=&#34;translate(430, 250)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;rect width=&#34;180&#34; height=&#34;125&#34; rx=&#34;8&#34; fill=&#34;url(#stepGrad)&#34; /&gt;
+    &lt;text x=&#34;15&#34; y=&#34;32&#34; class=&#34;text-num&#34;&gt;07&lt;/text&gt;
+    &lt;text x=&#34;15&#34; y=&#34;58&#34; class=&#34;label&#34;&gt;ML Model&lt;/text&gt;
+    &lt;text x=&#34;15&#34; y=&#34;76&#34; class=&#34;sublabel-card&#34;&gt;Binding &amp;amp; Activity&lt;/text&gt;
+    &lt;rect x=&#34;0&#34; y=&#34;100&#34; width=&#34;180&#34; height=&#34;25&#34; fill=&#34;#312E81&#34; opacity=&#34;0.3&#34; /&gt;
+    &lt;text x=&#34;15&#34; y=&#34;116&#34; font-family=&#34;Inter&#34; font-size=&#34;10&#34; fill=&#34;#E0E7FF&#34;&gt;Predict affinity and scores&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Arrow 7 -&gt; 8 --&gt;
+  &lt;path d=&#34;M 610 312 L 635 312&#34; fill=&#34;none&#34; stroke=&#34;#A5B4FC&#34; stroke-width=&#34;3&#34; /&gt;
+
+  &lt;!-- Step 8 --&gt;
+  &lt;g transform=&#34;translate(635, 250)&#34; filter=&#34;url(#shadow)&#34;&gt;
+    &lt;rect width=&#34;180&#34; height=&#34;125&#34; rx=&#34;8&#34; fill=&#34;url(#stepGrad)&#34; /&gt;
+    &lt;text x=&#34;15&#34; y=&#34;32&#34; class=&#34;text-num&#34;&gt;08&lt;/text&gt;
+    &lt;text x=&#34;15&#34; y=&#34;58&#34; class=&#34;label&#34;&gt;Refinement&lt;/text&gt;
+    &lt;text x=&#34;15&#34; y=&#34;76&#34; class=&#34;sublabel-card&#34;&gt;MMPBSA &amp;amp; QM Refinement&lt;/text&gt;
+    &lt;rect x=&#34;0&#34; y=&#34;100&#34; width=&#34;180&#34; height=&#34;25&#34; fill=&#34;#312E81&#34; opacity=&#34;0.3&#34; /&gt;
+    &lt;text x=&#34;15&#34; y=&#34;116&#34; font-family=&#34;Inter&#34; font-size=&#34;10&#34; fill=&#34;#E0E7FF&#34;&gt;Refining top hit structures&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Arrow marker definition --&gt;
+  &lt;svg&gt;
+    &lt;defs&gt;
+      &lt;marker id=&#34;arrow&#34; viewBox=&#34;0 0 10 10&#34; refX=&#34;5&#34; refY=&#34;5&#34; markerWidth=&#34;6&#34; markerHeight=&#34;6&#34; orient=&#34;auto-start-reverse&#34;&gt;
+        &lt;path d=&#34;M 0 0 L 10 5 L 0 10 z&#34; fill=&#34;#A5B4FC&#34; /&gt;
+      &lt;/marker&gt;
+    &lt;/defs&gt;
+  &lt;/svg&gt;
+&lt;/svg&gt;
+
+
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;Step&lt;/th&gt;
+          &lt;th&gt;Phase&lt;/th&gt;
+          &lt;th&gt;Description&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;strong&gt;1&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;MD / GaMD sampling&lt;/td&gt;
+          &lt;td&gt;Generate raw conformational breadth&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;strong&gt;2&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;BitQT clustering&lt;/td&gt;
+          &lt;td&gt;Representative frames (reduces computationally redundant shapes)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;strong&gt;3&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Ensemble docking&lt;/td&gt;
+          &lt;td&gt;Score ligands across representative conformational set&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;strong&gt;4&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Interaction fingerprints&lt;/td&gt;
+          &lt;td&gt;Convert winning poses to features (PLEC, BINANA)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;strong&gt;5&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;QM/MM calculations&lt;/td&gt;
+          &lt;td&gt;Run on selected snapshots (using MoBioTools + ORCA)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;strong&gt;6&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Descriptor generation&lt;/td&gt;
+          &lt;td&gt;Construct SMILES, Boltz, and protein LM embeddings&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;strong&gt;7&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;ML modeling&lt;/td&gt;
+          &lt;td&gt;Predict binding affinity / activity&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;strong&gt;8&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Refinement&lt;/td&gt;
+          &lt;td&gt;Run MMPBSA + QM refinement on top candidate hits&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The hierarchical workflow filters candidates sequentially. Enhanced sampling (GaMD) generates raw conformational breadth, clustering selects representative states, and ensemble docking identifies top-scoring binding poses. Interaction fingerprints (PLEC) encode contact patterns. High-level calculations, including QM/MM and MMPBSA, are restricted to top hits to optimize computational efficiency.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;takeaways&#34;&gt;Takeaways&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Static docking does not represent flexible target states;&lt;/strong&gt; ensemble docking using MD conformations is the standard alternative.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Pre-docking clustering is necessary&lt;/strong&gt; to reduce structural redundancy and maintain computational feasibility.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;High-cost refinements (QM/MM and MMPBSA)&lt;/strong&gt; should serve as final filters for prioritized candidates.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Receptor structures require quality validation&lt;/strong&gt; (loop completeness, resolution check) prior to simulation.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,1131 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PyTorch | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/pytorch/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/pytorch/index.xml" rel="self" type="application/rss+xml" />
+    <description>PyTorch</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Fri, 10 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>PyTorch</title>
+      <link>https://yboulaamane.github.io/tags/pytorch/</link>
+    </image>
+    
+    <item>
+      <title>Graph Neural Networks and DGL: A Beginner&#39;s Guide</title>
+      <link>https://yboulaamane.github.io/blog/graph-neural-networks-and-dgl-a-beginners-guide/</link>
+      <pubDate>Fri, 10 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/graph-neural-networks-and-dgl-a-beginners-guide/</guid>
+      <description>&lt;p&gt;Most machine learning architectures operate on grid-structured inputs, such as tables or image pixel grids. However, molecular structures, citation networks, social graphs, and transport networks are structured as irregular graphs. Graph Neural Networks (GNNs) learn representation vectors directly from this non-Euclidean topology without requiring grid projection.&lt;/p&gt;
+&lt;p&gt;This guide provides an overview of GNN concepts, maps these structures to the Deep Graph Library (DGL), and defines key terminology.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-what-is-a-graph&#34;&gt;1. What is a graph?&lt;/h2&gt;
+&lt;p&gt;A graph is just two things: a set of &lt;strong&gt;nodes&lt;/strong&gt; (the entities) and a set of &lt;strong&gt;edges&lt;/strong&gt; (the connections between them). A citation network is papers connected by &amp;ldquo;cites&amp;rdquo; relationships. A molecule is atoms connected by bonds. A social network is people connected by friendships.&lt;/p&gt;
+
+&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 700 250&#34; width=&#34;100%&#34; height=&#34;100%&#34;&gt;
+  &lt;defs&gt;
+    &lt;linearGradient id=&#34;nodeGrad&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#3B82F6&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#1D4ED8&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;filter id=&#34;shadow&#34; x=&#34;-20%&#34; y=&#34;-20%&#34; width=&#34;140%&#34; height=&#34;140%&#34;&gt;
+      &lt;feDropShadow dx=&#34;1&#34; dy=&#34;3&#34; stdDeviation=&#34;3&#34; flood-opacity=&#34;0.15&#34; /&gt;
+    &lt;/filter&gt;
+  &lt;/defs&gt;
+
+  &lt;style&gt;
+    .node-text { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 16px; fill: #FFFFFF; text-anchor: middle; dominant-baseline: central; }
+    .label { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 14px; fill: #1F2937; }
+    .sublabel { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-size: 12px; fill: #4B5563; }
+    .title-text { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 800; font-size: 16px; fill: #111827; }
+    .math-text { font-family: &#39;Fira Code&#39;, &#39;Courier New&#39;, monospace; font-size: 13px; fill: #1E3A8A; }
+  &lt;/style&gt;
+
+  &lt;!-- Background --&gt;
+  &lt;rect width=&#34;700&#34; height=&#34;250&#34; fill=&#34;#F9FAFB&#34; rx=&#34;12&#34; /&gt;
+
+  &lt;!-- Graph Drawing --&gt;
+  &lt;g transform=&#34;translate(50, 20)&#34;&gt;
+    &lt;text x=&#34;0&#34; y=&#34;20&#34; class=&#34;title-text&#34;&gt;Graph Topology&lt;/text&gt;
+    
+    &lt;!-- Edges --&gt;
+    &lt;line x1=&#34;80&#34; y1=&#34;120&#34; x2=&#34;180&#34; y2=&#34;80&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;3&#34; /&gt;
+    &lt;line x1=&#34;80&#34; y1=&#34;120&#34; x2=&#34;180&#34; y2=&#34;160&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;3&#34; /&gt;
+    &lt;line x1=&#34;180&#34; y1=&#34;80&#34; x2=&#34;180&#34; y2=&#34;160&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;3&#34; /&gt;
+    &lt;line x1=&#34;180&#34; y1=&#34;80&#34; x2=&#34;280&#34; y2=&#34;120&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;3&#34; /&gt;
+    &lt;line x1=&#34;180&#34; y1=&#34;160&#34; x2=&#34;280&#34; y2=&#34;120&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;3&#34; /&gt;
+    
+    &lt;!-- Nodes --&gt;
+    &lt;!-- Node A --&gt;
+    &lt;circle cx=&#34;80&#34; cy=&#34;120&#34; r=&#34;24&#34; fill=&#34;url(#nodeGrad)&#34; filter=&#34;url(#shadow)&#34; /&gt;
+    &lt;text x=&#34;80&#34; y=&#34;120&#34; class=&#34;node-text&#34;&gt;A&lt;/text&gt;
+    
+    &lt;!-- Node B --&gt;
+    &lt;circle cx=&#34;180&#34; cy=&#34;80&#34; r=&#34;24&#34; fill=&#34;url(#nodeGrad)&#34; filter=&#34;url(#shadow)&#34; /&gt;
+    &lt;text x=&#34;180&#34; y=&#34;80&#34; class=&#34;node-text&#34;&gt;B&lt;/text&gt;
+
+    &lt;!-- Node C --&gt;
+    &lt;circle cx=&#34;180&#34; cy=&#34;160&#34; r=&#34;24&#34; fill=&#34;url(#nodeGrad)&#34; filter=&#34;url(#shadow)&#34; /&gt;
+    &lt;text x=&#34;180&#34; y=&#34;160&#34; class=&#34;node-text&#34;&gt;C&lt;/text&gt;
+
+    &lt;!-- Node D --&gt;
+    &lt;circle cx=&#34;280&#34; cy=&#34;120&#34; r=&#34;24&#34; fill=&#34;url(#nodeGrad)&#34; filter=&#34;url(#shadow)&#34; /&gt;
+    &lt;text x=&#34;280&#34; y=&#34;120&#34; class=&#34;node-text&#34;&gt;D&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Explanatory Panel --&gt;
+  &lt;g transform=&#34;translate(380, 40)&#34;&gt;
+    &lt;text x=&#34;0&#34; y=&#34;10&#34; class=&#34;label&#34;&gt;Graph Elements&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;30&#34; class=&#34;sublabel&#34;&gt;• Nodes (V) = {A, B, C, D} - Represent entities&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;50&#34; class=&#34;sublabel&#34;&gt;• Edges (E) = {(A,B), (A,C), (B,C), (B,D), (C,D)} - Connections&lt;/text&gt;
+    
+    &lt;text x=&#34;0&#34; y=&#34;90&#34; class=&#34;label&#34;&gt;Degree &amp;amp; Neighborhood&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;110&#34; class=&#34;sublabel&#34;&gt;• Degree: How many edges touch a node (e.g., Node B degree = 3)&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;130&#34; class=&#34;sublabel&#34;&gt;• Neighborhood: Directly connected nodes (e.g., N(A) = {B, C})&lt;/text&gt;
+    
+    &lt;text x=&#34;0&#34; y=&#34;170&#34; class=&#34;label&#34;&gt;Adjacency Matrix (A)&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;190&#34; class=&#34;math-text&#34;&gt;A_ij = 1 if edge exists else 0&lt;/text&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+
+
+&lt;p&gt;Key terminology:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Directed vs. undirected:&lt;/strong&gt; An edge can point one way ($A \rightarrow B$) or both ways. DGL edges are directed by default; an undirected graph is represented by defining edges in both directions.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Degree:&lt;/strong&gt; The number of edges connected to a node (such as Node B degree = 3).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Neighborhood:&lt;/strong&gt; The set of nodes directly connected to a given node. Node A&amp;rsquo;s neighborhood is $\{B, C\}$.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Adjacency matrix:&lt;/strong&gt; A matrix representation of graph topology where cell $i, j$ is 1 if there is an edge from node $i$ to node $j$, and 0 otherwise. DGL stores this matrix in a compressed sparse format to optimize memory.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Nodes and edges hold associated feature vectors (&lt;code&gt;g.ndata&lt;/code&gt; and &lt;code&gt;g.edata&lt;/code&gt;). For example, an atomic node feature vector may encode element type and charge, while an edge feature vector represents bond characteristics.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;2-message-passing-workflows&#34;&gt;2. Message Passing Workflows&lt;/h2&gt;
+&lt;p&gt;GNN layers update node representations through a three-step message-passing sequence:&lt;/p&gt;
+
+&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 800 280&#34; width=&#34;100%&#34; height=&#34;100%&#34;&gt;
+  &lt;defs&gt;
+    &lt;!-- Gradients --&gt;
+    &lt;linearGradient id=&#34;nodeGrad&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#3B82F6&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#1D4ED8&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;targetGrad&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#10B981&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#047857&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;msgGrad&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#8B5CF6&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#6D28D9&#34; /&gt;
+    &lt;/linearGradient&gt;
+    
+    &lt;!-- Marker --&gt;
+    &lt;marker id=&#34;arrow&#34; viewBox=&#34;0 0 10 10&#34; refX=&#34;6&#34; refY=&#34;5&#34; markerWidth=&#34;6&#34; markerHeight=&#34;6&#34; orient=&#34;auto-start-reverse&#34;&gt;
+      &lt;path d=&#34;M 0 0 L 10 5 L 0 10 z&#34; fill=&#34;#8B5CF6&#34; /&gt;
+    &lt;/marker&gt;
+    &lt;marker id=&#34;arrowGreen&#34; viewBox=&#34;0 0 10 10&#34; refX=&#34;6&#34; refY=&#34;5&#34; markerWidth=&#34;6&#34; markerHeight=&#34;6&#34; orient=&#34;auto-start-reverse&#34;&gt;
+      &lt;path d=&#34;M 0 0 L 10 5 L 0 10 z&#34; fill=&#34;#10B981&#34; /&gt;
+    &lt;/marker&gt;
+    
+    &lt;filter id=&#34;shadow&#34; x=&#34;-10%&#34; y=&#34;-10%&#34; width=&#34;120%&#34; height=&#34;120%&#34;&gt;
+      &lt;feDropShadow dx=&#34;1&#34; dy=&#34;3&#34; stdDeviation=&#34;3&#34; flood-opacity=&#34;0.1&#34; /&gt;
+    &lt;/filter&gt;
+  &lt;/defs&gt;
+
+  &lt;style&gt;
+    .title-text { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 800; font-size: 16px; fill: #111827; }
+    .label { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 13px; fill: #1F2937; text-anchor: middle; }
+    .sublabel { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-size: 11px; fill: #4B5563; text-anchor: middle; }
+    .node-label { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 14px; fill: #FFFFFF; text-anchor: middle; dominant-baseline: middle; }
+    .math-text { font-family: &#39;Fira Code&#39;, &#39;Courier New&#39;, monospace; font-size: 12px; fill: #374151; text-anchor: middle; }
+  &lt;/style&gt;
+
+  &lt;!-- Background --&gt;
+  &lt;rect width=&#34;800&#34; height=&#34;280&#34; fill=&#34;#F9FAFB&#34; rx=&#34;12&#34; /&gt;
+
+  &lt;text x=&#34;30&#34; y=&#34;30&#34; class=&#34;title-text&#34;&gt;GNN Layer Message Passing Recipe&lt;/text&gt;
+
+  &lt;!-- Step 1: Send Messages --&gt;
+  &lt;g transform=&#34;translate(30, 50)&#34;&gt;
+    &lt;rect width=&#34;210&#34; height=&#34;200&#34; rx=&#34;8&#34; fill=&#34;#FFFFFF&#34; stroke=&#34;#E5E7EB&#34; stroke-width=&#34;1&#34; filter=&#34;url(#shadow)&#34; /&gt;
+    &lt;text x=&#34;105&#34; y=&#34;25&#34; class=&#34;label&#34;&gt;1. Message Step&lt;/text&gt;
+    &lt;text x=&#34;105&#34; y=&#34;42&#34; class=&#34;sublabel&#34;&gt;Neighbors send features along edges&lt;/text&gt;
+    
+    &lt;!-- Nodes --&gt;
+    &lt;circle cx=&#34;50&#34; cy=&#34;90&#34; r=&#34;16&#34; fill=&#34;url(#nodeGrad)&#34; /&gt;
+    &lt;text x=&#34;50&#34; y=&#34;90&#34; class=&#34;node-label&#34; dy=&#34;.3em&#34;&gt;u₁&lt;/text&gt;
+    
+    &lt;circle cx=&#34;50&#34; cy=&#34;150&#34; r=&#34;16&#34; fill=&#34;url(#nodeGrad)&#34; /&gt;
+    &lt;text x=&#34;50&#34; y=&#34;150&#34; class=&#34;node-label&#34; dy=&#34;.3em&#34;&gt;u₂&lt;/text&gt;
+    
+    &lt;circle cx=&#34;160&#34; cy=&#34;120&#34; r=&#34;20&#34; fill=&#34;url(#targetGrad)&#34; /&gt;
+    &lt;text x=&#34;160&#34; y=&#34;120&#34; class=&#34;node-label&#34; dy=&#34;.3em&#34;&gt;v&lt;/text&gt;
+
+    &lt;!-- Message Arrows --&gt;
+    &lt;path d=&#34;M 68 98 L 138 114&#34; fill=&#34;none&#34; stroke=&#34;#8B5CF6&#34; stroke-width=&#34;2.5&#34; marker-end=&#34;url(#arrow)&#34; /&gt;
+    &lt;path d=&#34;M 68 142 L 138 126&#34; fill=&#34;none&#34; stroke=&#34;#8B5CF6&#34; stroke-width=&#34;2.5&#34; marker-end=&#34;url(#arrow)&#34; /&gt;
+    
+    &lt;text x=&#34;105&#34; y=&#34;90&#34; font-family=&#34;Inter&#34; font-size=&#34;10&#34; fill=&#34;#6D28D9&#34; font-weight=&#34;700&#34; text-anchor=&#34;middle&#34;&gt;msg₁&lt;/text&gt;
+    &lt;text x=&#34;105&#34; y=&#34;160&#34; font-family=&#34;Inter&#34; font-size=&#34;10&#34; fill=&#34;#6D28D9&#34; font-weight=&#34;700&#34; text-anchor=&#34;middle&#34;&gt;msg₂&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Connector Arrow --&gt;
+  &lt;path d=&#34;M 260 150 L 285 150&#34; fill=&#34;none&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;2&#34; marker-end=&#34;url(#arrowGreen)&#34; /&gt;
+
+  &lt;!-- Step 2: Aggregate --&gt;
+  &lt;g transform=&#34;translate(295, 50)&#34;&gt;
+    &lt;rect width=&#34;210&#34; height=&#34;200&#34; rx=&#34;8&#34; fill=&#34;#FFFFFF&#34; stroke=&#34;#E5E7EB&#34; stroke-width=&#34;1&#34; filter=&#34;url(#shadow)&#34; /&gt;
+    &lt;text x=&#34;105&#34; y=&#34;25&#34; class=&#34;label&#34;&gt;2. Aggregate Step&lt;/text&gt;
+    &lt;text x=&#34;105&#34; y=&#34;42&#34; class=&#34;sublabel&#34;&gt;Collect &amp;amp; combine (sum/mean/max)&lt;/text&gt;
+
+    &lt;!-- Aggregator box --&gt;
+    &lt;rect x=&#34;75&#34; y=&#34;95&#34; width=&#34;60&#34; height=&#34;50&#34; rx=&#34;6&#34; fill=&#34;url(#msgGrad)&#34; /&gt;
+    &lt;text x=&#34;105&#34; y=&#34;120&#34; font-family=&#34;Inter&#34; font-size=&#34;20&#34; fill=&#34;#FFFFFF&#34; font-weight=&#34;bold&#34; text-anchor=&#34;middle&#34; dominant-baseline=&#34;middle&#34; dy=&#34;.1em&#34;&gt;∑&lt;/text&gt;
+    
+    &lt;!-- Arrows in --&gt;
+    &lt;path d=&#34;M 35 110 L 70 115&#34; fill=&#34;none&#34; stroke=&#34;#8B5CF6&#34; stroke-width=&#34;2&#34; marker-end=&#34;url(#arrow)&#34; /&gt;
+    &lt;path d=&#34;M 35 130 L 70 125&#34; fill=&#34;none&#34; stroke=&#34;#8B5CF6&#34; stroke-width=&#34;2&#34; marker-end=&#34;url(#arrow)&#34; /&gt;
+    
+    &lt;!-- Arrow out --&gt;
+    &lt;path d=&#34;M 140 120 L 175 120&#34; fill=&#34;none&#34; stroke=&#34;#8B5CF6&#34; stroke-width=&#34;2.5&#34; marker-end=&#34;url(#arrow)&#34; /&gt;
+    
+    &lt;text x=&#34;105&#34; y=&#34;175&#34; class=&#34;math-text&#34;&gt;m_v = Aggregate({msg})&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Connector Arrow --&gt;
+  &lt;path d=&#34;M 525 150 L 550 150&#34; fill=&#34;none&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;2&#34; marker-end=&#34;url(#arrowGreen)&#34; /&gt;
+
+  &lt;!-- Step 3: Update --&gt;
+  &lt;g transform=&#34;translate(560, 50)&#34;&gt;
+    &lt;rect width=&#34;210&#34; height=&#34;200&#34; rx=&#34;8&#34; fill=&#34;#FFFFFF&#34; stroke=&#34;#E5E7EB&#34; stroke-width=&#34;1&#34; filter=&#34;url(#shadow)&#34; /&gt;
+    &lt;text x=&#34;105&#34; y=&#34;25&#34; class=&#34;label&#34;&gt;3. Update Step&lt;/text&gt;
+    &lt;text x=&#34;105&#34; y=&#34;42&#34; class=&#34;sublabel&#34;&gt;Compute new target representation&lt;/text&gt;
+
+    &lt;!-- Target Node --&gt;
+    &lt;circle cx=&#34;105&#34; cy=&#34;100&#34; r=&#34;22&#34; fill=&#34;url(#targetGrad)&#34; /&gt;
+    &lt;text x=&#34;105&#34; y=&#34;100&#34; class=&#34;node-label&#34; dy=&#34;.3em&#34;&gt;v&lt;/text&gt;
+    
+    &lt;text x=&#34;105&#34; y=&#34;150&#34; class=&#34;math-text&#34;&gt;h_v^(l) = Update(h_v^(l-1), m_v)&lt;/text&gt;
+    &lt;text x=&#34;105&#34; y=&#34;175&#34; font-family=&#34;Inter&#34; font-size=&#34;11&#34; fill=&#34;#047857&#34; font-weight=&#34;700&#34; text-anchor=&#34;middle&#34;&gt;Updated Feature!&lt;/text&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Message:&lt;/strong&gt; Every node sends information along its edges, usually just its current feature vector or a transformed version of it.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Aggregate:&lt;/strong&gt; Every node collects the messages arriving from its neighbors and combines them, commonly by summing, averaging, or taking the maximum.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Update:&lt;/strong&gt; Every node combines the aggregated message with its own previous feature to produce a new feature.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In DGL, this whole cycle is executed in a single call to &lt;code&gt;g.update_all()&lt;/code&gt;, using either a built-in message/reduce function or ones you write yourself. Stack this three-step recipe into multiple layers, and each node&amp;rsquo;s final representation encodes information from further and further away in the graph.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;3-stacking-layers-how-far-can-a-node-see&#34;&gt;3. Stacking layers: how far can a node &amp;quot;see&amp;quot;?&lt;/h2&gt;
+&lt;p&gt;A single message-passing layer only lets a node see its immediate neighbors, its &lt;strong&gt;1-hop neighborhood&lt;/strong&gt;. Stack a second layer, and information from those neighbors&amp;rsquo; neighbors flows in too, representing a &lt;strong&gt;2-hop neighborhood&lt;/strong&gt;. A GNN with $K$ layers lets every node see $K$ hops away.&lt;/p&gt;
+
+&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 800 280&#34; width=&#34;100%&#34; height=&#34;100%&#34;&gt;
+  &lt;defs&gt;
+    &lt;!-- Gradients --&gt;
+    &lt;linearGradient id=&#34;primaryNode&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#EF4444&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#DC2626&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;hop1Node&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#3B82F6&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#1D4ED8&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;hop2Node&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#10B981&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#047857&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;fadeNode&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#E5E7EB&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#D1D5DB&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;!-- Filter --&gt;
+    &lt;filter id=&#34;shadow&#34; x=&#34;-10%&#34; y=&#34;-10%&#34; width=&#34;120%&#34; height=&#34;120%&#34;&gt;
+      &lt;feDropShadow dx=&#34;1&#34; dy=&#34;3&#34; stdDeviation=&#34;3&#34; flood-opacity=&#34;0.1&#34; /&gt;
+    &lt;/filter&gt;
+  &lt;/defs&gt;
+
+  &lt;style&gt;
+    .title-text { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 800; font-size: 16px; fill: #111827; }
+    .label { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 13px; fill: #1F2937; text-anchor: middle; }
+    .sublabel { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-size: 11px; fill: #4B5563; text-anchor: middle; }
+    .node-text { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 10px; fill: #FFFFFF; text-anchor: middle; dominant-baseline: middle; }
+    .node-text-dark { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 10px; fill: #4B5563; text-anchor: middle; dominant-baseline: middle; }
+  &lt;/style&gt;
+
+  &lt;!-- Background --&gt;
+  &lt;rect width=&#34;800&#34; height=&#34;280&#34; fill=&#34;#F9FAFB&#34; rx=&#34;12&#34; /&gt;
+
+  &lt;text x=&#34;30&#34; y=&#34;30&#34; class=&#34;title-text&#34;&gt;GNN Layer Stacking: Receptive Field &amp;amp; Over-smoothing&lt;/text&gt;
+
+  &lt;!-- 1-Hop Receptive Field --&gt;
+  &lt;g transform=&#34;translate(30, 50)&#34;&gt;
+    &lt;rect width=&#34;220&#34; height=&#34;200&#34; rx=&#34;8&#34; fill=&#34;#FFFFFF&#34; stroke=&#34;#E5E7EB&#34; stroke-width=&#34;1&#34; filter=&#34;url(#shadow)&#34; /&gt;
+    &lt;text x=&#34;110&#34; y=&#34;25&#34; class=&#34;label&#34;&gt;1-Hop (Layer 1)&lt;/text&gt;
+    &lt;text x=&#34;110&#34; y=&#34;42&#34; class=&#34;sublabel&#34;&gt;Can see direct neighbors&lt;/text&gt;
+    
+    &lt;!-- Graph --&gt;
+    &lt;!-- Edges --&gt;
+    &lt;line x1=&#34;110&#34; y1=&#34;120&#34; x2=&#34;60&#34; y2=&#34;90&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;1.5&#34; /&gt;
+    &lt;line x1=&#34;110&#34; y1=&#34;120&#34; x2=&#34;60&#34; y2=&#34;150&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;1.5&#34; /&gt;
+    &lt;line x1=&#34;110&#34; y1=&#34;120&#34; x2=&#34;160&#34; y2=&#34;90&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;1.5&#34; /&gt;
+    &lt;line x1=&#34;110&#34; y1=&#34;120&#34; x2=&#34;160&#34; y2=&#34;150&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;1.5&#34; /&gt;
+    &lt;!-- 2-hop edges (inactive) --&gt;
+    &lt;line x1=&#34;60&#34; y1=&#34;90&#34; x2=&#34;20&#34; y2=&#34;120&#34; stroke=&#34;#E5E7EB&#34; stroke-width=&#34;1.5&#34; /&gt;
+    &lt;line x1=&#34;160&#34; y1=&#34;90&#34; x2=&#34;200&#34; y2=&#34;120&#34; stroke=&#34;#E5E7EB&#34; stroke-width=&#34;1.5&#34; /&gt;
+
+    &lt;!-- Nodes --&gt;
+    &lt;!-- Outer unreached --&gt;
+    &lt;circle cx=&#34;20&#34; cy=&#34;120&#34; r=&#34;14&#34; fill=&#34;url(#fadeNode)&#34; /&gt;
+    &lt;text x=&#34;20&#34; y=&#34;120&#34; class=&#34;node-text-dark&#34; dy=&#34;.3em&#34;&gt;w₁&lt;/text&gt;
+    &lt;circle cx=&#34;200&#34; cy=&#34;120&#34; r=&#34;14&#34; fill=&#34;url(#fadeNode)&#34; /&gt;
+    &lt;text x=&#34;200&#34; y=&#34;120&#34; class=&#34;node-text-dark&#34; dy=&#34;.3em&#34;&gt;w₂&lt;/text&gt;
+
+    &lt;!-- 1-hop active --&gt;
+    &lt;circle cx=&#34;60&#34; cy=&#34;90&#34; r=&#34;14&#34; fill=&#34;url(#hop1Node)&#34; /&gt;
+    &lt;text x=&#34;60&#34; y=&#34;90&#34; class=&#34;node-text&#34; dy=&#34;.3em&#34;&gt;u₁&lt;/text&gt;
+    &lt;circle cx=&#34;60&#34; cy=&#34;150&#34; r=&#34;14&#34; fill=&#34;url(#hop1Node)&#34; /&gt;
+    &lt;text x=&#34;60&#34; y=&#34;150&#34; class=&#34;node-text&#34; dy=&#34;.3em&#34;&gt;u₂&lt;/text&gt;
+    &lt;circle cx=&#34;160&#34; cy=&#34;90&#34; r=&#34;14&#34; fill=&#34;url(#hop1Node)&#34; /&gt;
+    &lt;text x=&#34;160&#34; y=&#34;90&#34; class=&#34;node-text&#34; dy=&#34;.3em&#34;&gt;u₃&lt;/text&gt;
+    &lt;circle cx=&#34;160&#34; cy=&#34;150&#34; r=&#34;14&#34; fill=&#34;url(#hop1Node)&#34; /&gt;
+    &lt;text x=&#34;160&#34; y=&#34;150&#34; class=&#34;node-text&#34; dy=&#34;.3em&#34;&gt;u₄&lt;/text&gt;
+
+    &lt;!-- Target Node --&gt;
+    &lt;circle cx=&#34;110&#34; cy=&#34;120&#34; r=&#34;18&#34; fill=&#34;url(#primaryNode)&#34; /&gt;
+    &lt;text x=&#34;110&#34; y=&#34;120&#34; class=&#34;node-text&#34; dy=&#34;.3em&#34;&gt;v&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- 2-Hop Receptive Field --&gt;
+  &lt;g transform=&#34;translate(290, 50)&#34;&gt;
+    &lt;rect width=&#34;220&#34; height=&#34;200&#34; rx=&#34;8&#34; fill=&#34;#FFFFFF&#34; stroke=&#34;#E5E7EB&#34; stroke-width=&#34;1&#34; filter=&#34;url(#shadow)&#34; /&gt;
+    &lt;text x=&#34;110&#34; y=&#34;25&#34; class=&#34;label&#34;&gt;2-Hop (Layer 2)&lt;/text&gt;
+    &lt;text x=&#34;110&#34; y=&#34;42&#34; class=&#34;sublabel&#34;&gt;Can see neighbors&#39; neighbors&lt;/text&gt;
+    
+    &lt;!-- Graph --&gt;
+    &lt;!-- Edges --&gt;
+    &lt;line x1=&#34;110&#34; y1=&#34;120&#34; x2=&#34;60&#34; y2=&#34;90&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;1.5&#34; /&gt;
+    &lt;line x1=&#34;110&#34; y1=&#34;120&#34; x2=&#34;60&#34; y2=&#34;150&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;1.5&#34; /&gt;
+    &lt;line x1=&#34;110&#34; y1=&#34;120&#34; x2=&#34;160&#34; y2=&#34;90&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;1.5&#34; /&gt;
+    &lt;line x1=&#34;110&#34; y1=&#34;120&#34; x2=&#34;160&#34; y2=&#34;150&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;1.5&#34; /&gt;
+    &lt;!-- 2-hop edges (active) --&gt;
+    &lt;line x1=&#34;60&#34; y1=&#34;90&#34; x2=&#34;20&#34; y2=&#34;120&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;1.5&#34; /&gt;
+    &lt;line x1=&#34;160&#34; y1=&#34;90&#34; x2=&#34;200&#34; y2=&#34;120&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;1.5&#34; /&gt;
+
+    &lt;!-- Nodes --&gt;
+    &lt;!-- 2-hop active --&gt;
+    &lt;circle cx=&#34;20&#34; cy=&#34;120&#34; r=&#34;14&#34; fill=&#34;url(#hop2Node)&#34; /&gt;
+    &lt;text x=&#34;20&#34; y=&#34;120&#34; class=&#34;node-text&#34; dy=&#34;.3em&#34;&gt;w₁&lt;/text&gt;
+    &lt;circle cx=&#34;200&#34; cy=&#34;120&#34; r=&#34;14&#34; fill=&#34;url(#hop2Node)&#34; /&gt;
+    &lt;text x=&#34;200&#34; y=&#34;120&#34; class=&#34;node-text&#34; dy=&#34;.3em&#34;&gt;w₂&lt;/text&gt;
+
+    &lt;!-- 1-hop active --&gt;
+    &lt;circle cx=&#34;60&#34; cy=&#34;90&#34; r=&#34;14&#34; fill=&#34;url(#hop1Node)&#34; /&gt;
+    &lt;text x=&#34;60&#34; y=&#34;90&#34; class=&#34;node-text&#34; dy=&#34;.3em&#34;&gt;u₁&lt;/text&gt;
+    &lt;circle cx=&#34;60&#34; cy=&#34;150&#34; r=&#34;14&#34; fill=&#34;url(#hop1Node)&#34; /&gt;
+    &lt;text x=&#34;60&#34; y=&#34;150&#34; class=&#34;node-text&#34; dy=&#34;.3em&#34;&gt;u₂&lt;/text&gt;
+    &lt;circle cx=&#34;160&#34; cy=&#34;90&#34; r=&#34;14&#34; fill=&#34;url(#hop1Node)&#34; /&gt;
+    &lt;text x=&#34;160&#34; y=&#34;90&#34; class=&#34;node-text&#34; dy=&#34;.3em&#34;&gt;u₃&lt;/text&gt;
+    &lt;circle cx=&#34;160&#34; cy=&#34;150&#34; r=&#34;14&#34; fill=&#34;url(#hop1Node)&#34; /&gt;
+    &lt;text x=&#34;160&#34; y=&#34;150&#34; class=&#34;node-text&#34; dy=&#34;.3em&#34;&gt;u₄&lt;/text&gt;
+
+    &lt;!-- Target Node --&gt;
+    &lt;circle cx=&#34;110&#34; cy=&#34;120&#34; r=&#34;18&#34; fill=&#34;url(#primaryNode)&#34; /&gt;
+    &lt;text x=&#34;110&#34; y=&#34;120&#34; class=&#34;node-text&#34; dy=&#34;.3em&#34;&gt;v&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Over-smoothing Alert --&gt;
+  &lt;g transform=&#34;translate(550, 50)&#34;&gt;
+    &lt;rect width=&#34;220&#34; height=&#34;200&#34; rx=&#34;8&#34; fill=&#34;#FFFBEB&#34; stroke=&#34;#FDE68A&#34; stroke-width=&#34;1&#34; filter=&#34;url(#shadow)&#34; /&gt;
+    &lt;text x=&#34;110&#34; y=&#34;25&#34; class=&#34;label&#34; fill=&#34;#92400E&#34;&gt;K-Hop (Over-smoothing)&lt;/text&gt;
+    &lt;text x=&#34;110&#34; y=&#34;42&#34; class=&#34;sublabel&#34; fill=&#34;#B45309&#34;&gt;Too many layers = representations merge&lt;/text&gt;
+    
+    &lt;!-- Over-smoothed Graph: all nodes turn green/yellow --&gt;
+    &lt;g transform=&#34;translate(10, 50)&#34;&gt;
+      &lt;line x1=&#34;100&#34; y1=&#34;70&#34; x2=&#34;50&#34; y2=&#34;40&#34; stroke=&#34;#FBBF24&#34; stroke-width=&#34;1.5&#34; /&gt;
+      &lt;line x1=&#34;100&#34; y1=&#34;70&#34; x2=&#34;50&#34; y2=&#34;100&#34; stroke=&#34;#FBBF24&#34; stroke-width=&#34;1.5&#34; /&gt;
+      &lt;line x1=&#34;100&#34; y1=&#34;70&#34; x2=&#34;150&#34; y2=&#34;40&#34; stroke=&#34;#FBBF24&#34; stroke-width=&#34;1.5&#34; /&gt;
+      &lt;line x1=&#34;100&#34; y1=&#34;70&#34; x2=&#34;150&#34; y2=&#34;100&#34; stroke=&#34;#FBBF24&#34; stroke-width=&#34;1.5&#34; /&gt;
+      &lt;line x1=&#34;50&#34; y1=&#34;40&#34; x2=&#34;10&#34; y2=&#34;70&#34; stroke=&#34;#FBBF24&#34; stroke-width=&#34;1.5&#34; /&gt;
+      &lt;line x1=&#34;150&#34; y1=&#34;40&#34; x2=&#34;190&#34; y2=&#34;70&#34; stroke=&#34;#FBBF24&#34; stroke-width=&#34;1.5&#34; /&gt;
+
+      &lt;circle cx=&#34;10&#34; cy=&#34;70&#34; r=&#34;10&#34; fill=&#34;#FBBF24&#34; /&gt;
+      &lt;circle cx=&#34;190&#34; cy=&#34;70&#34; r=&#34;10&#34; fill=&#34;#FBBF24&#34; /&gt;
+      &lt;circle cx=&#34;50&#34; cy=&#34;40&#34; r=&#34;10&#34; fill=&#34;#FBBF24&#34; /&gt;
+      &lt;circle cx=&#34;50&#34; cy=&#34;100&#34; r=&#34;10&#34; fill=&#34;#FBBF24&#34; /&gt;
+      &lt;circle cx=&#34;150&#34; cy=&#34;40&#34; r=&#34;10&#34; fill=&#34;#FBBF24&#34; /&gt;
+      &lt;circle cx=&#34;150&#34; cy=&#34;100&#34; r=&#34;10&#34; fill=&#34;#FBBF24&#34; /&gt;
+      &lt;circle cx=&#34;100&#34; cy=&#34;70&#34; r=&#34;12&#34; fill=&#34;#F59E0B&#34; /&gt;
+      
+      &lt;text x=&#34;100&#34; y=&#34;125&#34; font-family=&#34;Inter&#34; font-size=&#34;11&#34; fill=&#34;#78350F&#34; font-weight=&#34;700&#34; text-anchor=&#34;middle&#34;&gt;All nodes look identical!&lt;/text&gt;
+    &lt;/g&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+
+
+&lt;p&gt;Stacking GNN layers increases the receptive field but can introduce performance degradation. When layer count ($K$) is high, node representations tend to converge and become indistinguishable, a phenomenon termed &lt;strong&gt;over-smoothing&lt;/strong&gt;. Practical applications typically use 2 to 4 layers.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;4-neighborhood-aggregation-functions-gcn-gat-graphsage&#34;&gt;4. Neighborhood Aggregation Functions: GCN, GAT, GraphSAGE&lt;/h2&gt;
+&lt;p&gt;GNN architectures differ primarily in their neighborhood aggregation functions:&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Architecture&lt;/th&gt;
+          &lt;th&gt;Aggregation Mechanism&lt;/th&gt;
+          &lt;th&gt;Characteristics&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;GCN&lt;/strong&gt; &lt;em&gt;(Graph Convolutional Network)&lt;/em&gt;&lt;/td&gt;
+          &lt;td&gt;Fixed weighting based on node degree; every neighbor contributes proportionally.&lt;/td&gt;
+          &lt;td&gt;The classic starting point; strong with just 2 layers.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;GAT&lt;/strong&gt; &lt;em&gt;(Graph Attention Network)&lt;/em&gt;&lt;/td&gt;
+          &lt;td&gt;Learned attention score per neighbor, so more relevant neighbors count more.&lt;/td&gt;
+          &lt;td&gt;Multi-head attention runs several of these in parallel, then combines them.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;GraphSAGE&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Samples a fixed number of neighbors per layer instead of using all of them.&lt;/td&gt;
+          &lt;td&gt;Built for huge graphs and for adding new nodes after training (inductive learning).&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;5-downstream-prediction-tasks&#34;&gt;5. Downstream Prediction Tasks&lt;/h2&gt;
+&lt;p&gt;Node representations support three primary downstream prediction tasks:&lt;/p&gt;
+
+&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 800 280&#34; width=&#34;100%&#34; height=&#34;100%&#34;&gt;
+  &lt;defs&gt;
+    &lt;!-- Gradients --&gt;
+    &lt;linearGradient id=&#34;blueNode&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#3B82F6&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#1D4ED8&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;greenNode&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#10B981&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#047857&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;purpleGrad&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#8B5CF6&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#6D28D9&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;filter id=&#34;shadow&#34; x=&#34;-10%&#34; y=&#34;-10%&#34; width=&#34;120%&#34; height=&#34;120%&#34;&gt;
+      &lt;feDropShadow dx=&#34;1&#34; dy=&#34;3&#34; stdDeviation=&#34;3&#34; flood-opacity=&#34;0.1&#34; /&gt;
+    &lt;/filter&gt;
+  &lt;/defs&gt;
+
+  &lt;style&gt;
+    .title-text { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 800; font-size: 16px; fill: #111827; }
+    .label { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 13px; fill: #1F2937; text-anchor: middle; }
+    .sublabel { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-size: 11px; fill: #4B5563; text-anchor: middle; }
+    .node-text { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 10px; fill: #FFFFFF; text-anchor: middle; dominant-baseline: middle; }
+    .badge-text { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 11px; fill: #FFFFFF; text-anchor: middle; }
+  &lt;/style&gt;
+
+  &lt;!-- Background --&gt;
+  &lt;rect width=&#34;800&#34; height=&#34;280&#34; fill=&#34;#F9FAFB&#34; rx=&#34;12&#34; /&gt;
+
+  &lt;text x=&#34;30&#34; y=&#34;30&#34; class=&#34;title-text&#34;&gt;Three Core GNN Prediction Tasks&lt;/text&gt;
+
+  &lt;!-- Node Classification --&gt;
+  &lt;g transform=&#34;translate(30, 50)&#34;&gt;
+    &lt;rect width=&#34;220&#34; height=&#34;200&#34; rx=&#34;8&#34; fill=&#34;#FFFFFF&#34; stroke=&#34;#E5E7EB&#34; stroke-width=&#34;1&#34; filter=&#34;url(#shadow)&#34; /&gt;
+    &lt;text x=&#34;110&#34; y=&#34;25&#34; class=&#34;label&#34;&gt;Node Classification&lt;/text&gt;
+    &lt;text x=&#34;110&#34; y=&#34;42&#34; class=&#34;sublabel&#34;&gt;Predict properties of individual nodes&lt;/text&gt;
+    
+    &lt;!-- Graph --&gt;
+    &lt;line x1=&#34;70&#34; y1=&#34;120&#34; x2=&#34;110&#34; y2=&#34;80&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;2&#34; /&gt;
+    &lt;line x1=&#34;70&#34; y1=&#34;120&#34; x2=&#34;110&#34; y2=&#34;160&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;2&#34; /&gt;
+    &lt;line x1=&#34;110&#34; y1=&#34;80&#34; x2=&#34;150&#34; y2=&#34;120&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;2&#34; /&gt;
+    &lt;line x1=&#34;110&#34; y1=&#34;160&#34; x2=&#34;150&#34; y2=&#34;120&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;2&#34; /&gt;
+
+    &lt;circle cx=&#34;70&#34; cy=&#34;120&#34; r=&#34;14&#34; fill=&#34;url(#blueNode)&#34; /&gt;
+    &lt;circle cx=&#34;110&#34; cy=&#34;80&#34; r=&#34;14&#34; fill=&#34;url(#greenNode)&#34; /&gt;
+    &lt;circle cx=&#34;110&#34; cy=&#34;160&#34; r=&#34;14&#34; fill=&#34;url(#blueNode)&#34; /&gt;
+    
+    &lt;!-- Target node with classification bubble --&gt;
+    &lt;circle cx=&#34;150&#34; cy=&#34;120&#34; r=&#34;16&#34; fill=&#34;url(#blueNode)&#34; stroke=&#34;#EF4444&#34; stroke-width=&#34;2&#34; /&gt;
+    &lt;text x=&#34;150&#34; y=&#34;120&#34; class=&#34;node-text&#34; dy=&#34;.3em&#34;&gt;?&lt;/text&gt;
+    
+    &lt;!-- Classification result tag --&gt;
+    &lt;rect x=&#34;110&#34; y=&#34;145&#34; width=&#34;80&#34; height=&#34;22&#34; rx=&#34;4&#34; fill=&#34;#EF4444&#34; /&gt;
+    &lt;text x=&#34;150&#34; y=&#34;159&#34; class=&#34;badge-text&#34; font-size=&#34;10&#34; text-anchor=&#34;middle&#34;&gt;Class: Active&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Link Prediction --&gt;
+  &lt;g transform=&#34;translate(290, 50)&#34;&gt;
+    &lt;rect width=&#34;220&#34; height=&#34;200&#34; rx=&#34;8&#34; fill=&#34;#FFFFFF&#34; stroke=&#34;#E5E7EB&#34; stroke-width=&#34;1&#34; filter=&#34;url(#shadow)&#34; /&gt;
+    &lt;text x=&#34;110&#34; y=&#34;25&#34; class=&#34;label&#34;&gt;Link Prediction&lt;/text&gt;
+    &lt;text x=&#34;110&#34; y=&#34;42&#34; class=&#34;sublabel&#34;&gt;Predict if edge should exist between nodes&lt;/text&gt;
+    
+    &lt;!-- Graph --&gt;
+    &lt;line x1=&#34;60&#34; y1=&#34;90&#34; x2=&#34;110&#34; y2=&#34;130&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;2&#34; /&gt;
+    &lt;line x1=&#34;160&#34; y1=&#34;90&#34; x2=&#34;110&#34; y2=&#34;130&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;2&#34; /&gt;
+    &lt;line x1=&#34;60&#34; y1=&#34;150&#34; x2=&#34;110&#34; y2=&#34;130&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;2&#34; /&gt;
+
+    &lt;!-- Dotted prediction link --&gt;
+    &lt;line x1=&#34;160&#34; y1=&#34;150&#34; x2=&#34;110&#34; y2=&#34;130&#34; stroke=&#34;#8B5CF6&#34; stroke-width=&#34;3&#34; stroke-dasharray=&#34;5 3&#34; /&gt;
+
+    &lt;circle cx=&#34;60&#34; cy=&#34;90&#34; r=&#34;14&#34; fill=&#34;url(#blueNode)&#34; /&gt;
+    &lt;circle cx=&#34;60&#34; cy=&#34;150&#34; r=&#34;14&#34; fill=&#34;url(#blueNode)&#34; /&gt;
+    &lt;circle cx=&#34;110&#34; cy=&#34;130&#34; r=&#34;14&#34; fill=&#34;url(#blueNode)&#34; /&gt;
+    &lt;circle cx=&#34;160&#34; cy=&#34;90&#34; r=&#34;14&#34; fill=&#34;url(#blueNode)&#34; /&gt;
+    &lt;circle cx=&#34;160&#34; cy=&#34;150&#34; r=&#34;14&#34; fill=&#34;url(#blueNode)&#34; /&gt;
+
+    &lt;rect x=&#34;115&#34; y=&#34;155&#34; width=&#34;70&#34; height=&#34;22&#34; rx=&#34;4&#34; fill=&#34;#8B5CF6&#34; /&gt;
+    &lt;text x=&#34;150&#34; y=&#34;169&#34; class=&#34;badge-text&#34; font-size=&#34;10&#34; text-anchor=&#34;middle&#34;&gt;p(Edge) = 0.92&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Graph Classification --&gt;
+  &lt;g transform=&#34;translate(550, 50)&#34;&gt;
+    &lt;rect width=&#34;220&#34; height=&#34;200&#34; rx=&#34;8&#34; fill=&#34;#FFFFFF&#34; stroke=&#34;#E5E7EB&#34; stroke-width=&#34;1&#34; filter=&#34;url(#shadow)&#34; /&gt;
+    &lt;text x=&#34;110&#34; y=&#34;25&#34; class=&#34;label&#34;&gt;Graph Classification&lt;/text&gt;
+    &lt;text x=&#34;110&#34; y=&#34;42&#34; class=&#34;sublabel&#34;&gt;Pool all node features for whole-graph label&lt;/text&gt;
+    
+    &lt;!-- Miniature Graph --&gt;
+    &lt;g transform=&#34;translate(15, 60)&#34;&gt;
+      &lt;line x1=&#34;30&#34; y1=&#34;30&#34; x2=&#34;60&#34; y2=&#34;15&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;1.5&#34; /&gt;
+      &lt;line x1=&#34;30&#34; y1=&#34;30&#34; x2=&#34;60&#34; y2=&#34;45&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;1.5&#34; /&gt;
+      &lt;line x1=&#34;60&#34; y1=&#34;15&#34; x2=&#34;60&#34; y2=&#34;45&#34; stroke=&#34;#9CA3AF&#34; stroke-width=&#34;1.5&#34; /&gt;
+      &lt;circle cx=&#34;30&#34; cy=&#34;30&#34; r=&#34;8&#34; fill=&#34;url(#blueNode)&#34; /&gt;
+      &lt;circle cx=&#34;60&#34; cy=&#34;15&#34; r=&#34;8&#34; fill=&#34;url(#blueNode)&#34; /&gt;
+      &lt;circle cx=&#34;60&#34; cy=&#34;45&#34; r=&#34;8&#34; fill=&#34;url(#blueNode)&#34; /&gt;
+    &lt;/g&gt;
+
+    &lt;!-- Pooling indicator --&gt;
+    &lt;path d=&#34;M 100 90 L 130 90&#34; fill=&#34;none&#34; stroke=&#34;#6B7280&#34; stroke-width=&#34;2&#34; marker-end=&#34;url(#arrow)&#34; /&gt;
+    &lt;rect x=&#34;100&#34; y=&#34;100&#34; width=&#34;30&#34; height=&#34;15&#34; rx=&#34;3&#34; fill=&#34;#E5E7EB&#34; /&gt;
+    &lt;text x=&#34;115&#34; y=&#34;111&#34; font-family=&#34;Inter&#34; font-size=&#34;9&#34; fill=&#34;#374151&#34; text-anchor=&#34;middle&#34; font-weight=&#34;700&#34;&gt;POOL&lt;/text&gt;
+
+    &lt;!-- Pooled Vector --&gt;
+    &lt;g transform=&#34;translate(145, 65)&#34;&gt;
+      &lt;rect width=&#34;18&#34; height=&#34;50&#34; rx=&#34;2&#34; fill=&#34;url(#purpleGrad)&#34; /&gt;
+      &lt;line x1=&#34;0&#34; y1=&#34;12&#34; x2=&#34;18&#34; y2=&#34;12&#34; stroke=&#34;#FFFFFF&#34; stroke-width=&#34;1.5&#34; /&gt;
+      &lt;line x1=&#34;0&#34; y1=&#34;25&#34; x2=&#34;18&#34; y2=&#34;25&#34; stroke=&#34;#FFFFFF&#34; stroke-width=&#34;1.5&#34; /&gt;
+      &lt;line x1=&#34;0&#34; y1=&#34;38&#34; x2=&#34;18&#34; y2=&#34;38&#34; stroke=&#34;#FFFFFF&#34; stroke-width=&#34;1.5&#34; /&gt;
+      &lt;text x=&#34;35&#34; y=&#34;30&#34; font-family=&#34;Inter&#34; font-size=&#34;10&#34; fill=&#34;#6D28D9&#34; font-weight=&#34;800&#34;&gt;Vector&lt;/text&gt;
+    &lt;/g&gt;
+
+    &lt;!-- Classification result tag --&gt;
+    &lt;rect x=&#34;65&#34; y=&#34;145&#34; width=&#34;90&#34; height=&#34;22&#34; rx=&#34;4&#34; fill=&#34;#10B981&#34; /&gt;
+    &lt;text x=&#34;110&#34; y=&#34;159&#34; class=&#34;badge-text&#34; font-size=&#34;10&#34; text-anchor=&#34;middle&#34;&gt;Label: Mutagenic&lt;/text&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Node classification:&lt;/strong&gt; Predict a label for each node. &lt;em&gt;Example: Is this citation-network paper about biology or physics?&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Link prediction:&lt;/strong&gt; Predict whether an edge should exist between two nodes. It is trained using &lt;strong&gt;negative sampling&lt;/strong&gt;, feeding the model real edges alongside randomly sampled non-edges so it learns to tell them apart.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Graph classification:&lt;/strong&gt; Predict a label for an entire graph. &lt;em&gt;Example: Is this molecule toxic?&lt;/em&gt; Since graphs vary in size, you need a &lt;strong&gt;readout&lt;/strong&gt; (or pooling) step, typically summing or averaging all node embeddings into one fixed-size vector before classifying.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;6-training-on-graphs-too-big-for-gpu-memory&#34;&gt;6. Training on graphs too big for GPU memory&lt;/h2&gt;
+&lt;p&gt;Real graphs (like a full citation network or a social graph) can have millions of nodes - far more than can fit on a GPU at once. The fix is the same one used everywhere else in deep learning: mini-batches. But you can&amp;rsquo;t just grab a random slice of a graph, since a node&amp;rsquo;s prediction depends on its neighbors.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Neighbor sampling&lt;/strong&gt; solves this: instead of using &lt;em&gt;all&lt;/em&gt; of a node&amp;rsquo;s neighbors, sample a fixed number at each layer. This produces a small, bounded computational subgraph per training step instead of the whole graph.&lt;/p&gt;
+
+&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 700 250&#34; width=&#34;100%&#34; height=&#34;100%&#34;&gt;
+  &lt;defs&gt;
+    &lt;!-- Gradients --&gt;
+    &lt;linearGradient id=&#34;targetGrad&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#EF4444&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#DC2626&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;sampledGrad&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#3B82F6&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#1D4ED8&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;fadedGrad&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#F3F4F6&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#E5E7EB&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;filter id=&#34;shadow&#34; x=&#34;-20%&#34; y=&#34;-20%&#34; width=&#34;140%&#34; height=&#34;140%&#34;&gt;
+      &lt;feDropShadow dx=&#34;1&#34; dy=&#34;3&#34; stdDeviation=&#34;3&#34; flood-opacity=&#34;0.1&#34; /&gt;
+    &lt;/filter&gt;
+  &lt;/defs&gt;
+
+  &lt;style&gt;
+    .title-text { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 800; font-size: 16px; fill: #111827; }
+    .label { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 13px; fill: #1F2937; }
+    .sublabel { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-size: 12px; fill: #4B5563; }
+    .node-text { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 11px; fill: #FFFFFF; text-anchor: middle; dominant-baseline: middle; }
+    .node-text-fade { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 11px; fill: #9CA3AF; text-anchor: middle; dominant-baseline: middle; }
+  &lt;/style&gt;
+
+  &lt;!-- Background --&gt;
+  &lt;rect width=&#34;700&#34; height=&#34;250&#34; fill=&#34;#F9FAFB&#34; rx=&#34;12&#34; /&gt;
+
+  &lt;text x=&#34;30&#34; y=&#34;30&#34; class=&#34;title-text&#34;&gt;Neighbor Sampling for Large-Scale Training&lt;/text&gt;
+
+  &lt;!-- Graph Drawing --&gt;
+  &lt;g transform=&#34;translate(50, 40)&#34;&gt;
+    &lt;!-- Faded (unsampled) edges --&gt;
+    &lt;line x1=&#34;120&#34; y1=&#34;120&#34; x2=&#34;60&#34; y2=&#34;40&#34; stroke=&#34;#E5E7EB&#34; stroke-width=&#34;1.5&#34; /&gt;
+    &lt;line x1=&#34;60&#34; y1=&#34;40&#34; x2=&#34;40&#34; y2=&#34;100&#34; stroke=&#34;#E5E7EB&#34; stroke-width=&#34;1.5&#34; /&gt;
+    &lt;line x1=&#34;120&#34; y1=&#34;120&#34; x2=&#34;220&#34; y2=&#34;40&#34; stroke=&#34;#E5E7EB&#34; stroke-width=&#34;1.5&#34; /&gt;
+    
+    &lt;!-- Sampled edges (thick blue) --&gt;
+    &lt;line x1=&#34;120&#34; y1=&#34;120&#34; x2=&#34;60&#34; y2=&#34;160&#34; stroke=&#34;#3B82F6&#34; stroke-width=&#34;3&#34; /&gt;
+    &lt;line x1=&#34;120&#34; y1=&#34;120&#34; x2=&#34;180&#34; y2=&#34;160&#34; stroke=&#34;#3B82F6&#34; stroke-width=&#34;3&#34; /&gt;
+    
+    &lt;!-- Faded Nodes --&gt;
+    &lt;circle cx=&#34;60&#34; cy=&#34;40&#34; r=&#34;16&#34; fill=&#34;url(#fadedGrad)&#34; stroke=&#34;#D1D5DB&#34; stroke-width=&#34;1&#34; /&gt;
+    &lt;text x=&#34;60&#34; y=&#34;40&#34; class=&#34;node-text-fade&#34; dy=&#34;.3em&#34;&gt;u₃&lt;/text&gt;
+    
+    &lt;circle cx=&#34;40&#34; cy=&#34;100&#34; r=&#34;16&#34; fill=&#34;url(#fadedGrad)&#34; stroke=&#34;#D1D5DB&#34; stroke-width=&#34;1&#34; /&gt;
+    &lt;text x=&#34;40&#34; y=&#34;100&#34; class=&#34;node-text-fade&#34; dy=&#34;.3em&#34;&gt;u₄&lt;/text&gt;
+
+    &lt;circle cx=&#34;220&#34; cy=&#34;40&#34; r=&#34;16&#34; fill=&#34;url(#fadedGrad)&#34; stroke=&#34;#D1D5DB&#34; stroke-width=&#34;1&#34; /&gt;
+    &lt;text x=&#34;220&#34; y=&#34;40&#34; class=&#34;node-text-fade&#34; dy=&#34;.3em&#34;&gt;u₅&lt;/text&gt;
+
+    &lt;!-- Sampled Neighbors --&gt;
+    &lt;circle cx=&#34;60&#34; cy=&#34;160&#34; r=&#34;18&#34; fill=&#34;url(#sampledGrad)&#34; filter=&#34;url(#shadow)&#34; /&gt;
+    &lt;text x=&#34;60&#34; y=&#34;160&#34; class=&#34;node-text&#34; dy=&#34;.3em&#34;&gt;u₁&lt;/text&gt;
+
+    &lt;circle cx=&#34;180&#34; cy=&#34;160&#34; r=&#34;18&#34; fill=&#34;url(#sampledGrad)&#34; filter=&#34;url(#shadow)&#34; /&gt;
+    &lt;text x=&#34;180&#34; y=&#34;160&#34; class=&#34;node-text&#34; dy=&#34;.3em&#34;&gt;u₂&lt;/text&gt;
+
+    &lt;!-- Target Node --&gt;
+    &lt;circle cx=&#34;120&#34; cy=&#34;120&#34; r=&#34;26&#34; fill=&#34;url(#targetGrad)&#34; filter=&#34;url(#shadow)&#34; stroke=&#34;#B91C1C&#34; stroke-width=&#34;1.5&#34; /&gt;
+    &lt;text x=&#34;120&#34; y=&#34;120&#34; class=&#34;node-text&#34; font-size=&#34;12&#34; dy=&#34;.3em&#34;&gt;Target&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Explanation Panel --&gt;
+  &lt;g transform=&#34;translate(350, 60)&#34;&gt;
+    &lt;text x=&#34;0&#34; y=&#34;15&#34; class=&#34;label&#34;&gt;How it works:&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;40&#34; class=&#34;sublabel&#34;&gt;• Mini-batching raw graphs is hard due to dependencies.&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;65&#34; class=&#34;sublabel&#34;&gt;• Solution: Sample a small, fixed number of neighbors&lt;/text&gt;
+    &lt;text x=&#34;10&#34; y=&#34;85&#34; class=&#34;sublabel&#34;&gt;per node (such as sample size = 2).&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;110&#34; class=&#34;sublabel&#34;&gt;• Unsampled nodes (&lt;tspan fill=&#34;#9CA3AF&#34; font-weight=&#34;700&#34;&gt;u₃, u₄, u₅&lt;/tspan&gt;) and their edges are ignored.&lt;/text&gt;
+    &lt;text x=&#34;0&#34; y=&#34;135&#34; class=&#34;sublabel&#34;&gt;• This bounds memory size and allows GPU mini-batch training&lt;/text&gt;
+    &lt;text x=&#34;10&#34; y=&#34;155&#34; class=&#34;sublabel&#34;&gt;on graphs with billions of nodes.&lt;/text&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+
+
+&lt;p&gt;The DGL &lt;strong&gt;GraphBolt&lt;/strong&gt; framework implements this pipeline:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;An &lt;code&gt;ItemSampler&lt;/code&gt; selects target nodes.&lt;/li&gt;
+&lt;li&gt;A &lt;code&gt;SubgraphSampler&lt;/code&gt; extracts local neighborhoods.&lt;/li&gt;
+&lt;li&gt;A &lt;code&gt;FeatureFetcher&lt;/code&gt; retrieves corresponding node and edge attributes.&lt;/li&gt;
+&lt;li&gt;The result is a &lt;code&gt;MiniBatch&lt;/code&gt; object that flows through training modules.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This modular design enables parallelized training across multi-GPU and distributed systems.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;7-dgl-tutorial-pathways&#34;&gt;7. DGL Tutorial Pathways&lt;/h2&gt;
+&lt;p&gt;Official DGL tutorials expand on these methodologies:&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Series&lt;/th&gt;
+          &lt;th&gt;Scope&lt;/th&gt;
+          &lt;th&gt;Target Audience&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Blitz Introduction&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Node classification, the &lt;code&gt;DGLGraph&lt;/code&gt; object, writing custom message-passing layers, link prediction, graph classification, custom datasets&lt;/td&gt;
+          &lt;td&gt;Introductory reference.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Stochastic Training / GraphBolt&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Neighbor sampling, mini-batch node and link classification, multi-GPU training, building an &lt;code&gt;OnDiskDataset&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Large-scale datasets.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Graph Transformer&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Positional encodings, multi-head attention over graphs&lt;/td&gt;
+          &lt;td&gt;Advanced transformer architectures.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;dgl.sparse&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Expressing GNNs as sparse linear algebra, graph diffusion, hypergraphs&lt;/td&gt;
+          &lt;td&gt;Matrix-based formulations.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;CPU Training&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Multi-core scaling with ARGO, CPU tuning&lt;/td&gt;
+          &lt;td&gt;Hardware-specific optimization.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Multi-GPU Training&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Distributed training on one machine&lt;/td&gt;
+          &lt;td&gt;Multi-GPU scale-up.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Distributed Training&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Training across multiple machines&lt;/td&gt;
+          &lt;td&gt;Multi-machine distributed systems.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Paper Study&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Faithful DGL implementations of GCN, R-GCN, GAT, Tree-LSTM, DGMG, and Capsule Networks&lt;/td&gt;
+          &lt;td&gt;Reference implementations for replication studies.&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;glossary&#34;&gt;Glossary&lt;/h2&gt;
+&lt;h3 id=&#34;core-graph-concepts&#34;&gt;Core Graph Concepts&lt;/h3&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Term&lt;/th&gt;
+          &lt;th&gt;Meaning&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Graph&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Nodes connected by edges, written $G = (V, E)$.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Node / Vertex&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;A single entity in the graph.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Edge&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;A connection between two nodes; directed by default in DGL.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Heterogeneous Graph&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;A graph with more than one type of node and/or edge.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Hypergraph&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;A graph where one edge can connect more than two nodes.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Subgraph&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;A smaller graph formed from a subset of nodes and edges.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Adjacency Matrix&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;The graph written as a grid of 0s and 1s.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Degree&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;How many edges touch a node.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Neighborhood&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;The nodes directly connected to a given node.&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;gnn-concepts&#34;&gt;GNN Concepts&lt;/h3&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Term&lt;/th&gt;
+          &lt;th&gt;Meaning&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Message Passing&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Send $\rightarrow$ aggregate $\rightarrow$ update; the core GNN computation.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Node/Edge Feature&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;A vector of numbers describing a node or edge.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Embedding&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;A learned vector representation of a node, edge, or graph.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;GNN Layer&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;One round of message passing; $K$ layers reach $K$ hops.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Over-smoothing&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Too many layers make all node representations converge.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;GCN / GAT / GraphSAGE&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Three popular message-passing architectures.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Readout / Pooling&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Combining all node embeddings into one graph-level vector.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Node / Link / Graph Class&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;The three main prediction tasks on graphs.&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;training-concepts&#34;&gt;Training Concepts&lt;/h3&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Term&lt;/th&gt;
+          &lt;th&gt;Meaning&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Mini-batch Training&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Training on a small random subset instead of the whole graph.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Neighbor Sampling&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Sampling a fixed number of neighbors per layer to bound batch size.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Negative Sampling&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Adding fake edges as negative examples for link prediction.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Computational Subgraph&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;The subgraph actually needed to compute one mini-batch.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Positional Encoding&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Extra node features (such as Laplacian eigenvectors) encoding position in Graph Transformers.&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;dgl-specific-terms&#34;&gt;DGL-Specific Terms&lt;/h3&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Term&lt;/th&gt;
+          &lt;th&gt;Meaning&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;DGLGraph&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;DGL&amp;rsquo;s core graph object, holding topology plus &lt;code&gt;ndata&lt;/code&gt;/&lt;code&gt;edata&lt;/code&gt;.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;GraphBolt&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;DGL&amp;rsquo;s pipelined framework for large-graph training.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;MiniBatch&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;The bundled object carrying a sampled subgraph through the pipeline.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;OnDiskDataset&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;A GraphBolt dataset format for graphs larger than RAM.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;dgl.sparse.SparseMatrix&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;DGL&amp;rsquo;s sparse matrix class for matrix-based graph operations.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;update_all()&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;DGL&amp;rsquo;s batched message-passing call.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;DistGraph&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;DGL&amp;rsquo;s distributed graph object for multi-machine training.&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Getting Started with Graph Neural Networks for Protein–Ligand Complexes Using DGL</title>
+      <link>https://yboulaamane.github.io/blog/getting-started-with-graph-neural-networks-for-protein-ligand-complexes-using-dgl/</link>
+      <pubDate>Fri, 03 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/getting-started-with-graph-neural-networks-for-protein-ligand-complexes-using-dgl/</guid>
+      <description>&lt;p&gt;So you have a set of docked protein–ligand complexes and you want to train a machine learning model on them. Traditional approaches would have you reach for fingerprints or descriptor vectors: flat, fixed-size arrays that compress the 3D interaction into a single number per compound. They work, but they discard a lot of structural information.&lt;/p&gt;
+&lt;p&gt;Graph Neural Networks (GNNs) offer a richer alternative: represent the molecule &lt;em&gt;as a graph&lt;/em&gt;, where atoms are nodes and bonds (or non-covalent contacts) are edges, then let the network learn directly from that topology. The 
+ (DGL) makes this surprisingly approachable in PyTorch.&lt;/p&gt;
+&lt;p&gt;This post walks you through the core ideas from the DGL User Guide, translated into the language of computational drug discovery. No prior GNN experience required.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;why-graphs-for-molecules&#34;&gt;Why Graphs for Molecules?&lt;/h2&gt;
+&lt;p&gt;A molecule has a natural graph structure. Atoms are nodes, bonds are edges. When you extend this to a protein–ligand complex, you can add edges for non-covalent contacts (hydrogen bonds, hydrophobic interactions, π-stacking) connecting ligand atoms to binding-pocket residues.&lt;/p&gt;
+&lt;p&gt;The key advantage: a GNN can aggregate information from a node&amp;rsquo;s &lt;em&gt;neighborhood&lt;/em&gt; iteratively, so after a few layers, each atom&amp;rsquo;s representation encodes not just its own identity but the chemical context around it. This is exactly what a human medicinal chemist does mentally when reading a 2D structure.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-dgl-core-dglgraph&#34;&gt;The DGL Core: &lt;code&gt;DGLGraph&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;Everything in DGL revolves around the &lt;code&gt;DGLGraph&lt;/code&gt; object. Think of it as a PyTorch-native container for graph-structured data.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;dgl&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;torch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Define edges as (source_nodes, destination_nodes)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;src&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;torch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;tensor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;])&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;dst&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;torch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;tensor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;])&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dgl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;graph&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dst&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Graph(num_nodes=4, num_edges=4, ndata_schemes={}, edata_schemes={})&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;For molecular graphs, edges are usually undirected (bond A→B is the same as B→A), so use &lt;code&gt;dgl.to_bidirected()&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dgl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_bidirected&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;attaching-features&#34;&gt;Attaching Features&lt;/h3&gt;
+&lt;p&gt;Node and edge features are stored as PyTorch tensors directly on the graph:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Node features: e.g., one-hot atomic number, partial charge, aromaticity...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ndata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;feat&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;torch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;randn&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;num_nodes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(),&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Edge features: e.g., bond type, interatomic distance...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;edata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;dist&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;torch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;randn&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;num_edges&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(),&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This is the bridge between your cheminformatics featurization pipeline (RDKit, MDAnalysis, etc.) and the GNN. Whatever features you compute, just stick them in &lt;code&gt;ndata&lt;/code&gt; or &lt;code&gt;edata&lt;/code&gt;.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;heterogeneous-graphs-protein--ligand-together&#34;&gt;Heterogeneous Graphs: Protein + Ligand Together&lt;/h2&gt;
+&lt;p&gt;If you want to model protein–ligand contacts explicitly (not just the ligand in isolation), DGL supports &lt;strong&gt;heterogeneous graphs&lt;/strong&gt;: graphs with multiple node and edge types.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dgl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;heterograph&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;ligand_atom&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;bond&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;ligand_atom&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lig_src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lig_dst&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;ligand_atom&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;contacts&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;protein_residue&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lig_ids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;res_ids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;protein_residue&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;contacts&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;ligand_atom&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;res_ids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lig_ids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;})&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;nodes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;ligand_atom&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;feat&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ligand_atom_features&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;nodes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;protein_residue&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;feat&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;residue_features&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This is a more faithful representation of the complex: the network can learn that certain binding-pocket residues modulate the ligand&amp;rsquo;s representation depending on how they interact.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;message-passing-how-gnns-actually-work&#34;&gt;Message Passing: How GNNs Actually Work&lt;/h2&gt;
+&lt;p&gt;This is the heart of DGL and the heart of every GNN. Message passing works in two steps per layer:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step 1: Edge-wise (messages):&lt;/strong&gt; For each edge, compute a &amp;ldquo;message&amp;rdquo; from the source node&amp;rsquo;s features (and optionally the edge&amp;rsquo;s own features).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step 2: Node-wise (aggregation + update):&lt;/strong&gt; Each node collects all incoming messages, aggregates them (sum, mean, or max), and updates its own features.&lt;/p&gt;
+&lt;p&gt;Mathematically, for node &lt;em&gt;v&lt;/em&gt; at layer &lt;em&gt;t+1&lt;/em&gt;:&lt;/p&gt;
+$$h_v^{(t+1)} = \psi\!\left(h_v^{(t)},\ \rho\!\left(\left\{ \phi(h_u^{(t)}, h_v^{(t)}, w_{uv}) : u \in \mathcal{N}(v) \right\}\right)\right)$$&lt;p&gt;where φ is the message function, ρ is the aggregation (e.g., mean), and ψ is the update function.&lt;/p&gt;
+&lt;p&gt;In DGL code, the fastest way uses &lt;strong&gt;built-in functions&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;dgl.function&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;fn&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Message: copy source node feature → edge mailbox&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Reduce: average all incoming messages → update node feature&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;update_all&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;fn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;copy_u&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;h&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;m&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mean&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;m&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;h&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This runs as fused CUDA kernels, much faster than writing Python loops.&lt;/p&gt;
+&lt;p&gt;For custom behavior (e.g., distance-weighted messages):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;weighted_message&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;edges&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;# edges.src[&amp;#39;h&amp;#39;]: source node features&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;# edges.data[&amp;#39;dist&amp;#39;]: edge distance&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;m&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;edges&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;h&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;torch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;exp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;edges&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;dist&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;])}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;update_all&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;weighted_message&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;m&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;h&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;built-in-gnn-layers&#34;&gt;Built-in GNN Layers&lt;/h2&gt;
+&lt;p&gt;DGL ships with ready-to-use layers in &lt;code&gt;dgl.nn.pytorch&lt;/code&gt;. The most useful for molecular tasks:&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Layer&lt;/th&gt;
+          &lt;th&gt;When to use&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;GraphConv&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Simplest baseline, no edge features&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;GATConv&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Learns per-edge attention weights; great for contacts with varying importance&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;NNConv&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Edge-feature-conditioned messages; use when bond type or distance matters&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;HeteroGraphConv&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Wraps per-relation convolutions for heterogeneous graphs&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;A simple two-layer GAT:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;dgl.nn.pytorch&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;dglnn&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;torch.nn&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;nn&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;torch.nn.functional&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;F&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;MolGNN&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;nn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Module&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;fm&#34;&gt;__init__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;in_dim&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;hidden_dim&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nb&#34;&gt;super&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;fm&#34;&gt;__init__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;gat1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dglnn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GATConv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;in_dim&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;hidden_dim&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;num_heads&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;gat2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dglnn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GATConv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hidden_dim&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;hidden_dim&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;num_heads&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;forward&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;feat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;F&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;elu&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;gat1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;feat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;flatten&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# (N, hidden*4)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;gat2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;squeeze&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;             &lt;span class=&#34;c1&#34;&gt;# (N, hidden)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;graph-level-prediction-readout&#34;&gt;Graph-Level Prediction: Readout&lt;/h2&gt;
+&lt;p&gt;After message passing, each node has a learned embedding. For a graph-level prediction (e.g., is this compound active?), you need to compress the variable-number of node embeddings into a single fixed-size vector. This is called &lt;strong&gt;readout&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;DGL provides built-in readout functions:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Mean of all node features → one vector per graph&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;graph_embedding&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dgl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mean_nodes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;h&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Also available: dgl.sum_nodes, dgl.max_nodes&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;For a batch of graphs (many compounds at once):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;bg&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dgl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;batch&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;g1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;g2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;g3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;])&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# one disconnected super-graph&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# ... run message passing on bg ...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;embeddings&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dgl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mean_nodes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;h&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# shape (batch_size, hidden_dim)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;dgl.batch()&lt;/code&gt; is what makes mini-batch training efficient: DGL treats the batch as a single large graph (with no edges between the individual molecules), runs all convolutions in one GPU call, then recovers per-graph embeddings with readout.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-full-graph-classification-pipeline&#34;&gt;The Full Graph Classification Pipeline&lt;/h2&gt;
+&lt;p&gt;Putting it all together: a classifier that takes a molecule graph and outputs a binary label:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;dgl&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;dgl.nn.pytorch&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;dglnn&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;torch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;torch.nn&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;nn&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;torch.nn.functional&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;F&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;GraphClassifier&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;nn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Module&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;fm&#34;&gt;__init__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;in_dim&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;hidden_dim&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n_classes&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nb&#34;&gt;super&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;fm&#34;&gt;__init__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;conv1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dglnn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GATConv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;in_dim&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;hidden_dim&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;num_heads&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;conv2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dglnn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GATConv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hidden_dim&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;hidden_dim&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;num_heads&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;classify&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Linear&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hidden_dim&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n_classes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;forward&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;feat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;c1&#34;&gt;# Message passing&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;F&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;elu&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;conv1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;feat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;flatten&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;conv2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;squeeze&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;c1&#34;&gt;# Store updated features&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;local_scope&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ndata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;h&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;c1&#34;&gt;# Readout: mean over all atoms → graph embedding&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;n&#34;&gt;graph_feat&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dgl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mean_nodes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;h&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;classify&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;graph_feat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Training loop sketch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;model&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;GraphClassifier&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;in_dim&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;hidden_dim&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;64&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;optimizer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;torch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;optim&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Adam&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;model&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;parameters&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;1e-3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;loss_fn&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;CrossEntropyLoss&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;epoch&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;range&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;batched_graphs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;labels&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dataloader&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;feats&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;batched_graphs&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ndata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;feat&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;logits&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;model&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;batched_graphs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;feats&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;loss&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;loss_fn&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;logits&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;labels&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;optimizer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;zero_grad&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;loss&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;backward&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;optimizer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;step&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;building-a-dataset&#34;&gt;Building a Dataset&lt;/h2&gt;
+&lt;p&gt;DGL has a dataset API that handles caching processed graphs to disk, important when building graphs from PDB/SDF files is slow.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;MolDataset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dgl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;DGLDataset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;fm&#34;&gt;__init__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;raw_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nb&#34;&gt;super&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;fm&#34;&gt;__init__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;mol_dataset&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;raw_dir&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;raw_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;process&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;graphs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;labels&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[],&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;path&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_get_files&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;label&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_build_graph&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;# your featurization here&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;graphs&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;labels&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;label&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;fm&#34;&gt;__getitem__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;graphs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;labels&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;fm&#34;&gt;__len__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;graphs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;has_cache&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;exists&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;save_path&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;save&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;dgl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;save_graphs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;save_path&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;graphs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                        &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;labels&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;torch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;tensor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;labels&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)})&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;load&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;graphs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;label_dict&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dgl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;load_graphs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;save_path&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;labels&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;label_dict&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;labels&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;tolist&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Pair this with a DataLoader using &lt;code&gt;dgl.dataloading.GraphDataLoader&lt;/code&gt; (or PyTorch&amp;rsquo;s standard DataLoader with a custom &lt;code&gt;collate_fn&lt;/code&gt; that calls &lt;code&gt;dgl.batch()&lt;/code&gt;).&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;multiple-instances-per-compound-the-bag-approach&#34;&gt;Multiple Instances per Compound: the Bag Approach&lt;/h2&gt;
+&lt;p&gt;A common scenario in ensemble docking: you dock one compound against &lt;em&gt;N&lt;/em&gt; different receptor conformations and get &lt;em&gt;N&lt;/em&gt; poses, each a separate graph. You want to make one prediction per compound, not one per pose.&lt;/p&gt;
+&lt;p&gt;This is a natural fit for &lt;strong&gt;Multiple Instance Learning (MIL)&lt;/strong&gt;. The trick with DGL:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;predict_bag&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;model&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bag_of_graphs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;# Stack all N pose-graphs into one batched graph&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;bg&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dgl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;batch&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bag_of_graphs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;feats&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ndata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;feat&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;# Run GNN - poses stay disconnected (no cross-pose edges)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;model&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;encode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;feats&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;          &lt;span class=&#34;c1&#34;&gt;# node embeddings&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;local_scope&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;bg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ndata&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;h&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;pose_embeds&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dgl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mean_nodes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;h&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;# (N, h_dim) - one per pose&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;# MIL aggregation over the bag&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;bag_embed&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pose_embeds&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mean&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keepdim&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;# mean pooling&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;model&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;classify&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bag_embed&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The key insight: &lt;code&gt;dgl.batch()&lt;/code&gt; keeps the poses structurally independent (no edges cross between them), so the GNN respects the fact that each pose is a separate physical structure. The MIL aggregation then decides how to combine them for the final prediction.&lt;/p&gt;
+&lt;p&gt;For a more expressive aggregation, use &lt;strong&gt;attention MIL&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;AttentionMIL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;nn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Module&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;fm&#34;&gt;__init__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;h_dim&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nb&#34;&gt;super&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;fm&#34;&gt;__init__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;attention&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Sequential&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;n&#34;&gt;nn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Linear&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;h_dim&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;64&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;n&#34;&gt;nn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Tanh&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;n&#34;&gt;nn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Linear&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;64&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;forward&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pose_embeds&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;           &lt;span class=&#34;c1&#34;&gt;# (N, h_dim)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;scores&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;attention&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pose_embeds&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# (N, 1)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;weights&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;torch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;softmax&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;scores&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dim&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;weights&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pose_embeds&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# (h_dim,)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Attention MIL has a nice bonus: &lt;code&gt;weights&lt;/code&gt; tells you which poses contributed most to the prediction, interpretable by design.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;which-chapters-to-read-first&#34;&gt;Which Chapters to Read First&lt;/h2&gt;
+&lt;p&gt;If you&amp;rsquo;re using this post as a reading guide alongside the 
+:&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Priority&lt;/th&gt;
+          &lt;th&gt;Chapter&lt;/th&gt;
+          &lt;th&gt;Why&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;⭐⭐⭐&lt;/td&gt;
+          &lt;td&gt;Ch 1.2–1.5: Graphs, features, heterograph&lt;/td&gt;
+          &lt;td&gt;Core data structure&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;⭐⭐⭐&lt;/td&gt;
+          &lt;td&gt;Ch 2.1–2.2: Message passing API&lt;/td&gt;
+          &lt;td&gt;The computation engine&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;⭐⭐⭐&lt;/td&gt;
+          &lt;td&gt;Ch 5.4: Graph classification&lt;/td&gt;
+          &lt;td&gt;Your prediction task&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;⭐⭐&lt;/td&gt;
+          &lt;td&gt;Ch 3: GNN modules&lt;/td&gt;
+          &lt;td&gt;Ready-to-use layers&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;⭐⭐&lt;/td&gt;
+          &lt;td&gt;Ch 4: Data pipeline&lt;/td&gt;
+          &lt;td&gt;Dataset + caching&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;⭐&lt;/td&gt;
+          &lt;td&gt;Ch 6–8: Stochastic / distributed / mixed precision&lt;/td&gt;
+          &lt;td&gt;Only if dataset is huge&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+&lt;p&gt;DGL wraps the complexity of graph-structured computation behind a clean PyTorch API. For molecular applications, the workflow is:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Build a &lt;code&gt;DGLGraph&lt;/code&gt; for each complex: atoms as nodes, bonds/contacts as edges, features from your cheminformatics toolkit&lt;/li&gt;
+&lt;li&gt;Choose a GNN layer: &lt;code&gt;GATConv&lt;/code&gt; is a strong default&lt;/li&gt;
+&lt;li&gt;Run message passing: each atom aggregates information from its neighbors&lt;/li&gt;
+&lt;li&gt;Apply readout (&lt;code&gt;dgl.mean_nodes&lt;/code&gt;) to get a fixed-size graph embedding&lt;/li&gt;
+&lt;li&gt;Feed into a standard MLP classifier&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The library handles batching, GPU transfer, and efficient sparse operations under the hood. Once you get the featurization right, the training code looks almost identical to a standard PyTorch image classifier.&lt;/p&gt;
+&lt;hr&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 350" width="100%" height="100%">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="seqGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#1D4ED8" />
+    </linearGradient>
+    <linearGradient id="strGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+    <linearGradient id="cpxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#6D28D9" />
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="1" dy="3" stdDeviation="3" flood-opacity="0.1" />
+    </filter>
+  </defs>
+
+  <style>
+    .header-text { font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: 20px; fill: #111827; }
+    .col-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 14px; fill: #FFFFFF; }
+    .col-subtitle { font-family: 'Inter', system-ui, sans-serif; font-weight: 500; font-size: 11px; fill: #E0E7FF; }
+    .item-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 12px; fill: #1F2937; }
+    .item-desc { font-family: 'Inter', system-ui, sans-serif; font-size: 11px; fill: #4B5563; }
+    .card-bg { fill: #FFFFFF; stroke: #E5E7EB; stroke-width: 1px; }
+  </style>
+
+  <!-- Background -->
+  <rect width="850" height="350" fill="#F9FAFB" rx="12" />
+
+  <text x="30" y="35" class="header-text">Protein Descriptor Landscape for Machine Learning Modeling</text>
+
+  <!-- COLUMN 1: Sequence-based -->
+  <g transform="translate(30, 60)" filter="url(#shadow)">
+    <!-- Header Card -->
+    <rect width="240" height="260" rx="8" class="card-bg" />
+    <path d="M 0 8 Q 0 0, 8 0 L 232 0 Q 240 0, 240 8 L 240 50 L 0 50 Z" fill="url(#seqGrad)" />
+    <text x="15" y="25" class="col-title">1. Sequence-Based</text>
+    <text x="15" y="40" class="col-subtitle">Invariant (computed once per protein)</text>
+    
+    <!-- Items -->
+    <g transform="translate(15, 65)">
+      <!-- Item A -->
+      <circle cx="5" cy="10" r="3" fill="#3B82F6" />
+      <text x="15" y="13" class="item-title">Classical Sequence Metrics</text>
+      <text x="15" y="28" class="item-desc">AA Composition, PAAC, CTD descriptors</text>
+
+      <!-- Item B -->
+      <circle cx="5" cy="55" r="3" fill="#3B82F6" />
+      <text x="15" y="58" class="item-title">Evolutionary Profiles</text>
+      <text x="15" y="73" class="item-desc">PSSM profiles from sequence alignments</text>
+      
+      <!-- Item C -->
+      <circle cx="5" cy="100" r="3" fill="#3B82F6" />
+      <text x="15" y="103" class="item-title">Protein Language Models</text>
+      <text x="15" y="118" class="item-desc">ESM, ProtBERT, UniRep embeddings</text>
+
+      <!-- Item D -->
+      <circle cx="5" cy="145" r="3" fill="#3B82F6" />
+      <text x="15" y="148" class="item-title">Mutation Indicators</text>
+      <text x="15" y="163" class="item-desc">Binary flags mapping catalytic mutations</text>
+    </g>
+  </g>
+
+  <!-- COLUMN 2: Structure-based -->
+  <g transform="translate(305, 60)" filter="url(#shadow)">
+    <!-- Header Card -->
+    <rect width="240" height="260" rx="8" class="card-bg" />
+    <path d="M 0 8 Q 0 0, 8 0 L 232 0 Q 240 0, 240 8 L 240 50 L 0 50 Z" fill="url(#strGrad)" />
+    <text x="15" y="25" class="col-title">2. Structure-Based</text>
+    <text x="15" y="40" class="col-subtitle">State-Dependent (needs 3D structure)</text>
+    
+    <!-- Items -->
+    <g transform="translate(15, 65)">
+      <!-- Item A -->
+      <circle cx="5" cy="10" r="3" fill="#10B981" />
+      <text x="15" y="13" class="item-title">Pocket Geometry</text>
+      <text x="15" y="28" class="item-desc">Pocket volume, CAVER bottleneck radius</text>
+
+      <!-- Item B -->
+      <circle cx="5" cy="55" r="3" fill="#10B981" />
+      <text x="15" y="58" class="item-title">Internal Distances</text>
+      <text x="15" y="73" class="item-desc">Fe-to-residue and Cα-Cα distances</text>
+      
+      <!-- Item C -->
+      <circle cx="5" cy="100" r="3" fill="#10B981" />
+      <text x="15" y="103" class="item-title">Secondary Structure</text>
+      <text x="15" y="118" class="item-desc">Backbone φ/ψ, loop folding (DSSP)</text>
+
+      <!-- Item D -->
+      <circle cx="5" cy="145" r="3" fill="#10B981" />
+      <text x="15" y="148" class="item-title">Fluctuations (RMSF)</text>
+      <text x="15" y="163" class="item-desc">Residue-level movement in MD snapshots</text>
+    </g>
+  </g>
+
+  <!-- COLUMN 3: Complex-based -->
+  <g transform="translate(580, 60)" filter="url(#shadow)">
+    <!-- Header Card -->
+    <rect width="240" height="260" rx="8" class="card-bg" />
+    <path d="M 0 8 Q 0 0, 8 0 L 232 0 Q 240 0, 240 8 L 240 50 L 0 50 Z" fill="url(#cpxGrad)" />
+    <text x="15" y="25" class="col-title">3. Complex-Based</text>
+    <text x="15" y="40" class="col-subtitle">Interaction-Dependent (needs ligand complex)</text>
+    
+    <!-- Items -->
+    <g transform="translate(15, 65)">
+      <!-- Item A -->
+      <circle cx="5" cy="10" r="3" fill="#8B5CF6" />
+      <text x="15" y="13" class="item-title">Reactant Geometry</text>
+      <text x="15" y="28" class="item-desc">Fe-C distance, reactant angles, SASA</text>
+
+      <!-- Item B -->
+      <circle cx="5" cy="55" r="3" fill="#8B5CF6" />
+      <text x="15" y="58" class="item-title">Interaction Fingerprints</text>
+      <text x="15" y="73" class="item-desc">PLIP, BINANA contacts (H-bonds, π-stack)</text>
+      
+      <!-- Item C -->
+      <circle cx="5" cy="100" r="3" fill="#8B5CF6" />
+      <text x="15" y="103" class="item-title">PLEC Fingerprints</text>
+      <text x="15" y="118" class="item-desc">Protein-ligand extended connectivity</text>
+
+      <!-- Item D -->
+      <circle cx="5" cy="145" r="3" fill="#8B5CF6" />
+      <text x="15" y="148" class="item-title">Refinement Metrics</text>
+      <text x="15" y="163" class="item-desc">MMPBSA binding energies &amp; QM/MM</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,63 @@
+<svg viewBox="0 0 860 360" width="860" height="360" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="860" height="360" fill="#f8fafc"/>
+  <text x="430" y="34" text-anchor="middle" font-size="19" font-weight="800" fill="#0f172a">Same molecules, three seeds, three different splits</text>
+  <text x="430" y="55" text-anchor="middle" font-size="12.5" fill="#64748b">UMAP's layout — and the train/test boundary drawn through it — shifts with the seed</text>
+
+  <!-- panel template: 3 panels -->
+  <!-- Panel 1 seed=42 -->
+  <g>
+    <rect x="40" y="80" width="240" height="220" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="160" y="104" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">seed = 42</text>
+    <!-- train cluster (blue) -->
+    <g fill="#2563eb">
+      <circle cx="110" cy="160" r="5"/><circle cx="125" cy="150" r="5"/><circle cx="100" cy="175" r="5"/>
+      <circle cx="118" cy="180" r="5"/><circle cx="132" cy="168" r="5"/><circle cx="95" cy="155" r="5"/>
+      <circle cx="140" cy="158" r="5"/><circle cx="108" cy="195" r="5"/>
+    </g>
+    <!-- test cluster (red) -->
+    <g fill="#ef4444">
+      <circle cx="210" cy="240" r="5"/><circle cx="225" cy="230" r="5"/><circle cx="200" cy="250" r="5"/>
+      <circle cx="218" cy="255" r="5"/><circle cx="232" cy="243" r="5"/>
+    </g>
+    <line x1="60" y1="290" x2="260" y2="120" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 4"/>
+  </g>
+
+  <!-- Panel 2 seed=7 -->
+  <g>
+    <rect x="310" y="80" width="240" height="220" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="430" y="104" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">seed = 7</text>
+    <g fill="#2563eb">
+      <circle cx="400" cy="240" r="5"/><circle cx="415" cy="250" r="5"/><circle cx="390" cy="230" r="5"/>
+      <circle cx="430" cy="245" r="5"/><circle cx="445" cy="235" r="5"/><circle cx="408" cy="225" r="5"/>
+    </g>
+    <g fill="#ef4444">
+      <circle cx="430" cy="150" r="5"/><circle cx="445" cy="160" r="5"/><circle cx="420" cy="165" r="5"/>
+      <circle cx="458" cy="148" r="5"/><circle cx="470" cy="170" r="5"/><circle cx="412" cy="145" r="5"/>
+      <circle cx="480" cy="155" r="5"/>
+    </g>
+    <line x1="330" y1="200" x2="530" y2="190" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 4"/>
+  </g>
+
+  <!-- Panel 3 seed=2024 -->
+  <g>
+    <rect x="580" y="80" width="240" height="220" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="700" y="104" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">seed = 2024</text>
+    <g fill="#2563eb">
+      <circle cx="660" cy="160" r="5"/><circle cx="675" cy="150" r="5"/><circle cx="690" cy="170" r="5"/>
+      <circle cx="650" cy="240" r="5"/><circle cx="668" cy="250" r="5"/><circle cx="640" cy="225" r="5"/>
+      <circle cx="710" cy="155" r="5"/><circle cx="720" cy="235" r="5"/>
+    </g>
+    <g fill="#ef4444">
+      <circle cx="760" cy="200" r="5"/><circle cx="775" cy="190" r="5"/><circle cx="755" cy="215" r="5"/>
+      <circle cx="778" cy="218" r="5"/><circle cx="765" cy="178" r="5"/>
+    </g>
+    <line x1="735" y1="120" x2="735" y2="280" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 4"/>
+  </g>
+
+  <!-- legend -->
+  <g font-size="12" fill="#475569">
+    <circle cx="320" cy="332" r="7" fill="#2563eb"/><text x="334" y="337">Train domain</text>
+    <circle cx="450" cy="332" r="7" fill="#ef4444"/><text x="464" y="337">Held-out test domain</text>
+    <line x1="585" y1="332" x2="615" y2="332" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 4"/><text x="622" y="337">split boundary</text>
+  </g>
+</svg>

@@ -1,0 +1,56 @@
+<svg viewBox="0 0 820 540" width="820" height="540" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="al" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="820" height="540" fill="#f8fafc"/>
+  <text x="410" y="36" text-anchor="middle" font-size="20" font-weight="800" fill="#0f172a">The agentic drug-discovery loop</text>
+  <text x="410" y="58" text-anchor="middle" font-size="12.5" fill="#64748b">An LLM that plans, acts through tools, observes results, and critiques its own output</text>
+
+  <!-- center: MCP / tools -->
+  <circle cx="410" cy="300" r="74" fill="#0f172a"/>
+  <text x="410" y="293" text-anchor="middle" font-size="15" font-weight="800" fill="#ffffff">MCP layer</text>
+  <text x="410" y="313" text-anchor="middle" font-size="10.5" fill="#cbd5e1">tools · databases</text>
+  <text x="410" y="328" text-anchor="middle" font-size="10.5" fill="#cbd5e1">docking · QM · ADMET</text>
+
+  <!-- nodes around the loop -->
+  <!-- Plan (top) -->
+  <g>
+    <rect x="320" y="92" width="180" height="60" rx="14" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+    <text x="410" y="118" text-anchor="middle" font-size="14" font-weight="700" fill="#1d4ed8">1 · Plan</text>
+    <text x="410" y="137" text-anchor="middle" font-size="11" fill="#64748b">decompose the goal</text>
+  </g>
+  <!-- Act (right) -->
+  <g>
+    <rect x="600" y="240" width="180" height="60" rx="14" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="690" y="266" text-anchor="middle" font-size="14" font-weight="700" fill="#6d28d9">2 · Act</text>
+    <text x="690" y="285" text-anchor="middle" font-size="11" fill="#64748b">write &amp; run code, call tools</text>
+  </g>
+  <!-- Observe (bottom) -->
+  <g>
+    <rect x="320" y="448" width="180" height="60" rx="14" fill="#ffffff" stroke="#0891b2" stroke-width="2"/>
+    <text x="410" y="474" text-anchor="middle" font-size="14" font-weight="700" fill="#0e7490">3 · Observe</text>
+    <text x="410" y="493" text-anchor="middle" font-size="11" fill="#64748b">read results / errors</text>
+  </g>
+  <!-- Critique (left) -->
+  <g>
+    <rect x="40" y="240" width="180" height="60" rx="14" fill="#ffffff" stroke="#db2777" stroke-width="2"/>
+    <text x="130" y="266" text-anchor="middle" font-size="14" font-weight="700" fill="#be185d">4 · Critique</text>
+    <text x="130" y="285" text-anchor="middle" font-size="11" fill="#64748b">peer-review, refine</text>
+  </g>
+
+  <!-- circular arrows -->
+  <path d="M500,128 C600,150 660,190 690,238" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#al)"/>
+  <path d="M690,302 C660,400 600,440 502,470" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#al)"/>
+  <path d="M318,478 C210,452 160,410 132,302" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#al)"/>
+  <path d="M130,238 C160,150 220,118 318,108" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#al)"/>
+
+  <!-- spokes to center -->
+  <g stroke="#cbd5e1" stroke-width="1.3" stroke-dasharray="3 4">
+    <line x1="410" y1="152" x2="410" y2="226"/>
+    <line x1="600" y1="270" x2="484" y2="290"/>
+    <line x1="410" y1="448" x2="410" y2="374"/>
+    <line x1="220" y1="270" x2="336" y2="290"/>
+  </g>
+</svg>

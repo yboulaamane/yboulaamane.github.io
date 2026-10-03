@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Validation | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/validation/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/validation/index.xml" rel="self" type="application/rss+xml" />
+    <description>Validation</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 01 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Validation</title>
+      <link>https://yboulaamane.github.io/tags/validation/</link>
+    </image>
+    
+    <item>
+      <title>A Practical Guide to QSAR Model Validation: Internal, Cross, and External Checks</title>
+      <link>https://yboulaamane.github.io/blog/a-practical-guide-to-qsar-model-validation-internal-cross-and-external-checks/</link>
+      <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/a-practical-guide-to-qsar-model-validation-internal-cross-and-external-checks/</guid>
+      <description>&lt;p&gt;Building a QSAR model is only half the job. The harder question is: &lt;em&gt;does it actually work?&lt;/em&gt; Overfitted models routinely pass internal checks while failing completely on new compounds. The OECD principles and decades of best-practice literature have converged on a three-tier validation framework that separates what a model has memorised from what it can genuinely predict.&lt;/p&gt;
+&lt;p&gt;This post walks through that framework, explains what each parameter actually measures, and gives you the threshold values you need to report in a manuscript or regulatory submission.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Bottom line up front:&lt;/strong&gt; a valid QSAR model must pass all three tiers simultaneously. Good internal statistics with poor external performance is a red flag, not a trade-off.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-three-tier-validation-framework&#34;&gt;The Three-Tier Validation Framework&lt;/h2&gt;
+&lt;p&gt;The table below consolidates the standard parameters across internal, cross-validation, and external validation. Threshold values reflect widely accepted criteria in the literature (Golbraikh &amp;amp; Tropsha, Roy et al., Chirico &amp;amp; Gramatica).&lt;/p&gt;
+
+&lt;style&gt;
+.val-table-wrap { margin: 1.5rem 0; overflow-x: auto; }
+table.val-table { width: 100%; border-collapse: collapse; font-size: 13.5px; font-family: inherit; }
+table.val-table thead tr { background: rgba(0,0,0,0.03); }
+table.val-table th { padding: 9px 12px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 2px solid; white-space: nowrap; }
+table.val-table th.int-col  { border-bottom-color: #1D9E75; color: #0F6E56; }
+table.val-table th.cv-col   { border-bottom-color: #185FA5; color: #0C447C; }
+table.val-table th.ext-col  { border-bottom-color: #D85A30; color: #993C1D; }
+table.val-table td { padding: 8px 12px; border-bottom: 1px solid rgba(0,0,0,0.07); vertical-align: middle; line-height: 1.4; }
+table.val-table tr:last-child td { border-bottom: none; }
+table.val-table tr:hover td { background: rgba(0,0,0,0.02); }
+.param { font-family: &#39;SFMono-Regular&#39;, Consolas, monospace; font-size: 12.5px; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 500; white-space: nowrap; }
+.tag-green  { background: #E1F5EE; color: #0F6E56; }
+.tag-blue   { background: #E6F1FB; color: #185FA5; }
+.tag-amber  { background: #FAEEDA; color: #854F0B; }
+.tag-gray   { background: #F1EFE8; color: #5F5E5A; border: 1px solid #D3D1C7; }
+.note-box { background: #f8f8f6; border: 1px solid #e0e0d8; border-radius: 8px; padding: 0.9rem 1.1rem; margin: 1.25rem 0; font-size: 13.5px; line-height: 1.65; }
+&lt;/style&gt;
+
+&lt;div class=&#34;val-table-wrap&#34;&gt;
+&lt;table class=&#34;val-table&#34;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th class=&#34;int-col&#34;&gt;Internal parameter&lt;/th&gt;
+      &lt;th class=&#34;int-col&#34;&gt;Threshold&lt;/th&gt;
+      &lt;th class=&#34;cv-col&#34;&gt;Cross-validation parameter&lt;/th&gt;
+      &lt;th class=&#34;cv-col&#34;&gt;Threshold&lt;/th&gt;
+      &lt;th class=&#34;ext-col&#34;&gt;External parameter&lt;/th&gt;
+      &lt;th class=&#34;ext-col&#34;&gt;Threshold&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;R²&lt;sub&gt;tr&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-green&#34;&gt;≥ 0.600&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;R²&lt;sub&gt;cv&lt;/sub&gt; (Q²&lt;sub&gt;loo&lt;/sub&gt;)&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-blue&#34;&gt;&amp;gt; 0.500&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;RMSE&lt;sub&gt;ex&lt;/sub&gt; and MAE&lt;sub&gt;ex&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-amber&#34;&gt;Lowest possible&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;R²&lt;sub&gt;adj.&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-gray&#34;&gt;Close to R²&lt;sub&gt;tr&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;RMSE&lt;sub&gt;cv&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-amber&#34;&gt;Lowest possible&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;R²&lt;sub&gt;ex&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-green&#34;&gt;&amp;gt; 0.600&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;LOF&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-amber&#34;&gt;Lowest possible&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;MAE&lt;sub&gt;cv&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-amber&#34;&gt;Lowest possible&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;Q²-F1, Q²-F2, Q²-F3&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-green&#34;&gt;&amp;gt; 0.600&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;CCC&lt;sub&gt;tr&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-green&#34;&gt;&amp;gt; 0.800&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;CCC&lt;sub&gt;cv&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-blue&#34;&gt;&amp;gt; 0.800&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;CCC&lt;sub&gt;ex&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-green&#34;&gt;&amp;gt; 0.800&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;RMSE&lt;sub&gt;tr&lt;/sub&gt; and MAE&lt;sub&gt;tr&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-amber&#34;&gt;Lowest possible&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;Q²&lt;sub&gt;LMO&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-blue&#34;&gt;&amp;gt; 0.500&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;R²-ExPy&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-gray&#34;&gt;0.786&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;ΔK&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-green&#34;&gt;0.05&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;R²&lt;sub&gt;Yscr&lt;/sub&gt; and Q²&lt;sub&gt;Yscr&lt;/sub&gt;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-amber&#34;&gt;Lowest possible&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;R&#39;&lt;sub&gt;o&lt;/sub&gt;²&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-gray&#34;&gt;0.741&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;s&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-amber&#34;&gt;Lowest possible&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;K&#39;&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-gray&#34;&gt;1&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;span class=&#34;param&#34;&gt;F&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span class=&#34;tag tag-green&#34;&gt;Highest possible&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;div class=&#34;note-box&#34;&gt;
+  &lt;strong&gt;Key inequality to remember:&lt;/strong&gt; R² &amp;gt; Q², RMSE&lt;sub&gt;tr&lt;/sub&gt; &amp;lt; RMSE&lt;sub&gt;cv&lt;/sub&gt;, a low RMSE&lt;sub&gt;ex&lt;/sub&gt; and MAE&lt;sub&gt;ex&lt;/sub&gt;, together with a high R²&lt;sub&gt;ex&lt;/sub&gt;, are all required simultaneously for a reliable model.
+&lt;/div&gt;
+
+
+&lt;hr&gt;
+&lt;h2 id=&#34;internal-validation-necessary-but-not-sufficient&#34;&gt;Internal Validation: Necessary but Not Sufficient&lt;/h2&gt;
+&lt;p&gt;Internal statistics describe how well your model fits the training data. R²&lt;sub&gt;tr&lt;/sub&gt; must be at least 0.600, but the more diagnostic check is the gap between R²&lt;sub&gt;tr&lt;/sub&gt; and R²&lt;sub&gt;adj.&lt;/sub&gt;. A large gap signals that some descriptors are contributing noise rather than signal and should be removed.&lt;/p&gt;
+&lt;p&gt;The Lack-of-Fit (LOF) statistic penalises overfitting more aggressively than R² alone. The concordance correlation coefficient CCC&lt;sub&gt;tr&lt;/sub&gt; above 0.800 is particularly informative because it jointly measures precision and accuracy, punishing models that are systematically biased even if they show high correlation.&lt;/p&gt;
+&lt;p&gt;The ΔK criterion of 0.05 is a lesser-known but important check: it compares slopes of regression lines through the origin between observed and predicted values, detecting systematic over- or under-prediction that R² obscures.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;cross-validation-testing-generalisability-on-training-data&#34;&gt;Cross-Validation: Testing Generalisability on Training Data&lt;/h2&gt;
+&lt;p&gt;Cross-validation estimates predictive ability without touching the external set. Q²&lt;sub&gt;loo&lt;/sub&gt; above 0.500 is the minimum bar; many reviewers now expect 0.600 or above for publication. Leave-many-out (Q²&lt;sub&gt;LMO&lt;/sub&gt;) is more conservative and more reliable for small datasets where single compound removals can give optimistic results.&lt;/p&gt;
+&lt;p&gt;Y-scrambling is often overlooked but should be reported in every paper. If R²&lt;sub&gt;Yscr&lt;/sub&gt; and Q²&lt;sub&gt;Yscr&lt;/sub&gt; are not close to zero, your model is capturing artefacts in the data structure rather than a true structure-activity relationship.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;external-validation-the-real-test&#34;&gt;External Validation: The Real Test&lt;/h2&gt;
+&lt;p&gt;Compounds in the external set were never seen during training. This makes external metrics the gold standard. R²&lt;sub&gt;ex&lt;/sub&gt; above 0.600 and CCC&lt;sub&gt;ex&lt;/sub&gt; above 0.800 are the headline numbers, but the Golbraikh-Tropsha criteria (R²-ExPy = 0.786 and R&amp;rsquo;&lt;sub&gt;o&lt;/sub&gt;² = 0.741) add important geometric checks on whether your regression line passes through the origin appropriately.&lt;/p&gt;
+&lt;p&gt;The Schüürmann Q²-F1, Q²-F2 and Consonni-Todeschini Q²-F3 metrics each use a different reference model in the denominator. Reporting all three gives reviewers and regulators a more complete picture than any single metric alone.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;practical-checklist-before-submission&#34;&gt;Practical Checklist Before Submission&lt;/h2&gt;
+&lt;p&gt;Before submitting a QSAR paper, run through each tier. A model that passes internal checks but fails cross-validation almost certainly overfits. A model that passes cross-validation but fails external validation likely has a biased or unrepresentative training set, or the applicability domain has not been properly defined. Only models that clear all three tiers simultaneously warrant regulatory or prospective use.&lt;/p&gt;
+&lt;p&gt;Finally, always report the full set of metrics rather than cherry-picking the ones that look best. Reviewers familiar with this framework will notice missing statistics, and the absence of Y-scrambling results in particular is a common reason for rejection at journals such as &lt;em&gt;JCIM&lt;/em&gt; or &lt;em&gt;JCTC&lt;/em&gt;.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Golbraikh, A.; Tropsha, A. &lt;em&gt;J. Mol. Graph. Model.&lt;/em&gt; &lt;strong&gt;2002&lt;/strong&gt;, &lt;em&gt;20&lt;/em&gt;, 269-276.&lt;/li&gt;
+&lt;li&gt;Roy, K.; Kar, S.; Ambure, P. &lt;em&gt;Chemom. Intell. Lab. Syst.&lt;/em&gt; &lt;strong&gt;2015&lt;/strong&gt;, &lt;em&gt;152&lt;/em&gt;, 18-33.&lt;/li&gt;
+&lt;li&gt;Chirico, N.; Gramatica, P. &lt;em&gt;J. Chem. Inf. Model.&lt;/em&gt; &lt;strong&gt;2011&lt;/strong&gt;, &lt;em&gt;51&lt;/em&gt;, 2320-2335.&lt;/li&gt;
+&lt;li&gt;Consonni, V.; Ballabio, D.; Todeschini, R. &lt;em&gt;J. Chem. Inf. Model.&lt;/em&gt; &lt;strong&gt;2009&lt;/strong&gt;, &lt;em&gt;49&lt;/em&gt;, 1669-1678.&lt;/li&gt;
+&lt;li&gt;OECD. &lt;em&gt;Guidance Document on the Validation of (Q)SAR Models.&lt;/em&gt; ENV/JM/MONO(2007)2.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

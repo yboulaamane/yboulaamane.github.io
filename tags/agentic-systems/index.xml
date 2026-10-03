@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Agentic Systems | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/agentic-systems/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/agentic-systems/index.xml" rel="self" type="application/rss+xml" />
+    <description>Agentic Systems</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 11 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Agentic Systems</title>
+      <link>https://yboulaamane.github.io/tags/agentic-systems/</link>
+    </image>
+    
+    <item>
+      <title>From Prompts to Systems: How AI Engineering Changed Between 2023 and 2026</title>
+      <link>https://yboulaamane.github.io/blog/from-prompts-to-systems-ai-engineering-2023-2026/</link>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/from-prompts-to-systems-ai-engineering-2023-2026/</guid>
+      <description>&lt;p&gt;Between 2023 and 2026, the practice of building with large language models shifted from writing better prompts to designing better systems. The model itself was once the entire product. Now it is one component inside a much larger architecture that includes retrieval pipelines, memory layers, tool orchestration, evaluation harnesses, guardrails, and cost management.&lt;/p&gt;
+&lt;p&gt;This transition reflects a deeper conceptual change: success with AI is no longer about asking the right question. It is about building the right infrastructure around an imperfect reasoning engine.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-2023-mental-model&#34;&gt;The 2023 Mental Model&lt;/h2&gt;
+&lt;p&gt;The early interaction pattern with LLMs was straightforward:&lt;/p&gt;
+
+&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 850 170&#34; width=&#34;100%&#34; height=&#34;100%&#34;&gt;
+  &lt;defs&gt;
+    &lt;linearGradient id=&#34;g23a&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#94A3B8&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#64748B&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;filter id=&#34;ds&#34; x=&#34;-5%&#34; y=&#34;-5%&#34; width=&#34;110%&#34; height=&#34;110%&#34;&gt;
+      &lt;feDropShadow dx=&#34;1&#34; dy=&#34;2&#34; stdDeviation=&#34;2&#34; flood-opacity=&#34;0.08&#34; /&gt;
+    &lt;/filter&gt;
+    &lt;marker id=&#34;arr&#34; viewBox=&#34;0 0 10 10&#34; refX=&#34;5&#34; refY=&#34;5&#34; markerWidth=&#34;6&#34; markerHeight=&#34;6&#34; orient=&#34;auto-start-reverse&#34;&gt;
+      &lt;path d=&#34;M 0 0 L 10 5 L 0 10 z&#34; fill=&#34;#94A3B8&#34; /&gt;
+    &lt;/marker&gt;
+  &lt;/defs&gt;
+  &lt;style&gt;
+    .label { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 13px; fill: #FFFFFF; }
+    .sublabel { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-size: 11px; fill: #F1F5F9; }
+    .note { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-size: 11px; fill: #64748B; }
+  &lt;/style&gt;
+
+  &lt;rect width=&#34;850&#34; height=&#34;170&#34; fill=&#34;#F8FAFC&#34; rx=&#34;12&#34; /&gt;
+  &lt;text x=&#34;25&#34; y=&#34;30&#34; font-family=&#34;Inter, system-ui, sans-serif&#34; font-weight=&#34;800&#34; font-size=&#34;16&#34; fill=&#34;#334155&#34;&gt;2023: Linear Prompt-Response Loop&lt;/text&gt;
+
+  &lt;g transform=&#34;translate(55, 60)&#34; filter=&#34;url(#ds)&#34;&gt;
+    &lt;rect width=&#34;140&#34; height=&#34;70&#34; rx=&#34;8&#34; fill=&#34;url(#g23a)&#34; /&gt;
+    &lt;text x=&#34;70&#34; y=&#34;30&#34; class=&#34;label&#34; text-anchor=&#34;middle&#34;&gt;User&lt;/text&gt;
+    &lt;text x=&#34;70&#34; y=&#34;50&#34; class=&#34;sublabel&#34; text-anchor=&#34;middle&#34;&gt;writes prompt&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;path d=&#34;M 205 95 L 280 95&#34; fill=&#34;none&#34; stroke=&#34;#94A3B8&#34; stroke-width=&#34;2&#34; marker-end=&#34;url(#arr)&#34; /&gt;
+
+  &lt;g transform=&#34;translate(290, 60)&#34; filter=&#34;url(#ds)&#34;&gt;
+    &lt;rect width=&#34;140&#34; height=&#34;70&#34; rx=&#34;8&#34; fill=&#34;url(#g23a)&#34; /&gt;
+    &lt;text x=&#34;70&#34; y=&#34;30&#34; class=&#34;label&#34; text-anchor=&#34;middle&#34;&gt;LLM&lt;/text&gt;
+    &lt;text x=&#34;70&#34; y=&#34;50&#34; class=&#34;sublabel&#34; text-anchor=&#34;middle&#34;&gt;generates response&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;path d=&#34;M 440 95 L 515 95&#34; fill=&#34;none&#34; stroke=&#34;#94A3B8&#34; stroke-width=&#34;2&#34; marker-end=&#34;url(#arr)&#34; /&gt;
+
+  &lt;g transform=&#34;translate(525, 60)&#34; filter=&#34;url(#ds)&#34;&gt;
+    &lt;rect width=&#34;140&#34; height=&#34;70&#34; rx=&#34;8&#34; fill=&#34;url(#g23a)&#34; /&gt;
+    &lt;text x=&#34;70&#34; y=&#34;30&#34; class=&#34;label&#34; text-anchor=&#34;middle&#34;&gt;User&lt;/text&gt;
+    &lt;text x=&#34;70&#34; y=&#34;50&#34; class=&#34;sublabel&#34; text-anchor=&#34;middle&#34;&gt;reads output&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;path d=&#34;M 675 95 L 750 95&#34; fill=&#34;none&#34; stroke=&#34;#94A3B8&#34; stroke-width=&#34;2&#34; marker-end=&#34;url(#arr)&#34; /&gt;
+
+  &lt;g transform=&#34;translate(760, 60)&#34; filter=&#34;url(#ds)&#34;&gt;
+    &lt;rect width=&#34;60&#34; height=&#34;70&#34; rx=&#34;8&#34; fill=&#34;#CBD5E1&#34; /&gt;
+    &lt;text x=&#34;30&#34; y=&#34;42&#34; class=&#34;note&#34; text-anchor=&#34;middle&#34;&gt;repeat&lt;/text&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+
+
+&lt;p&gt;The dominant workflow was conversational. A user typed a prompt, received a response, and iterated. The primary skill was prompt engineering: knowing how to phrase instructions, set roles, provide few-shot examples, and manage token budgets. The model did the reasoning, and the user&amp;rsquo;s responsibility ended at crafting good input.&lt;/p&gt;
+&lt;p&gt;This worked well for single-turn tasks: drafting emails, summarizing papers, answering factual questions. But it broke down rapidly when applied to tasks requiring multiple steps, external data access, persistent state, or verifiable correctness.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-2026-mental-model&#34;&gt;The 2026 Mental Model&lt;/h2&gt;
+&lt;p&gt;By 2026, the dominant workflow is architectural:&lt;/p&gt;
+
+&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 850 420&#34; width=&#34;100%&#34; height=&#34;100%&#34;&gt;
+  &lt;defs&gt;
+    &lt;linearGradient id=&#34;gCtx&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#3B82F6&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#1D4ED8&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;gAgent&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#8B5CF6&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#6D28D9&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;gTool&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#10B981&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#047857&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;gEval&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#F59E0B&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#D97706&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id=&#34;gInfra&#34; x1=&#34;0%&#34; y1=&#34;0%&#34; x2=&#34;100%&#34; y2=&#34;100%&#34;&gt;
+      &lt;stop offset=&#34;0%&#34; stop-color=&#34;#EF4444&#34; /&gt;
+      &lt;stop offset=&#34;100%&#34; stop-color=&#34;#DC2626&#34; /&gt;
+    &lt;/linearGradient&gt;
+    &lt;filter id=&#34;ds2&#34; x=&#34;-5%&#34; y=&#34;-5%&#34; width=&#34;110%&#34; height=&#34;110%&#34;&gt;
+      &lt;feDropShadow dx=&#34;1&#34; dy=&#34;2&#34; stdDeviation=&#34;2&#34; flood-opacity=&#34;0.08&#34; /&gt;
+    &lt;/filter&gt;
+  &lt;/defs&gt;
+  &lt;style&gt;
+    .card-title { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 700; font-size: 12px; fill: #FFFFFF; }
+    .card-desc { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-size: 10px; fill: #F3F4F6; }
+    .card-num { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 800; font-size: 11px; fill: rgba(255,255,255,0.3); }
+    .section-title { font-family: &#39;Inter&#39;, system-ui, sans-serif; font-weight: 800; font-size: 16px; fill: #334155; }
+  &lt;/style&gt;
+
+  &lt;rect width=&#34;850&#34; height=&#34;420&#34; fill=&#34;#F8FAFC&#34; rx=&#34;12&#34; /&gt;
+  &lt;text x=&#34;25&#34; y=&#34;30&#34; class=&#34;section-title&#34;&gt;2026: Full-Stack AI Systems Architecture&lt;/text&gt;
+
+  &lt;!-- Row 1: Context Layer --&gt;
+  &lt;g transform=&#34;translate(25, 50)&#34; filter=&#34;url(#ds2)&#34;&gt;
+    &lt;rect width=&#34;155&#34; height=&#34;100&#34; rx=&#34;8&#34; fill=&#34;url(#gCtx)&#34; /&gt;
+    &lt;text x=&#34;12&#34; y=&#34;22&#34; class=&#34;card-num&#34;&gt;LAYER 01&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;45&#34; class=&#34;card-title&#34;&gt;Context Engineering&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;65&#34; class=&#34;card-desc&#34;&gt;Dynamic prompt assembly&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;80&#34; class=&#34;card-desc&#34;&gt;RAG 2.0 retrieval pipelines&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;g transform=&#34;translate(195, 50)&#34; filter=&#34;url(#ds2)&#34;&gt;
+    &lt;rect width=&#34;155&#34; height=&#34;100&#34; rx=&#34;8&#34; fill=&#34;url(#gCtx)&#34; /&gt;
+    &lt;text x=&#34;12&#34; y=&#34;22&#34; class=&#34;card-num&#34;&gt;LAYER 02&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;45&#34; class=&#34;card-title&#34;&gt;Memory Systems&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;65&#34; class=&#34;card-desc&#34;&gt;Session and long-term state&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;80&#34; class=&#34;card-desc&#34;&gt;Vector database indices&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Row 1: Agent Layer --&gt;
+  &lt;g transform=&#34;translate(365, 50)&#34; filter=&#34;url(#ds2)&#34;&gt;
+    &lt;rect width=&#34;155&#34; height=&#34;100&#34; rx=&#34;8&#34; fill=&#34;url(#gAgent)&#34; /&gt;
+    &lt;text x=&#34;12&#34; y=&#34;22&#34; class=&#34;card-num&#34;&gt;LAYER 03&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;45&#34; class=&#34;card-title&#34;&gt;Agentic Orchestration&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;65&#34; class=&#34;card-desc&#34;&gt;Multi-agent coordination&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;80&#34; class=&#34;card-desc&#34;&gt;Loop and graph engineering&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;g transform=&#34;translate(535, 50)&#34; filter=&#34;url(#ds2)&#34;&gt;
+    &lt;rect width=&#34;155&#34; height=&#34;100&#34; rx=&#34;8&#34; fill=&#34;url(#gAgent)&#34; /&gt;
+    &lt;text x=&#34;12&#34; y=&#34;22&#34; class=&#34;card-num&#34;&gt;LAYER 04&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;45&#34; class=&#34;card-title&#34;&gt;Tool Use / MCP&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;65&#34; class=&#34;card-desc&#34;&gt;Function calling&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;80&#34; class=&#34;card-desc&#34;&gt;External API integration&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Row 2: Eval Layer --&gt;
+  &lt;g transform=&#34;translate(25, 170)&#34; filter=&#34;url(#ds2)&#34;&gt;
+    &lt;rect width=&#34;155&#34; height=&#34;100&#34; rx=&#34;8&#34; fill=&#34;url(#gEval)&#34; /&gt;
+    &lt;text x=&#34;12&#34; y=&#34;22&#34; class=&#34;card-num&#34;&gt;LAYER 05&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;45&#34; class=&#34;card-title&#34;&gt;Evaluation Harness&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;65&#34; class=&#34;card-desc&#34;&gt;Automated benchmarking&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;80&#34; class=&#34;card-desc&#34;&gt;Regression tracking&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;g transform=&#34;translate(195, 170)&#34; filter=&#34;url(#ds2)&#34;&gt;
+    &lt;rect width=&#34;155&#34; height=&#34;100&#34; rx=&#34;8&#34; fill=&#34;url(#gEval)&#34; /&gt;
+    &lt;text x=&#34;12&#34; y=&#34;22&#34; class=&#34;card-num&#34;&gt;LAYER 06&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;45&#34; class=&#34;card-title&#34;&gt;Guardrails&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;65&#34; class=&#34;card-desc&#34;&gt;Input/output validation&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;80&#34; class=&#34;card-desc&#34;&gt;Safety and compliance&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;g transform=&#34;translate(365, 170)&#34; filter=&#34;url(#ds2)&#34;&gt;
+    &lt;rect width=&#34;155&#34; height=&#34;100&#34; rx=&#34;8&#34; fill=&#34;url(#gEval)&#34; /&gt;
+    &lt;text x=&#34;12&#34; y=&#34;22&#34; class=&#34;card-num&#34;&gt;LAYER 07&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;45&#34; class=&#34;card-title&#34;&gt;Observability&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;65&#34; class=&#34;card-desc&#34;&gt;Trace logging and metrics&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;80&#34; class=&#34;card-desc&#34;&gt;Latency profiling&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Row 2: Infra Layer --&gt;
+  &lt;g transform=&#34;translate(535, 170)&#34; filter=&#34;url(#ds2)&#34;&gt;
+    &lt;rect width=&#34;155&#34; height=&#34;100&#34; rx=&#34;8&#34; fill=&#34;url(#gInfra)&#34; /&gt;
+    &lt;text x=&#34;12&#34; y=&#34;22&#34; class=&#34;card-num&#34;&gt;LAYER 08&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;45&#34; class=&#34;card-title&#34;&gt;Cost Optimization&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;65&#34; class=&#34;card-desc&#34;&gt;Model routing and caching&lt;/text&gt;
+    &lt;text x=&#34;12&#34; y=&#34;80&#34; class=&#34;card-desc&#34;&gt;Distillation pipelines&lt;/text&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Bottom summary bar --&gt;
+  &lt;rect x=&#34;25&#34; y=&#34;300&#34; width=&#34;665&#34; height=&#34;95&#34; rx=&#34;10&#34; fill=&#34;#1E293B&#34; filter=&#34;url(#ds2)&#34; /&gt;
+  &lt;text x=&#34;45&#34; y=&#34;330&#34; font-family=&#34;Inter, system-ui, sans-serif&#34; font-weight=&#34;700&#34; font-size=&#34;14&#34; fill=&#34;#F1F5F9&#34;&gt;The Model is One Component&lt;/text&gt;
+  &lt;text x=&#34;45&#34; y=&#34;355&#34; font-family=&#34;Inter, system-ui, sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#94A3B8&#34;&gt;Production AI = Context + Retrieval + Tools + Agents + Evaluation + Guardrails + Observability + Cost Control&lt;/text&gt;
+  &lt;text x=&#34;45&#34; y=&#34;378&#34; font-family=&#34;Inter, system-ui, sans-serif&#34; font-size=&#34;11&#34; fill=&#34;#94A3B8&#34;&gt;Failures rarely stem from model intelligence. They stem from missing infrastructure around the model.&lt;/text&gt;
+&lt;/svg&gt;
+
+
+&lt;p&gt;The workflow now looks more like systems design than conversation design:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Define the task and decompose it into subtasks.&lt;/li&gt;
+&lt;li&gt;Assemble the right context dynamically from retrieval, memory, and structured data.&lt;/li&gt;
+&lt;li&gt;Let the system retrieve, reason, invoke tools, and verify its own outputs.&lt;/li&gt;
+&lt;li&gt;Monitor quality, latency, and cost across every component.&lt;/li&gt;
+&lt;li&gt;Improve the system continuously through evaluation-driven iteration.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;what-changed-layer-by-layer&#34;&gt;What Changed, Layer by Layer&lt;/h2&gt;
+&lt;h3 id=&#34;context-engineering-replaced-prompt-engineering&#34;&gt;Context Engineering Replaced Prompt Engineering&lt;/h3&gt;
+&lt;p&gt;In 2023, &amp;ldquo;prompt engineering&amp;rdquo; meant crafting static instruction strings. By 2026, the term has largely been superseded by &lt;strong&gt;context engineering&lt;/strong&gt;: the practice of dynamically assembling the full input window from multiple sources at inference time. This includes retrieved documents, structured metadata, conversation history, tool outputs, and system instructions, all composed programmatically rather than written by hand.&lt;/p&gt;
+&lt;p&gt;The distinction matters because static prompts break as soon as the task requires information the prompt author did not anticipate. Context engineering treats the prompt as a computed artifact, assembled from live data sources based on the current query.&lt;/p&gt;
+&lt;h3 id=&#34;retrieval-became-a-first-class-engineering-problem&#34;&gt;Retrieval Became a First-Class Engineering Problem&lt;/h3&gt;
+&lt;p&gt;Early retrieval-augmented generation (RAG) pipelines were often naive: embed documents, store vectors, retrieve top-k, concatenate into the prompt. This approach suffered from chunk boundary errors, irrelevant retrieval, and poor handling of multi-hop reasoning.&lt;/p&gt;
+&lt;p&gt;By 2026, retrieval pipelines incorporate re-ranking models, hybrid search (combining dense embeddings with sparse keyword indices), query decomposition, and iterative retrieval where the model reformulates its own search queries based on partial results. The retrieval layer is now treated as a system that must be evaluated, versioned, and optimized independently of the language model.&lt;/p&gt;
+&lt;h3 id=&#34;tool-use-moved-from-novelty-to-necessity&#34;&gt;Tool Use Moved from Novelty to Necessity&lt;/h3&gt;
+&lt;p&gt;Function calling and tool use were experimental features in 2023. By 2026, they are foundational. Models routinely call APIs, execute code, query databases, browse the web, and operate within file systems. The Model Context Protocol (MCP) emerged as a standardized interface for connecting language models to external tools and data sources.&lt;/p&gt;
+&lt;p&gt;This shift changes what LLMs can do: instead of only generating text about a topic, they can take actions within a software environment. The engineering challenge moved from &amp;ldquo;Can the model call a function?&amp;rdquo; to &amp;ldquo;How do we define, scope, and permission tool access safely?&amp;rdquo;&lt;/p&gt;
+&lt;h3 id=&#34;agentic-systems-replaced-single-turn-interactions&#34;&gt;Agentic Systems Replaced Single-Turn Interactions&lt;/h3&gt;
+&lt;p&gt;Single-turn question-answering gave way to multi-step, goal-directed agent loops. An agent receives a task, decomposes it into subtasks, executes them sequentially or in parallel (potentially delegating to sub-agents), observes the results, and iterates until the objective is met or a stopping condition is reached.&lt;/p&gt;
+&lt;p&gt;This architectural pattern introduces new failure modes: agents can loop indefinitely, take incorrect actions with real-world consequences, or accumulate errors across steps. Managing these failure modes requires explicit loop budgets, verification checkpoints, and human-in-the-loop escalation paths.&lt;/p&gt;
+&lt;h3 id=&#34;evaluation-became-non-negotiable&#34;&gt;Evaluation Became Non-Negotiable&lt;/h3&gt;
+&lt;p&gt;In 2023, most LLM applications shipped without systematic evaluation. By 2026, evaluation harnesses are standard infrastructure. These include automated test suites that compare model outputs against reference answers, regression tests that detect quality degradation after prompt or model changes, and domain-specific metrics that go beyond generic accuracy scores.&lt;/p&gt;
+&lt;p&gt;Without evaluation, teams cannot distinguish between a system that works and a system that appears to work. The difference becomes visible only at scale, when edge cases, distribution shifts, and adversarial inputs expose latent failures.&lt;/p&gt;
+&lt;h3 id=&#34;guardrails-and-observability-became-production-requirements&#34;&gt;Guardrails and Observability Became Production Requirements&lt;/h3&gt;
+&lt;p&gt;Deploying an LLM without guardrails in 2023 was common. By 2026, production systems require input validation (blocking prompt injection, enforcing schema compliance), output validation (detecting hallucinations, enforcing format constraints), and safety layers (content filtering, PII detection).&lt;/p&gt;
+&lt;p&gt;Observability tools provide trace-level visibility into every step of a multi-component pipeline: which documents were retrieved, what tool calls were made, how long each step took, and where failures occurred. This infrastructure is borrowed directly from distributed systems engineering and applied to probabilistic AI pipelines.&lt;/p&gt;
+&lt;h3 id=&#34;cost-optimization-became-a-design-constraint&#34;&gt;Cost Optimization Became a Design Constraint&lt;/h3&gt;
+&lt;p&gt;Large model inference is expensive. Production systems now routinely implement model routing (sending simple queries to smaller, cheaper models and complex queries to larger ones), response caching, prompt compression, and knowledge distillation (training smaller task-specific models from larger model outputs). The economic viability of an AI product depends as much on inference cost management as on output quality.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;what-being-good-at-ai-now-means&#34;&gt;What &amp;ldquo;Being Good at AI&amp;rdquo; Now Means&lt;/h2&gt;
+&lt;p&gt;The competency profile for AI practitioners has expanded significantly:&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;2023 Competency&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;2026 Competency&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Writing effective prompts&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Designing context assembly pipelines&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Choosing the right model&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Selecting model routing strategies&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Understanding tokenization&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Building retrieval and re-ranking systems&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Manual output review&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Implementing automated evaluation harnesses&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Ad hoc API calls&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Orchestrating multi-agent tool-use workflows&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Cost as afterthought&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Cost as first-order design constraint&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The field has become more interdisciplinary. Building a production AI system now requires elements of software engineering, distributed systems design, information retrieval, evaluation methodology, and ML operations, combined with enough domain expertise to define what &amp;ldquo;correct&amp;rdquo; means for the specific use case.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;prompting-is-not-obsolete&#34;&gt;Prompting is Not Obsolete&lt;/h2&gt;
+&lt;p&gt;Prompt construction remains important. Well-structured instructions, clear task decomposition, and appropriate few-shot examples still improve output quality. But prompting is now one component inside a larger system, not the system itself.&lt;/p&gt;
+&lt;p&gt;The best AI products in 2026 combine strong prompting with dynamic retrieval, persistent memory, verified tool use, automated evaluation, and continuous monitoring. The teams that build reliable AI products are the ones that treat the model as an inference engine embedded within an engineered pipeline, not as a standalone oracle.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;takeaways&#34;&gt;Takeaways&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;2023 AI was about asking. 2026 AI is about orchestrating.&lt;/strong&gt; The model is one layer in a multi-component architecture.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Context engineering superseded prompt engineering.&lt;/strong&gt; Dynamic, programmatic context assembly replaced static instruction strings.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Evaluation is non-negotiable infrastructure.&lt;/strong&gt; Without automated quality measurement, AI systems degrade silently.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tool use and agentic loops changed what LLMs can do.&lt;/strong&gt; Models now act within environments, not just generate text about them.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cost optimization is a design constraint, not an afterthought.&lt;/strong&gt; Economically viable AI requires model routing, caching, and distillation strategies.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

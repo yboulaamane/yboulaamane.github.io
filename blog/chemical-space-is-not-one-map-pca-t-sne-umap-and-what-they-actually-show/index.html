@@ -1,0 +1,3323 @@
+<!doctype html>
+<!-- This site was created with Hugo Blox. https://hugoblox.com -->
+<!-- Last Published: October 3, 2026 --><html lang="en-us" dir="ltr"
+      data-wc-theme-default="system">
+  
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="generator" content="Hugo Blox Builder 0.4.2" />
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Yassir Boulaamane" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="PCA, t-SNE, and UMAP can produce very different views of the same molecular dataset. The reason is simple: chemical space depends on how molecules are represented, how similarity is defined, and how that high-dimensional information is projected." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://yboulaamane.github.io/blog/chemical-space-is-not-one-map-pca-t-sne-umap-and-what-they-actually-show/" />
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="/css/themes/blue.min.css" />
+  
+
+  
+  
+    
+    <link href="/dist/wc.min.66412b998ac08468152d24203c4b87b9cee6bcf511d07b4d040d809cecafd615.css" rel="stylesheet" />
+  
+
+  
+  
+  
+
+  
+
+  <script>
+     
+    window.hbb = {
+       defaultTheme: document.documentElement.dataset.wcThemeDefault,
+       setDarkTheme: () => {
+        document.documentElement.classList.add("dark");
+        document.documentElement.style.colorScheme = "dark";
+      },
+       setLightTheme: () => {
+        document.documentElement.classList.remove("dark");
+        document.documentElement.style.colorScheme = "light";
+      }
+    }
+
+    console.debug(`Default Hugo Blox Builder theme is ${window.hbb.defaultTheme}`);
+
+    if ("wc-color-theme" in localStorage) {
+      localStorage.getItem("wc-color-theme") === "dark" ? window.hbb.setDarkTheme() : window.hbb.setLightTheme();
+    } else {
+      window.hbb.defaultTheme === "dark" ? window.hbb.setDarkTheme() : window.hbb.setLightTheme();
+      if (window.hbb.defaultTheme === "system") {
+        window.matchMedia("(prefers-color-scheme: dark)").matches ? window.hbb.setDarkTheme() : window.hbb.setLightTheme();
+      }
+    }
+  </script>
+
+  <script>
+    
+    document.addEventListener('DOMContentLoaded', function () {
+      
+      let checkboxes = document.querySelectorAll('li input[type=\'checkbox\'][disabled]');
+      checkboxes.forEach(e => {
+        e.parentElement.parentElement.classList.add('task-list');
+      });
+
+      
+      const liNodes = document.querySelectorAll('.task-list li');
+      liNodes.forEach(nodes => {
+        let textNodes = Array.from(nodes.childNodes).filter(node => node.nodeType === 3 && node.textContent.trim().length > 1);
+        if (textNodes.length > 0) {
+          const span = document.createElement('label');
+          textNodes[0].after(span);  
+          span.appendChild(nodes.querySelector('input[type=\'checkbox\']'));
+          span.appendChild(textNodes[0]);
+        }
+      });
+    });
+  </script>
+
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZEHYHGYCJB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-ZEHYHGYCJB', {});
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+  <link rel="icon" type="image/png" href="/media/icon_hu_5b9deb501aeab0c7.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu_cc92b57ff025c448.png" />
+
+  <link rel="canonical" href="https://yboulaamane.github.io/blog/chemical-space-is-not-one-map-pca-t-sne-umap-and-what-they-actually-show/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@yassir_tw" />
+    <meta property="twitter:creator" content="@yassir_tw" />
+  
+  <meta property="og:site_name" content="Yassir Boulaamane" />
+  <meta property="og:url" content="https://yboulaamane.github.io/blog/chemical-space-is-not-one-map-pca-t-sne-umap-and-what-they-actually-show/" />
+  <meta property="og:title" content="Chemical Space Is Not One Map: PCA, t-SNE, UMAP, and What They Actually Show | Yassir Boulaamane" />
+  <meta property="og:description" content="PCA, t-SNE, and UMAP can produce very different views of the same molecular dataset. The reason is simple: chemical space depends on how molecules are represented, how similarity is defined, and how that high-dimensional information is projected." /><meta property="og:image" content="https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png" />
+    <meta property="twitter:image" content="https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2026-10-01T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2026-10-01T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://yboulaamane.github.io/blog/chemical-space-is-not-one-map-pca-t-sne-umap-and-what-they-actually-show/"
+  },
+  "headline": "Chemical Space Is Not One Map: PCA, t-SNE, UMAP, and What They Actually Show",
+  
+  "datePublished": "2026-10-01T00:00:00Z",
+  "dateModified": "2026-10-01T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Yassir Boulaamane"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Yassir Boulaamane",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://yboulaamane.github.io/media/icon_hu_d671a3d3d3979562.png"
+    }
+  },
+  "description": "PCA, t-SNE, and UMAP can produce very different views of the same molecular dataset. The reason is simple: chemical space depends on how molecules are represented, how similarity is defined, and how that high-dimensional information is projected."
+}
+</script>
+
+  
+
+  
+
+
+  <title>Chemical Space Is Not One Map: PCA, t-SNE, UMAP, and What They Actually Show | Yassir Boulaamane</title>
+
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <style>
+    @font-face {
+      font-family: 'Inter var';
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+      src: url(/dist/font/Inter.var.woff2) format(woff2);
+    }
+  </style>
+
+  
+
+  
+  
+
+
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+      
+      
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        
+        
+      
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+<link type="text/css" rel="stylesheet" href="/dist/pagefind/pagefind-ui.be766eb419317a14ec769d216e9779bfe8f3737c80e780f4ba0dafb57a41a482.css" integrity="sha256-vnZutBkxehTsdp0hbpd5v&#43;jzc3yA54D0ug2vtXpBpII=" />
+
+
+<script src="/dist/pagefind/pagefind-ui.87693d7c6f2b3b347ce359d0ede762c033419f0a32b22ce508c335a81d841f1b.js" integrity="sha256-h2k9fG8rOzR841nQ7ediwDNBnwoysizlCMM1qB2EHxs="></script>
+
+
+<script>window.hbb.pagefind = {"baseUrl":"/"};</script>
+
+<style>
+  html.dark {
+    --pagefind-ui-primary: #eeeeee;
+    --pagefind-ui-text: #eeeeee;
+    --pagefind-ui-background: #152028;
+    --pagefind-ui-border: #152028;
+    --pagefind-ui-tag: #152028;
+  }
+
+   
+  .search-close > svg {
+    height: calc(64px * var(--pagefind-ui-scale));
+    width: calc(64px * var(--pagefind-ui-scale));
+  }
+</style>
+
+<script>
+  
+  let searchWrapper = null;
+
+  window.addEventListener('DOMContentLoaded', (event) => {
+    
+    new PagefindUI({
+      element: "#search",
+      showSubResults: true,
+      baseUrl: window.hbb.pagefind.baseUrl,
+      bundlePath: window.hbb.pagefind.baseUrl + "pagefind/",
+    });
+
+    
+    searchWrapper = document.getElementById('search-wrapper');
+
+    
+    let triggers = document.querySelectorAll('[data-search-toggle]');
+    triggers.forEach(trigger =>
+      trigger.addEventListener('click', handleSearchToggle)
+    );
+  });
+
+  function handleSearchToggle(event) {
+    if (!searchWrapper) return;
+
+    const isHidden = searchWrapper.classList.contains('hidden');
+    searchWrapper.classList.toggle('hidden');
+    document.body.style.overflow = isHidden ? 'hidden' : '';
+
+    const searchInput = searchWrapper.querySelector("input");
+    if (searchInput) {
+      searchInput.value = "";
+      searchInput.focus();
+    }
+
+    if (!searchWrapper.classList.contains('hidden')) {
+      let clearTrigger = document.querySelector('.pagefind-ui__search-clear');
+
+      if (clearTrigger && !clearTrigger.hasAttribute('listenerOnClick')) {
+        clearTrigger.setAttribute('listenerOnClick', 'true');
+
+        clearTrigger.addEventListener('click', () => {
+          searchInput.focus();
+        });
+      }
+    }
+  }
+
+  
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && searchWrapper && !searchWrapper.classList.contains('hidden')) {
+      searchWrapper.classList.add('hidden');
+    }
+  });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  <script
+    defer
+    src="/js/hugo-blox-en.min.66c960df48bae747fe5c0e4923bb91161361660e526c2982c5c49d1e76c35649.js"
+    integrity="sha256-Zslg30i650f&#43;XA5JI7uRFhNhZg5SbCmCxcSdHnbDVkk="
+  ></script>
+
+  
+  
+
+
+
+
+
+
+
+
+  
+    
+      
+      <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+      
+    
+  
+
+
+
+
+</head>
+
+  <body class="dark:bg-hb-dark dark:text-white page-wrapper" id="top">
+    <div id="page-bg"></div>
+    <div class="page-header sticky top-0 z-30">
+      
+      
+      
+        
+        
+        
+          <header id="site-header" class="header">
+  <nav class="navbar px-3 flex justify-left">
+    <div class="order-0 h-100">
+      
+      <a class="navbar-brand" href="/" title="Yassir Boulaamane">
+        Yassir Boulaamane
+      </a>
+    </div>
+    
+    <input id="nav-toggle" type="checkbox" class="hidden" />
+    <label
+      for="nav-toggle"
+      class="order-3 cursor-pointer flex items-center lg:hidden text-dark dark:text-white lg:order-1">
+      <svg id="show-button" class="h-6 fill-current block" viewBox="0 0 20 20">
+        <title>Open Menu</title>
+        <path d="M0 3h20v2H0V3z m0 6h20v2H0V9z m0 6h20v2H0V0z"></path>
+      </svg>
+      <svg id="hide-button" class="h-6 fill-current hidden" viewBox="0 0 20 20">
+        <title>Close Menu</title>
+        <polygon
+          points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2"
+          transform="rotate(45 10 10)"></polygon>
+      </svg>
+    </label>
+    
+
+    
+    
+    <ul
+      id="nav-menu"
+      class="navbar-nav order-3 hidden lg:flex w-full pb-6 lg:order-1 lg:w-auto lg:space-x-2 lg:pb-0 xl:space-x-8 justify-left
+      ">
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/"
+        >Bio</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/#publications"
+        >Publications</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/#conferences"
+        >Conferences</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/blog"
+        >Blog</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/services"
+        >Services</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/cv"
+        >CV</a
+        >
+      </li>
+      
+      
+      
+      
+      
+      
+      <li class="nav-item">
+        <a
+          class="nav-link "
+          
+          href="/projects"
+        >Projects</a
+        >
+      </li>
+      
+      
+      
+    </ul>
+
+    <div class="order-1 ml-auto flex items-center md:order-2 lg:ml-0">
+
+      
+      
+      
+      <button
+        aria-label="toggle search"
+        class="text-black hover:text-primary  inline-block px-3 text-xl dark:text-white"
+        data-search-toggle>
+        <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512" fill="currentColor"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+      </button>
+      
+
+      
+      
+      <div class="px-3 text-black hover:text-primary-700 dark:text-white dark:hover:text-primary-300
+            [&.active]:font-bold [&.active]:text-black/90 dark:[&.active]:text-white">
+        <button class="theme-toggle mt-1" accesskey="t" title="appearance">
+          <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+               stroke-linejoin="round" class="dark:hidden">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+               stroke-linejoin="round" class=" dark:block [&:not(dark)]:hidden">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+      
+
+      
+      
+
+      
+      
+    </div>
+  </nav>
+</header>
+
+<div
+  id="search-wrapper"
+  class="hidden fixed inset-0 z-50 bg-white dark:bg-gray-900 flex flex-col overflow-hidden"
+>
+  <div class="flex justify-end p-3">
+    <button
+      aria-label="search"
+      class="search-close text-black hover:text-primary dark:text-white"
+      data-search-toggle
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <div id="search" class="flex-1 overflow-y-auto p-3">
+    
+  </div>
+</div>
+
+
+        
+      
+    </div>
+    <div class="page-body  my-10">
+      
+
+
+
+
+
+<div class="mx-auto flex max-w-screen-xl">
+  
+
+
+
+<aside class="hb-sidebar-container max-lg:[transform:translate3d(0,-100%,0)] lg:hidden xl:block">
+  
+  <div class="px-4 pt-4 lg:hidden">
+    
+    
+  </div>
+  <div class="hb-scrollbar lg:h-[calc(100vh-var(--navbar-height))]">
+    <ul class="flex flex-col gap-1 lg:hidden">
+      
+      
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/services/"
+    
+  >Services
+    </a></li>
+        <li class="open"><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/"
+    
+  >Blog
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col open"><a
+    class="hb-sidebar-custom-link
+      sidebar-active-item bg-primary-100 font-semibold text-primary-800 dark:bg-primary-300 dark:text-primary-900"
+    href="/blog/chemical-space-is-not-one-map-pca-t-sne-umap-and-what-they-actually-show/"
+    
+  >Chemical Space Is Not One Map: PCA, t-SNE, UMAP, and What They Actually Show
+    </a>
+  
+    <ul class="hb-sidebar-mobile-toc"><li>
+              <a
+                href="#chemical-space-starts-before-pca-or-umap"
+                class="hb-docs-link"
+              >Chemical Space Starts Before PCA or UMAP</a>
+            </li>
+          <li>
+              <a
+                href="#ecfp4-turning-molecules-into-structural-fingerprints"
+                class="hb-docs-link"
+              >ECFP4: Turning Molecules Into Structural Fingerprints</a>
+            </li>
+          <li>
+              <a
+                href="#jaccard-and-tanimoto-what-does-close-mean"
+                class="hb-docs-link"
+              >Jaccard and Tanimoto: What Does &amp;ldquo;Close&amp;rdquo; Mean?</a>
+            </li>
+          <li>
+              <a
+                href="#pca-the-old-method-that-is-still-extremely-useful"
+                class="hb-docs-link"
+              >PCA: The Old Method That Is Still Extremely Useful</a>
+            </li>
+          <li>
+              <a
+                href="#t-sne-excellent-at-finding-neighborhoods"
+                class="hb-docs-link"
+              >t-SNE: Excellent at Finding Neighborhoods</a>
+            </li>
+          <li>
+              <a
+                href="#umap-a-useful-compromise"
+                class="hb-docs-link"
+              >UMAP: A Useful Compromise</a>
+            </li>
+          <li>
+              <a
+                href="#the-same-dataset-can-produce-three-different-stories"
+                class="hb-docs-link"
+              >The Same Dataset Can Produce Three Different Stories</a>
+            </li>
+          <li>
+              <a
+                href="#so-why-do-people-still-use-pca"
+                class="hb-docs-link"
+              >So Why Do People Still Use PCA?</a>
+            </li>
+          <li>
+              <a
+                href="#and-why-is-t-sne-still-used"
+                class="hb-docs-link"
+              >And Why Is t-SNE Still Used?</a>
+            </li>
+          <li>
+              <a
+                href="#my-preferred-workflow-for-structural-chemical-space"
+                class="hb-docs-link"
+              >My Preferred Workflow for Structural Chemical Space</a>
+            </li>
+          <li>
+              <a
+                href="#the-most-useful-qsar-plot-might-be-train-vs-test"
+                class="hb-docs-link"
+              >The Most Useful QSAR Plot Might Be Train vs Test</a>
+            </li>
+          <li>
+              <a
+                href="#umap-is-the-picture-tanimoto-is-the-measurement"
+                class="hb-docs-link"
+              >UMAP Is the Picture. Tanimoto Is the Measurement.</a>
+            </li>
+          <li>
+              <a
+                href="#do-not-forget-the-representation"
+                class="hb-docs-link"
+              >Do Not Forget the Representation</a>
+            </li>
+          <li>
+              <a
+                href="#why-i-would-sometimes-show-both-pca-and-umap"
+                class="hb-docs-link"
+              >Why I Would Sometimes Show Both PCA and UMAP</a>
+            </li>
+          <li>
+              <a
+                href="#a-practical-comparison"
+                class="hb-docs-link"
+              >A Practical Comparison</a>
+            </li>
+          <li>
+              <a
+                href="#there-is-no-single-chemical-space"
+                class="hb-docs-link"
+              >There Is No Single Chemical Space</a>
+            </li>
+          <li>
+              <a
+                href="#final-takeaway"
+                class="hb-docs-link"
+              >Final Takeaway</a>
+            </li>
+          <li>
+              <a
+                href="#references"
+                class="hb-docs-link"
+              >References</a>
+            </li>
+          </ul>
+  
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/from-molecules-to-decisions-my-takeaways-from-efmc-ismc-2026/"
+    
+  >From Molecules to Decisions: My Takeaways from EFMC-ISMC 2026
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/trapped-in-the-basin-why-metastable-states-rule-molecular-dynamics/"
+    
+  >Trapped in the Basin: Why Metastable States Rule Molecular Dynamics
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/beyond-conventional-md-exploring-rare-molecular-events/"
+    
+  >Beyond Conventional MD: Exploring Rare Molecular Events
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/from-prompts-to-systems-ai-engineering-2023-2026/"
+    
+  >From Prompts to Systems: How AI Engineering Changed Between 2023 and 2026
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/claude-code-practical-workflow/"
+    
+  >Getting Real Work Out of Claude Code: A Practical Workflow Guide
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/reproducing-transition-metal-catalyzed-mechanisms-dft-tutorial/"
+    
+  >DFT Reproduction of Gold(III)-Mediated Selenocysteine Arylation: An ORCA Tutorial
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/making-ai-work-in-discovery-chemistry-optibrium-webinar/"
+    
+  >Making AI Work in Discovery Chemistry: Precision, Trust, and Practical Value
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/shifting-focus-from-model-size-to-rigorous-evaluation/"
+    
+  >Beyond Parameter Counts: The Shift Toward Rigorous Evaluation in Scientific AI
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/protein-descriptors/"
+    
+  >Protein Descriptors for Machine Learning in Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/graph-neural-networks-and-dgl-a-beginners-guide/"
+    
+  >Graph Neural Networks and DGL: A Beginner&#39;s Guide
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/ensemble-docking/"
+    
+  >Ensemble Docking for Binding and Activity Prediction
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/agentic-ai-and-multi-agent-systems-in-drug-discovery/"
+    
+  >Beyond Static Models: Agentic AI and Multi-Agent Systems in Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/building-a-3d-pharmacophore-model-from-pdb-data-a-free-python-workflow/"
+    
+  >Building a 3D Pharmacophore Model from PDB Data: A Free Python Workflow
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/most-accurate-semi-empirical-partial-charges-for-molecular-docking/"
+    
+  >Choosing the Right Partial Charges for Molecular Docking: AM1-BCC, PM6 and Beyond
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/reproducible-is-not-robust-why-one-umap-seed-isnt-enough/"
+    
+  >Reproducible ≠ Robust: Why One UMAP Seed Isn&#39;t Enough to Trust a Split
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/you-are-not-an-impostor-agentic-coding-and-the-new-computational-scientist/"
+    
+  >You Are Not an Impostor: Agentic Coding and the New Computational Scientist
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/does-data-leakage-inflate-binding-affinity-gnns/"
+    
+  >Does data leakage really inflate binding-affinity GNNs? A laptop-scale reproduction
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/a-history-of-graph-neural-networks-in-drug-discovery/"
+    
+  >A History of Graph Neural Networks in Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/a-practical-guide-to-qsar-model-validation-internal-cross-and-external-checks/"
+    
+  >A Practical Guide to QSAR Model Validation: Internal, Cross, and External Checks
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/beyond-smiles-the-evolving-landscape-of-molecular-representations/"
+    
+  >Beyond SMILES: The Evolving Landscape of Molecular Representations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/choosing-the-right-pdb-structure-a-systematic-guide-for-docking-and-md-simulations/"
+    
+  >Choosing the Right PDB Structure: A Systematic Guide for Docking and MD Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/computational-strategies-for-accelerating-drug-discovery/"
+    
+  >Computational Strategies for Accelerating Drug Discovery: A Comprehensive Review
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/point-cloud-classification-with-graph-neural-networks-using-pytorch-geometric/"
+    
+  >Point Cloud Classification with Graph Neural Networks Using PyTorch Geometric
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/what-agentic-engineering-means-for-computational-drug-discovery/"
+    
+  >What Agentic Engineering Means for Computational Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/getting-started-with-graph-neural-networks-for-protein-ligand-complexes-using-dgl/"
+    
+  >Getting Started with Graph Neural Networks for Protein–Ligand Complexes Using DGL
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/beyond-2d-fingerprints-3d-protein-ligand-interaction-encoding-for-ml/"
+    
+  >Beyond 2D Fingerprints: Encoding Protein-Ligand Interactions for Machine Learning
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/understanding-binding-energetics-in-molecular-docking/"
+    
+  >Understanding Binding Energetics in Molecular Docking
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/practical-system-preparation-tips-for-molecular-dynamics-simulations/"
+    
+  >Practical System Preparation Tips for Molecular Dynamics Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/"
+    
+  >Stop Using B3LYP/6-31G*: Critical Pitfalls in Modern DFT Calculations and How to Avoid Them
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/ten-critical-pitfalls-in-molecular-dynamics-simulations-and-strategies-for-mitigation/"
+    
+  >Ten Critical Pitfalls in Molecular Dynamics Simulations and Strategies for Mitigation
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/unlocking-the-undruggable-how-biotechnology-is-rewriting-drug-discovery/"
+    
+  >Unlocking the Undruggable: How Biotechnology Is Rewriting Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/how-to-use-datawarrior-for-drug-discovery-key-workflows-from-the-villoutreix-tutorials/"
+    
+  >How to Use DataWarrior for Drug Discovery: Key Workflows From the Villoutreix Tutorials
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/energy-minimization-with-open-babel-practical-guide-for-ligand-preparation/"
+    
+  >Energy Minimization with Open Babel: Practical Guide for Ligand Preparation
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/a-quick-guide-to-temperature-replica-exchange-molecular-dynamics/"
+    
+  >A Quick Guide to Temperature Replica Exchange Molecular Dynamics
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/principal-component-analysis-and-free-energy-landscape-mapping-using-gromacs/"
+    
+  >Principal Component Analysis and Free Energy Landscape Mapping Using GROMACS
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/validating-molecular-docking-poses-with-dft-a-quick-guide/"
+    
+  >Validating Molecular Docking Poses with DFT: A Quick Guide
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/ai-chemistry-building-drug-discovery-pipelines-with-free-tools/"
+    
+  >AI &#43; Chemistry: Building Drug Discovery Pipelines with Free Tools
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/an-in-depth-guide-to-md-simulation-and-analysis-of-a-protein-ligand-complex/"
+    
+  >Step-by-Step MD Simulation of a Protein–Ligand Complex with GROMACS
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/molecular-simulation-in-drug-discovery-a-strategic-guide-to-core-methods/"
+    
+  >Molecular Simulation in Drug Discovery: A Strategic Guide to Core Methods
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/computational-drug-repurposing-with-multiscale-interactomes/"
+    
+  >Computational Drug Repurposing with Multiscale Interactomes
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/how-to-validate-alphafold-structures/"
+    
+  >How to Validate AlphaFold Structures
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/a-comprehensive-guide-to-scientific-writing-and-publishing/"
+    
+  >A Comprehensive Guide to Scientific Writing and Publishing
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/interpretable-machine-learning-model-as-a-key-to-understanding-bbb-permeability/"
+    
+  >Interpretable Machine Learning as a Key to Understanding BBB Permeability
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/3d-qsar-general-workflow-with-key-metrics-insights-from-xu-et-al-2020/"
+    
+  >How to build and validate 3D-QSAR models - Insights from Xu et al., 2020
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/a-comprehensive-guide-to-hybrid-assembly-pipeline-for-genomic-sequencing/"
+    
+  >A Comprehensive Guide to Hybrid Assembly Pipeline for Genomic Sequencing
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/data-driven-chemistry-how-data-science-empowers-drug-discovery/"
+    
+  >Data-Driven Chemistry: How Data Science Empowers Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/using-padelpy-generate-molecular-fingerprints-machine-learning-based-qsar/"
+    
+  >Using PaDELPy to Generate Molecular Fingerprints for Machine Learning-Based QSAR
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/understanding-molecular-dynamics-simulations/"
+    
+  >Understanding Molecular Dynamics Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/determining-the-appropriate-length-for-protein-ligand-md-simulations/"
+    
+  >How Long Should Molecular Dynamics Simulations Run? A Practical Guide
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/supervised-vs-unsupervised-methods-machine-learning/"
+    
+  >Supervised vs. Unsupervised Methods in Machine Learning
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/chemical-databases-machine-learning-drug-discovery/"
+    
+  >Chemical Databases Every ML Scientist Should Know for Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/blog/perform-data-curation-classify-bioactivity-data-chembl-database/"
+    
+  >How to Perform Data Curation and Classify Bioactivity Data on ChEMBL Database
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/"
+    
+  >Projects
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/sorbent/"
+    
+  >Sorbent
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/assayer/"
+    
+  >Assayer
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/biolatent/"
+    
+  >BioLatent
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/learncadd/"
+    
+  >Learn CADD
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/qsarboost/"
+    
+  >QSARBoost
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/qsarbiopred/"
+    
+  >QSARBioPred
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/ensemblebbb/"
+    
+  >EnsembleBBB
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/awesomedrugdiscovery/"
+    
+  >Awesome Drug Discovery
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/artemisiadb/"
+    
+  >ArtemisiaDB
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/project/coumarindb/"
+    
+  >CoumarinDB
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/"
+    
+  >Publications
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/s41598-026-71327-2/"
+    
+  >Integrative computational repositioning of Foretinib and PF-03715455 as potential GSTP1 inhibitors for cancer chemosensitization
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/ijms27157025/"
+    
+  >QSAR-Guided Virtual Screening and Molecular Dynamics Reveal Olaparib as a Repurposing Lead Against α-Synuclein Aggregation
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/ijms27156677/"
+    
+  >FDA-Approved Drug Repurposing as p53 Mutants Rescue Candidates Using Structure-Based Virtual Screening and Molecular Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/ijms27146476/"
+    
+  >Repurposing FDA-Approved Drugs as Nav1.7 Channel Modulators: An Integrated Structure-Based Virtual Screening and Molecular Dynamics Study
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/ijms27114786/"
+    
+  >ARumenamides as Multitarget Ion Channel Modulators: Insights from Fenestration-Focused Docking, ADMET Profiling, and Molecular Dynamics
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/jafc-6c01340/"
+    
+  >Odorant-Binding Protein Interactions with Herbivore-Induced Volatiles Drive Behavioral Attraction of Harmonia axyridis (Coleoptera: Coccinellidae) to Tuta Absoluta-Infested Tomato Plant
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/moldivers-11504/"
+    
+  >Repurposing DrugBank compounds as NAD-dependent deacetylase sirtuin 2 inhibitors via QSAR modelling with gradient boosting algorithms and all-atom molecular simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/molstruc-145636/"
+    
+  >Anti-cancer and dual inhibitory potential of PI3K/AKT and Ras/MAPK/ERK signalling of a novel zinc (II) trinuclear complex with tetradentate schiff base ligand and azido ion in prostate adenocarcinoma: synthesis, in silico and in vitro evaluation
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/biomedicines13112605/"
+    
+  >Drug Repurposing for AML: Structure-Based Virtual Screening and Molecular Simulations of FDA-Approved Compounds with Polypharmacological Potential
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/cbm-25005505/"
+    
+  >Computational screening of natural products as tryptophan 2,3-dioxygenase inhibitors: Insights from CNN-based QSAR, molecular docking, ADMET, and molecular dynamics simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/lianbs-142-090/"
+    
+  >Virtual Screening and Identification of Natural Molecules as Promising Quorum Sensing Inhibitors against Pseudomonas aeruginosa
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/slct-202403473/"
+    
+  >Computational Investigation of Phytochemicals from Aloysia citriodora as Drug Targets for Parkinson&#39;s Disease-Associated Proteins
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/bns-01625/"
+    
+  >Metal and Metal Oxide Nanoparticles: Computational Analysis of Their Interactions and Antibacterial Activities Against Pseudomonas aeruginosa
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/fchem-1449165/"
+    
+  >Computational exploration of acefylline derivatives as MAO-B inhibitors for Parkinson&#39;s disease: insights from molecular docking, DFT, ADMET, and molecular dynamics approaches
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/chemica-01074/"
+    
+  >In silico Discovery of Dual Ligands Targeting MAO-B and AA2AR from African Natural Products Using Pharmacophore Modelling, Molecular Docking, and Molecular Dynamics Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/lianbs-134-176/"
+    
+  >Identification of Natural Inhibitors of SARS-CoV-2 Main Protease (Mpro) via Structure-Based Virtual Screening and Molecular Dynamics Simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/prmcm-100495/"
+    
+  >Dendrobium nobile alkaloids modulate calcium dysregulation and neuroinflammation in Alzheimer&#39;s disease: A bioinformatic analysis
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/msystems-00325-24/"
+    
+  >Antibiotic discovery with artificial intelligence for the treatment of Acinetobacter baumannii infections
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/jbsd-2270753/"
+    
+  >Identification of novel dual acting ligands targeting the adenosine A2A and serotonin 5-HT1A receptors
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/jbsd-2260879/"
+    
+  >Exploring natural products as multi-target-directed drugs for Parkinson&#39;s disease: an in-silico approach integrating QSAR, pharmacophore modeling, and molecular dynamics simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/moldivers-10691/"
+    
+  >Probing the molecular mechanisms of α-synuclein inhibitors unveils promising natural candidates through machine-learning QSAR, pharmacophore modeling, and molecular dynamics simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/jbsd-2209650/"
+    
+  >Chemical library design, QSAR modeling and molecular dynamics simulations of naturally occurring coumarins as dual inhibitors of MAO-B and AChE
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/book-chapter-1/"
+    
+  >Insights into the Structure-Activity Relationship of Alkynyl-Coumarinyl Ethers as Selective MAO-B Inhibitors Using Molecular Docking
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/slct-202201572/"
+    
+  >β-amino carbonyl derivatives: Synthesis, Molecular Docking, ADMET, Molecular Dynamic and Herbicidal studies
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/jib-2021-0027/"
+    
+  >In silico studies of natural product-like caffeine derivatives as potential MAO-B inhibitors/AA2AR antagonists for the treatment of Parkinson&#39;s disease
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/publications/jbsd-2033643/"
+    
+  >Structural exploration of selected C6 and C7-substituted coumarin isomers as selective MAO-B inhibitors
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/"
+    
+  >Conferences
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2026-09-06-poster-3/"
+    
+  >Combined enhanced conformational sampling and protein-ligand dockings on CYP3A4 improves in silico prediction of drug metabolism
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2024-12-20-presentation-5/"
+    
+  >Computational screening of natural products as tryptophan 2,3-dioxygenase inhibitors: Insights from machine learning QSAR, molecular docking, ADMET, and molecular dynamics simulations
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2024-10-31-poster-2/"
+    
+  >Antibiotic discovery with artificial intelligence for the treatment of Acinetobacter baumannii infections
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2023-10-06-presentation-4/"
+    
+  >Enhanced accuracy in predicting drug blood-brain barrier permeability with a Machine Learning Ensemble model
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2022-10-09-presentation-3/"
+    
+  >QSAR and molecular modeling studies for the discovery of natural products as multi-target-directed drugs for Parkinson&#39;s disease
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2021-12-27-presentation-2/"
+    
+  >Computational studies of African Natural Products Databases to identify natural dual-target-directed antiparkinsonian drugs
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2021-12-27-poster-1/"
+    
+  >Machine Learning model to predict potential Monoamine Oxidase B inhibitors from Cannabis Compound Database
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/conferences/2021-06-23-presentation-1/"
+    
+  >Docking-based virtual screening and ADME evaluation of caffeine-based phytochemicals as inhibitors of Monoamine Oxidase B
+    </a>
+              
+            </li></ul>
+      </div></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/projects/"
+    
+  >Projects
+    </a></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/cv/"
+    
+  >CV
+    </a></li>
+        <li class=""><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/teaching/"
+    
+  >Teaching
+        <span data-hb-sidebar-toggle>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-[18px] min-w-[18px] rounded-sm p-0.5 hover:bg-gray-800/5 dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="origin-center transition-transform rtl:-rotate-180"></path></svg>
+        </span>
+    </a><div class="ltr:pr-0 overflow-hidden">
+        <ul class="hb-sidebar-list"><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/teaching/js/"
+    
+  >Learn JavaScript
+    </a>
+              
+            </li><li class="flex flex-col "><a
+    class="hb-sidebar-custom-link
+      text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-primary-800 dark:hover:text-gray-50"
+    href="/teaching/python/"
+    
+  >Learn Python
+    </a>
+              
+            </li></ul>
+      </div></li>
+    </ul>
+
+    <div class="max-xl:hidden h-0 w-64 shrink-0"></div></div>
+
+</aside>
+  
+
+<nav class="hb-toc order-last hidden w-64 shrink-0 xl:block print:hidden px-4" aria-label="table of contents">
+  
+
+
+
+
+
+
+
+
+
+
+
+  <div class="hb-scrollbar text-sm [hyphens:auto] sticky top-16 overflow-y-auto pr-4 pt-6 max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] -mr-4 rtl:-ml-4"><p class="mb-4 font-semibold tracking-tight">On this page</p><ul>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#chemical-space-starts-before-pca-or-umap">Chemical Space Starts Before PCA or UMAP</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#ecfp4-turning-molecules-into-structural-fingerprints">ECFP4: Turning Molecules Into Structural Fingerprints</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#jaccard-and-tanimoto-what-does-close-mean">Jaccard and Tanimoto: What Does “Close” Mean?</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#pca-the-old-method-that-is-still-extremely-useful">PCA: The Old Method That Is Still Extremely Useful</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#where-pca-works-particularly-well">Where PCA works particularly well</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#where-pca-struggles">Where PCA struggles</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#t-sne-excellent-at-finding-neighborhoods">t-SNE: Excellent at Finding Neighborhoods</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#but-there-is-an-important-trap">But there is an important trap</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#umap-a-useful-compromise">UMAP: A Useful Compromise</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#the-same-dataset-can-produce-three-different-stories">The Same Dataset Can Produce Three Different Stories</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#so-why-do-people-still-use-pca">So Why Do People Still Use PCA?</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#and-why-is-t-sne-still-used">And Why Is t-SNE Still Used?</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#my-preferred-workflow-for-structural-chemical-space">My Preferred Workflow for Structural Chemical Space</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#the-most-useful-qsar-plot-might-be-train-vs-test">The Most Useful QSAR Plot Might Be Train vs Test</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#umap-is-the-picture-tanimoto-is-the-measurement">UMAP Is the Picture. Tanimoto Is the Measurement.</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#do-not-forget-the-representation">Do Not Forget the Representation</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#why-i-would-sometimes-show-both-pca-and-umap">Why I Would Sometimes Show Both PCA and UMAP</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#pca-on-physicochemical-descriptors">PCA on physicochemical descriptors</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="pl-4 rtl:pr-4 inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#umap-on-ecfp4-fingerprints">UMAP on ECFP4 fingerprints</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#a-practical-comparison">A Practical Comparison</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#there-is-no-single-chemical-space">There Is No Single Chemical Space</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#final-takeaway">Final Takeaway</a>
+      </li>
+      <li class="my-2 scroll-my-6 scroll-py-6">
+        <a class="font-semibold inline-block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 w-full break-words" href="#references">References</a>
+      </li></ul>
+
+  
+  
+    
+    
+  
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  </nav>
+
+
+  <article class="w-full break-words flex min-h-[calc(100vh-var(--navbar-height))] min-w-0 justify-center pb-8 pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+    <main class="w-full min-w-0 max-w-6xl px-6 pt-4 md:px-12">
+
+      
+
+      <h1 class="mt-2 text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Chemical Space Is Not One Map: PCA, t-SNE, UMAP, and What They Actually Show</h1>
+
+      <div class="mt-4 mb-16">
+      <div class="text-gray-500 dark:text-gray-300 text-sm flex items-center flex-wrap gap-y-2"><span class="mr-1">Oct 1, 2026</span>
+        
+
+        
+        <span class="mx-1">·</span>
+        <span class="mx-1">
+          13 min read
+        </span>
+        
+        </div>
+
+        <div class="mt-3">
+          
+
+
+
+
+
+        </div>
+      </div>
+
+
+
+      
+      
+      
+
+      
+      
+
+      <div class="prose prose-slate lg:prose-xl dark:prose-invert">
+        <p>When we visualize a chemical dataset, we often talk about plotting its <strong>chemical space</strong>.</p>
+<p>The phrase sounds objective, almost as if every molecular dataset has one underlying map waiting to be discovered.</p>
+<p>It does not.</p>
+<p>A chemical-space plot is the result of several choices:</p>
+<ol>
+<li>How do we represent each molecule?</li>
+<li>How do we define similarity between those representations?</li>
+<li>How do we compress hundreds or thousands of dimensions into two?</li>
+</ol>
+<p>Change any of these choices and the resulting map can change dramatically.</p>
+<p>This becomes especially important when comparing three methods that appear constantly in cheminformatics papers: <strong>PCA, t-SNE, and UMAP</strong>.</p>
+<p>So which one should we use?</p>
+<p>The answer depends less on which dimensionality-reduction algorithm is fashionable and more on <strong>what we actually mean by chemical similarity</strong>.</p>
+<h2 id="chemical-space-starts-before-pca-or-umap">Chemical Space Starts Before PCA or UMAP</h2>
+<p>Suppose we have a dataset of 5,000 molecules.</p>
+<p>Before applying any dimensionality-reduction algorithm, each molecule must first become a numerical representation. That representation defines the information available to every later step.</p>
+<p>This first step is arguably more important than choosing between PCA, t-SNE, and UMAP.</p>
+<p>A molecule represented using molecular weight, logP, TPSA, hydrogen-bond donors, and hydrogen-bond acceptors occupies a very different mathematical space from the same molecule represented using a 2048-bit ECFP fingerprint.</p>
+<p>The first representation describes <strong>physicochemical property space</strong>.</p>
+<p>The second describes <strong>local structural patterns</strong>.</p>
+<p>Both are legitimate chemical spaces, but they answer different questions.</p>
+<p>This is why saying:</p>
+<blockquote>
+<p>&ldquo;I visualized the chemical space using UMAP&rdquo;</p></blockquote>
+<p>is incomplete.</p>
+<p>A more informative statement would be:</p>
+<blockquote>
+<p>&ldquo;I projected ECFP4 fingerprints into two dimensions using UMAP with Jaccard distance.&rdquo;</p></blockquote>
+<p>Now we know what molecular similarity means in that visualization.</p>
+<figure style="margin:2rem 0;">
+<svg viewBox="0 0 1120 430" role="img" aria-labelledby="pipeline-title pipeline-desc" style="width:100%;height:auto;display:block;">
+  <title id="pipeline-title">How a chemical-space map is constructed</title>
+  <desc id="pipeline-desc">Molecules are converted into a representation, compared with a suitable similarity metric, projected into two dimensions, and interpreted according to the information encoded upstream.</desc>
+  <defs><marker id="arrow-pipeline" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/></marker></defs>
+  <g fill="none" stroke="currentColor" stroke-width="2">
+    <rect x="30" y="28" width="1060" height="350" rx="24" opacity="0.18"/>
+    <rect x="65" y="135" width="215" height="125" rx="18" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+    <rect x="330" y="135" width="215" height="125" rx="18" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+    <rect x="595" y="135" width="215" height="125" rx="18" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+    <rect x="860" y="135" width="195" height="125" rx="18" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+    <path d="M280 198 L320 198" marker-end="url(#arrow-pipeline)"/>
+    <path d="M545 198 L585 198" marker-end="url(#arrow-pipeline)"/>
+    <path d="M810 198 L850 198" marker-end="url(#arrow-pipeline)"/>
+  </g>
+  <g fill="currentColor" text-anchor="middle">
+    <text x="560" y="75" font-size="27" font-weight="700">A chemical-space map is a chain of choices</text>
+    <text x="560" y="106" font-size="16" opacity="0.72">The projection is only the final transformation</text>
+    <text x="173" y="174" font-size="20" font-weight="700">Representation</text>
+    <text x="173" y="207" font-size="16">Descriptors or ECFP4</text>
+    <text x="173" y="234" font-size="14" opacity="0.72">What information is encoded?</text>
+    <text x="438" y="174" font-size="20" font-weight="700">Geometry</text>
+    <text x="438" y="207" font-size="16">Euclidean or Jaccard</text>
+    <text x="438" y="234" font-size="14" opacity="0.72">What does “close” mean?</text>
+    <text x="703" y="174" font-size="20" font-weight="700">Projection</text>
+    <text x="703" y="207" font-size="16">PCA, t-SNE, or UMAP</text>
+    <text x="703" y="234" font-size="14" opacity="0.72">What structure is preserved?</text>
+    <text x="958" y="174" font-size="20" font-weight="700">Interpretation</text>
+    <text x="958" y="207" font-size="16">A two-dimensional view</text>
+    <text x="958" y="234" font-size="14" opacity="0.72">What can we claim?</text>
+    <text x="560" y="329" font-size="18" font-weight="700">The projection compresses geometry; it does not define the chemistry.</text>
+  </g>
+</svg>
+<figcaption><strong>Figure 1.</strong> Chemical space is constructed upstream of PCA, t-SNE, or UMAP. Molecular representation and the distance metric determine what proximity means before the data are projected.</figcaption>
+</figure>
+<h2 id="ecfp4-turning-molecules-into-structural-fingerprints">ECFP4: Turning Molecules Into Structural Fingerprints</h2>
+<p>Extended-connectivity fingerprints, or ECFPs, encode local atomic environments around each atom.</p>
+<p>In simplified terms, the algorithm starts from individual atoms and iteratively expands outward through neighboring bonds.</p>
+<p>For ECFP4, the maximum diameter of the encoded environments is approximately four bonds, corresponding to a radius of two iterations.</p>
+<p>A molecule can then be represented as a binary vector such as:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">0 1 0 0 1 0 1 0 0 1 0 ...
+</span></span></code></pre></div><p>Each activated bit indicates the presence of one or more hashed molecular environments.</p>
+<p>This representation is particularly useful in medicinal chemistry because molecules sharing scaffolds or local structural motifs tend to activate overlapping fingerprint bits.</p>
+<p>It therefore provides a practical definition of <strong>structural similarity</strong>.</p>
+<p>A terminology note is useful here. RDKit&rsquo;s Morgan fingerprint with radius 2 is commonly referred to as ECFP4 in cheminformatics workflows. Strictly speaking, it is an implementation closely related to the ECFP algorithm rather than a guarantee of bit-for-bit identity with every commercial ECFP implementation.</p>
+<h2 id="jaccard-and-tanimoto-what-does-close-mean">Jaccard and Tanimoto: What Does &ldquo;Close&rdquo; Mean?</h2>
+<p>Once molecules become binary fingerprints, we need a way to compare them.</p>
+<p>For two sets of fingerprint bits, A and B, the Jaccard similarity is:</p>
+<p style="text-align:center;"><strong>J(A,B) = |A ∩ B| / |A ∪ B|</strong></p>
+<p>For binary molecular fingerprints, this corresponds to the familiar <strong>Tanimoto coefficient</strong> commonly used in cheminformatics.</p>
+<p>If two molecules activate many of the same fingerprint bits, their similarity approaches 1.</p>
+<p>If they share few structural features, their similarity approaches 0.</p>
+<p>The corresponding distance is:</p>
+<p style="text-align:center;"><strong>d = 1 - J(A,B)</strong></p>
+<p>This gives us something chemically meaningful before dimensionality reduction has even started.</p>
+<p>We have defined:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">similar molecules = molecules sharing fingerprint environments
+</span></span></code></pre></div><p>That is why using a fingerprint-aware metric matters.</p>
+<p>Applying ordinary Euclidean geometry blindly to sparse binary fingerprints is not always the most chemically natural choice.</p>
+<h2 id="pca-the-old-method-that-is-still-extremely-useful">PCA: The Old Method That Is Still Extremely Useful</h2>
+<p>Principal Component Analysis is sometimes treated as outdated now that nonlinear approaches such as t-SNE and UMAP are available.</p>
+<p>That is a mistake.</p>
+<p>PCA solves a different problem.</p>
+<p>It identifies new orthogonal directions that capture progressively smaller amounts of variance in the original data.</p>
+<p>The first principal component captures the largest possible amount of variance.</p>
+<p>The second captures the largest remaining amount while remaining orthogonal to the first.</p>
+<p>And so on.</p>
+<p>The major advantage is interpretability.</p>
+<p>If I calculate descriptors such as molecular weight, logP, TPSA, hydrogen-bond counts, rotatable bonds, aromatic fraction, and ring count, PCA can tell me which combinations dominate variation across the dataset.</p>
+<p>I can also quantify how much variance is represented:</p>
+<p>For example, if PC1 explains 37% of the variance and PC2 explains 21%, the displayed plane accounts for 58% of the variance in the standardized descriptor matrix.</p>
+<p>That information has a clear statistical interpretation.</p>
+<p>This is something UMAP and t-SNE do not provide.</p>
+<h3 id="where-pca-works-particularly-well">Where PCA works particularly well</h3>
+<p>PCA is excellent for visualizing <strong>physicochemical descriptor space</strong>.</p>
+<p>For example, if one region of the PCA plot corresponds to high molecular weight, high logP, and many aromatic rings, while another corresponds to smaller molecules with higher polarity and fewer rings, the axes can often be investigated through the PCA loadings.</p>
+<p>The map is connected directly to the original variables.</p>
+<h3 id="where-pca-struggles">Where PCA struggles</h3>
+<p>The limitation is that PCA is linear.</p>
+<p>Chemical structure rarely varies along neat linear directions.</p>
+<p>Two compounds can be structurally related through complicated combinations of fragments that are difficult to express as a simple linear projection.</p>
+<p>This becomes particularly noticeable for high-dimensional sparse fingerprints.</p>
+<p>PCA can still be applied to fingerprints, but the geometry it assumes is often less aligned with the way medicinal chemists normally think about fingerprint similarity.</p>
+<h2 id="t-sne-excellent-at-finding-neighborhoods">t-SNE: Excellent at Finding Neighborhoods</h2>
+<p>t-distributed Stochastic Neighbor Embedding, better known as t-SNE, approaches dimensionality reduction differently.</p>
+<p>Instead of asking:</p>
+<blockquote>
+<p>Which directions explain the most variance?</p></blockquote>
+<p>it asks something closer to:</p>
+<blockquote>
+<p>Which points should remain neighbors after projection?</p></blockquote>
+<p>High-dimensional similarities are converted into probability distributions, and the algorithm attempts to produce a low-dimensional map with similar local relationships.</p>
+<p>This is why t-SNE often generates remarkably clean clusters.</p>
+<p>A chemical series that is difficult to distinguish in PCA may suddenly appear as a compact island.</p>
+<p>For exploratory visualization, this can be extremely useful.</p>
+<h3 id="but-there-is-an-important-trap">But there is an important trap</h3>
+<p>People naturally interpret scatterplots geometrically.</p>
+<p>If two clusters appear far apart, we instinctively assume they are extremely different.</p>
+<p>That interpretation is dangerous with t-SNE.</p>
+<p>The algorithm prioritizes <strong>local neighborhood preservation</strong>.</p>
+<p>The spacing between distant clusters is much less informative.</p>
+<p>Cluster size can also be misleading.</p>
+<p>A visually large island does not necessarily represent greater molecular diversity than a smaller island.</p>
+<p>This is one reason attractive t-SNE figures should be interpreted cautiously.</p>
+<h2 id="umap-a-useful-compromise">UMAP: A Useful Compromise</h2>
+<p>Uniform Manifold Approximation and Projection, or UMAP, also builds its representation around local neighborhoods.</p>
+<p>At a high level, UMAP constructs a graph describing which observations are neighbors in high-dimensional space.</p>
+<p>It then searches for a low-dimensional arrangement that reproduces this neighborhood structure as well as possible.</p>
+<p>For chemical fingerprints, this creates a natural workflow: <strong>ECFP4 → Jaccard distance → molecular-neighborhood graph → UMAP embedding</strong>.</p>
+<p>This combination is one reason UMAP has become common in modern cheminformatics.</p>
+<p>It is usually computationally efficient and often provides clearer structural organization than PCA when working with molecular fingerprints.</p>
+<p>Compared with t-SNE, UMAP can also preserve more of the broader organization of the dataset in many situations.</p>
+<p>But the word <strong>can</strong> matters.</p>
+<p>UMAP is still a nonlinear projection.</p>
+<p>It does not magically reconstruct the true geometry of chemical space.</p>
+<figure style="margin:2rem 0;">
+<svg viewBox="0 0 1120 560" role="img" aria-labelledby="comparison-title comparison-desc" style="width:100%;height:auto;display:block;">
+  <title id="comparison-title">Conceptual comparison of PCA, t-SNE, and UMAP</title>
+  <desc id="comparison-desc">Three projections of the same conceptual groups illustrate the different priorities of PCA, t-SNE, and UMAP.</desc>
+  <g fill="none" stroke="currentColor" stroke-width="1.8">
+    <rect x="25" y="90" width="340" height="390" rx="20" opacity="0.22"/>
+    <rect x="390" y="90" width="340" height="390" rx="20" opacity="0.22"/>
+    <rect x="755" y="90" width="340" height="390" rx="20" opacity="0.22"/>
+    <line x1="70" y1="385" x2="330" y2="385" opacity="0.3"/><line x1="70" y1="385" x2="70" y2="155" opacity="0.3"/>
+    <line x1="435" y1="385" x2="695" y2="385" opacity="0.3"/><line x1="435" y1="385" x2="435" y2="155" opacity="0.3"/>
+    <line x1="800" y1="385" x2="1060" y2="385" opacity="0.3"/><line x1="800" y1="385" x2="800" y2="155" opacity="0.3"/>
+  </g>
+  <g fill="currentColor" text-anchor="middle">
+    <text x="560" y="38" font-size="28" font-weight="700">One dataset, three projection priorities</text>
+    <text x="560" y="68" font-size="16" opacity="0.7">Schematic points: the lesson is what each method tries to preserve</text>
+    <text x="195" y="128" font-size="25" font-weight="700">PCA</text><text x="195" y="450" font-size="16" font-weight="700">Global linear variance</text><text x="195" y="473" font-size="14" opacity="0.72">Interpret axes and loadings</text>
+    <text x="560" y="128" font-size="25" font-weight="700">t-SNE</text><text x="560" y="450" font-size="16" font-weight="700">Local neighborhoods</text><text x="560" y="473" font-size="14" opacity="0.72">Do not interpret island spacing</text>
+    <text x="925" y="128" font-size="25" font-weight="700">UMAP</text><text x="925" y="450" font-size="16" font-weight="700">Neighborhood graph</text><text x="925" y="473" font-size="14" opacity="0.72">Broader geometry is approximate</text>
+    <text x="560" y="530" font-size="15" opacity="0.68">The coordinates are conceptual and do not represent an experimental molecular dataset.</text>
+  </g>
+  <g opacity="0.88">
+    <g fill="#2f80ed"><circle cx="120" cy="300" r="10"/><circle cx="142" cy="282" r="9"/><circle cx="159" cy="308" r="11"/><circle cx="181" cy="289" r="8"/><circle cx="195" cy="321" r="9"/></g>
+    <g fill="#f2994a"><circle cx="171" cy="260" r="9"/><circle cx="194" cy="248" r="11"/><circle cx="218" cy="268" r="9"/><circle cx="238" cy="244" r="8"/><circle cx="253" cy="277" r="10"/></g>
+    <g fill="#27ae60"><circle cx="211" cy="330" r="8"/><circle cx="235" cy="315" r="10"/><circle cx="258" cy="340" r="9"/><circle cx="282" cy="320" r="11"/><circle cx="302" cy="347" r="8"/></g>
+    <g fill="#9b51e0"><circle cx="245" cy="217" r="9"/><circle cx="269" cy="205" r="11"/><circle cx="292" cy="228" r="9"/><circle cx="316" cy="210" r="8"/></g>
+    <g fill="#2f80ed"><circle cx="478" cy="262" r="11"/><circle cx="500" cy="244" r="9"/><circle cx="520" cy="270" r="10"/><circle cx="542" cy="250" r="8"/><circle cx="497" cy="287" r="8"/></g>
+    <g fill="#f2994a"><circle cx="626" cy="235" r="10"/><circle cx="649" cy="250" r="9"/><circle cx="672" cy="230" r="11"/><circle cx="688" cy="258" r="8"/><circle cx="645" cy="273" r="8"/></g>
+    <g fill="#27ae60"><circle cx="546" cy="340" r="10"/><circle cx="570" cy="352" r="9"/><circle cx="593" cy="333" r="11"/><circle cx="617" cy="357" r="8"/><circle cx="580" cy="313" r="8"/></g>
+    <g fill="#9b51e0"><circle cx="535" cy="190" r="10"/><circle cx="560" cy="177" r="9"/><circle cx="585" cy="196" r="11"/><circle cx="610" cy="181" r="8"/></g>
+    <g fill="#2f80ed"><circle cx="840" cy="300" r="10"/><circle cx="862" cy="282" r="8"/><circle cx="882" cy="307" r="11"/><circle cx="904" cy="289" r="8"/></g>
+    <g fill="#27ae60"><circle cx="900" cy="347" r="10"/><circle cx="925" cy="332" r="8"/><circle cx="947" cy="354" r="11"/><circle cx="969" cy="337" r="8"/></g>
+    <g fill="#f2994a"><circle cx="950" cy="240" r="10"/><circle cx="974" cy="225" r="8"/><circle cx="997" cy="248" r="11"/><circle cx="1020" cy="230" r="8"/></g>
+    <g fill="#9b51e0"><circle cx="1010" cy="310" r="10"/><circle cx="1035" cy="295" r="8"/><circle cx="1055" cy="321" r="11"/></g>
+  </g>
+</svg>
+<figcaption><strong>Figure 2.</strong> PCA, t-SNE, and UMAP can produce different visual stories from the same input because they optimize different properties. Clean separation is not automatically a more truthful map.</figcaption>
+</figure>
+<h2 id="the-same-dataset-can-produce-three-different-stories">The Same Dataset Can Produce Three Different Stories</h2>
+<p>None of these maps is necessarily wrong.</p>
+<p>They are preserving different properties of the original high-dimensional dataset.</p>
+<p>This is the central idea:</p>
+<blockquote>
+<p><strong>Dimensionality reduction does not simply reveal structure. It decides which structure is worth preserving.</strong></p></blockquote>
+<h2 id="so-why-do-people-still-use-pca">So Why Do People Still Use PCA?</h2>
+<p>Because PCA gives us things nonlinear embeddings cannot.</p>
+<p>It is:</p>
+<ul>
+<li>fast</li>
+<li>deterministic</li>
+<li>mathematically transparent</li>
+<li>interpretable through feature loadings</li>
+<li>accompanied by explained variance</li>
+<li>useful for detecting correlated descriptors</li>
+<li>appropriate for many continuous molecular properties</li>
+</ul>
+<p>If I want to understand the physicochemical composition of a library, PCA may be exactly the method I want.</p>
+<p>Replacing PCA with UMAP simply because UMAP produces more visually separated clusters would not necessarily improve the analysis.</p>
+<p>In fact, it might remove useful interpretability.</p>
+<h2 id="and-why-is-t-sne-still-used">And Why Is t-SNE Still Used?</h2>
+<p>Because local structure matters.</p>
+<p>If the goal is exploratory analysis of closely related molecular families, t-SNE can produce informative visualizations.</p>
+<p>It also has a long history, is implemented in essentially every machine-learning ecosystem, and is familiar to researchers and reviewers.</p>
+<p>The mistake is not using t-SNE.</p>
+<p>The mistake is interpreting a t-SNE plot as if it were an ordinary Cartesian map where all global distances are meaningful.</p>
+<h2 id="my-preferred-workflow-for-structural-chemical-space">My Preferred Workflow for Structural Chemical Space</h2>
+<p>For a typical QSAR dataset where I want to inspect <strong>structural diversity</strong>, I would usually begin with Morgan/ECFP4 fingerprints generated at radius 2 and 2048 bits, followed by UMAP with Jaccard distance. Reasonable exploratory ranges are approximately 15–50 neighbors and a minimum distance of 0.05–0.3.</p>
+<p>A reasonable starting configuration would be:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">rdFingerprintGenerator</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">DataStructs</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">umap</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">generator</span> <span class="o">=</span> <span class="n">rdFingerprintGenerator</span><span class="o">.</span><span class="n">GetMorganGenerator</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fpSize</span><span class="o">=</span><span class="mi">2048</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fps</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl"><span class="n">arrays</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">smi</span> <span class="ow">in</span> <span class="n">smiles</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">smi</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fp</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">GetFingerprint</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2048</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">DataStructs</span><span class="o">.</span><span class="n">ConvertToNumpyArray</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">arrays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">arrays</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">reducer</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">UMAP</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">min_dist</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">metric</span><span class="o">=</span><span class="s2">&#34;jaccard&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">embedding</span> <span class="o">=</span> <span class="n">reducer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</span></span></code></pre></div><p>I would then reuse the exact same coordinates and recolor the map by activity class, train/test assignment, experimental pIC50, molecular weight, or scaffold cluster.</p>
+<p>This is often much more informative than generating a new embedding for every question.</p>
+<p>The geometry stays fixed while the interpretation changes.</p>
+<h2 id="the-most-useful-qsar-plot-might-be-train-vs-test">The Most Useful QSAR Plot Might Be Train vs Test</h2>
+<p>One of my favorite applications is visualizing whether the external test set occupies similar structural space to the training compounds.</p>
+<p>Color the same UMAP embedding by dataset assignment, using one marker style for training compounds and another for the external test set.</p>
+<p>A heavily intermixed map suggests that many test compounds live within structural neighborhoods represented during training.</p>
+<p>Large isolated regions containing only test compounds may indicate extrapolation.</p>
+<p>But even here, the UMAP plot should not be treated as proof.</p>
+<p>A two-dimensional projection necessarily discards information.</p>
+<p>Two points that look close after projection may not actually have exceptionally high fingerprint similarity.</p>
+<p>Two points that look distant may still share substantial structural features.</p>
+<p>This is why a visual analysis should be paired with quantitative similarity measurements.</p>
+<figure style="margin:2rem 0;">
+<svg viewBox="0 0 1120 540" role="img" aria-labelledby="validation-title validation-desc" style="width:100%;height:auto;display:block;">
+  <title id="validation-title">Visual and quantitative assessment of train-test chemical-space overlap</title>
+  <desc id="validation-desc">A UMAP view shows training and test compounds together, while maximum Tanimoto similarity quantifies how close selected test molecules are to their nearest training neighbor.</desc>
+  <g fill="none" stroke="currentColor" stroke-width="1.8">
+    <rect x="25" y="70" width="560" height="430" rx="20" opacity="0.22"/>
+    <rect x="610" y="70" width="485" height="430" rx="20" opacity="0.22"/>
+    <ellipse cx="205" cy="245" rx="120" ry="92" fill="#2f80ed" fill-opacity="0.08" stroke="#2f80ed" stroke-opacity="0.35"/>
+    <ellipse cx="405" cy="300" rx="118" ry="86" fill="#27ae60" fill-opacity="0.08" stroke="#27ae60" stroke-opacity="0.35"/>
+    <line x1="720" y1="175" x2="1030" y2="175" opacity="0.18"/><line x1="720" y1="245" x2="1030" y2="245" opacity="0.18"/><line x1="720" y1="315" x2="1030" y2="315" opacity="0.18"/><line x1="720" y1="385" x2="1030" y2="385" opacity="0.18"/>
+    <rect x="720" y="151" width="270" height="32" rx="8" fill="#2f80ed" fill-opacity="0.78" stroke="none"/>
+    <rect x="720" y="221" width="226" height="32" rx="8" fill="#27ae60" fill-opacity="0.78" stroke="none"/>
+    <rect x="720" y="291" width="158" height="32" rx="8" fill="#f2994a" fill-opacity="0.82" stroke="none"/>
+    <rect x="720" y="361" width="90" height="32" rx="8" fill="#eb5757" fill-opacity="0.82" stroke="none"/>
+    <line x1="720" y1="420" x2="1030" y2="420"/><line x1="720" y1="415" x2="720" y2="425"/><line x1="875" y1="415" x2="875" y2="425"/><line x1="1030" y1="415" x2="1030" y2="425"/>
+  </g>
+  <g fill="currentColor" text-anchor="middle">
+    <text x="560" y="34" font-size="28" font-weight="700">The picture and the measurement answer different questions</text>
+    <text x="305" y="108" font-size="21" font-weight="700">UMAP: where are the neighborhoods?</text>
+    <text x="853" y="108" font-size="21" font-weight="700">Tanimoto: how novel is each test molecule?</text>
+    <text x="853" y="478" font-size="14" opacity="0.72">Maximum similarity to any training compound</text>
+    <text x="720" y="447" font-size="13" opacity="0.65">0.0</text><text x="875" y="447" font-size="13" opacity="0.65">0.5</text><text x="1030" y="447" font-size="13" opacity="0.65">1.0</text>
+  </g>
+  <g fill="#2f80ed" opacity="0.78"><circle cx="120" cy="230" r="8"/><circle cx="145" cy="195" r="8"/><circle cx="168" cy="250" r="8"/><circle cx="196" cy="210" r="8"/><circle cx="222" cy="270" r="8"/><circle cx="250" cy="225" r="8"/><circle cx="280" cy="255" r="8"/></g>
+  <g fill="#27ae60" opacity="0.78"><circle cx="330" cy="315" r="8"/><circle cx="355" cy="280" r="8"/><circle cx="382" cy="335" r="8"/><circle cx="410" cy="295" r="8"/><circle cx="438" cy="345" r="8"/><circle cx="465" cy="305" r="8"/><circle cx="500" cy="325" r="8"/></g>
+  <g fill="none" stroke="currentColor" stroke-width="3"><path d="M190 180 l10 10 -10 10 -10 -10 Z"/><path d="M275 300 l10 10 -10 10 -10 -10 Z"/><path d="M455 235 l10 10 -10 10 -10 -10 Z"/><path d="M520 170 l10 10 -10 10 -10 -10 Z"/></g>
+  <g fill="currentColor" font-size="15" font-weight="700"><text x="205" y="178">A</text><text x="290" y="300">B</text><text x="470" y="233">C</text><text x="535" y="168">D</text></g>
+  <g fill="currentColor" font-size="14"><circle cx="118" cy="420" r="7" fill="#2f80ed"/><text x="135" y="425">Training compound</text><path d="M282 412 l8 8 -8 8 -8 -8 Z" fill="none" stroke="currentColor" stroke-width="2"/><text x="300" y="425">Test compound</text></g>
+  <g fill="currentColor" font-size="16" font-weight="700"><text x="685" y="174">A</text><text x="685" y="244">B</text><text x="685" y="314">C</text><text x="685" y="384">D</text><text x="1005" y="174">0.87</text><text x="961" y="244">0.73</text><text x="893" y="314">0.51</text><text x="825" y="384">0.29</text></g>
+</svg>
+<figcaption><strong>Figure 3.</strong> A fixed UMAP embedding is useful for seeing train–test coverage, but nearest-neighbor Tanimoto similarity provides the quantitative novelty measurement. Molecule D is visibly isolated and also has the lowest similarity to the training set.</figcaption>
+</figure>
+<h2 id="umap-is-the-picture-tanimoto-is-the-measurement">UMAP Is the Picture. Tanimoto Is the Measurement.</h2>
+<p>Suppose I want to know how novel each test compound is relative to the training set.</p>
+<p>For every test molecule, I can calculate:</p>
+<p style="text-align:center;"><strong>max Tanimoto(test, training)</strong></p>
+<p>This asks:</p>
+<blockquote>
+<p>What is the most structurally similar molecule this test compound has already seen during training?</p></blockquote>
+<p>In Figure 3, molecule A has a nearest-training similarity of 0.87, whereas molecule D has a value of only 0.29. Molecule A therefore lies close to known chemical territory.</p>
+<p>Molecule D represents substantially stronger structural extrapolation.</p>
+<p>This quantity is much easier to interpret than measuring distances between points on a UMAP plot.</p>
+<p>That leads to a useful distinction:</p>
+<blockquote>
+<p><strong>UMAP is excellent for seeing chemical space. Fingerprint similarity is better for measuring it.</strong></p></blockquote>
+<h2 id="do-not-forget-the-representation">Do Not Forget the Representation</h2>
+<p>Suppose two molecules occupy neighboring positions in an ECFP4-based UMAP.</p>
+<p>What does that mean?</p>
+<p>It means they have similar <strong>local topological environments according to that fingerprint representation</strong>.</p>
+<p>It does not automatically mean they have:</p>
+<ul>
+<li>similar conformations</li>
+<li>similar electrostatics</li>
+<li>similar pharmacophores</li>
+<li>similar biological activity</li>
+<li>similar binding modes</li>
+<li>similar metabolism</li>
+</ul>
+<p>Chemical similarity is always conditional on the representation.</p>
+<p>The same dataset embedded from physicochemical descriptors might reveal a very different organization.</p>
+<p>This is not a contradiction.</p>
+<p>It means the two maps are answering different questions.</p>
+<h2 id="why-i-would-sometimes-show-both-pca-and-umap">Why I Would Sometimes Show Both PCA and UMAP</h2>
+<p>Rather than asking which method wins, it can be more useful to combine complementary views.</p>
+<h3 id="pca-on-physicochemical-descriptors">PCA on physicochemical descriptors</h3>
+<p>This view emphasizes size, lipophilicity, polarity, hydrogen bonding, and molecular complexity.</p>
+<p>This describes <strong>property space</strong>.</p>
+<h3 id="umap-on-ecfp4-fingerprints">UMAP on ECFP4 fingerprints</h3>
+<p>This view emphasizes scaffold relationships, local fragments, structural analogues, and chemical series.</p>
+<p>This describes <strong>structural space</strong>.</p>
+<p>Together, the plots provide more information than either one individually.</p>
+<p>Two compounds may be structurally unrelated but occupy similar physicochemical space.</p>
+<p>Conversely, close structural analogues can sometimes have substantially different properties after relatively small chemical modifications.</p>
+<p>That distinction is central to medicinal chemistry.</p>
+<h2 id="a-practical-comparison">A Practical Comparison</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Method</th>
+          <th>What it emphasizes</th>
+          <th>Strongest advantage</th>
+          <th>Main caution</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>PCA</td>
+          <td>Global linear variance</td>
+          <td>Interpretability</td>
+          <td>Misses nonlinear relationships</td>
+      </tr>
+      <tr>
+          <td>t-SNE</td>
+          <td>Local neighborhoods</td>
+          <td>Strong visual separation</td>
+          <td>Global distances are difficult to interpret</td>
+      </tr>
+      <tr>
+          <td>UMAP</td>
+          <td>Local neighborhoods and some broader organization</td>
+          <td>Flexible and efficient</td>
+          <td>Geometry remains projection-dependent</td>
+      </tr>
+  </tbody>
+</table>
+<p>For molecular fingerprints specifically, I would generally prefer <strong>ECFP4 + Jaccard + UMAP</strong> for visualization.</p>
+<p>For physicochemical descriptors, PCA remains extremely valuable.</p>
+<p>For investigating strongly local cluster structure, t-SNE remains a legitimate tool.</p>
+<h2 id="there-is-no-single-chemical-space">There Is No Single Chemical Space</h2>
+<p>Perhaps the most important lesson is that chemical space is not a single object.</p>
+<p>Consider the same compounds represented using ECFP fingerprints, MACCS keys, RDKit descriptors, 3D shape descriptors, pharmacophore fingerprints, molecular embeddings, or protein–ligand interaction fingerprints. Each representation produces a different notion of similarity.</p>
+<p>Each therefore creates a different chemical space.</p>
+<p>UMAP cannot solve this problem because it appears only at the end of the pipeline.</p>
+<p>The most important question comes earlier:</p>
+<blockquote>
+<p><strong>What molecular information do I want proximity in this map to represent?</strong></p></blockquote>
+<p>Once that is clear, choosing the dimensionality-reduction algorithm becomes much easier.</p>
+<h2 id="final-takeaway">Final Takeaway</h2>
+<p>There is no universal winner between PCA, t-SNE, and UMAP.</p>
+<p>For continuous physicochemical descriptors, PCA provides an interpretable and statistically transparent view of molecular property space.</p>
+<p>For discovering local neighborhoods, t-SNE remains powerful, provided that distances between clusters are not overinterpreted.</p>
+<p>For high-dimensional structural fingerprints such as ECFP4, UMAP combined with a binary similarity metric such as Jaccard is one of the most useful default approaches for visual exploration.</p>
+<p>But even then, the plot should remain what it is:</p>
+<p><strong>a visualization.</strong></p>
+<p>If the goal is to quantify structural overlap, novelty, or train-test extrapolation, return to the original fingerprints and calculate the similarities directly.</p>
+<p>The picture helps us explore the chemical space.</p>
+<p>The high-dimensional representation is where that space actually lives.</p>
+<h2 id="references">References</h2>
+<ol>
+<li>Rogers, D.; Hahn, M. Extended-Connectivity Fingerprints. <em>Journal of Chemical Information and Modeling</em> <strong>2010</strong>, 50, 742-754.</li>
+<li>van der Maaten, L.; Hinton, G. Visualizing Data using t-SNE. <em>Journal of Machine Learning Research</em> <strong>2008</strong>, 9, 2579-2605.</li>
+<li>McInnes, L.; Healy, J.; Melville, J. UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction. arXiv:1802.03426.</li>
+</ol>
+
+      </div>
+
+      
+  <time class="mt-12 mb-8 block text-xs text-gray-500 ltr:text-right rtl:text-left dark:text-gray-400" datetime="2026-10-01T00:00:00.000Z">
+    <span>Last updated on</span>
+    Oct 1, 2026</time>
+
+      <div class="container mx-auto prose prose-slate lg:prose-xl dark:prose-invert mt-5">
+        
+        <div class="max-w-prose print:hidden">
+  
+  
+
+  
+<div class="flex justify-center">
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/cheminformatics/">Cheminformatics</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/chemical-space/">Chemical Space</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/umap/">UMAP</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/t-sne/">T-SNE</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/pca/">PCA</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/qsar/">QSAR</a>
+  
+  <a class="no-underline bg-primary-100 hover:bg-primary-300 text-primary-800 text-xs font-medium mr-2 px-2.5 py-0.5 lg:px-5 lg:py-2 rounded dark:bg-primary-900 dark:hover:bg-primary-700 dark:text-primary-300" href="/tags/molecular-fingerprints/">Molecular Fingerprints</a>
+  
+</div>
+
+
+  
+<section class="flex flex-row flex-wrap justify-center pt-4 text-xl">
+  
+
+  
+  
+  
+  
+  
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fchemical-space-is-not-one-map-pca-t-sne-umap-and-what-they-actually-show%2F&amp;text=Chemical&#43;Space&#43;Is&#43;Not&#43;One&#43;Map%3A&#43;PCA%2C&#43;t-SNE%2C&#43;UMAP%2C&#43;and&#43;What&#43;They&#43;Actually&#43;Show"
+    title="X"
+    aria-label="X"
+    id="share-link-x"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+  </a>
+  
+
+  
+  
+  
+  
+  
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fchemical-space-is-not-one-map-pca-t-sne-umap-and-what-they-actually-show%2F&amp;t=Chemical&#43;Space&#43;Is&#43;Not&#43;One&#43;Map%3A&#43;PCA%2C&#43;t-SNE%2C&#43;UMAP%2C&#43;and&#43;What&#43;They&#43;Actually&#43;Show"
+    title="Facebook"
+    aria-label="Facebook"
+    id="share-link-facebook"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+  </a>
+  
+
+  
+  
+  
+  
+  
+  
+    
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="mailto:?subject=Chemical%20Space%20Is%20Not%20One%20Map%3A%20PCA%2C%20t-SNE%2C%20UMAP%2C%20and%20What%20They%20Actually%20Show&amp;body=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fchemical-space-is-not-one-map-pca-t-sne-umap-and-what-they-actually-show%2F"
+    title="Email"
+    aria-label="Email"
+    id="share-link-email"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M16.5 12a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25"/></svg>
+  </a>
+  
+
+  
+  
+  
+  
+  
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="https://www.linkedin.com/shareArticle?url=https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fchemical-space-is-not-one-map-pca-t-sne-umap-and-what-they-actually-show%2F&amp;title=Chemical&#43;Space&#43;Is&#43;Not&#43;One&#43;Map%3A&#43;PCA%2C&#43;t-SNE%2C&#43;UMAP%2C&#43;and&#43;What&#43;They&#43;Actually&#43;Show"
+    title="LinkedIn"
+    aria-label="LinkedIn"
+    id="share-link-linkedin"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+  </a>
+  
+
+  
+  
+  
+  
+  
+  
+  <a
+    target="_blank" rel="noopener"
+    class="m-1 rounded-md bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+    href="whatsapp://send?text=Chemical&#43;Space&#43;Is&#43;Not&#43;One&#43;Map%3A&#43;PCA%2C&#43;t-SNE%2C&#43;UMAP%2C&#43;and&#43;What&#43;They&#43;Actually&#43;Show%20https%3A%2F%2Fyboulaamane.github.io%2Fblog%2Fchemical-space-is-not-one-map-pca-t-sne-umap-and-what-they-actually-show%2F"
+    title="WhatsApp"
+    aria-label="WhatsApp"
+    id="share-link-whatsapp"
+  >
+    <svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="m187.58 144.84-32-16a8 8 0 0 0-8 .5l-14.69 9.8a40.55 40.55 0 0 1-16-16l9.8-14.69a8 8 0 0 0 .5-8l-16-32A8 8 0 0 0 104 64a40 40 0 0 0-40 40 88.1 88.1 0 0 0 88 88 40 40 0 0 0 40-40 8 8 0 0 0-4.42-7.16ZM152 176a72.08 72.08 0 0 1-72-72 24 24 0 0 1 19.29-23.54l11.48 23L101 118a8 8 0 0 0-.73 7.51 56.47 56.47 0 0 0 30.15 30.15A8 8 0 0 0 138 155l14.61-9.74 23 11.48A24 24 0 0 1 152 176ZM128 24a104 104 0 0 0-91.82 152.88l-11.35 34.05a16 16 0 0 0 20.24 20.24l34.05-11.35A104 104 0 1 0 128 24Zm0 192a87.87 87.87 0 0 1-44.06-11.81 8 8 0 0 0-6.54-.67L40 216l12.47-37.4a8 8 0 0 0-.66-6.54A88 88 0 1 1 128 216Z"/></svg>
+  </a>
+  
+</section>
+
+
+  
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+
+<div class="flex pt-12 pb-4">
+  
+  
+  <img
+    class="mr-4 h-24 w-24 rounded-full"
+    width="96"
+    height="96"
+    alt="Yassir Boulaamane"
+  src="/author/yassir-boulaamane/avatar_hu_9aa8ce6cf147a32a.jpg"
+  loading="lazy"
+  />
+  
+  <div class="place-self-center">
+    <div class="text-[0.6rem] uppercase leading-3 text-neutral-500 dark:text-neutral-400">
+      Authors
+    </div>
+    <div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">
+      <a href="https://yboulaamane.github.io/" class="no-underline">
+      Yassir Boulaamane
+      </a>
+    </div>
+
+    
+    <div class="text-sm font-bold text-neutral-700 dark:text-neutral-300">
+    Postdoctoral Researcher
+    </div>
+    
+
+
+    
+
+    <div class="text-2xl sm:text-lg pt-1">
+
+      
+<div class="flex flex-wrap text-neutral-500 dark:text-neutral-300">
+  
+    
+    
+    
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="mailto:yassir.boulaamane@uab.cat"
+      
+      aria-label="At-Symbol"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M16.5 12a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://twitter.com/yassir_tw"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Brands/X"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://github.com/yboulaamane"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Brands/Github"
+    ><svg style="height: 1em;" fill="currentColor" viewBox="3 3 18 18"><path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://www.linkedin.com/in/yassir-boulaamane"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Brands/Linkedin"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://scholar.google.com/citations?user=L_EMgLcAAAAJ"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Academicons/Google-Scholar"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M343.759 106.662V79.43L363.524 64h-213.89L20.476 176.274h85.656a82.339 82.339 0 0 0-.219 6.225c0 20.845 7.22 38.087 21.672 51.861c14.453 13.797 32.252 20.648 53.327 20.648c4.923 0 9.75-.368 14.438-1.024c-2.907 6.5-4.374 12.523-4.374 18.142c0 9.875 4.499 20.43 13.467 31.642c-39.234 2.67-68.061 9.732-86.437 21.163c-10.531 6.5-19 14.704-25.39 24.531c-6.391 9.9-9.578 20.515-9.578 31.962c0 9.648 2.062 18.336 6.219 26.062c4.156 7.726 9.578 14.07 16.312 18.984c6.718 4.968 14.469 9.101 23.219 12.469c8.734 3.344 17.406 5.718 26.061 7.062A167.052 167.052 0 0 0 180.555 448c13.469 0 26.953-1.734 40.547-5.187c13.562-3.485 26.28-8.642 38.171-15.493c11.86-6.805 21.515-16.086 28.922-27.718c7.39-11.68 11.094-24.805 11.094-39.336c0-11.016-2.25-21.039-6.75-30.14c-4.468-9.073-9.938-16.542-16.452-22.345c-6.501-5.813-13-11.155-19.516-15.968c-6.5-4.845-12-9.75-16.468-14.813c-4.485-5.046-6.735-10.054-6.735-14.984c0-4.921 1.734-9.672 5.216-14.265c3.455-4.61 7.674-9.048 12.61-13.306c4.937-4.25 9.875-8.968 14.796-14.133c4.922-5.147 9.141-11.827 12.61-20.008c3.485-8.18 5.203-17.445 5.203-27.757c0-13.453-2.547-24.46-7.547-33.314c-.594-1.022-1.218-1.803-1.875-3.022l56.907-46.672v17.119c-7.393.93-6.624 5.345-6.624 10.635V245.96c0 5.958 4.875 10.834 10.834 10.834h3.989c5.958 0 10.833-4.875 10.833-10.834V117.293c0-5.277.778-9.688-6.561-10.63zm-107.36 222.48c1.14.75 3.704 2.78 7.718 6.038c4.05 3.243 6.797 5.695 8.266 7.414a443.553 443.553 0 0 1 6.376 7.547c2.813 3.375 4.718 6.304 5.718 8.734c1 2.477 2.016 5.461 3.047 8.946a38.27 38.27 0 0 1 1.485 10.562c0 17.048-6.564 29.68-19.656 37.859c-13.125 8.18-28.767 12.274-46.938 12.274c-9.187 0-18.203-1.093-27.063-3.196c-8.843-2.116-17.311-5.336-25.39-9.601c-8.078-4.258-14.577-10.204-19.5-17.797c-4.938-7.64-7.407-16.415-7.407-26.25c0-10.32 2.797-19.29 8.422-26.906c5.594-7.625 12.938-13.391 22.032-17.315c9.063-3.946 18.25-6.742 27.562-8.398a157.865 157.865 0 0 1 28.438-2.555c4.47 0 7.936.25 10.405.696c.455.219 3.032 2.07 7.735 5.563c4.704 3.462 7.625 5.595 8.75 6.384zm-3.359-100.579c-7.406 8.86-17.734 13.288-30.953 13.288c-11.86 0-22.298-4.764-31.266-14.312c-9-9.523-15.422-20.328-19.344-32.43c-3.937-12.109-5.906-23.984-5.906-35.648c0-13.694 3.596-25.352 10.781-34.976c7.187-9.65 17.5-14.485 30.938-14.485c11.875 0 22.374 5.038 31.437 15.157c9.094 10.085 15.61 21.413 19.517 33.968c3.922 12.54 5.873 24.53 5.873 35.984c0 13.446-3.702 24.61-11.076 33.454z"/></svg></a>
+  
+    
+    
+    
+    
+      
+    
+    <a
+      class="pr-2 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+      style="will-change:transform;"
+      href="https://orcid.org/0000-0002-2939-7772"
+      target="_blank" rel="noopener" rel="me noopener noreferrer"
+      aria-label="Academicons/Orcid"
+    ><svg style="height: 1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M336.62 194.538c-7.13-3.328-13.866-5.56-20.253-6.614c-6.365-1.095-16.574-1.612-30.71-1.612h-36.704v152.747h37.634c14.673 0 26.081-1.013 34.224-3.017c8.142-2.004 14.921-4.526 20.356-7.626a69.448 69.448 0 0 0 14.942-11.388c14.488-14.714 21.742-33.273 21.742-55.717c0-22.052-7.44-40.052-22.341-53.982c-5.498-5.166-11.822-9.444-18.89-12.793zM256 8C119.022 8 8 119.042 8 256s111.022 248 248 248s248-111.042 248-248S392.978 8 256 8Zm-82.336 357.513h-29.389V160.148h29.389zM158.95 138.696c-11.14 0-20.213-9.01-20.213-20.212c0-11.118 9.052-20.191 20.213-20.191c11.18 0 20.232 9.052 20.232 20.191a20.194 20.194 0 0 1-20.232 20.212zm241.386 163.597c-5.29 12.545-12.834 23.581-22.65 33.088c-9.982 9.837-21.597 17.194-34.844 22.196c-7.75 3.017-14.839 5.063-21.307 6.117c-6.49 1.013-18.828 1.509-37.076 1.509h-64.956V160.148h69.233c27.962 0 50.034 4.154 66.32 12.545c16.265 8.37 29.181 20.728 38.792 36.972c9.61 16.265 14.425 34.018 14.425 53.196c.023 13.765-2.666 26.908-7.936 39.432z"/></svg></a>
+  
+</div>
+
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+  
+  
+    
+    
+    
+      
+      
+    
+<div class="pt-1 no-prose w-full">
+  <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+  <div class="flex flex-col md:flex-row flex-nowrap justify-between gap-5 pt-2">
+    <div class="">
+      
+    </div>
+    <div class="">
+      
+        <a class="group flex text-right no-underline" href="/blog/from-molecules-to-decisions-my-takeaways-from-efmc-ismc-2026/">
+          <span class="flex flex-col">
+            <span
+              class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+            >From Molecules to Decisions: My Takeaways from EFMC-ISMC 2026</span
+            >
+            <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+              
+                Sep 21, 2026
+              
+            </span>
+          </span>
+          <span
+            class="mt-[-0.3rem] ms-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+          ><span class="ltr:inline">&rarr;</span></span>
+        </a>
+      
+    </div>
+  </div>
+</div>
+
+
+
+  
+
+
+  
+
+
+
+</div>
+
+      </div>
+
+    </main>
+  </article>
+</div>
+
+    </div>
+    <div class="page-footer">
+      <footer class="container mx-auto flex flex-col justify-items-center text-sm leading-6 mt-24 mb-4 text-slate-700 dark:text-slate-200">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+
+  
+  
+    
+  
+  
+    
+  
+
+  
+
+  
+  <p class="powered-by text-center">
+    © 2026 Yassir Boulaamane, PhD. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
+  </p>
+  
+
+  <p class="powered-by footer-license-icons">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank" aria-label="Creative Commons">
+      <i class="fab fa-creative-commons fa-2x" aria-hidden="true"></i>
+      <i class="fab fa-creative-commons-by fa-2x" aria-hidden="true"></i>
+      
+        <i class="fab fa-creative-commons-nc fa-2x" aria-hidden="true"></i>
+      
+      
+        <i class="fab fa-creative-commons-nd fa-2x" aria-hidden="true"></i>
+      
+    </a>
+  </p>
+
+
+
+
+
+  <p class="powered-by text-center">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://hugoblox.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Hugo Blox Builder</a> — the free, <a href="https://github.com/HugoBlox/hugo-blox-builder" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+
+</footer>
+
+    </div>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

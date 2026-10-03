@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Computational Drug Discovery | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/computational-drug-discovery/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/computational-drug-discovery/index.xml" rel="self" type="application/rss+xml" />
+    <description>Computational Drug Discovery</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 19 May 2026 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Computational Drug Discovery</title>
+      <link>https://yboulaamane.github.io/tags/computational-drug-discovery/</link>
+    </image>
+    
+    <item>
+      <title>Choosing the Right PDB Structure: A Systematic Guide for Docking and MD Simulations</title>
+      <link>https://yboulaamane.github.io/blog/choosing-the-right-pdb-structure-a-systematic-guide-for-docking-and-md-simulations/</link>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/blog/choosing-the-right-pdb-structure-a-systematic-guide-for-docking-and-md-simulations/</guid>
+      <description>&lt;p&gt;Every computational drug discovery pipeline rests on a deceptively simple foundation: a set of atomic coordinates. Before you run a single docking calculation or spin up a molecular dynamics simulation, you have to make a judgment call about which PDB structure to trust. Get that call wrong and no amount of downstream analysis will save you.&lt;/p&gt;
+&lt;p&gt;The PDB now hosts over 220,000 experimentally determined structures. That abundance is a gift, but it is also a minefield. This post walks through the decisions that actually matter when selecting a structure, the traps that catch even experienced practitioners, and what the looming format transition means for your workflow.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;why-you-cannot-outsource-this-decision-to-an-llm&#34;&gt;Why You Cannot Outsource This Decision to an LLM&lt;/h2&gt;
+&lt;p&gt;This one is worth addressing head-on. It is tempting to ask a language model for the &amp;ldquo;best PDB structure for protein X.&amp;rdquo; Do not do this, or at least do not act on the answer without verification.&lt;/p&gt;
+&lt;p&gt;The problem is structural. A good structure selection depends on live, highly specific metrics: resolution (ideally below 2.5 Å), R-free values, Ramachandran outlier percentages, chain completeness in the region you care about, ligand occupancy, and whether surface residues were mutated to force crystallization. Language models do not retrieve or compute these values at inference time. They surface whichever PDB IDs were most frequently cited in their training corpus, which reliably skews toward older, heavily cited structures that may have been superseded by better data deposited last year or last month.&lt;/p&gt;
+&lt;p&gt;The other failure mode is context blindness. Structure selection is a physical choice that depends on your specific question: Are you studying apo or holo state? Wild-type or a disease-associated variant? A monomeric fragment or the full biological assembly? No general-purpose model can answer these questions without knowing your system in detail. Use LLMs to help parse PDB metadata or draft analysis scripts. Do not let them pick your starting coordinates.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;searching-systematically-getting-past-the-noise&#34;&gt;Searching Systematically: Getting Past the Noise&lt;/h2&gt;
+&lt;p&gt;Searching for a protein by common name on RCSB is a reliable way to produce an overwhelming, poorly filtered list. A few habits eliminate most of the noise immediately.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Use UniProt IDs, not protein names.&lt;/strong&gt; Every protein of interest has a UniProt accession specific to both the protein and the organism you are working with. Searching by accession guarantees you are looking at the exact sequence of interest and filters out homologous structures from other species that may have crystallized more readily but differ in residues you care about.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Filter by your target organism.&lt;/strong&gt; Many proteins are crystallized from other species because they are more stable in the lab or easier to express. Always confirm the structure matches the organism relevant to your study. A structure solved in a different species is not automatically wrong to use, but that decision needs to be made deliberately, not by accident.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Audit engineered mutations.&lt;/strong&gt; Crystallographers routinely mutate surface-exposed residues to reduce conformational heterogeneity and encourage lattice contacts. These mutations are disclosed in the PDB entry, but you have to look for them. Always inspect the sequence viewer to confirm the active site and any allosteric regions of interest are wild-type relative to your target.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Check loop completeness.&lt;/strong&gt; A structure listed as covering your residue range may have gaps at exactly the flexible regions that matter most. Electron density is too weak to model mobile loops, so they are simply omitted. If your docking site includes one of those gaps, you will need to either model it in using loop refinement tools or find a different structure.&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/posts/pdb-selection-flowchart.svg&#34;
+    alt=&#34;A decision flowchart for systematically selecting the right PDB structure. Each step catches a distinct class of error.&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;A decision flowchart for systematically selecting the right PDB structure. Each step catches a distinct class of error.&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;hr&gt;
+&lt;h2 id=&#34;x-ray-vs-nmr-a-practical-decision-framework&#34;&gt;X-ray vs. NMR: A Practical Decision Framework&lt;/h2&gt;
+&lt;p&gt;For standard docking and MD setups, X-ray crystallography is the default choice, and the reasoning is structural rather than arbitrary.&lt;/p&gt;
+&lt;p&gt;Docking algorithms are built around the concept of a rigid receptor. X-ray crystallography delivers exactly that: a single, time-averaged, lowest-energy snapshot with well-defined coordinates for every resolved atom. The data density in a high-resolution crystal structure is high enough that you can have genuine confidence in side-chain rotamers in the binding site, which is exactly what scoring functions depend on.&lt;/p&gt;
+&lt;p&gt;NMR, by contrast, gives you an ensemble. A typical NMR PDB file contains 20 to 30 models, each a slightly different solution-state conformation. Choosing one model for docking introduces an arbitrary variable that is hard to justify or control. You can get around this with ensemble docking protocols, but that adds substantial workflow complexity and is rarely worth it when a crystal structure is available.&lt;/p&gt;
+&lt;p&gt;There is one important exception: intrinsically disordered proteins. For targets like alpha-synuclein or tau, X-ray crystallography is not an option in the physiologically relevant monomeric form because these proteins do not adopt a stable fold and cannot form ordered crystal lattices. For IDPs, NMR captures the genuine dynamic reality of the system. Cryo-EM becomes relevant when you are studying fibril aggregates associated with disease, where the ordered repeating structure can be resolved to near-atomic resolution.&lt;/p&gt;
+&lt;p&gt;The practical rule: use X-ray by default, know when NMR is your only option, and treat the two cases as genuinely different experimental problems rather than interchangeable inputs.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;biological-assembly-vs-asymmetric-unit&#34;&gt;Biological Assembly vs. Asymmetric Unit&lt;/h2&gt;
+&lt;p&gt;This distinction trips up more users than almost any other step in structure preparation, and the consequences can be severe.&lt;/p&gt;
+&lt;p&gt;The asymmetric unit is the minimal mathematical unit from which the crystal lattice can be generated by symmetry operations. It is a crystallographic convenience, not a biological statement. Depending on the crystal packing, it might contain half of a functional dimer, four monomers wedged together in a non-physiological arrangement, or a single chain that happens to be the correct functional unit. You cannot know in advance without checking.&lt;/p&gt;
+&lt;p&gt;The biological assembly is the functional form of the protein as it exists under physiological conditions. RCSB calculates this based on crystallographic symmetry, thermodynamic analysis, and author annotations. If your protein is a constitutive dimer and you run MD on a monomer extracted from the asymmetric unit, you are exposing large hydrophobic dimer interfaces to solvent. The simulation will not crash immediately, but it will spend the first hundreds of nanoseconds in an artificial collapse that has nothing to do with the biology you are trying to model.&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/posts/pdb-asymmetric-vs-bioassembly.svg&#34;
+    alt=&#34;Left: the asymmetric unit contains only one chain of a functional dimer, leaving a hydrophobic face exposed to solvent. Right: the biological assembly buries the interface correctly.&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;Left: the asymmetric unit contains only one chain of a functional dimer, leaving a hydrophobic face exposed to solvent. Right: the biological assembly buries the interface correctly.&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Always download and inspect the biological assembly first. Verify it matches the oligomeric state documented in the literature for your target. Only deviate from this when you have a specific scientific justification.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-format-transition-you-cannot-ignore&#34;&gt;The Format Transition You Cannot Ignore&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;.pdb&lt;/code&gt; file format was designed in the 1970s for punch cards. Its architecture reflects that origin: strict 80-character column widths, a hard limit of 99,999 atoms, and a maximum of 62 chains. For decades these constraints were invisible because most solved structures were small enough to fit comfortably inside them. Cryo-EM changed that.&lt;/p&gt;
+&lt;p&gt;As cryo-EM enabled the determination of structures for entire viral capsids, ribosomes, and large macromolecular assemblies, the &lt;code&gt;.pdb&lt;/code&gt; format simply broke. Structures with hundreds of thousands of atoms and dozens of chains cannot be represented faithfully in the legacy format. The Worldwide Protein Data Bank responded by formally deprecating &lt;code&gt;.pdb&lt;/code&gt; in favour of PDBx/mmCIF (&lt;code&gt;.cif&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;The mmCIF format abandons fixed column widths in favour of a dictionary-driven, key-value tokenized structure with no limits on atom count or chain number. It encodes data relationships explicitly, which makes it far easier for software to parse complex structural metadata without brittle column-offset logic.&lt;/p&gt;
+&lt;p&gt;The ID system is also changing. The familiar 4-character alphanumeric IDs are running out of combinations. The new standard uses a 12-character format: the prefix &lt;code&gt;pdb_&lt;/code&gt; followed by 8 lowercase alphanumeric characters, so a legacy ID like &lt;code&gt;2V5Z&lt;/code&gt; becomes &lt;code&gt;pdb_00002v5z&lt;/code&gt;. By mid-2027, new depositions will receive only the extended IDs, and &lt;code&gt;.pdb&lt;/code&gt; files will no longer be generated for them.&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://yboulaamane.github.io/posts/pdb-format-transition.svg&#34;
+    alt=&#34;The legacy .pdb format reaches end-of-life for new depositions by mid-2027. The transition to mmCIF and 12-character IDs is already underway.&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;The legacy .pdb format reaches end-of-life for new depositions by mid-2027. The transition to mmCIF and 12-character IDs is already underway.&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;What this means for your workflow right now:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Stop downloading &lt;code&gt;.pdb&lt;/code&gt; files for new projects. Fetch &lt;code&gt;.cif&lt;/code&gt; files and build your pipelines around them.&lt;/li&gt;
+&lt;li&gt;Update PyMOL, ChimeraX, GROMACS, AutoDock Vina, and any other tools in your stack to versions with native mmCIF support. Most major tools already handle &lt;code&gt;.cif&lt;/code&gt; correctly in their current releases.&lt;/li&gt;
+&lt;li&gt;If you are maintaining legacy scripts that parse &lt;code&gt;.pdb&lt;/code&gt; files with column offsets, plan their replacement. They will break on new depositions.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The transition is not disruptive if you address it proactively. It becomes a serious problem if you are still writing &lt;code&gt;.pdb&lt;/code&gt;-dependent code in 2027.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;a-checklist-for-structure-selection&#34;&gt;A Checklist for Structure Selection&lt;/h2&gt;
+&lt;p&gt;To summarise the decision process into something repeatable:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Search by UniProt accession for your target protein and organism, not by protein name.&lt;/li&gt;
+&lt;li&gt;Confirm the structure matches the organism and sequence context relevant to your study.&lt;/li&gt;
+&lt;li&gt;Prefer X-ray structures; use NMR only when crystallography is unavailable or inappropriate.&lt;/li&gt;
+&lt;li&gt;Target resolution below 2.5 Å; inspect R-free and Ramachandran statistics.&lt;/li&gt;
+&lt;li&gt;Scan for engineered mutations, particularly in and around the binding site.&lt;/li&gt;
+&lt;li&gt;Verify loop completeness in the regions you intend to dock into.&lt;/li&gt;
+&lt;li&gt;Download the biological assembly, not the asymmetric unit.&lt;/li&gt;
+&lt;li&gt;Download in &lt;code&gt;.cif&lt;/code&gt; format and confirm your downstream tools can parse it.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Structure selection is one of the few steps in a computational pipeline where careful human judgment consistently outperforms automation. Spending an extra hour at this stage is almost always cheaper than interpreting results generated from a flawed starting point.&lt;/p&gt;
+&lt;hr&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

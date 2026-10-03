@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Coumarins | Yassir Boulaamane</title>
+    <link>https://yboulaamane.github.io/tags/coumarins/</link>
+      <atom:link href="https://yboulaamane.github.io/tags/coumarins/index.xml" rel="self" type="application/rss+xml" />
+    <description>Coumarins</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Thu, 20 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url>
+      <title>Coumarins</title>
+      <link>https://yboulaamane.github.io/tags/coumarins/</link>
+    </image>
+    
+    <item>
+      <title>CoumarinDB</title>
+      <link>https://yboulaamane.github.io/project/coumarindb/</link>
+      <pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://yboulaamane.github.io/project/coumarindb/</guid>
+      <description>&lt;p&gt;A manually curated database of naturally occurring coumarins, compiling chemical structures, physicochemical descriptors, and source organism data to support computational screening and structure-activity studies.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
