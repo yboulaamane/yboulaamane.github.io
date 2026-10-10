@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Open Source | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/open-source/</link><atom:link href="https://yboulaamane.github.io/tags/open-source/index.xml" rel="self" type="application/rss+xml"/><description>Open Source</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 23 Jun 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Open Source</title><link>https://yboulaamane.github.io/tags/open-source/</link></image><item><title>Beyond Static Models: Agentic AI and Multi-Agent Systems in Drug Discovery</title><link>https://yboulaamane.github.io/blog/agentic-ai-and-multi-agent-systems-in-drug-discovery/</link><pubDate>Tue, 23 Jun 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/agentic-ai-and-multi-agent-systems-in-drug-discovery/</guid><description>&lt;p>The model here is the controller. It breaks a goal into steps, writes and runs code, calls docking or a quantum package, reads the result, and revises the plan. One agent proposing, another implementing, and a third critiquing is a &lt;strong>multi-agent&lt;/strong> loop. A static activity, solubility, or toxicity model still answers a single question. This note is about the loop around that question.&lt;/p>
+&lt;p>
+&lt;figure >
+&lt;div class="flex justify-center ">
+&lt;div class="w-100" >&lt;img src="https://yboulaamane.github.io/uploads/agentic-drug-discovery/agentic-loop.svg" alt="The agentic loop" loading="lazy" data-zoomable />&lt;/div>
+&lt;/div>&lt;/figure>
+&lt;em>The core pattern: plan → act (write code, call tools) → observe → critique, then iterate. The Model Context Protocol (MCP) layer is what lets the agent reach real scientific tools and databases.&lt;/em>&lt;/p>
+&lt;p>The sections below cover what changed, the design patterns, and five GitHub projects that implement them. The last section is where the loop fails.&lt;/p>
+&lt;hr>
+&lt;h2 id="what-actually-changed">What actually changed&lt;/h2>
+&lt;p>Three capabilities, layered on top of ordinary LLMs, do most of the work.&lt;/p>
+&lt;p>&lt;strong>1. Tool use.&lt;/strong> Instead of answering from parametric memory, the agent emits a structured call to an external tool - run a docking job, compute partial charges, query a database - and feeds the result back into its reasoning. The chemistry is still done by the specialised tool; the LLM orchestrates it.&lt;/p>
+&lt;p>&lt;strong>2. The Model Context Protocol (MCP).&lt;/strong>
+is an open standard for exposing tools, data sources, and functions to an LLM through a uniform interface. Before MCP, every integration was bespoke. With it, a docking engine, a UniProt query, or an ADMET predictor can be published once as an &lt;strong>MCP server&lt;/strong> and reused across any MCP-aware agent - which is why several of the projects below ship as MCP servers rather than monolithic apps.&lt;/p>
+&lt;p>&lt;strong>3. Retrieval-augmented generation (RAG).&lt;/strong> Rather than fine-tuning a model on proprietary chemistry (expensive and quickly stale), the agent retrieves relevant facts from external databases at query time and reasons over them. This grounds outputs in real data and makes provenance auditable - important when a prediction has to survive scrutiny.&lt;/p>
+&lt;p>Together these turn a frozen model into something that can act, look up ground truth, and correct course.&lt;/p>
+&lt;hr>
+&lt;h2 id="the-design-patterns">The design patterns&lt;/h2>
+&lt;p>Most agentic drug-discovery systems are variations on a few recurring architectures. Recognising them makes any new project easier to evaluate.&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Planner / executor.&lt;/strong> One agent operates at a high level of abstraction - laying out a discovery strategy - while a second translates each step into concrete, executable code. Separating &amp;ldquo;what to do&amp;rdquo; from &amp;ldquo;how to do it&amp;rdquo; keeps the reasoning legible and the code focused.&lt;/li>
+&lt;li>&lt;strong>Multi-agent critique.&lt;/strong> A generator proposes a hypothesis or molecule; a separate critic agent challenges it, checks it against constraints, and sends it back for revision. The adversarial framing catches errors a single pass would miss.&lt;/li>
+&lt;li>&lt;strong>RAG-grounded reasoning.&lt;/strong> Agents are wired to authoritative sources so claims are anchored in retrieved evidence rather than generated from memory.&lt;/li>
+&lt;li>&lt;strong>Tool-augmented control.&lt;/strong> The LLM is a controller over a toolbox - docking, molecular dynamics, QM, property predictors - and contributes orchestration and interpretation, not the underlying physics.&lt;/li>
+&lt;/ul>
+&lt;p>Keep these in mind as a lens for the projects that follow.&lt;/p>
+&lt;hr>
+&lt;h2 id="five-open-source-agents-worth-examining">Five open-source agents worth examining&lt;/h2>
+&lt;p>The projects below are concrete implementations of the patterns above. They are research-grade and evolve quickly, so &lt;strong>verify the repository URL, license, and current status before depending on any of them&lt;/strong> - links and capabilities drift.&lt;/p>
+&lt;p>
+&lt;figure >
+&lt;div class="flex justify-center ">
+&lt;div class="w-100" >&lt;img src="https://yboulaamane.github.io/uploads/agentic-drug-discovery/agents-landscape.svg" alt="Five agents at a glance" loading="lazy" data-zoomable />&lt;/div>
+&lt;/div>&lt;/figure>
+&lt;em>The five projects, coloured by their dominant design pattern.&lt;/em>&lt;/p>
+&lt;h3 id="1-cladd---genentech">1. CLADD - &lt;em>Genentech&lt;/em>&lt;/h3>
+&lt;p>A &lt;strong>multi-agent, RAG-driven&lt;/strong> framework that connects LLMs to biochemical databases without task-specific fine-tuning. Multiple agents collaborate to contextualise a molecule from retrieved data and produce property estimates such as toxicity and binding affinity, with the retrieval step keeping the reasoning grounded in real records.
+🔗
+&lt;/p>
+&lt;h3 id="2-agentd---hoon-ock">2. AgentD - &lt;em>hoon-ock&lt;/em>&lt;/h3>
+&lt;p>An end-to-end agent for &lt;strong>molecular design, virtual screening, and SMILES refinement&lt;/strong>. It folds drug-likeness filters (Lipinski, Veber) directly into the loop and can generate 3D protein–ligand structures via Boltz. It runs as an &lt;strong>MCP server&lt;/strong>, so its capabilities can be plugged into other MCP-aware clients.
+🔗
+&lt;/p>
+&lt;h3 id="3-drugagent---fermiq">3. DrugAgent - &lt;em>FermiQ&lt;/em>&lt;/h3>
+&lt;p>A clean &lt;strong>planner/executor&lt;/strong> split. An &amp;ldquo;LLM Planner&amp;rdquo; formulates high-level discovery strategies; an &amp;ldquo;LLM Instructor&amp;rdquo; turns each into executable Python - for example, assembling and running an ADMET evaluation. Dividing labour between strategy and implementation keeps both halves auditable.
+🔗
+&lt;/p>
+&lt;h3 id="4-deda---drug-evaluation-and-discovery-agent">4. DEDA - &lt;em>Drug Evaluation and Discovery Agent&lt;/em>&lt;/h3>
+&lt;p>A &lt;strong>local, MCP-based&lt;/strong> assistant focused on bioinformatics and molecular pathways - effectively a domain-specialised chat agent. It translates plain-English commands into queries against resources like &lt;strong>UniProt&lt;/strong> and &lt;strong>AlphaFold&lt;/strong> and supports real-time binding-pocket mapping.
+🔗
+&lt;/p>
+&lt;h3 id="5-scientific-agent-skills---k-dense-ai">5. Scientific Agent Skills - &lt;em>K-Dense-AI&lt;/em>&lt;/h3>
+&lt;p>Less a single agent than a &lt;strong>skill library&lt;/strong> that turns a general LLM (Claude, Gemini, and others) into a scientific operator. It bundles 140+ ready-made skills connecting agents to 70+ scientific databases, spanning tasks from molecular dynamics to genomics to docking.
+🔗
+&lt;/p>
+&lt;hr>
+&lt;h2 id="the-lineage-this-didnt-appear-from-nowhere">The lineage: this didn&amp;rsquo;t appear from nowhere&lt;/h2>
+&lt;p>It&amp;rsquo;s worth situating these tools in the prior work that established the paradigm, because the ideas are a few years old even if the MCP packaging is new.&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>ChemCrow&lt;/strong> (Bran et al., 2024) coupled an LLM to a suite of expert chemistry tools and showed it could plan and execute synthesis and discovery tasks - an early, influential demonstration that tool-augmented LLMs outperform the bare model on real chemical problems.&lt;/li>
+&lt;li>&lt;strong>Coscientist&lt;/strong> (Boiko et al., &lt;em>Nature&lt;/em>, 2023) used a GPT-4-based agent to autonomously plan and carry out experiments, including driving physical lab hardware - a landmark for closed-loop autonomous experimentation.&lt;/li>
+&lt;/ul>
+&lt;p>The five projects above inherit directly from this lineage; the recent additions are the &lt;strong>standardisation (MCP)&lt;/strong> and the &lt;strong>multi-agent collaboration&lt;/strong> that make such systems easier to assemble and extend.&lt;/p>
+&lt;hr>
+&lt;h2 id="the-caveats-the-hype-skips">The caveats the hype skips&lt;/h2>
+&lt;p>Agentic systems are powerful, but they are not a substitute for judgment, and treating them as one is how pipelines produce confident nonsense.&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Hallucination still happens - now with tools.&lt;/strong> Grounding reduces fabrication but doesn&amp;rsquo;t eliminate it. An agent can call the right tool with the wrong arguments, or misinterpret a correct result. Outputs need validation, not trust.&lt;/li>
+&lt;li>&lt;strong>The physics lives in the tools, not the LLM.&lt;/strong> A docking score is only as good as the docking engine and its setup. The agent&amp;rsquo;s reasoning cannot rescue a poorly prepared receptor or bad charges (see the
+).&lt;/li>
+&lt;li>&lt;strong>Reproducibility is hard.&lt;/strong> Non-deterministic LLM behaviour makes runs difficult to reproduce exactly. Pin model versions, log every tool call and its inputs, and treat agent transcripts as part of the experimental record.&lt;/li>
+&lt;li>&lt;strong>Cost and latency add up.&lt;/strong> Multi-agent loops with critique steps can issue many model calls per task; this matters at virtual-screening scale.&lt;/li>
+&lt;li>&lt;strong>Research-grade maturity.&lt;/strong> Most of these repositories are young and fast-moving. Check the license, the test coverage, and how actively the project is maintained before building on it.&lt;/li>
+&lt;/ul>
+&lt;p>The right framing is augmentation: these agents are excellent at orchestrating tedious multi-tool workflows, drafting analysis code, and surfacing candidates - while the scientist sets the question, validates the chemistry, and owns the conclusions.&lt;/p>
+&lt;hr>
+&lt;h2 id="takeaway">Takeaway&lt;/h2>
+&lt;p>The shift from static models to agentic, tool-using systems is real and substantive: with &lt;strong>MCP&lt;/strong> for standardised tool access, &lt;strong>RAG&lt;/strong> for grounding, and &lt;strong>multi-agent&lt;/strong> collaboration for planning and self-critique, AI is moving from answering questions to &lt;em>running workflows&lt;/em>. The five open-source projects here are a good entry point for seeing how that looks in practice - clone one, read how it wires the LLM to its tools, and you&amp;rsquo;ll understand the pattern far better than any summary can convey. Just keep the validation discipline of a computational chemist: the agent accelerates the work, but you still answer for the result.&lt;/p></description></item><item><title>Building a 3D Pharmacophore Model from PDB Data: A Free Python Workflow</title><link>https://yboulaamane.github.io/blog/building-a-3d-pharmacophore-model-from-pdb-data-a-free-python-workflow/</link><pubDate>Tue, 23 Jun 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/building-a-3d-pharmacophore-model-from-pdb-data-a-free-python-workflow/</guid><description>&lt;p>Build the pharmacophore from ligands that already bind the pocket. Overlay them, keep the shared features, and the distances between those features are the screening query. This note does that with biotite, MDAnalysis, scikit-learn, and RDKit. The example target is EGFR, UniProt &lt;strong>P00533&lt;/strong>.&lt;/p>
+&lt;p>
+&lt;figure >
+&lt;div class="flex justify-center ">
+&lt;div class="w-100" >&lt;img src="https://yboulaamane.github.io/uploads/pharmacophore-pdb/pipeline-overview.svg" alt="Pipeline overview" loading="lazy" data-zoomable />&lt;/div>
+&lt;/div>&lt;/figure>
+&lt;em>The five stages: mine, align, cluster, featurize, and consensus. Every box is an open-source library.&lt;/em>&lt;/p>
+&lt;p>A &lt;strong>3D pharmacophore&lt;/strong> is the spatial pattern a binder has to present: hydrogen-bond donors and acceptors, aromatic rings, hydrophobic contacts, and the geometry between them. Ligands that occupy the same site tend to place the same features in the same place. Collect those complexes, put them in one frame, and keep the features the set agrees on.&lt;/p>
+&lt;h2 id="1-mining-the-protein-data-bank">1. Mining the Protein Data Bank&lt;/h2>
+&lt;p>Ask the
+through biotite and the &lt;strong>GraphQL search API&lt;/strong>. The block below is the quality filter, joined with &lt;code>operator=&amp;quot;and&amp;quot;&lt;/code>:&lt;/p>
+&lt;ul>
+&lt;li>UniProt accession, exact match (&lt;strong>P00533&lt;/strong>),&lt;/li>
+&lt;li>method &lt;strong>X-RAY DIFFRACTION&lt;/strong>,&lt;/li>
+&lt;li>combined resolution &lt;strong>≤ 3.0 Å&lt;/strong>,&lt;/li>
+&lt;li>a chemical component with formula weight &lt;strong>greater than 100&lt;/strong>, which drops ions, water, and most buffer molecules.&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">requests&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">biotite.database.rcsb&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">rcsb&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">UNIPROT_ID&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;P00533&amp;#34;&lt;/span> &lt;span class="c1"># e.g. EGFR&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Build a composite query against the RCSB search API&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">query&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">rcsb&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">CompositeQuery&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">rcsb&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">FieldQuery&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;rcsb_polymer_entity_container_identifiers.&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;reference_sequence_identifiers.database_accession&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">exact_match&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">UNIPROT_ID&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">rcsb&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">FieldQuery&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;exptl.method&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">exact_match&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;X-RAY DIFFRACTION&amp;#34;&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">rcsb&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">FieldQuery&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;rcsb_entry_info.resolution_combined&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">less_or_equal&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mf">3.0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">rcsb&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">FieldQuery&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;chem_comp.formula_weight&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">greater&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">100&lt;/span> &lt;span class="c1"># drug-like ligand&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">],&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">operator&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;and&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">pdb_ids&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">rcsb&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">search&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">query&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">pdb_ids&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> structures passed QC: &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">pdb_ids&lt;/span>&lt;span class="p">[:&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> ...&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>rcsb.search&lt;/code> returns the PDB IDs. The print line reports how many passed and shows the first ten. Coordinate download comes after this block.&lt;/p>
+&lt;h2 id="2-extraction-and-3d-alignment">2. Extraction and 3D alignment&lt;/h2>
+&lt;p>Each crystal structure has its own frame, so the ligands cannot be compared until the proteins share one. MDAnalysis reads a high-resolution reference and each mobile PDB, superposes &lt;strong>Cα&lt;/strong> atoms, and copies the ligand coordinates in that frame.&lt;/p>
+&lt;p>&lt;code>align.alignto&lt;/code> uses &lt;code>select=&amp;quot;name CA&amp;quot;&lt;/code> and &lt;code>match_atoms=False&lt;/code>. The ligand selection is &lt;code>not protein and not resname HOH&lt;/code>. The overlay treats the pocket as rigid relative to the fold.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">MDAnalysis&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">mda&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">MDAnalysis.analysis&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">align&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">ref&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mda&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Universe&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;reference.pdb&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1"># high-resolution template&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">aligned_ligands&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">pdb_id&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">pdb_ids&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mobile&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mda&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Universe&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">pdb_id&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">.pdb&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># superpose Cα backbones onto the reference&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">align&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">alignto&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mobile&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ref&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">select&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;name CA&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">match_atoms&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">False&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># the ligand now sits in the reference frame&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ligand&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mobile&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">select_atoms&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;not protein and not resname HOH&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">aligned_ligands&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ligand&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">positions&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">copy&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>After the loop, every copied ligand lives in the reference frame.&lt;/p>
+&lt;h2 id="3-spatial-clustering-with-dbscan">3. Spatial clustering with DBSCAN&lt;/h2>
+&lt;p>The query above accepts a ligand in any site. Orthosteric and allosteric binders both pass, and after the overlay they sit in different clouds.&lt;/p>
+&lt;p>&lt;strong>DBSCAN&lt;/strong> finds those clouds from density. It takes clusters of any shape, marks sparse points as noise, and does not need the number of sites in advance. The settings here are &lt;code>eps=4.0&lt;/code> and &lt;code>min_samples=10&lt;/code>. Label −1 is noise. &lt;code>np.bincount&lt;/code> on the remaining labels keeps the densest cluster.&lt;/p>
+&lt;p>
+&lt;figure >
+&lt;div class="flex justify-center ">
+&lt;div class="w-100" >&lt;img src="https://yboulaamane.github.io/uploads/pharmacophore-pdb/dbscan-clustering.svg" alt="DBSCAN binding-site separation" loading="lazy" data-zoomable />&lt;/div>
+&lt;/div>&lt;/figure>
+&lt;em>DBSCAN groups overlaid ligand atoms by spatial density, cleanly separating the orthosteric &amp;ldquo;hot&amp;rdquo; pocket from an allosteric site and discarding scattered noise.&lt;/em>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">numpy&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">np&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">sklearn.cluster&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">DBSCAN&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># pool every atom from every aligned ligand&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">all_coords&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">vstack&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">aligned_ligands&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">db&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">DBSCAN&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">eps&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mf">4.0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">min_samples&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">fit&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">all_coords&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">labels&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">db&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">labels_&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># keep the densest cluster - our target pocket&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">valid&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">labels&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">labels&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">target_label&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">bincount&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">valid&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">argmax&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">pocket_mask&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">labels&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">target_label&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;Target pocket holds &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">pocket_mask&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">sum&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> atoms &amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;across &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">set&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">valid&lt;/span>&lt;span class="p">))&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> detected site(s)&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>pocket_mask&lt;/code> is an atom mask. The ligands that contribute atoms to that densest cluster are the ones carried into featurization. The print line also reports how many sites DBSCAN found.&lt;/p>
+&lt;h2 id="4-feature-extraction-and-bond-correction">4. Feature extraction and bond correction&lt;/h2>
+&lt;p>PDB ligand records often store every bond as a single bond. An aromatic ring, a carbonyl, and a carboxylate then look the same, and every feature extracted from that file is wrong.&lt;/p>
+&lt;p>Take bond orders from the 2D SMILES in the PDB chemical component dictionary and copy them onto the 3D coordinates with &lt;code>AllChem.AssignBondOrdersFromTemplate&lt;/code>, then &lt;code>Chem.SanitizeMol&lt;/code>. &lt;code>rdFMCS&lt;/code> is available when the template and the 3D atom set only partly overlap, via a maximum common substructure. This block runs the template assignment.&lt;/p>
+&lt;p>The feature factory is &lt;code>BaseFeatures.fdef&lt;/code>. Each row is a family and a coordinate. The comment at the bottom of the block is the shape of one row: &lt;code>('Donor', (12.3, 4.1, -2.0))&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">rdkit&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">Chem&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">rdkit.Chem&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">AllChem&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">rdkit.Chem&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">ChemicalFeatures&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">rdkit&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">RDConfig&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">os&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 1. fix bond orders using the 2D SMILES as a template&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">template&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Chem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">MolFromSmiles&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ligand_smiles&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1"># correct chemistry&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">mol_3d&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Chem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">MolFromPDBFile&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;ligand.pdb&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">removeHs&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">False&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">mol&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">AllChem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">AssignBondOrdersFromTemplate&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">template&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mol_3d&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Chem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">SanitizeMol&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mol&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 2. map pharmacophoric features in 3D&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">fdef&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">os&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">path&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">join&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">RDConfig&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">RDDataDir&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;BaseFeatures.fdef&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">factory&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">ChemicalFeatures&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">BuildFeatureFactory&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">fdef&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">features&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">conf&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mol&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">GetConformer&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">f&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">factory&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">GetFeaturesForMol&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mol&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">pos&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">f&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">GetPos&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">features&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="n">f&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">GetFamily&lt;/span>&lt;span class="p">(),&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">pos&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">pos&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">pos&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">z&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># e.g. (&amp;#39;Donor&amp;#39;, (12.3, 4.1, -2.0)), (&amp;#39;Aromatic&amp;#39;, (...)), ...&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>f.GetPos()&lt;/code> supplies the coordinates. Repeat for every ligand in the target cluster and the product is a typed point cloud: redundant, noisy, and specific to this pocket.&lt;/p>
+&lt;h2 id="5-generating-the-consensus-model-with-k-means">5. Generating the consensus model with k-means&lt;/h2>
+&lt;p>That cloud is the input. Group the points by family, donors with donors and acceptors with acceptors, and run &lt;strong>k-means&lt;/strong> inside each family. The cluster count is&lt;/p>
+&lt;p>&lt;code>k = max(1, round(len(coords) / n_ligands))&lt;/code>,&lt;/p>
+&lt;p>about one site per ligand. A centroid stays when &lt;code>members &amp;gt;= 0.5 * n_ligands&lt;/code>.&lt;/p>
+&lt;p>
+&lt;figure >
+&lt;div class="flex justify-center ">
+&lt;div class="w-100" >&lt;img src="https://yboulaamane.github.io/uploads/pharmacophore-pdb/consensus-pharmacophore.svg" alt="Consensus pharmacophore" loading="lazy" data-zoomable />&lt;/div>
+&lt;/div>&lt;/figure>
+&lt;em>Per-ligand features (faint) collapse into a small set of consensus centroids (bold). The distances between them define the geometric query.&lt;/em>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">numpy&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">np&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">collections&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">defaultdict&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">sklearn.cluster&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">KMeans&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># group every feature point by family&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">by_type&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">defaultdict&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">list&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">family&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">coord&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">all_features&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">by_type&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">family&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">coord&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">n_ligands&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">target_cluster_ligands&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">consensus&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">family&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">coords&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">by_type&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">items&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">coords&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">coords&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">k&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">max&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nb">round&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">coords&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="n">n_ligands&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="c1"># ~1 site per ligand&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">km&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">KMeans&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n_clusters&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n_init&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;auto&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">fit&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">coords&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">c&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">members&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">km&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">labels_&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">sum&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># keep only features shared by the majority&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">members&lt;/span> &lt;span class="o">&amp;gt;=&lt;/span> &lt;span class="mf">0.5&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">n_ligands&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">consensus&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="n">family&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">km&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">cluster_centers_&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">c&lt;/span>&lt;span class="p">]))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">family&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">center&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">consensus&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">family&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s2">10s&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> at &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">round&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">center&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The printout is a short list: family, then a center rounded to two decimals. Distances between those centers are the geometric query.&lt;/p>
+&lt;h2 id="the-payoff">The payoff&lt;/h2>
+&lt;p>The result is a 3D map of the features the overlaid ligands share, built from public structures and free libraries. Encode those features and the distances between them, then search ZINC, Enamine REAL, or an in-house collection for scaffolds that match the same pattern.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Stage&lt;/th>
+&lt;th>Job&lt;/th>
+&lt;th>Tool&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>1. Mine&lt;/td>
+&lt;td>Query and download QC-filtered structures&lt;/td>
+&lt;td>&lt;code>biotite&lt;/code> + RCSB GraphQL&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>2. Align&lt;/td>
+&lt;td>Parse and superpose pockets in 3D&lt;/td>
+&lt;td>&lt;code>MDAnalysis&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>3. Cluster&lt;/td>
+&lt;td>Separate binding sites&lt;/td>
+&lt;td>&lt;code>scikit-learn&lt;/code> (DBSCAN)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>4. Featurize&lt;/td>
+&lt;td>Fix bonds, extract features&lt;/td>
+&lt;td>&lt;code>RDKit&lt;/code> (rdFMCS, FeatureFactory)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>5. Consensus&lt;/td>
+&lt;td>Distill the shared model&lt;/td>
+&lt;td>&lt;code>scikit-learn&lt;/code> (k-means)&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>Python and that stack are the whole chain. This note stops at the query.&lt;/p></description></item><item><title>AI + Chemistry: Building Drug Discovery Pipelines with Free Tools</title><link>https://yboulaamane.github.io/blog/ai-chemistry-building-drug-discovery-pipelines-with-free-tools/</link><pubDate>Tue, 01 Jul 2025 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/ai-chemistry-building-drug-discovery-pipelines-with-free-tools/</guid><description>&lt;p>An ABL kinase project can be assembled from free tools. The snippets below show the calls. They are not a trained screen: several of them run on two molecules, imatinib and a toy inactive, so they demonstrate the interface and nothing about predictive performance.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 300" role="img" aria-labelledby="ai-pipe-title ai-pipe-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="ai-pipe-title">Open-source path from bioactivity to a picture&lt;/title>
+&lt;desc id="ai-pipe-desc">Five stages: ChEMBL bioactivity, RDKit features, a model in DeepChem or Chemprop or scikit-learn, Open Babel 3D coordinates, then PyMOL.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-ai-pipe" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="24" y="88" width="100" height="100" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="148" y="88" width="100" height="100" rx="14" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="272" y="88" width="100" height="100" rx="14" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="396" y="88" width="100" height="100" rx="14" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="520" y="88" width="96" height="100" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;path d="M124 138 L140 138" marker-end="url(#arrow-ai-pipe)" stroke="currentColor"/>
+&lt;path d="M248 138 L264 138" marker-end="url(#arrow-ai-pipe)" stroke="currentColor"/>
+&lt;path d="M372 138 L388 138" marker-end="url(#arrow-ai-pipe)" stroke="currentColor"/>
+&lt;path d="M496 138 L512 138" marker-end="url(#arrow-ai-pipe)" stroke="currentColor"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="44" font-size="22" font-weight="700">Five jobs, five tools&lt;/text>
+&lt;text x="320" y="70" font-size="15">ABL is the example. The code is a sketch.&lt;/text>
+&lt;text x="74" y="132" font-size="16" font-weight="700">ChEMBL&lt;/text>
+&lt;text x="74" y="158" font-size="14">Activities&lt;/text>
+&lt;text x="198" y="132" font-size="16" font-weight="700">RDKit&lt;/text>
+&lt;text x="198" y="158" font-size="14">Fingerprints&lt;/text>
+&lt;text x="322" y="126" font-size="15" font-weight="700">Model&lt;/text>
+&lt;text x="322" y="150" font-size="13">DeepChem&lt;/text>
+&lt;text x="322" y="170" font-size="13">Chemprop, RF&lt;/text>
+&lt;text x="446" y="132" font-size="16" font-weight="700">Babel&lt;/text>
+&lt;text x="446" y="158" font-size="14">3D SDF&lt;/text>
+&lt;text x="568" y="132" font-size="16" font-weight="700">PyMOL&lt;/text>
+&lt;text x="568" y="158" font-size="14">Picture&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> ChEMBL supplies the measured activities. RDKit turns structures into features. DeepChem, Chemprop, and a random forest are three model calls, not three results. Open Babel writes coordinates. PyMOL draws them. Pandas and NumPy sit under the table work and are not a separate scientific step.&lt;/figcaption>
+&lt;/figure>
+&lt;p>The target in the example is ABL kinase, the kinase inhibited by imatinib. Bcr-Abl drives chronic myeloid leukemia. The practical sequence is: pull measured activities, featurize, fit a model, write a 3D structure, look at it.&lt;/p>
+&lt;h2 id="data">Data&lt;/h2>
+&lt;p>ChEMBL is the open source of IC50 and Ki values for compounds tested against ABL. The web services or a bulk download feed a table. Pandas cleans it. NumPy does the arithmetic. This sketch starts from a CSV that is already local.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">pandas&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">pd&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">df&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">pd&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">read_csv&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;ABL_bioactivity.csv&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="rdkit">RDKit&lt;/h2>
+&lt;p>Morgan fingerprints, a Tanimoto, and a substructure check. The SMILES are imatinib and nilotinib. The SMARTS is the shared aniline–pyrimidine motif used in the example.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">rdkit&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">Chem&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">DataStructs&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">rdkit.Chem&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">AllChem&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">imatinib_smiles&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)NC(=O)c4ccc(cc4)CN5CCN(CC5)C&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nilotinib_smiles&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)C(=O)Nc4cc(cc(c4)n5cc(nc5)C)C(F)(F)F&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">mol1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Chem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">MolFromSmiles&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">imatinib_smiles&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">mol2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Chem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">MolFromSmiles&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">nilotinib_smiles&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">fp1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">AllChem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">GetMorganFingerprintAsBitVect&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mol1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">radius&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">nBits&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">2048&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">fp2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">AllChem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">GetMorganFingerprintAsBitVect&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mol2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">radius&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">nBits&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">2048&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sim&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">DataStructs&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">TanimotoSimilarity&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">fp1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">fp2&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;Tanimoto similarity: &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">sim&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s2">.2f&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">query&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Chem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">MolFromSmarts&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;c1ccc(cc1)Nc2nccc(n2)&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">match&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mol1&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">HasSubstructMatch&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">query&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Substructure match:&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">match&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="deepchem">DeepChem&lt;/h2>
+&lt;p>A graph-convolution classifier on two labeled SMILES, fit for 20 epochs. That is enough to see the objects: a featurizer, a &lt;code>NumpyDataset&lt;/code>, and &lt;code>GraphConvModel&lt;/code> in classification mode with ROC AUC as the metric. It is not an ABL model.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">deepchem&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">dc&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">numpy&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">np&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">smiles_list&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)NC(=O)c4ccc(cc4)CN5CCN(CC5)C&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1"># active&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;CCOC(=O)c1ccc(cc1)N&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1"># inactive&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">labels&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">featurizer&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">dc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">feat&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">MolGraphConvFeaturizer&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">X&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">featurizer&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">featurize&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">smiles_list&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">labels&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dataset&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">dc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">NumpyDataset&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">X&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">model&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">dc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">models&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">GraphConvModel&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">n_tasks&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mode&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;classification&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">metrics&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">dc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">metrics&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Metric&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">dc&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">metrics&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">roc_auc_score&lt;/span>&lt;span class="p">)],&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">model&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">fit&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">dataset&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">nb_epoch&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">20&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">pred_probs&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">model&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">predict&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">dataset&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">pred_probs&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="open-babel">Open Babel&lt;/h2>
+&lt;p>SMILES to a 3D SDF, with hydrogens.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">openbabel&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">pybel&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">smiles&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;Cc1ccc(cc1Nc2nccc(n2)c3cccnc3)NC(=O)c4ccc(cc4)CN5CCN(CC5)C&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">mol&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">pybel&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">readstring&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;smi&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">smiles&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">mol&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">addh&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">mol&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">make3D&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">mol&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">write&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;sdf&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;imatinib_3D.sdf&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">overwrite&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">True&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="pymol">PyMOL&lt;/h2>
+&lt;p>Load a kinase structure and the SDF. &lt;code>ABL_kinase.pdb&lt;/code> is a filename, not a file this note provides.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">pymol2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">with&lt;/span> &lt;span class="n">pymol2&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">PyMOL&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">pymol&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cmd&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">pymol&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">cmd&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cmd&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">load&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;ABL_kinase.pdb&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;protein&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cmd&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">load&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;imatinib_3D.sdf&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;ligand&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cmd&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">hide&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;everything&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cmd&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">show&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;cartoon&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;protein&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cmd&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">show&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;sticks&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;ligand&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cmd&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">zoom&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;ligand&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cmd&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">png&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;abl_imatinib.png&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">width&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">800&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">height&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">600&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ray&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="chemprop">Chemprop&lt;/h2>
+&lt;p>Command line, then the same training call from Python. Both expect &lt;code>abl_activity.csv&lt;/code> with a &lt;code>smiles&lt;/code> column and an &lt;code>active&lt;/code> column. Thirty epochs in the Python dict, classification mode, output directory &lt;code>abl_model&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">chemprop_train --data_path abl_activity.csv --smiles_column smiles --target_columns active &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --dataset_type classification --save_dir abl_model
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">chemprop.train&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">run_training&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">params&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;data_path&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;abl_activity.csv&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;smiles_column&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;smiles&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;target_columns&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;active&amp;#34;&lt;/span>&lt;span class="p">],&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;dataset_type&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;classification&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;save_dir&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;abl_model&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;epochs&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">30&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">run_training&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">params&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="a-random-forest-on-the-two-fingerprints">A random forest on the two fingerprints&lt;/h2>
+&lt;p>This continues from the RDKit fingerprints and the two-row &lt;code>labels&lt;/code> array above. A 20% split of two rows is not a validation set. The call is here so the scikit-learn shape is visible.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">sklearn.ensemble&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">RandomForestClassifier&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">sklearn.model_selection&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">train_test_split&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">X&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="nb">list&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">map&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">int&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">fp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">ToBitString&lt;/span>&lt;span class="p">()))&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">fp&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">fp1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">fp2&lt;/span>&lt;span class="p">]]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">labels&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">X_train&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">X_val&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y_train&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y_val&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">train_test_split&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">X&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">test_size&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mf">0.2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">random_state&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">model&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">RandomForestClassifier&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n_estimators&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">100&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">fit&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">X_train&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y_train&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Validation accuracy:&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">model&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">score&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">X_val&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y_val&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="what-each-tool-is-for">What each tool is for&lt;/h2>
+&lt;p>ChEMBL and PubChem hold bioactivity. RDKit handles structures. DeepChem and Chemprop are the message-passing and graph-convolution calls. Open Babel converts formats. PyMOL inspects a pose. Pandas, NumPy, and scikit-learn are the table and the baseline. All of these are free. A competitive model still depends on the table you did not sketch here: more than two compounds, a split that respects the chemistry, and a metric you compute on held-out molecules.&lt;/p></description></item></channel></rss>

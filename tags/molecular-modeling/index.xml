@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Molecular Modeling | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/molecular-modeling/</link><atom:link href="https://yboulaamane.github.io/tags/molecular-modeling/index.xml" rel="self" type="application/rss+xml"/><description>Molecular Modeling</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 01 Apr 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Molecular Modeling</title><link>https://yboulaamane.github.io/tags/molecular-modeling/</link></image><item><title>Beyond 2D Fingerprints: Encoding Protein-Ligand Interactions for Machine Learning</title><link>https://yboulaamane.github.io/blog/beyond-2d-fingerprints-3d-protein-ligand-interaction-encoding-for-ml/</link><pubDate>Wed, 01 Apr 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/beyond-2d-fingerprints-3d-protein-ligand-interaction-encoding-for-ml/</guid><description>&lt;p>A 2D fingerprint throws away the pose. Docking spent its time on contacts, hydrogen-bond geometry, and stacking, and a topology-only vector keeps none of that. Use a 2D fingerprint when the ligand alone is the object. Use a 3D interaction fingerprint when the pose is the object.&lt;/p>
+&lt;p>PLEC, SPLIF, and E3FP are three different objects. PLEC encodes which groups touch. SPLIF encodes the geometry of those contacts. E3FP never sees the protein.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 300" role="img" aria-labelledby="fp3d-title fp3d-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="fp3d-title">Three fingerprints, three questions&lt;/title>
+&lt;desc id="fp3d-desc">PLEC encodes contact chemistry between protein and ligand. SPLIF encodes the spatial geometry of interacting fragments. E3FP encodes ligand shape and pharmacophore and does not see the protein.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="24" y="72" width="188" height="160" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="226" y="72" width="188" height="160" rx="14" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="428" y="72" width="188" height="160" rx="14" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="40" font-size="22" font-weight="700">Match the fingerprint to the question&lt;/text>
+&lt;text x="118" y="112" font-size="18" font-weight="700">PLEC&lt;/text>
+&lt;text x="118" y="142" font-size="16">Who touches whom&lt;/text>
+&lt;text x="118" y="170" font-size="15">Protein and ligand&lt;/text>
+&lt;text x="118" y="198" font-size="15">Affinity, reactivity&lt;/text>
+&lt;text x="320" y="112" font-size="18" font-weight="700">SPLIF&lt;/text>
+&lt;text x="320" y="142" font-size="16">How they sit&lt;/text>
+&lt;text x="320" y="170" font-size="15">Protein and ligand&lt;/text>
+&lt;text x="320" y="198" font-size="15">Pose vs a reference&lt;/text>
+&lt;text x="522" y="112" font-size="18" font-weight="700">E3FP&lt;/text>
+&lt;text x="522" y="142" font-size="16">Ligand shape&lt;/text>
+&lt;text x="522" y="170" font-size="15">Ligand only&lt;/text>
+&lt;text x="522" y="198" font-size="15">Scaffold hopping&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> PLEC and SPLIF need the receptor. E3FP does not, so two poses of the same ligand can differ while a protein contact cannot appear in the vector. The bit lengths below are the starting points in the snippets: 16384 for PLEC, 4096 for SPLIF and for E3FP.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="plec">PLEC&lt;/h2>
+&lt;p>PLEC is an ECFP-style fingerprint of the interface. It describes the chemical neighborhood of contacting atom pairs, on both the ligand and the protein. The model sees which groups are next to which residue environments, and at what depth you asked for.&lt;/p>
+&lt;p>Use it when the chemistry of the contact is the signal: affinity, or reactivity at a site.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">oddt&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">oddt.fingerprints&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">fps&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">oddt.toolkits.rdk&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">readfile&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Load receptor and ligand&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">receptor&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">next&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">readfile&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;pdb&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;receptor.pdb&amp;#39;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">receptor&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">protein&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">True&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">ligand&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">next&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">readfile&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;sdf&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;docked_pose.sdf&amp;#39;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Calculate PLEC fingerprint&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># depth_ligand and depth_protein control circular environment depth&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">plec&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">fps&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">PLEC&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ligand&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">receptor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">depth_ligand&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">depth_protein&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">size&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">16384&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>size&lt;/code> is the bit length. A longer vector collides less and costs more memory. 16384 is the starting point given here for ensemble docking.&lt;/p>
+&lt;p>If the task is reactivity at one catalytic site, a hand-built distance can be appended. The coordinate below is a placeholder.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">numpy&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">np&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">oddt.interactions&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">close_contacts&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Example: compute distance from ligand centroid to a metal/active site atom&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Replace with your actual active site coordinate&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">active_site_coord&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="mf">12.3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mf">45.6&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mf">7.8&lt;/span>&lt;span class="p">])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">ligand_centroid&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">ligand&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">atoms&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">coords&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">mean&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">axis&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dist_to_site&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">linalg&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">norm&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ligand_centroid&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">active_site_coord&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Append to PLEC vector&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">plec_extended&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">plec&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">dist_to_site&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>close_contacts&lt;/code> is imported in the original snippet and not called. The distance is a centroid-to-point norm.&lt;/p>
+&lt;h2 id="splif">SPLIF&lt;/h2>
+&lt;p>SPLIF encodes the geometry of interacting fragments rather than a catalog of atom types. Stacking and T-shaped contacts sit in that geometry, without a hard-coded interaction list. That makes it less tied to one docking program’s interaction labels.&lt;/p>
+&lt;p>Use it when you want poses that reproduce the 3D binding geometry of a reference ligand.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># SPLIF is also available through ODDT&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">splif&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">fps&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">SPLIF&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ligand&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">receptor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">depth_ligand&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">depth_protein&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">size&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">4096&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The vectors are sparser than PLEC. Tanimoto similarity on them is the geometric comparison in this note.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">oddt.utils&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">binary_tanimoto&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">reference_splif&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">fps&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">SPLIF&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">reference_ligand&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">receptor&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">similarity&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">binary_tanimoto&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">splif&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">reference_splif&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;Geometric similarity to reference: &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">similarity&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s2">.3f&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="e3fp">E3FP&lt;/h2>
+&lt;p>E3FP is a circular fingerprint in Euclidean space. It grows out from atoms through distance, not through bonds. The same 2D structure in two conformations gets two fingerprints. The protein is absent, so this is a ligand-shape method: ligand-based screening and scaffold hopping.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Install e3fp: pip install e3fp&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">e3fp.pipeline&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">fprints_from_mol&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">rdkit&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">Chem&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">rdkit.Chem&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">AllChem&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Load mol with a 3D conformer&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">mol&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Chem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">MolFromSmiles&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;your_smiles_here&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">mol&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Chem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">AddHs&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mol&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">AllChem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">EmbedMolecule&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mol&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">AllChem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">ETKDGv3&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">AllChem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">MMFFOptimizeMolecule&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mol&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Generate E3FP fingerprints for all conformers&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">fprints&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">fprints_from_mol&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mol&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">fprint_params&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="s1">&amp;#39;bits&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">4096&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;level&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="p">})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Convert to dense array for ML&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">numpy&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">np&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">e3fp_array&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">fprints&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">to_vector&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">sparse&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">False&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="n">dtype&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">float32&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>For several poses, this note mean-pools the vectors.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Mean-pool across poses - preserves pharmacophoric signal while reducing noise&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">fprint_arrays&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">fp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">to_vector&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">sparse&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">False&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">fp&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">fprints&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">e3fp_consensus&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">mean&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">fprint_arrays&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">axis&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="which-one">Which one&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;/th>
+&lt;th>PLEC&lt;/th>
+&lt;th>SPLIF&lt;/th>
+&lt;th>E3FP&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Sees&lt;/td>
+&lt;td>Protein and ligand&lt;/td>
+&lt;td>Protein and ligand&lt;/td>
+&lt;td>Ligand only&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Encodes&lt;/td>
+&lt;td>Contact chemistry&lt;/td>
+&lt;td>Spatial geometry&lt;/td>
+&lt;td>Shape and pharmacophore&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Ensemble noise&lt;/td>
+&lt;td>Tolerates it well&lt;/td>
+&lt;td>Moderate&lt;/td>
+&lt;td>Needs aggregation&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Use&lt;/td>
+&lt;td>Reactivity, affinity&lt;/td>
+&lt;td>Geometric screening&lt;/td>
+&lt;td>Ligand-based screening&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>Across an ensemble of receptor conformations, PLEC has a frame of reference the protein supplies, so the encoding moves less when the pose jitters. E3FP has to be aggregated or the conformer noise is the feature.&lt;/p>
+&lt;p>None of the three is complete. The pipelines this note describes do best when a primary fingerprint is joined to a few hand-built features that the fingerprint is not learning. Profile what the model uses before you swap the whole representation.&lt;/p>
+&lt;p>2D fingerprints stay the right tool for a fast ligand-only screen. For a model whose question is the binding geometry, the 3D choice above is the one that matches the question.&lt;/p></description></item></channel></rss>

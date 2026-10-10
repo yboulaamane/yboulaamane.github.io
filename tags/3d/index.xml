@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>3D | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/3d/</link><atom:link href="https://yboulaamane.github.io/tags/3d/index.xml" rel="self" type="application/rss+xml"/><description>3D</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sun, 05 Apr 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>3D</title><link>https://yboulaamane.github.io/tags/3d/</link></image><item><title>Point Cloud Classification with Graph Neural Networks Using PyTorch Geometric</title><link>https://yboulaamane.github.io/blog/point-cloud-classification-with-graph-neural-networks-using-pytorch-geometric/</link><pubDate>Sun, 05 Apr 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/point-cloud-classification-with-graph-neural-networks-using-pytorch-geometric/</guid><description>&lt;p>A point cloud has coordinates and no edges. A voxel grid invents a lattice the data did not have.
+builds a graph from the points and runs message passing on it. This note follows the PyG point-cloud tutorial: sample a mesh, connect k nearest neighbours, pass relative positions, then pool one vector per shape.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 280" role="img" aria-labelledby="pyg-cloud-title pyg-cloud-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="pyg-cloud-title">From a mesh to one class label&lt;/title>
+&lt;desc id="pyg-cloud-desc">SamplePoints draws 256 points from a mesh. KNNGraph with k of 6 adds 1536 edges. A PointNet layer uses relative position and max aggregation. global_max_pool makes one vector per shape.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-pyg-cloud" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="20" y="72" width="136" height="120" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="176" y="72" width="136" height="120" rx="12" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="332" y="72" width="136" height="120" rx="12" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="488" y="72" width="132" height="120" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M156 132 L168 132" marker-end="url(#arrow-pyg-cloud)" stroke="currentColor"/>
+&lt;path d="M312 132 L324 132" marker-end="url(#arrow-pyg-cloud)" stroke="currentColor"/>
+&lt;path d="M468 132 L480 132" marker-end="url(#arrow-pyg-cloud)" stroke="currentColor"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="40" font-size="22" font-weight="700">Points first. Edges are a choice.&lt;/text>
+&lt;text x="88" y="116" font-size="16" font-weight="700">Sample&lt;/text>
+&lt;text x="88" y="146" font-size="15">256 points&lt;/text>
+&lt;text x="244" y="116" font-size="16" font-weight="700">k-NN&lt;/text>
+&lt;text x="244" y="146" font-size="16">k = 6&lt;/text>
+&lt;text x="244" y="170" font-size="15">1536 edges&lt;/text>
+&lt;text x="400" y="116" font-size="16" font-weight="700">PointNet&lt;/text>
+&lt;text x="400" y="146" font-size="15">Relative xyz, max&lt;/text>
+&lt;text x="554" y="116" font-size="16" font-weight="700">Pool&lt;/text>
+&lt;text x="554" y="146" font-size="15">One vector&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The counts are the tutorial’s: &lt;code>SamplePoints(num=256)&lt;/code> and &lt;code>KNNGraph(k=6)&lt;/code>, which is 1536 edges. Sampling is stochastic, so the same mesh is a different cloud each time you touch it. The label comes from the GeometricShapes set, 40 meshes, not from a protein dataset.&lt;/figcaption>
+&lt;/figure>
+&lt;p>Protein structures, LiDAR, conformers, and cryo-EM density are the same kind of object: an unordered set of coordinates, sometimes with normals or colour. The walkthrough below assumes no prior graph ML. PointNet++ is Qi et al., NeurIPS 2017.&lt;/p>
+&lt;hr>
+&lt;h2 id="what-is-a-point-cloud">What Is a Point Cloud?&lt;/h2>
+&lt;p>A point cloud is simply a collection of points in 3D space:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">P = { (x₁, y₁, z₁), (x₂, y₂, z₂), ..., (xₙ, yₙ, zₙ) }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>There is no inherent connectivity - no bonds, no edges, no grid. The points can be in any order, and there can be any number of them. This is what makes point clouds tricky for standard deep learning: CNNs expect a fixed-size, ordered grid, but a point cloud is neither.&lt;/p>
+&lt;p>Graph Neural Networks sidestep this by &lt;em>constructing&lt;/em> a graph from the points - connecting nearby points with edges - and then running message passing on that graph to learn local geometric structure.&lt;/p>
+&lt;hr>
+&lt;h2 id="the-pyg-data-object">The PyG &lt;code>Data&lt;/code> Object&lt;/h2>
+&lt;p>Everything in PyTorch Geometric revolves around the &lt;code>Data&lt;/code> object - a flexible container for graph-structured data. For point clouds specifically, the key attribute is &lt;code>pos&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">torch_geometric.data&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">Data&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">torch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># A simple point cloud: 5 points in 3D&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Data&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">pos&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">torch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">randn&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">5&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Data(pos=[5, 3])&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>data.pos&lt;/code> holds the 3D coordinates of each point. Other common attributes you&amp;rsquo;ll encounter:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Attribute&lt;/th>
+&lt;th>Shape&lt;/th>
+&lt;th>Meaning&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>data.pos&lt;/code>&lt;/td>
+&lt;td>&lt;code>[N, 3]&lt;/code>&lt;/td>
+&lt;td>3D coordinates of N points&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>data.x&lt;/code>&lt;/td>
+&lt;td>&lt;code>[N, F]&lt;/code>&lt;/td>
+&lt;td>Node feature vectors (optional)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>data.edge_index&lt;/code>&lt;/td>
+&lt;td>&lt;code>[2, E]&lt;/code>&lt;/td>
+&lt;td>Graph connectivity - pairs of connected point indices&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>data.y&lt;/code>&lt;/td>
+&lt;td>&lt;code>[1]&lt;/code> or &lt;code>[N]&lt;/code>&lt;/td>
+&lt;td>Label(s) - graph-level or point-level&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>data.batch&lt;/code>&lt;/td>
+&lt;td>&lt;code>[N]&lt;/code>&lt;/td>
+&lt;td>Batch assignment vector (added automatically during batching)&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>The &lt;code>Data&lt;/code> object is intentionally minimal - you only include what you have.&lt;/p>
+&lt;hr>
+&lt;h2 id="the-dataset-geometricshapes">The Dataset: GeometricShapes&lt;/h2>
+&lt;p>PyG includes &lt;code>GeometricShapes&lt;/code>, a synthetic dataset of 3D meshes representing simple geometric shapes (cubes, spheres, pyramids, and more). It&amp;rsquo;s a convenient sandbox for learning.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">torch_geometric.datasets&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">GeometricShapes&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dataset&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">GeometricShapes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">root&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;data/GeometricShapes&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">dataset&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># GeometricShapes(40)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">dataset&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Data(pos=[32, 3], face=[3, 30], y=[1])&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Each object is stored as a &lt;strong>mesh&lt;/strong> - vertices (&lt;code>pos&lt;/code>) and their triangular connectivity (&lt;code>face&lt;/code>). But we want to work with point clouds, not meshes. This is where transforms come in.&lt;/p>
+&lt;hr>
+&lt;h2 id="transforms-from-mesh-to-point-cloud-to-graph">Transforms: From Mesh to Point Cloud to Graph&lt;/h2>
+&lt;p>PyG has a rich transforms system (&lt;code>torch_geometric.transforms&lt;/code>). Transforms are functions that take a &lt;code>Data&lt;/code> object and return a modified one. You can compose multiple transforms together.&lt;/p>
+&lt;h3 id="step-1-sample-points-from-the-mesh-surface">Step 1: Sample points from the mesh surface&lt;/h3>
+&lt;p>&lt;code>SamplePoints&lt;/code> uniformly samples a fixed number of 3D points from the mesh&amp;rsquo;s surface, proportional to face area. It discards the mesh connectivity and replaces it with a point cloud.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">torch_geometric.transforms&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">T&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">dataset&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">transform&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">T&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">SamplePoints&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">num&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">256&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">dataset&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Data(pos=[256, 3], y=[1])&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We now have 256 points sampled from the surface of the shape. The &lt;code>face&lt;/code> attribute is gone - we only have coordinates.&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>Note:&lt;/strong> &lt;code>SamplePoints&lt;/code> is stochastic - you get a different set of points every time you access the same example. This acts as data augmentation during training for free.&lt;/p>&lt;/blockquote>
+&lt;h3 id="step-2-build-a-graph-with-k-nearest-neighbours">Step 2: Build a graph with k-nearest neighbours&lt;/h3>
+&lt;p>A point cloud alone has no edges. To run a GNN, we need to connect the points. The standard approach is &lt;strong>k-nearest neighbour (k-NN) graph construction&lt;/strong>: for each point, connect it to its &lt;em>k&lt;/em> geometrically closest neighbours.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="n">dataset&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">transform&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">T&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Compose&lt;/span>&lt;span class="p">([&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">T&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">SamplePoints&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">num&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">256&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">T&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">KNNGraph&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">6&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">data&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">dataset&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Data(pos=[256, 3], edge_index=[2, 1536], y=[1])&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We now have 1536 edges - exactly 6 per point. &lt;code>edge_index&lt;/code> is a &lt;code>[2, E]&lt;/code> tensor where &lt;code>edge_index[0]&lt;/code> contains source node indices and &lt;code>edge_index[1]&lt;/code> contains destination node indices.&lt;/p>
+&lt;p>&lt;strong>Why k-NN and not a fixed radius?&lt;/strong> k-NN always gives exactly &lt;em>k&lt;/em> neighbours per point regardless of local density, which keeps the graph regular. A radius-based graph (&lt;code>radius_graph&lt;/code>) is an alternative when you care more about physical scale than computational regularity.&lt;/p>
+&lt;hr>
+&lt;h2 id="pointnet-the-architecture">PointNet++: The Architecture&lt;/h2>
+&lt;p>
+(Qi et al., NeurIPS 2017) is the foundational architecture for learning from point clouds. It works by iteratively:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Grouping&lt;/strong> - constructing a local neighbourhood graph (e.g., via k-NN)&lt;/li>
+&lt;li>&lt;strong>Aggregating&lt;/strong> - running a GNN layer that collects information from each point&amp;rsquo;s neighbours&lt;/li>
+&lt;li>&lt;strong>Downsampling&lt;/strong> - reducing the number of points (like pooling in a CNN) to capture larger-scale structure&lt;/li>
+&lt;/ol>
+&lt;p>For simplicity, we focus here on the grouping and aggregation steps, which are the core of the method.&lt;/p>
+&lt;h3 id="the-pointnet-layer-messagepassing-from-scratch">The PointNet++ Layer: MessagePassing from Scratch&lt;/h3>
+&lt;p>PyG provides a &lt;code>MessagePassing&lt;/code> base class that handles all the bookkeeping of graph message propagation - you just define &lt;em>what message&lt;/em> to send, and &lt;em>how&lt;/em> to aggregate them.&lt;/p>
+&lt;p>The PointNet++ update rule for node &lt;em>i&lt;/em> at layer ℓ+1 is:&lt;/p>
+$$h_i^{(\ell+1)} = \max_{j \in \mathcal{N}(i)} \text{MLP}\!\left(h_j^{(\ell)},\ \mathbf{p}_j - \mathbf{p}_i\right)$$&lt;p>In words: for each neighbour &lt;em>j&lt;/em> of point &lt;em>i&lt;/em>, concatenate &lt;em>j&lt;/em>&amp;rsquo;s features with the &lt;em>relative position&lt;/em> of &lt;em>j&lt;/em> with respect to &lt;em>i&lt;/em>, pass that through a small MLP, then take the maximum over all neighbours. The relative position &lt;code>p_j - p_i&lt;/code> is what gives the layer its geometric awareness - the network learns to respond to local shape, not just content.&lt;/p>
+&lt;p>Here is a full implementation from scratch using &lt;code>MessagePassing&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">torch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">torch&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">Tensor&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">torch.nn&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">Sequential&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Linear&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ReLU&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">torch_geometric.nn&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">MessagePassing&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">class&lt;/span> &lt;span class="nc">PointNetLayer&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">MessagePassing&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">def&lt;/span> &lt;span class="fm">__init__&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">in_channels&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">int&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">out_channels&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">int&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># &amp;#34;max&amp;#34; aggregation: take the maximum over all incoming messages&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">super&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="fm">__init__&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">aggr&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;max&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># MLP: maps (neighbour features + relative position) → message&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Input size = in_channels (neighbour features) + 3 (relative xyz)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">mlp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Sequential&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Linear&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">in_channels&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">out_channels&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ReLU&lt;/span>&lt;span class="p">(),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Linear&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">out_channels&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">out_channels&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">def&lt;/span> &lt;span class="nf">forward&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">h&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Tensor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">pos&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Tensor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">edge_index&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Tensor&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">-&amp;gt;&lt;/span> &lt;span class="n">Tensor&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Trigger message passing:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># pos=(pos, pos) passes source and destination positions to message()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">propagate&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">edge_index&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">h&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">h&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">pos&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">pos&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">def&lt;/span> &lt;span class="nf">message&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">h_j&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Tensor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">pos_j&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Tensor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">pos_i&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Tensor&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">-&amp;gt;&lt;/span> &lt;span class="n">Tensor&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># h_j: features of neighbouring points (the &amp;#34;j&amp;#34; suffix = source nodes)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># pos_j - pos_i: relative position of neighbour w.r.t. current point&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># The &amp;#34;_j&amp;#34; and &amp;#34;_i&amp;#34; suffixes are a PyG convention for source/destination&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">relative_pos&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">pos_j&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">pos_i&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">msg_input&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">torch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">cat&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="n">h_j&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">relative_pos&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">dim&lt;/span>&lt;span class="o">=-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">mlp&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">msg_input&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>A few things worth understanding here:&lt;/p>
+&lt;p>&lt;strong>The &lt;code>_j&lt;/code> and &lt;code>_i&lt;/code> suffix convention.&lt;/strong> In PyG&amp;rsquo;s &lt;code>MessagePassing&lt;/code>, when you name a tensor in &lt;code>message()&lt;/code> with a &lt;code>_j&lt;/code> suffix, PyG automatically selects the features of the source nodes (neighbours). The &lt;code>_i&lt;/code> suffix selects features of the destination node (the central point). This is just syntactic sugar - PyG does the indexing for you.&lt;/p>
+&lt;p>&lt;strong>Why relative position, not absolute?&lt;/strong> Using &lt;code>pos_j - pos_i&lt;/code> instead of absolute coordinates makes the layer &lt;em>translation-invariant&lt;/em> - it responds to the shape of the local neighbourhood, not where it is in global space. This is important for generalisation.&lt;/p>
+&lt;p>&lt;strong>Why max aggregation?&lt;/strong> Max pooling is permutation-invariant (order of neighbours doesn&amp;rsquo;t matter) and selects the most &amp;ldquo;active&amp;rdquo; incoming signal. It empirically works better than mean for point clouds, because the most distinctive geometric feature often comes from a single key neighbour, not the average.&lt;/p>
+&lt;hr>
+&lt;h2 id="building-the-full-network">Building the Full Network&lt;/h2>
+&lt;p>Now we assemble the &lt;code>PointNetLayer&lt;/code> into a full classifier. PyG handles mini-batching by concatenating all points from all examples in the batch into a single tensor, using a &lt;code>batch&lt;/code> vector to track which points belong to which example.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">torch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">torch.nn.functional&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">F&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">torch_geometric.nn&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">global_max_pool&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">class&lt;/span> &lt;span class="nc">PointNet&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">torch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">nn&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Module&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">def&lt;/span> &lt;span class="fm">__init__&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">num_classes&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">int&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">super&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="fm">__init__&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Two PointNet++ layers: 3D coords → 32 features → 64 features&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">conv1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">PointNetLayer&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">in_channels&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">out_channels&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">32&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">conv2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">PointNetLayer&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">in_channels&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">32&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">out_channels&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">64&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Final classifier&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">classifier&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">torch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">nn&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Linear&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">64&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">num_classes&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">def&lt;/span> &lt;span class="nf">forward&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">pos&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Tensor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">edge_index&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Tensor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">batch&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Tensor&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">-&amp;gt;&lt;/span> &lt;span class="n">Tensor&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Initial node features = raw 3D coordinates&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">h&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">pos&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Layer 1: each point aggregates from its k-NN neighbours&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">h&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">conv1&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">h&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">pos&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">edge_index&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">h&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">F&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">relu&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">h&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Layer 2: aggregate again with updated features&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">h&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">conv2&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">h&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">pos&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">edge_index&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">h&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">F&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">relu&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">h&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Global readout: reduce all N points → one vector per graph&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># global_max_pool uses the `batch` vector to know which points belong together&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">graph_embedding&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">global_max_pool&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">h&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">batch&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1"># shape: [B, 64]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Classify&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="bp">self&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">classifier&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">graph_embedding&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="understanding-global_max_pool-and-the-batch-vector">Understanding &lt;code>global_max_pool&lt;/code> and the &lt;code>batch&lt;/code> vector&lt;/h3>
+&lt;p>This is one of PyG&amp;rsquo;s most important design choices, and it&amp;rsquo;s worth understanding clearly.&lt;/p>
+&lt;p>When you load a mini-batch of 10 point clouds, each with 256 points, PyG doesn&amp;rsquo;t create a list of 10 separate tensors. Instead, it concatenates everything into a single tensor of shape &lt;code>[2560, 3]&lt;/code> - all 2560 points together - and creates a &lt;code>batch&lt;/code> vector:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">batch = [0, 0, ..., 0, 1, 1, ..., 1, ..., 9, 9, ..., 9]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ↑ 256 zeros ↑ 256 ones ↑ 256 nines
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>This &lt;code>batch&lt;/code> vector tells &lt;code>global_max_pool&lt;/code> which points belong to which example, so it can reduce each group of 256 points into a single 64-dimensional embedding. The output shape is &lt;code>[10, 64]&lt;/code> - one vector per shape in the batch.&lt;/p>
+&lt;p>This approach is computationally efficient because all operations (message passing, MLP forward passes) run on contiguous tensors, not Python lists of variable-size arrays.&lt;/p>
+&lt;hr>
+&lt;h2 id="using-the-built-in-pointnetconv">Using the Built-in &lt;code>PointNetConv&lt;/code>&lt;/h2>
+&lt;p>If you don&amp;rsquo;t want to implement the layer from scratch, PyG ships a ready-to-use version:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">torch_geometric.nn&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">PointNetConv&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">torch.nn&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">Sequential&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Linear&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ReLU&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">BatchNorm1d&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">local_nn&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Sequential&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Linear&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">3&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">64&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="c1"># 3 (neighbour features) + 3 (relative pos)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ReLU&lt;/span>&lt;span class="p">(),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Linear&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">64&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">64&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">BatchNorm1d&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">64&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">conv&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">PointNetConv&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">local_nn&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">local_nn&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">add_self_loops&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">True&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>PointNetConv&lt;/code> implements the same operation but with additional options like a &lt;code>global_nn&lt;/code> (applied after aggregation) and support for self-loops.&lt;/p>
+&lt;hr>
+&lt;h2 id="putting-it-all-together-dataset-loader-and-training">Putting It All Together: Dataset, Loader, and Training&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">torch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">torch_geometric.transforms&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">T&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">torch_geometric.datasets&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">GeometricShapes&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">torch_geometric.loader&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">DataLoader&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">torch_geometric.nn&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">global_max_pool&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># --- Data ---&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">transform&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">T&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Compose&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="n">T&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">SamplePoints&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">num&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">256&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="n">T&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">KNNGraph&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">6&lt;/span>&lt;span class="p">)])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">train_dataset&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">GeometricShapes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">root&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;data/GeometricShapes&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">train&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">True&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">train_dataset&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">transform&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">transform&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">test_dataset&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">GeometricShapes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">root&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;data/GeometricShapes&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">train&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">False&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">test_dataset&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">transform&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">transform&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">train_loader&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">DataLoader&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">train_dataset&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">batch_size&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">shuffle&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">True&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">test_loader&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">DataLoader&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">test_dataset&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">batch_size&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># --- Model, optimizer, loss ---&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">model&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">PointNet&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">num_classes&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">train_dataset&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">num_classes&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">optimizer&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">torch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">optim&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Adam&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">model&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">parameters&lt;/span>&lt;span class="p">(),&lt;/span> &lt;span class="n">lr&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mf">0.01&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">criterion&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">torch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">nn&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">CrossEntropyLoss&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># --- Training loop ---&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">train&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">model&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">train&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">total_loss&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">data&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">train_loader&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">optimizer&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">zero_grad&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">logits&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">model&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">pos&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">data&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">edge_index&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">data&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">batch&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">loss&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">criterion&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">logits&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">data&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">loss&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">backward&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">optimizer&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">step&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">total_loss&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="nb">float&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">loss&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">data&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">num_graphs&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">total_loss&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">train_loader&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">dataset&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@torch.no_grad&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">test&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">loader&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">model&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">eval&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">total_correct&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">data&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">loader&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">logits&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">model&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">pos&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">data&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">edge_index&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">data&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">batch&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">pred&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">logits&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">argmax&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">dim&lt;/span>&lt;span class="o">=-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">total_correct&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="nb">int&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="n">pred&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">data&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">sum&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">total_correct&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">loader&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">dataset&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">epoch&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">51&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">loss&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">train&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">train_acc&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">test&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">train_loader&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">test_acc&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">test&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">test_loader&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s1">&amp;#39;Epoch &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">epoch&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s1">02d&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s1"> | Loss: &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">loss&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s1">.4f&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s1"> | Train: &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">train_acc&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s1">.2%&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s1"> | Test: &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">test_acc&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s1">.2%&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The training loop is standard PyTorch - the only PyG-specific things are the DataLoader (which handles batching of graphs) and the &lt;code>data.pos&lt;/code>, &lt;code>data.edge_index&lt;/code>, &lt;code>data.batch&lt;/code> attributes you pass to the model.&lt;/p>
+&lt;hr>
+&lt;h2 id="going-further-farthest-point-sampling">Going Further: Farthest Point Sampling&lt;/h2>
+&lt;p>The tutorial also introduces &lt;strong>Farthest Point Sampling (FPS)&lt;/strong> - a downsampling strategy used in PointNet++ to progressively reduce the number of points across layers, similar to how a CNN reduces spatial resolution via pooling.&lt;/p>
+&lt;p>FPS iteratively selects the point furthest from all already-selected points, ensuring good coverage of the shape&amp;rsquo;s surface:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">torch_cluster&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">fps&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Sample 25% of the points, keeping those most spread out&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sampled_indices&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">fps&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">pos&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ratio&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mf">0.25&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">downsampled_pos&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">data&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">pos&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">sampled_indices&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>After downsampling, you&amp;rsquo;d rebuild a new k-NN graph on the reduced point set and run another PointNet++ layer. This hierarchical approach - aggregate, downsample, repeat - is what gives PointNet++ its ability to capture multi-scale geometric structure.&lt;/p>
+&lt;hr>
+&lt;h2 id="key-concepts-to-remember">Key Concepts to Remember&lt;/h2>
+&lt;p>&lt;strong>From mesh to point cloud:&lt;/strong> &lt;code>SamplePoints&lt;/code> does this in one line. The stochastic sampling acts as free data augmentation.&lt;/p>
+&lt;p>&lt;strong>From point cloud to graph:&lt;/strong> &lt;code>KNNGraph(k=6)&lt;/code> connects each point to its 6 nearest neighbours. The graph is re-constructed dynamically every time you access the data.&lt;/p>
+&lt;p>&lt;strong>Message passing in PyG:&lt;/strong> Subclass &lt;code>MessagePassing&lt;/code>, define &lt;code>message()&lt;/code>, and use &lt;code>_j&lt;/code>/&lt;code>_i&lt;/code> suffixes to access neighbour/central node attributes. PyG handles all the scatter-gather indexing under the hood.&lt;/p>
+&lt;p>&lt;strong>Relative position is the key:&lt;/strong> The term &lt;code>pos_j - pos_i&lt;/code> in the message function is what gives the network its geometric awareness. Without it, the network would be blind to the shape of the neighbourhood.&lt;/p>
+&lt;p>&lt;strong>Batching via the &lt;code>batch&lt;/code> vector:&lt;/strong> PyG concatenates all graphs in a batch into one large disconnected graph. &lt;code>global_max_pool(h, batch)&lt;/code> then recovers one embedding per graph using the batch assignment vector.&lt;/p>
+&lt;hr>
+&lt;h2 id="comparison-with-dgl">Comparison with DGL&lt;/h2>
+&lt;p>If you read the
+, you&amp;rsquo;ll notice both libraries share the message-passing paradigm. The key practical differences for point cloud work:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;/th>
+&lt;th>PyG&lt;/th>
+&lt;th>DGL&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Graph construction&lt;/td>
+&lt;td>&lt;code>KNNGraph&lt;/code>, &lt;code>radius_graph&lt;/code> transforms&lt;/td>
+&lt;td>Manual or external&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Point cloud support&lt;/td>
+&lt;td>First-class (&lt;code>SamplePoints&lt;/code>, &lt;code>PointNetConv&lt;/code>)&lt;/td>
+&lt;td>General-purpose&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Message passing&lt;/td>
+&lt;td>&lt;code>MessagePassing&lt;/code> base class, &lt;code>_j/_i&lt;/code> suffix convention&lt;/td>
+&lt;td>&lt;code>update_all&lt;/code> + &lt;code>fn.*&lt;/code> built-ins&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Batching&lt;/td>
+&lt;td>&lt;code>batch&lt;/code> vector, &lt;code>global_*_pool&lt;/code>&lt;/td>
+&lt;td>&lt;code>dgl.batch&lt;/code>, &lt;code>dgl.mean_nodes&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Built-in PointNet&lt;/td>
+&lt;td>&lt;code>PointNetConv&lt;/code>&lt;/td>
+&lt;td>Not built-in&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>For point cloud tasks specifically, PyG&amp;rsquo;s transform pipeline and built-in PointNet support give it an edge. For heterogeneous molecular graphs, DGL&amp;rsquo;s heterograph API is more expressive.&lt;/p>
+&lt;hr>
+&lt;p>&lt;em>Next post: building atom-level node features from protein–ligand complexes with RDKit and MDAnalysis, and connecting them to a PyG or DGL training pipeline.&lt;/em>&lt;/p></description></item></channel></rss>

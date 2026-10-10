@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bioinformatics | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/bioinformatics/</link><atom:link href="https://yboulaamane.github.io/tags/bioinformatics/index.xml" rel="self" type="application/rss+xml"/><description>Bioinformatics</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 21 Jul 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Bioinformatics</title><link>https://yboulaamane.github.io/tags/bioinformatics/</link></image><item><title>Beyond Parameter Counts: The Shift Toward Rigorous Evaluation in Scientific AI</title><link>https://yboulaamane.github.io/blog/shifting-focus-from-model-size-to-rigorous-evaluation/</link><pubDate>Tue, 21 Jul 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/shifting-focus-from-model-size-to-rigorous-evaluation/</guid><description>&lt;p>The evaluation of artificial intelligence in drug discovery is transitioning from a focus on model scale to validation of output quality. While foundation models and deep learning architectures in structural biology have grown in parameters and database size, their translation to experimental pipelines remains limited by physical inconsistencies. Generated structural models that appear plausible can harbor steric clashes, display poor thermodynamic stability, or fail to fold in vitro.&lt;/p>
+&lt;p>Ensuring the utility of scientific AI requires rigorous, multi-tiered evaluation frameworks that test physical consistency, out-of-distribution generalization, and biological viability.&lt;/p>
+&lt;hr>
+&lt;h2 id="limits-of-classical-metrics">Limits of Classical Metrics&lt;/h2>
+&lt;p>Traditional machine learning benchmarks rely on statistical reconstruction. In structural biology, structure prediction accuracy is often measured by root-mean-square deviation (RMSD) from static target structures, while sequence generators are evaluated on sequence perplexity.&lt;/p>
+&lt;p>These metrics do not capture physical or chemical viability. A predicted complex can report a low backbone RMSD while placing atoms in overlapping coordinates, violating electrostatic constraints, or displaying unstable conformations. Modern evaluation frameworks address this by assessing models along three key axes:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Functional Utility:&lt;/strong> Validation of the target biological function (such as ligand binding, inhibition, or activation) in vitro.&lt;/li>
+&lt;li>&lt;strong>Operational Robustness:&lt;/strong> Accuracy across diverse target families and novel domain classes without performance degradation.&lt;/li>
+&lt;li>&lt;strong>Representational Integrity:&lt;/strong> Adherence to physical, chemical, and thermodynamic laws, including correct chirality, bond angles, and torsion angles.&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;h2 id="the-scientific-ai-evaluation-hierarchy">The Scientific AI Evaluation Hierarchy&lt;/h2>
+&lt;p>Evaluating these models systematically requires a hierarchical structure. Models must satisfy base physical constraints before being assessed on complex biological activity.&lt;/p>
+&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="100%" height="100%">
+&lt;defs>
+&lt;!-- Gradients -->
+&lt;linearGradient id="level1" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#EF4444" />
+&lt;stop offset="100%" stop-color="#B91C1C" />
+&lt;/linearGradient>
+&lt;linearGradient id="level2" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#F59E0B" />
+&lt;stop offset="100%" stop-color="#B45309" />
+&lt;/linearGradient>
+&lt;linearGradient id="level3" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#10B981" />
+&lt;stop offset="100%" stop-color="#047857" />
+&lt;/linearGradient>
+&lt;linearGradient id="level4" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#3B82F6" />
+&lt;stop offset="100%" stop-color="#1D4ED8" />
+&lt;/linearGradient>
+&lt;filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+&lt;feDropShadow dx="1" dy="3" stdDeviation="3" flood-opacity="0.1" />
+&lt;/filter>
+&lt;/defs>
+&lt;style>
+.header-text { font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: 20px; fill: #111827; }
+.level-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 14px; fill: #FFFFFF; }
+.level-desc { font-family: 'Inter', system-ui, sans-serif; font-weight: 500; font-size: 11px; fill: #F9FAFB; }
+.side-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 12px; fill: #374151; }
+.side-desc { font-family: 'Inter', system-ui, sans-serif; font-size: 11px; fill: #6B7280; }
+&lt;/style>
+&lt;!-- Background -->
+&lt;rect width="800" height="380" fill="#F9FAFB" rx="12" />
+&lt;text x="30" y="35" class="header-text">The Scientific AI Evaluation Hierarchy&lt;/text>
+&lt;!-- Level 4: Functional Utility (Top) -->
+&lt;g transform="translate(250, 60)" filter="url(#shadow)">
+&lt;polygon points="150,0 0,60 300,60" fill="url(#level4)" />
+&lt;text x="150" y="42" class="level-title" text-anchor="middle">Level 4: Functional Utility&lt;/text>
+&lt;/g>
+&lt;g transform="translate(570, 75)">
+&lt;text x="0" y="15" class="side-title">Real-World Efficacy&lt;/text>
+&lt;text x="0" y="30" class="side-desc">• Experimental binding assays&lt;/text>
+&lt;text x="0" y="45" class="side-desc">• Functional cell-line modulation&lt;/text>
+&lt;/g>
+&lt;!-- Level 3: Biophysical Developability -->
+&lt;g transform="translate(200, 125)" filter="url(#shadow)">
+&lt;polygon points="50,0 250,0 280,60 20,60" fill="url(#level3)" />
+&lt;text x="150" y="35" class="level-title" text-anchor="middle">Level 3: Biophysical Developability&lt;/text>
+&lt;/g>
+&lt;g transform="translate(570, 140)">
+&lt;text x="0" y="15" class="side-title">Manufacturability &amp;amp; Safety&lt;/text>
+&lt;text x="0" y="30" class="side-desc">• Aggregation &amp;amp; clearing rates&lt;/text>
+&lt;text x="0" y="45" class="side-desc">• Thermal stability &amp;amp; solubility&lt;/text>
+&lt;/g>
+&lt;!-- Level 2: Generalization &amp; Leakage Control -->
+&lt;g transform="translate(150, 190)" filter="url(#shadow)">
+&lt;polygon points="50,0 250,0 275,60 25,60" fill="url(#level2)" />
+&lt;text x="150" y="35" class="level-title" text-anchor="middle">Level 2: Generalization Control&lt;/text>
+&lt;/g>
+&lt;g transform="translate(570, 205)">
+&lt;text x="0" y="15" class="side-title">Out-of-Distribution Tests&lt;/text>
+&lt;text x="0" y="30" class="side-desc">• Homology clustering splits&lt;/text>
+&lt;text x="0" y="45" class="side-desc">• Zero-shot novel target space&lt;/text>
+&lt;/g>
+&lt;!-- Level 1: Physical &amp; Factual Grounding -->
+&lt;g transform="translate(100, 255)" filter="url(#shadow)">
+&lt;polygon points="50,0 250,0 270,70 30,70" fill="url(#level1)" />
+&lt;text x="150" y="35" class="level-title" text-anchor="middle">Level 1: Grounding &amp;amp; Integrity&lt;/text>
+&lt;text x="150" y="52" class="level-desc" text-anchor="middle">Steric clashes, chirality, database citations&lt;/text>
+&lt;/g>
+&lt;g transform="translate(570, 275)">
+&lt;text x="0" y="15" class="side-title">Base Constraints&lt;/text>
+&lt;text x="0" y="30" class="side-desc">• Valid bond angles &amp;amp; torsion&lt;/text>
+&lt;text x="0" y="45" class="side-desc">• No citation hallucinations&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;hr>
+&lt;h2 id="generalization-vs-rote-memorization">Generalization vs. Rote Memorization&lt;/h2>
+&lt;p>A key challenge in scientific machine learning is data leakage. Because public repositories such as the Protein Data Bank (PDB) are highly redundant, random train-test partitions frequently contain homologous structures. Consequently, models can achieve high accuracy by memorizing training patterns rather than learning underlying biophysical principles.&lt;/p>
+&lt;p>To address this, next-generation benchmarks enforce strict &lt;strong>out-of-distribution (OOD) validation&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Homology Clustering:&lt;/strong> Partitioning datasets based on sequence identity. For example, testing models exclusively on proteins sharing less than 30% sequence identity with any training instance.&lt;/li>
+&lt;li>&lt;strong>Zero-Shot Novel Scaffolds:&lt;/strong> Evaluating model performance on de novo designed proteins or chemical classes that do not exist in the training set.&lt;/li>
+&lt;li>&lt;strong>Leakage Diagnostics:&lt;/strong> Running ablations (such as comparing full complex predictions against pocket-only or ligand-only baselines) to check if models learn true interactions or rely on target identity patterns.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="closing-the-loop-biophysical-developability">Closing the Loop: Biophysical Developability&lt;/h2>
+&lt;p>In drug discovery, binding affinity represents only one parameter of interest. To serve as a viable therapeutic agent, a candidate molecule must satisfy a multi-parameter &lt;strong>developability profile&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Solubility &amp;amp; Hydrophobicity:&lt;/strong> Maintaining stability in aqueous solution without precipitation.&lt;/li>
+&lt;li>&lt;strong>Aggregation Propensity:&lt;/strong> Resisting self-association and the formation of high-molecular-weight aggregates.&lt;/li>
+&lt;li>&lt;strong>Thermal Stability:&lt;/strong> Retaining structural integrity across temperatures (measured via melting temperature, $T_m$).&lt;/li>
+&lt;li>&lt;strong>Manufacturability:&lt;/strong> Exhibiting high expression yields in host production systems.&lt;/li>
+&lt;/ul>
+&lt;p>AI assessment methodologies now incorporate automated physical screening. Rather than relying on static docking score ranking, candidate compounds are prioritized using automated, high-throughput biophysical assays that measure solubility, stability, and clearing kinetics.&lt;/p>
+&lt;hr>
+&lt;h2 id="evaluating-autonomous-agents-and-reasoning-llms">Evaluating Autonomous Agents and Reasoning LLMs&lt;/h2>
+&lt;p>Recent AI applications in chemistry employ Large Language Models (LLMs) as autonomous agents. Rather than limiting tasks to property prediction, these agents perform multi-step scientific workflows, including literature reviews, database queries, and structural tool execution via protocols such as the Model Context Protocol.&lt;/p>
+&lt;p>Evaluating these systems requires auditing their reasoning pathways and operational integrity:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Hallucination Mitigation:&lt;/strong> Verifying that all generated scientific claims and intermediate planning steps reflect established physical chemistry.&lt;/li>
+&lt;li>&lt;strong>Citation Grounding:&lt;/strong> Implementing Retrieval-Augmented Generation (RAG) to trace assertions back to peer-reviewed literature or databases (such as UniProt, ChEMBL, or PubMed).&lt;/li>
+&lt;li>&lt;strong>Factual Traceability:&lt;/strong> Documenting and reviewing decision lineage across multi-agent loops to verify chemical and biological feasibility.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="outlook">Outlook&lt;/h2>
+&lt;p>The translational impact of machine learning in molecular sciences depends on the development of rigorous, transparent, and reproducible evaluation standards. Public benchmarks (similar to CAFA) and open data infrastructures (such as EMBL-EBI and RCSB PDB) provide the necessary foundation. Subjecting machine learning predictions to strict physical and experimental validation is essential to translate in silico models into candidate therapeutics.&lt;/p></description></item><item><title>Computational Drug Repurposing with Multiscale Interactomes</title><link>https://yboulaamane.github.io/blog/computational-drug-repurposing-with-multiscale-interactomes/</link><pubDate>Tue, 23 Apr 2024 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/computational-drug-repurposing-with-multiscale-interactomes/</guid><description>&lt;p>Repurposing starts from a molecule that already exists. The interactome is how you ask whether that molecule sits near a disease for a reason the label &amp;ldquo;approved for something else&amp;rdquo; does not contain.&lt;/p>
+&lt;p>The workflow in this note puts drugs, proteins, pathways, and one disease into a single graph, embeds the nodes, and ranks them by similarity to the disease. The ranking is a shortlist. The assay is still the test.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 560" role="img" aria-labelledby="ix-title ix-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="ix-title">From a multiscale graph to a ranked shortlist&lt;/title>
+&lt;desc id="ix-desc">Drugs, proteins, pathways, and a disease node form one graph. Node2Vec and a graph convolutional network embed the nodes. Cosine similarity to the disease ranks drugs and proteins. Filters and a cell assay come after the rank.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-ix" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;rect x="28" y="78" width="136" height="78" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="176" y="78" width="136" height="78" rx="14" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="324" y="78" width="136" height="78" rx="14" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="472" y="78" width="140" height="78" rx="14" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="70" y="230" width="500" height="72" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="70" y="360" width="500" height="72" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="70" y="468" width="500" height="72" rx="16" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M320 156 L320 222" marker-end="url(#arrow-ix)"/>
+&lt;path d="M320 302 L320 352" marker-end="url(#arrow-ix)"/>
+&lt;path d="M320 432 L320 460" marker-end="url(#arrow-ix)"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="40" font-size="22" font-weight="700">One graph, then a distance to the disease&lt;/text>
+&lt;text x="96" y="112" font-size="16" font-weight="700">Drugs&lt;/text>
+&lt;text x="96" y="136" font-size="13">DrugBank edges&lt;/text>
+&lt;text x="244" y="112" font-size="16" font-weight="700">Proteins&lt;/text>
+&lt;text x="244" y="136" font-size="13">Interactions&lt;/text>
+&lt;text x="392" y="112" font-size="16" font-weight="700">Pathways&lt;/text>
+&lt;text x="392" y="136" font-size="13">Membership&lt;/text>
+&lt;text x="542" y="112" font-size="16" font-weight="700">Disease&lt;/text>
+&lt;text x="542" y="136" font-size="13">Known proteins&lt;/text>
+&lt;text x="320" y="262" font-size="18" font-weight="700">Node2Vec, then a graph convolutional network&lt;/text>
+&lt;text x="320" y="286" font-size="14">Diffusion loss pulls nodes toward the disease neighborhood&lt;/text>
+&lt;text x="320" y="392" font-size="18" font-weight="700">Cosine similarity to the disease node&lt;/text>
+&lt;text x="320" y="416" font-size="14">A score for every drug and every protein&lt;/text>
+&lt;text x="320" y="500" font-size="18" font-weight="700">Filter, then a cell assay&lt;/text>
+&lt;text x="320" y="524" font-size="14">The rank is not the experiment&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Edges are not all the same kind of fact. A DrugBank binding edge, a protein-protein interaction, a pathway membership, and a disease association are four statements. The embedding treats the graph as one object, so those statements have to be ones you are willing to mix.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="the-graph">The graph&lt;/h2>
+&lt;p>Nodes are drugs, proteins, pathways, and diseases. Edges are the relations you have a source for. Drug-protein links can come from DrugBank. Protein-protein links should be the high-confidence set you would defend, not every interaction a database has ever stored. Pathway edges are membership. Disease edges are the associations you add for the condition you care about: host-pathogen interactions in an infection, or reported α-synuclein partners if the disease is Parkinson&amp;rsquo;s. Those are examples of edge types. They are not results of this note.&lt;/p>
+&lt;p>Until the disease node is in the graph and tied to the proteins or pathways you claim are relevant, &amp;ldquo;proximity to the disease&amp;rdquo; is undefined. Add that node before any embedding.&lt;/p>
+&lt;h2 id="what-the-embedding-is-optimizing">What the embedding is optimizing&lt;/h2>
+&lt;p>Node2Vec is the first representation. It walks the graph so that a node&amp;rsquo;s vector reflects both its immediate neighbors and a wider neighborhood. A graph convolutional network then adjusts those vectors. The loss used here is a diffusion loss: nodes that the diffusion treats as close to the disease are pulled together in the embedding.&lt;/p>
+&lt;p>Every drug, protein, and pathway ends as a vector. Candidates are ranked by cosine similarity to the disease vector. You get two lists from the same geometry. Drugs near the disease are direct repurposing candidates. Proteins near the disease are candidate targets, which still need a ligand.&lt;/p>
+&lt;h2 id="three-ways-to-read-the-same-ranking">Three ways to read the same ranking&lt;/h2>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 360" role="img" aria-labelledby="pick-title pick-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="pick-title">Three ways to turn the ranking into a shortlist&lt;/title>
+&lt;desc id="pick-desc">Target-centric selection takes drugs closest to the disease. Protein-centric selection takes proteins closest to the disease and then looks up ligands. Polypharmacology selection prefers drugs close to several of those proteins at once.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="64" width="584" height="80" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="28" y="156" width="584" height="80" rx="14" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="28" y="248" width="584" height="80" rx="14" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="36" font-size="22" font-weight="700" text-anchor="middle">The rank is one list. The shortlist is a choice.&lt;/text>
+&lt;text x="48" y="96" font-size="18" font-weight="700">Target-centric&lt;/text>
+&lt;text x="48" y="124" font-size="15">Take the drugs closest to the disease node&lt;/text>
+&lt;text x="48" y="188" font-size="18" font-weight="700">Protein-centric&lt;/text>
+&lt;text x="48" y="216" font-size="15">Take the closest proteins, then their predicted binders&lt;/text>
+&lt;text x="48" y="280" font-size="18" font-weight="700">Polypharmacology&lt;/text>
+&lt;text x="48" y="308" font-size="15">Prefer a drug close to several of those proteins&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> All three shortlists are views of the same embedding. Protein-centric selection needs a second resource, such as PolypharmDB, to turn a protein hit into a compound. That second lookup is not the cosine score.&lt;/figcaption>
+&lt;/figure>
+&lt;p>Use more than one of these on purpose, and keep track of which route produced each name. A drug that appears on two of the lists is a more interesting candidate than a drug that appears on one. It is still a candidate.&lt;/p>
+&lt;h2 id="filters-before-the-assay">Filters before the assay&lt;/h2>
+&lt;p>Keep the list inside the chemical space you can actually test. In this workflow that means FDA-approved small molecules with drug-like properties, enough scaffold diversity that you are not ordering five near-duplicates, and no pile-up on a single target or a single mechanism. A filter that only sorts by the cosine score will hand you a chemically boring set.&lt;/p>
+&lt;h2 id="the-experiment">The experiment&lt;/h2>
+&lt;p>The cell assay has to match the disease you put in the graph. For an infection that may be an inhibition assay or a pseudovirus entry assay. For another phenotype it is the screen that reads that phenotype. A hit is then checked by an orthogonal measurement, such as qRT-PCR or a targeted inhibition assay. The orthogonal assay is there because a proximity score and a single phenotypic well can agree for the wrong reason.&lt;/p>
+&lt;h2 id="bottom-line">Bottom line&lt;/h2>
+&lt;p>The interactome gives you a geometry in which &amp;ldquo;near the disease&amp;rdquo; is a number. Node2Vec and the graph convolutional network are how this workflow builds that geometry. Cosine similarity is how it reads it. The three selection routes are three questions you can ask of the same vectors. None of them is a demonstrated new use. That demonstration is the assay, run on a shortlist you can explain in terms of the edges you chose to include.&lt;/p></description></item><item><title>A Comprehensive Guide to Hybrid Assembly Pipeline for Genomic Sequencing</title><link>https://yboulaamane.github.io/blog/a-comprehensive-guide-to-hybrid-assembly-pipeline-for-genomic-sequencing/</link><pubDate>Thu, 11 Jan 2024 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/a-comprehensive-guide-to-hybrid-assembly-pipeline-for-genomic-sequencing/</guid><description>&lt;p>Long reads tell you how a microbial genome is spanned. Short reads tell you which bases to trust. A hybrid assembly uses each read set for the job it is good at: span first, then correct.&lt;/p>
+&lt;p>The pipeline below is written for Oxford Nanopore long reads and Illumina paired short reads. The commands are the ones this note was built around. Several flags are tied to the chemistry and to the tool version, and those are called out where a copy-paste would be the wrong experiment.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 520" role="img" aria-labelledby="asm-title asm-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="asm-title">Hybrid assembly from two read types&lt;/title>
+&lt;desc id="asm-desc">Quality-check both read sets, filter the long reads with the short reads, assemble with Flye, polish with Medaka and then Polypolish, then score the assembly and annotate it.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-asm" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;rect x="70" y="24" width="500" height="80" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="70" y="140" width="500" height="80" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="70" y="256" width="500" height="80" rx="16" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="70" y="372" width="500" height="80" rx="16" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M320 104 L320 132" marker-end="url(#arrow-asm)"/>
+&lt;path d="M320 220 L320 248" marker-end="url(#arrow-asm)"/>
+&lt;path d="M320 336 L320 364" marker-end="url(#arrow-asm)"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="54" font-size="20" font-weight="700">1. Look at both read sets&lt;/text>
+&lt;text x="320" y="80" font-size="16">NanoPlot for ONT, FastQC for Illumina&lt;/text>
+&lt;text x="320" y="170" font-size="20" font-weight="700">2. Keep the long reads worth spanning&lt;/text>
+&lt;text x="320" y="196" font-size="16">Filtlong, using the short reads as a guide&lt;/text>
+&lt;text x="320" y="286" font-size="20" font-weight="700">3. Assemble, then polish twice&lt;/text>
+&lt;text x="320" y="312" font-size="16">Flye, then Medaka, then Polypolish&lt;/text>
+&lt;text x="320" y="402" font-size="20" font-weight="700">4. Score it, then annotate&lt;/text>
+&lt;text x="320" y="428" font-size="16">BUSCO, QUAST, Prokka, and RAST&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Short reads enter twice. Filtlong uses them to decide which long reads to keep. Polypolish uses them again to correct the assembly the long reads built. They are not a second independent genome.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="what-to-install">What to install&lt;/h2>
+&lt;p>
+or another conda distribution is the practical way to pin these tools. Medaka and BUSCO pull different stacks, so this note activates them in their own environments rather than forcing one environment to hold every package.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">conda create --name myenv
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">conda activate myenv
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Quality control:&lt;/p>
+&lt;ul>
+&lt;li>
+plots length and quality for long reads.&lt;/li>
+&lt;li>
+reports the Illumina reads.&lt;/li>
+&lt;li>
+drops long reads that are short or low quality, and it can use the Illumina reads as an external reference while it does so.&lt;/li>
+&lt;/ul>
+&lt;p>Assembly and polishing:&lt;/p>
+&lt;ul>
+&lt;li>
+builds the long-read assembly.&lt;/li>
+&lt;li>
+polishes that assembly with a neural network trained for Nanopore reads.&lt;/li>
+&lt;li>
+maps the Illumina reads back to the polished contigs.&lt;/li>
+&lt;li>
+uses those alignments for a second, short-read polish.&lt;/li>
+&lt;/ul>
+&lt;p>Assessment and annotation come after the sequence exists:&lt;/p>
+&lt;ul>
+&lt;li>
+asks whether expected single-copy genes are present.&lt;/li>
+&lt;li>
+reports length, contiguity, GC, and, when you give it a reference, misassemblies. This note runs it without a reference.&lt;/li>
+&lt;/ul>
+&lt;p>The file names below (&lt;code>LR_input.fastq&lt;/code>, &lt;code>SR_input_1.fastq&lt;/code>, &lt;code>SR_input_2.fastq&lt;/code>) are placeholders. Thread count is 8 throughout. Change both.&lt;/p>
+&lt;h2 id="quality-control">Quality control&lt;/h2>
+&lt;p>Long reads:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mkdir -p nanoplot_lr_raw
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NanoPlot --fastq LR_input.fastq --N50 --verbose --outdir nanoplot_lr_raw/ -t &lt;span class="m">8&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Short reads:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mkdir -p fastqc_reports
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">fastqc SR_input_1.fastq SR_input_2.fastq -o fastqc_reports/ -t &lt;span class="m">8&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Read the length distribution and the per-base quality before filtering. A filter cannot repair a library that failed. It can only discard reads.&lt;/p>
+&lt;h2 id="filter-the-long-reads">Filter the long reads&lt;/h2>
+&lt;p>Filtlong keeps long reads of at least 1000 bases and retains 90 percent of them by its ranking. The Illumina pair is the external reference for that ranking.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">filtlong -1 SR_input_1.fastq -2 SR_input_2.fastq --min_length &lt;span class="m">1000&lt;/span> --keep_percent &lt;span class="m">90&lt;/span> LR_input.fastq &amp;gt; LR_filtered.fastq
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir -p nanoplot_lr_filtered
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NanoPlot --fastq LR_filtered.fastq --N50 --verbose --outdir nanoplot_lr_filtered/ -t &lt;span class="m">8&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Compare the second NanoPlot report with the first. You want the N50 to hold or improve because short fragments left, not because the filter kept a handful of reads.&lt;/p>
+&lt;h2 id="assemble-with-flye">Assemble with Flye&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">flye --nano-raw LR_filtered.fastq --out-dir Flye/ --threads &lt;span class="m">8&lt;/span> --scaffold -g 6m
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Two flags are specific to this example. &lt;code>--nano-raw&lt;/code> is Flye&amp;rsquo;s preset for that class of Nanopore reads. If your reads were basecalled with a high-quality model, use the matching Flye preset instead of copying this one. &lt;code>-g 6m&lt;/code> tells Flye to expect a genome of about 6 megabases, which is a plausible bacterial size and a poor guess for anything else. Replace &lt;code>6m&lt;/code> with the size you actually expect.&lt;/p>
+&lt;h2 id="polish-with-the-long-reads">Polish with the long reads&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">conda activate medaka
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">medaka_consensus -i LR_filtered.fastq -d Flye/assembly.fasta -o Polish1/ -m r941_min_fast_g303 -t &lt;span class="m">8&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The model string &lt;code>r941_min_fast_g303&lt;/code> belongs to an older R9.4.1 and Guppy combination. Medaka will apply whatever model you name. Name the one that matches the flow cell and the basecaller that produced &lt;code>LR_filtered.fastq&lt;/code>. The input assembly is Flye&amp;rsquo;s &lt;code>assembly.fasta&lt;/code>. The polished sequence is written under &lt;code>Polish1/&lt;/code>.&lt;/p>
+&lt;h2 id="polish-with-the-short-reads">Polish with the short reads&lt;/h2>
+&lt;p>Polypolish wants the Illumina alignments, including secondary and supplementary ones, which is why &lt;code>bwa mem&lt;/code> is run with &lt;code>-a&lt;/code>. The insert-filter helper is part of the Polypolish interface these commands were written for. A newer release may have renamed that step. Use the flags your installed version documents.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mkdir -p Polish2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bwa index Polish1/consensus.fasta
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bwa mem -t &lt;span class="m">8&lt;/span> -a Polish1/consensus.fasta SR_input_1.fastq &amp;gt; Polish2/alignments_1.sam
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bwa mem -t &lt;span class="m">8&lt;/span> -a Polish1/consensus.fasta SR_input_2.fastq &amp;gt; Polish2/alignments_2.sam
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">polypolish_insert_filter.py --in1 Polish2/alignments_1.sam --in2 Polish2/alignments_2.sam --out1 Polish2/filtered_1.sam --out2 Polish2/filtered_2.sam
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">polypolish Polish1/consensus.fasta Polish2/filtered_1.sam Polish2/filtered_2.sam &amp;gt; final_assembly.fasta
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The file you assess from here on is &lt;code>final_assembly.fasta&lt;/code>.&lt;/p>
+&lt;h2 id="did-the-assembly-hold-together">Did the assembly hold together?&lt;/h2>
+&lt;p>BUSCO here uses the bacterial lineage &lt;code>bacteria_odb10&lt;/code>. That lineage is the right check for the genome this example assumes. A different microbe needs its own lineage.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">conda activate busco
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">busco -i final_assembly.fasta -l bacteria_odb10 -m genome -o busco_final_assembly
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">quast -o quast_final_assembly -t &lt;span class="m">8&lt;/span> final_assembly.fasta
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Read the two reports together. BUSCO can look complete on an assembly whose contigs are still in the wrong order, and QUAST&amp;rsquo;s N50 can look excellent on a sequence that is missing genes. Without a reference, QUAST cannot call misassemblies.&lt;/p>
+&lt;h2 id="annotation">Annotation&lt;/h2>
+&lt;p>Prokka predicts genes and attaches the annotation it can infer. RAST is a second, web-based functional annotation. They will disagree on names. That is a reason to keep both, not a reason to average them.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">conda install -c conda-forge -c bioconda prokka
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">prokka --outdir prokka_annotation --prefix final_assembly final_assembly.fasta
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>RAST takes the same assembly through its upload page:
+.&lt;/p>
+&lt;h2 id="bottom-line">Bottom line&lt;/h2>
+&lt;p>The long reads build the contigs. Medaka polishes them with the same long reads. Polypolish polishes again with the Illumina pair that already helped choose which long reads to trust. BUSCO and QUAST tell you whether that sequence is complete and contiguous. Prokka and RAST name the genes. The numbers in the commands that are not about your sample — genome size, Medaka model, Flye preset, BUSCO lineage — have to be changed to match it.&lt;/p></description></item></channel></rss>

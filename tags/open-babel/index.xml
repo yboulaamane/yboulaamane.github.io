@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Open Babel | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/open-babel/</link><atom:link href="https://yboulaamane.github.io/tags/open-babel/index.xml" rel="self" type="application/rss+xml"/><description>Open Babel</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 23 Sep 2025 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Open Babel</title><link>https://yboulaamane.github.io/tags/open-babel/</link></image><item><title>Energy Minimization with Open Babel: Practical Guide for Ligand Preparation</title><link>https://yboulaamane.github.io/blog/energy-minimization-with-open-babel-practical-guide-for-ligand-preparation/</link><pubDate>Tue, 23 Sep 2025 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/energy-minimization-with-open-babel-practical-guide-for-ligand-preparation/</guid><description>&lt;p>A ligand drawn by hand, or pulled from a 2D table, is often a bad start for docking. &lt;code>obminimize&lt;/code> relaxes it with a small-molecule force field. It does not produce a protein-bound pose.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 300" role="img" aria-labelledby="obmin-title obmin-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="obmin-title">Steepest descent first, then conjugate gradient&lt;/title>
+&lt;desc id="obmin-desc">A strained ligand goes through steepest descent to clear clashes, then conjugate gradient to finish near the minimum. MMFF94 is the drug-like choice in this note. UFF is the choice when the element coverage has to be broader.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-obmin" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="78" width="160" height="120" rx="14" fill="#f2994a" fill-opacity="0.12" stroke="#f2994a"/>
+&lt;rect x="240" y="78" width="160" height="120" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="452" y="78" width="160" height="120" rx="14" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M188 138 L232 138" marker-end="url(#arrow-obmin)" stroke="currentColor"/>
+&lt;path d="M400 138 L444 138" marker-end="url(#arrow-obmin)" stroke="currentColor"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="40" font-size="22" font-weight="700">Clear the clash, then converge&lt;/text>
+&lt;text x="108" y="122" font-size="18" font-weight="700">Start&lt;/text>
+&lt;text x="108" y="150" font-size="15">Bad geometry&lt;/text>
+&lt;text x="320" y="122" font-size="18" font-weight="700">SD&lt;/text>
+&lt;text x="320" y="150" font-size="15">-sd, robust&lt;/text>
+&lt;text x="532" y="122" font-size="18" font-weight="700">CG&lt;/text>
+&lt;text x="532" y="150" font-size="15">-cg, default&lt;/text>
+&lt;text x="320" y="250" font-size="16" font-weight="700">MMFF94 for drug-like ligands&lt;/text>
+&lt;text x="320" y="276" font-size="15">UFF when metals or odd elements are in the file&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Steepest descent is the first pass because it tolerates a bad start. Conjugate gradient is the default and is the right second pass once the worst clashes are gone. The force-field switch is separate: MMFF94, or MMFF94s, for ordinary organic ligands; UFF when the element set is the problem.&lt;/figcaption>
+&lt;/figure>
+&lt;p>Downloaded or sketched ligands carry unrealistic bonds, angles, and overlaps. Docking those coordinates can bias the score or fail to converge. Minimization is the preprocessing step that makes the geometry a plausible gas-phase start. Commercial tools such as Chem3D do this too. Open Babel is the free command-line route.&lt;/p>
+&lt;h2 id="the-command">The command&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">obminimize [options] input_file
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>-ff&lt;/code> chooses the force field.&lt;/li>
+&lt;li>&lt;code>-sd&lt;/code> is steepest descent.&lt;/li>
+&lt;li>&lt;code>-cg&lt;/code> is conjugate gradient, and it is the default.&lt;/li>
+&lt;li>&lt;code>-h&lt;/code> adds hydrogens.&lt;/li>
+&lt;li>&lt;code>-n&lt;/code> sets the maximum number of steps. The default is 2500.&lt;/li>
+&lt;li>&lt;code>-o&lt;/code> sets the output format, such as PDB, MOL2, or SDF.&lt;/li>
+&lt;/ul>
+&lt;h2 id="which-force-field">Which force field&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Force field&lt;/th>
+&lt;th>Typical use&lt;/th>
+&lt;th>Strength&lt;/th>
+&lt;th>Weakness&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>GAFF&lt;/td>
+&lt;td>General drug-like molecules&lt;/td>
+&lt;td>AMBER-compatible&lt;/td>
+&lt;td>Less aimed at a small ligand on its own&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Ghemical&lt;/td>
+&lt;td>Teaching, small molecules&lt;/td>
+&lt;td>Light&lt;/td>
+&lt;td>Limited accuracy&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>MMFF94&lt;/td>
+&lt;td>Small organic ligands&lt;/td>
+&lt;td>Well validated&lt;/td>
+&lt;td>A bit heavier&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>MMFF94s&lt;/td>
+&lt;td>MMFF94 variant&lt;/td>
+&lt;td>Better torsions&lt;/td>
+&lt;td>Similar cost to MMFF94&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>UFF&lt;/td>
+&lt;td>Organics, inorganics, metals&lt;/td>
+&lt;td>Wide element coverage&lt;/td>
+&lt;td>Weaker on ordinary organics&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>For a drug-like ligand, use MMFF94 or MMFF94s.&lt;/p>
+&lt;h2 id="sd-then-cg">SD, then CG&lt;/h2>
+&lt;p>Steepest descent walks the gradient. It is robust and it removes high-energy clashes. It is slow once the molecule is close to a minimum.&lt;/p>
+&lt;p>Conjugate gradient uses the gradient and the previous search direction. It takes fewer steps near the minimum. It can fail if the start is still far away.&lt;/p>
+&lt;p>So the order is SD first, CG second.&lt;/p>
+&lt;h2 id="two-recorded-commands">Two recorded commands&lt;/h2>
+&lt;p>MMFF94 with steepest descent, hydrogens added, PDB out:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">obminimize -sd -ff MMFF94 -h ligand.mol2 -o pdb ligand_min.pdb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>UFF with conjugate gradient, for a metal complex, SDF out:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">obminimize -cg -ff UFF metal_complex.mol2 -o sdf metal_min.sdf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>A longer run is the same command with &lt;code>-n&lt;/code> set above the default of 2500. This note does not record a specific step count, so there is no third command to copy.&lt;/p>
+&lt;p>The output is a ligand that is less likely to explode in docking or in the first steps of MD. It is still a force-field minimum of the free ligand, not a bound conformation and not a quantum geometry.&lt;/p></description></item></channel></rss>

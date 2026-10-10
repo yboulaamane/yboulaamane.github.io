@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Best Practices | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/best-practices/</link><atom:link href="https://yboulaamane.github.io/tags/best-practices/index.xml" rel="self" type="application/rss+xml"/><description>Best Practices</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 24 Dec 2025 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Best Practices</title><link>https://yboulaamane.github.io/tags/best-practices/</link></image><item><title>Stop Using B3LYP/6-31G*: Critical Pitfalls in Modern DFT Calculations and How to Avoid Them</title><link>https://yboulaamane.github.io/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/</link><pubDate>Wed, 24 Dec 2025 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/</guid><description>&lt;p>B3LYP/6-31G* still finishes, and the number still looks like chemistry. The failure is systematic: no London dispersion, a small basis, and an error cancellation that happens to land near an experiment often enough to be trusted. The eight pitfalls below are the ones in this note. The recommendations are the ones it names, not a new protocol table.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 440" role="img" aria-labelledby="dftpit-title dftpit-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="dftpit-title">What B3LYP/6-31G* leaves out, and what this note uses instead&lt;/title>
+&lt;desc id="dftpit-desc">The legacy default misses dispersion and suffers basis-set error. Replacements named here are r2SCAN-3c, D3(BJ) or D4, a triple-zeta basis or gCP, Fock exchange for barriers, SMD or COSMO-RS, and a Boltzmann average over conformers.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-dftpit" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="36" y="64" width="200" height="88" rx="14" fill="#9b51e0" fill-opacity="0.12" stroke="#9b51e0"/>
+&lt;path d="M236 108 L268 108" marker-end="url(#arrow-dftpit)" stroke="currentColor"/>
+&lt;rect x="276" y="64" width="328" height="56" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="276" y="132" width="328" height="56" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="36" y="220" width="568" height="52" rx="12" fill="#f2994a" fill-opacity="0.12" stroke="#f2994a"/>
+&lt;rect x="36" y="284" width="568" height="52" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="36" y="348" width="568" height="52" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="40" font-size="22" font-weight="700" text-anchor="middle">Do not ship the legacy default&lt;/text>
+&lt;text x="136" y="100" font-size="16" font-weight="700" text-anchor="middle">B3LYP/6-31G*&lt;/text>
+&lt;text x="136" y="126" font-size="14" text-anchor="middle">No dispersion&lt;/text>
+&lt;text x="292" y="98" font-size="16" font-weight="700">r²SCAN-3c&lt;/text>
+&lt;text x="292" y="166" font-size="16" font-weight="700">D3(BJ) or D4, triple-zeta&lt;/text>
+&lt;text x="52" y="252" font-size="16" font-weight="700">Barriers need Fock exchange&lt;/text>
+&lt;text x="52" y="316" font-size="16" font-weight="700">SMD or COSMO-RS when the data are in solution&lt;/text>
+&lt;text x="52" y="380" font-size="16" font-weight="700">Boltzmann-weight the conformers&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> r²SCAN-3c is the composite alternative named for getting off B3LYP/6-31G*. Dispersion is D3(BJ) or D4, or a functional that already has nonlocal correlation. Energetics want a triple-zeta basis, or gCP if the basis has to stay small. Nothing in this drawing is a new numerical recipe.&lt;/figcaption>
+&lt;/figure>
+&lt;p>The argument is from Bursch, Mewes, Hansen, and Grimme, 2022, cited at the end. What follows is the reading in this post.&lt;/p>
+&lt;h2 id="1-b3lyp6-31g-is-not-a-safe-default">1. B3LYP/6-31G* is not a safe default&lt;/h2>
+&lt;p>It was a compromise. It has no explicit London dispersion, and the basis is severe. Those two errors cancel often enough that a reaction energy, a conformer gap, or an intermolecular interaction can look acceptable while sitting outside chemical accuracy.&lt;/p>
+&lt;p>For production work, do not use it. The alternatives named here are r²SCAN-3c, or a dispersion-corrected functional with a basis that fits the property.&lt;/p>
+&lt;h2 id="2-dispersion-is-not-optional">2. Dispersion is not optional&lt;/h2>
+&lt;p>A standard functional has no long-range correlation, so the surface is too repulsive. Noncovalent contacts, conformer equilibria, and binding energies move. Add D3(BJ) or D4, or use a functional with built-in nonlocal correlation. The extra cost is small next to the change in the surface.&lt;/p>
+&lt;h2 id="3-a-small-basis-invents-binding">3. A small basis invents binding&lt;/h2>
+&lt;p>6-31G* has basis set superposition error. Fragments borrow functions from each other and look more stable than they are. That artifact is one way an old protocol agrees with experiment.&lt;/p>
+&lt;p>Use a triple-zeta basis or larger for energies when you can. If you cannot, add a geometric counterpoise correction (gCP), or use a composite method that corrects BSSE by construction.&lt;/p>
+&lt;h2 id="4-one-level-of-theory-is-not-every-property">4. One level of theory is not every property&lt;/h2>
+&lt;p>A method that optimizes geometries can still be bad for a barrier. Use an efficient composite method for the geometry. Use a higher-rung functional and a larger basis for reaction energies and barrier heights.&lt;/p>
+&lt;h2 id="5-barrier-heights-and-self-interaction">5. Barrier heights and self-interaction&lt;/h2>
+&lt;p>Many (meta-)GGA functionals underestimate activation barriers because of self-interaction error. The kinetics and the mechanism both move. Put Fock exchange in the barrier calculation. Range-separated hybrids are the form this note singles out for cutting that error without throwing the rest of the energetics away.&lt;/p>
+&lt;h2 id="6-gas-phase-is-not-the-experiment">6. Gas phase is not the experiment&lt;/h2>
+&lt;p>Polar and charged systems feel this most. If the measurement was in solution, a gas-phase number can dominate the error. SMD and COSMO-RS are the implicit models named here. They are there to go past a pure electrostatic cavity.&lt;/p>
+&lt;h2 id="7-one-conformer-is-not-the-ensemble">7. One conformer is not the ensemble&lt;/h2>
+&lt;p>At room temperature a flexible molecule occupies more than the structure you optimized. Thermodynamics and kinetics computed on that single well are the wrong average. Sample the conformers and Boltzmann-weight the property. Automated tools make that practical for moderately large systems. This note does not name a specific tool.&lt;/p>
+&lt;h2 id="8-matching-one-experiment-is-not-a-validation">8. Matching one experiment is not a validation&lt;/h2>
+&lt;p>Compensating errors, especially from the legacy protocol, produce agreement. Prefer a method that is stable across chemical problems over a method that hit one number.&lt;/p>
+&lt;h2 id="what-changes-in-practice">What changes in practice&lt;/h2>
+&lt;p>The cost does not have to go up for the default to improve. Familiarity is why B3LYP/6-31G* is still the input file. A smooth SCF is not evidence that the functional saw dispersion, that the basis was large enough, or that the conformer you optimized is the one the solution contains.&lt;/p>
+&lt;h2 id="reference">Reference&lt;/h2>
+&lt;p>Bursch, M., Mewes, J.-M., Hansen, A., &amp;amp; Grimme, S. (2022). Best-Practice DFT Protocols for Basic Molecular Computational Chemistry. &lt;em>Angewandte Chemie International Edition&lt;/em>, 61, e202205735.&lt;/p></description></item></channel></rss>

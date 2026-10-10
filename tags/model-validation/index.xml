@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Model Validation | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/model-validation/</link><atom:link href="https://yboulaamane.github.io/tags/model-validation/index.xml" rel="self" type="application/rss+xml"/><description>Model Validation</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 23 Jun 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Model Validation</title><link>https://yboulaamane.github.io/tags/model-validation/</link></image><item><title>Reproducible ≠ Robust: Why One UMAP Seed Isn't Enough to Trust a Split</title><link>https://yboulaamane.github.io/blog/reproducible-is-not-robust-why-one-umap-seed-isnt-enough/</link><pubDate>Tue, 23 Jun 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/reproducible-is-not-robust-why-one-umap-seed-isnt-enough/</guid><description>&lt;p>Pin &lt;code>random_state=42&lt;/code> and the UMAP split repeats. That is reproducibility. Robustness is the spread across seeds. Over 30 seeds the same evaluation sits near &lt;strong>0.60 ± 0.06&lt;/strong>, and seed 42 lands at &lt;strong>0.72&lt;/strong>, on the optimistic tail.&lt;/p>
+&lt;p>
+&lt;figure >
+&lt;div class="flex justify-center ">
+&lt;div class="w-100" >&lt;img src="https://yboulaamane.github.io/uploads/umap-seed-robustness/reproducible-vs-robust.svg" alt="Reproducible vs robust" loading="lazy" data-zoomable />&lt;/div>
+&lt;/div>&lt;/figure>
+&lt;em>A pinned seed (left) gives the identical answer on every run - repeatable, but a single point. Robustness (right) asks what the whole distribution over seeds looks like, and whether your one seed is typical or a lucky draw.&lt;/em>&lt;/p>
+&lt;p>Both sides of the usual argument describe a real property.&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>The claim:&lt;/strong> &amp;ldquo;Your UMAP split is fine; it&amp;rsquo;s deterministic. You pinned &lt;code>random_state=42&lt;/code>, so the split is perfectly reproducible every time.&amp;rdquo;&lt;/p>
+&lt;p>&lt;strong>The objection:&lt;/strong> &amp;ldquo;That&amp;rsquo;s the problem. Seed 42 gives you &lt;em>one&lt;/em> split. What if that split just happened to flatter the model?&amp;rdquo;&lt;/p>&lt;/blockquote>
+&lt;p>&lt;strong>Reproducibility&lt;/strong> answers whether the next run matches this one. &lt;strong>Robustness&lt;/strong> answers whether this run is typical. A workflow can be fully reproducible and still be one draw.&lt;/p>
+&lt;hr>
+&lt;h2 id="why-the-its-reproducible-argument-is-technically-correct">Why the &amp;ldquo;it&amp;rsquo;s reproducible&amp;rdquo; argument is technically correct&lt;/h2>
+&lt;p>UMAP is a &lt;strong>stochastic&lt;/strong> algorithm. Its low-dimensional embedding depends on a random initialization and on randomized negative sampling during optimization; run it twice without fixing the seed and you get two different layouts. The same is true of the K-means step that carves that embedding into clusters - its centroid initialization is random too.&lt;/p>
+&lt;p>So when a script like &lt;code>umap_split_rigorous.py&lt;/code> sets&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="n">reducer&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">umap&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">UMAP&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n_components&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">random_state&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">42&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">kmeans&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">KMeans&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n_clusters&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">random_state&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">42&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n_init&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>it pins the seed for &lt;strong>both&lt;/strong> the projection and the clustering. The consequence is genuine and valuable: the split is now &lt;strong>deterministic&lt;/strong>. Anyone who runs that script gets byte-for-byte the same train/test partition, the same numbers, the same figures. That is real reproducibility, and it is a precondition for honest science - without it, no result can be checked.&lt;/p>
+&lt;p>So, narrowly: &lt;em>yes, the split is reproducible, and the person pointing that out is correct.&lt;/em>&lt;/p>
+&lt;hr>
+&lt;h2 id="why-the-one-seed-isnt-enough-argument-is-scientifically-correct">Why the &amp;ldquo;one seed isn&amp;rsquo;t enough&amp;rdquo; argument is scientifically correct&lt;/h2>
+&lt;p>The trouble is that reproducibility answers the question &lt;em>&amp;ldquo;will I get the same answer if I run it again?&amp;rdquo;&lt;/em> - not the question we actually care about, which is &lt;em>&amp;ldquo;is this answer representative of how the method behaves?&amp;rdquo;&lt;/em>&lt;/p>
+&lt;p>Because UMAP&amp;rsquo;s embedding depends so heavily on its seed, &lt;strong>each seed produces a different geometry of chemical space&lt;/strong>, and therefore a different boundary between the training and test domains. Seed 42 induces one specific domain shift. Seed 7 induces another. Seed 2024, another still.&lt;/p>
+&lt;p>
+&lt;figure >
+&lt;div class="flex justify-center ">
+&lt;div class="w-100" >&lt;img src="https://yboulaamane.github.io/uploads/umap-seed-robustness/umap-seed-variation.svg" alt="UMAP seed variation" loading="lazy" data-zoomable />&lt;/div>
+&lt;/div>&lt;/figure>
+&lt;em>The same molecules embedded under three seeds. The clusters land in different places and the train/test boundary cuts through chemical space differently each time - so each seed is effectively a different generalization test.&lt;/em>&lt;/p>
+&lt;p>This is what turns a reproducibility win into an evaluation risk. When you evaluate, say, a GNN on the seed-42 split and report its performance, you are reporting how it does on &lt;strong>one particular partition of chemical space&lt;/strong> - chosen, however innocently, by an arbitrary integer. A skeptical reviewer&amp;rsquo;s objection writes itself:&lt;/p>
+&lt;blockquote>
+&lt;p>&amp;ldquo;What if seed 42 happened to produce a split where the held-out &amp;rsquo;test&amp;rsquo; molecules sit close to the training set, making the domain shift mild and the GNN&amp;rsquo;s job easy? Pick a different seed and the gap could vanish - or reverse.&amp;rdquo;&lt;/p>&lt;/blockquote>
+&lt;p>This isn&amp;rsquo;t paranoia; it&amp;rsquo;s a textbook &lt;strong>selection effect&lt;/strong>. Even with no intent to cherry-pick, reporting a single arbitrary split lets luck masquerade as signal. The split is reproducible, but the &lt;em>conclusion you draw from it&lt;/em> may not generalize to the next seed - and generalization across domain shifts is the entire point of using a UMAP split in the first place.&lt;/p>
+&lt;p>It&amp;rsquo;s the same trap as the &amp;ldquo;single fold&amp;rdquo; caveat in
+: one split is an anecdote, not an estimate.&lt;/p>
+&lt;hr>
+&lt;h2 id="the-resolution-treat-the-seed-as-a-nuisance-parameter">The resolution: treat the seed as a nuisance parameter&lt;/h2>
+&lt;p>The fix is conceptually simple. The seed is not a meaningful scientific variable - it&amp;rsquo;s a &lt;strong>nuisance parameter&lt;/strong> you happen to have to set. So you should &lt;em>marginalize over it&lt;/em>: run the whole split-and-evaluate procedure across many seeds and report the &lt;strong>distribution&lt;/strong> of outcomes, not a single draw.&lt;/p>
+&lt;p>Formally, instead of reporting a point estimate $r_{42}$, you report the mean and spread over $N$ seeds:&lt;/p>
+$$
+\bar{r} = \frac{1}{N}\sum_{i=1}^{N} r_{s_i}, \qquad
+\text{SD} = \sqrt{\frac{1}{N-1}\sum_{i=1}^{N}\left(r_{s_i}-\bar{r}\right)^2}.
+$$&lt;p>
+&lt;figure >
+&lt;div class="flex justify-center ">
+&lt;div class="w-100" >&lt;img src="https://yboulaamane.github.io/uploads/umap-seed-robustness/seed-distribution.svg" alt="Distribution over seeds" loading="lazy" data-zoomable />&lt;/div>
+&lt;/div>&lt;/figure>
+&lt;em>Test performance across 30 seeds. The honest summary is the mean ± spread (≈ 0.60 ± 0.06), not the single value seed 42 happened to give (0.72) - which here sits at the optimistic tail.&lt;/em>&lt;/p>
+&lt;p>The picture above shows exactly why this matters. If seed 42 lands at the top of the distribution, the single-seed report &lt;strong>overstates&lt;/strong> the model. If it lands at the bottom, you&amp;rsquo;ve &lt;strong>understated&lt;/strong> it. Only the distribution tells you which, and only the distribution lets a reader judge whether a difference between two models is real or within seed-to-seed noise.&lt;/p>
+&lt;h3 id="what-to-do-in-practice">What to do in practice&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">numpy&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">np&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">umap&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">sklearn.cluster&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">KMeans&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">evaluate_split&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">seed&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">reducer&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">umap&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">UMAP&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n_components&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">random_state&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">seed&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">emb&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">reducer&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">fit_transform&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">X_descriptors&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">labels&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">KMeans&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n_clusters&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">random_state&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">seed&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">n_init&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">fit_predict&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">emb&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">train_idx&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">where&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">labels&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">)[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">test_idx&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">where&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">labels&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">model&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">fit&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">X&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">train_idx&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">train_idx&lt;/span>&lt;span class="p">])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">preds&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">model&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">predict&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">X&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">test_idx&lt;/span>&lt;span class="p">])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">pearsonr&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">preds&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">test_idx&lt;/span>&lt;span class="p">])[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">seeds&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1"># marginalize over the nuisance param&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">scores&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="n">evaluate_split&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">s&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">seeds&lt;/span>&lt;span class="p">])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;Test r = &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">scores&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">mean&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s2">.3f&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> ± &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">scores&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">std&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ddof&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s2">.3f&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> &amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;(n=&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">scores&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">, min=&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">scores&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">min&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s2">.3f&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">, max=&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">scores&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">max&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s2">.3f&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">)&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>A few refinements worth adding:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Report the full distribution&lt;/strong>, not just mean ± SD - a violin or strip plot reveals skew and outliers a summary statistic hides.&lt;/li>
+&lt;li>&lt;strong>Use a bootstrap or percentile confidence interval&lt;/strong> if you want an honest uncertainty band on the mean.&lt;/li>
+&lt;li>&lt;strong>Keep determinism &lt;em>inside&lt;/em> each run.&lt;/strong> Pinning the seed per iteration (&lt;code>seed=s&lt;/code>) is still good practice - it means each individual split remains reproducible. You&amp;rsquo;re not abandoning reproducibility; you&amp;rsquo;re sampling reproducible splits.&lt;/li>
+&lt;li>&lt;strong>Compare models on the &lt;em>same&lt;/em> set of seeds&lt;/strong> (paired comparison) so the seed isn&amp;rsquo;t confounded with the model choice. A paired test across seeds is far more convincing than two independent single-seed numbers.&lt;/li>
+&lt;li>&lt;strong>Watch the cost.&lt;/strong> Thirty UMAP fits plus thirty model trainings is real compute; budget for it, or use a smaller seed set with a stated caveat.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="the-takeaway">The takeaway&lt;/h2>
+&lt;p>The two positions reconcile cleanly once you name what each is about:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;/th>
+&lt;th>Pinned single seed&lt;/th>
+&lt;th>Many seeds&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;strong>Reproducible?&lt;/strong>&lt;/td>
+&lt;td>✅ Yes - identical every run&lt;/td>
+&lt;td>✅ Yes - each split is still seeded&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Robust?&lt;/strong>&lt;/td>
+&lt;td>❌ No - one arbitrary domain shift&lt;/td>
+&lt;td>✅ Yes - a distribution over shifts&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Answers&lt;/strong>&lt;/td>
+&lt;td>&amp;ldquo;same result again?&amp;rdquo;&lt;/td>
+&lt;td>&amp;ldquo;is the result typical?&amp;rdquo;&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Fails when&lt;/strong>&lt;/td>
+&lt;td>the seed is lucky/unlucky&lt;/td>
+&lt;td>(mainly: more compute)&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>Pinning &lt;code>random_state=42&lt;/code> was the right call for making the analysis &lt;strong>checkable&lt;/strong>. It was never going to make the analysis &lt;strong>robust&lt;/strong>, because robustness lives in the variance &lt;em>across&lt;/em> seeds, which a single seed by construction cannot show. So keep the seed for reproducibility - and then run thirty of them, and report the spread. Reproducibility proves you can repeat the experiment; robustness proves the experiment was worth repeating.&lt;/p></description></item></channel></rss>

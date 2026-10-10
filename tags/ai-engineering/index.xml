@@ -1,0 +1,672 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>AI Engineering | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/ai-engineering/</link><atom:link href="https://yboulaamane.github.io/tags/ai-engineering/index.xml" rel="self" type="application/rss+xml"/><description>AI Engineering</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 11 Aug 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>AI Engineering</title><link>https://yboulaamane.github.io/tags/ai-engineering/</link></image><item><title>From Prompts to Systems: How AI Engineering Changed Between 2023 and 2026</title><link>https://yboulaamane.github.io/blog/from-prompts-to-systems-ai-engineering-2023-2026/</link><pubDate>Tue, 11 Aug 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/from-prompts-to-systems-ai-engineering-2023-2026/</guid><description>&lt;p>Between 2023 and 2026, the practice of building with large language models shifted from writing better prompts to designing better systems. The model itself was once the entire product. Now it is one component inside a much larger architecture that includes retrieval pipelines, memory layers, tool orchestration, evaluation harnesses, guardrails, and cost management.&lt;/p>
+&lt;p>This transition reflects a deeper conceptual change: success with AI is no longer about asking the right question. It is about building the right infrastructure around an imperfect reasoning engine.&lt;/p>
+&lt;hr>
+&lt;h2 id="the-2023-mental-model">The 2023 Mental Model&lt;/h2>
+&lt;p>The early interaction pattern with LLMs was straightforward:&lt;/p>
+&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 170" width="100%" height="100%">
+&lt;defs>
+&lt;linearGradient id="g23a" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#94A3B8" />
+&lt;stop offset="100%" stop-color="#64748B" />
+&lt;/linearGradient>
+&lt;filter id="ds" x="-5%" y="-5%" width="110%" height="110%">
+&lt;feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.08" />
+&lt;/filter>
+&lt;marker id="arr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+&lt;path d="M 0 0 L 10 5 L 0 10 z" fill="#94A3B8" />
+&lt;/marker>
+&lt;/defs>
+&lt;style>
+.label { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 13px; fill: #FFFFFF; }
+.sublabel { font-family: 'Inter', system-ui, sans-serif; font-size: 11px; fill: #F1F5F9; }
+.note { font-family: 'Inter', system-ui, sans-serif; font-size: 11px; fill: #64748B; }
+&lt;/style>
+&lt;rect width="850" height="170" fill="#F8FAFC" rx="12" />
+&lt;text x="25" y="30" font-family="Inter, system-ui, sans-serif" font-weight="800" font-size="16" fill="#334155">2023: Linear Prompt-Response Loop&lt;/text>
+&lt;g transform="translate(55, 60)" filter="url(#ds)">
+&lt;rect width="140" height="70" rx="8" fill="url(#g23a)" />
+&lt;text x="70" y="30" class="label" text-anchor="middle">User&lt;/text>
+&lt;text x="70" y="50" class="sublabel" text-anchor="middle">writes prompt&lt;/text>
+&lt;/g>
+&lt;path d="M 205 95 L 280 95" fill="none" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr)" />
+&lt;g transform="translate(290, 60)" filter="url(#ds)">
+&lt;rect width="140" height="70" rx="8" fill="url(#g23a)" />
+&lt;text x="70" y="30" class="label" text-anchor="middle">LLM&lt;/text>
+&lt;text x="70" y="50" class="sublabel" text-anchor="middle">generates response&lt;/text>
+&lt;/g>
+&lt;path d="M 440 95 L 515 95" fill="none" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr)" />
+&lt;g transform="translate(525, 60)" filter="url(#ds)">
+&lt;rect width="140" height="70" rx="8" fill="url(#g23a)" />
+&lt;text x="70" y="30" class="label" text-anchor="middle">User&lt;/text>
+&lt;text x="70" y="50" class="sublabel" text-anchor="middle">reads output&lt;/text>
+&lt;/g>
+&lt;path d="M 675 95 L 750 95" fill="none" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr)" />
+&lt;g transform="translate(760, 60)" filter="url(#ds)">
+&lt;rect width="60" height="70" rx="8" fill="#CBD5E1" />
+&lt;text x="30" y="42" class="note" text-anchor="middle">repeat&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;p>The dominant workflow was conversational. A user typed a prompt, received a response, and iterated. The primary skill was prompt engineering: knowing how to phrase instructions, set roles, provide few-shot examples, and manage token budgets. The model did the reasoning, and the user&amp;rsquo;s responsibility ended at crafting good input.&lt;/p>
+&lt;p>This worked well for single-turn tasks: drafting emails, summarizing papers, answering factual questions. But it broke down rapidly when applied to tasks requiring multiple steps, external data access, persistent state, or verifiable correctness.&lt;/p>
+&lt;hr>
+&lt;h2 id="the-2026-mental-model">The 2026 Mental Model&lt;/h2>
+&lt;p>By 2026, the dominant workflow is architectural:&lt;/p>
+&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 420" width="100%" height="100%">
+&lt;defs>
+&lt;linearGradient id="gCtx" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#3B82F6" />
+&lt;stop offset="100%" stop-color="#1D4ED8" />
+&lt;/linearGradient>
+&lt;linearGradient id="gAgent" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#8B5CF6" />
+&lt;stop offset="100%" stop-color="#6D28D9" />
+&lt;/linearGradient>
+&lt;linearGradient id="gTool" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#10B981" />
+&lt;stop offset="100%" stop-color="#047857" />
+&lt;/linearGradient>
+&lt;linearGradient id="gEval" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#F59E0B" />
+&lt;stop offset="100%" stop-color="#D97706" />
+&lt;/linearGradient>
+&lt;linearGradient id="gInfra" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#EF4444" />
+&lt;stop offset="100%" stop-color="#DC2626" />
+&lt;/linearGradient>
+&lt;filter id="ds2" x="-5%" y="-5%" width="110%" height="110%">
+&lt;feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.08" />
+&lt;/filter>
+&lt;/defs>
+&lt;style>
+.card-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 12px; fill: #FFFFFF; }
+.card-desc { font-family: 'Inter', system-ui, sans-serif; font-size: 10px; fill: #F3F4F6; }
+.card-num { font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: 11px; fill: rgba(255,255,255,0.3); }
+.section-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: 16px; fill: #334155; }
+&lt;/style>
+&lt;rect width="850" height="420" fill="#F8FAFC" rx="12" />
+&lt;text x="25" y="30" class="section-title">2026: Full-Stack AI Systems Architecture&lt;/text>
+&lt;!-- Row 1: Context Layer -->
+&lt;g transform="translate(25, 50)" filter="url(#ds2)">
+&lt;rect width="155" height="100" rx="8" fill="url(#gCtx)" />
+&lt;text x="12" y="22" class="card-num">LAYER 01&lt;/text>
+&lt;text x="12" y="45" class="card-title">Context Engineering&lt;/text>
+&lt;text x="12" y="65" class="card-desc">Dynamic prompt assembly&lt;/text>
+&lt;text x="12" y="80" class="card-desc">RAG 2.0 retrieval pipelines&lt;/text>
+&lt;/g>
+&lt;g transform="translate(195, 50)" filter="url(#ds2)">
+&lt;rect width="155" height="100" rx="8" fill="url(#gCtx)" />
+&lt;text x="12" y="22" class="card-num">LAYER 02&lt;/text>
+&lt;text x="12" y="45" class="card-title">Memory Systems&lt;/text>
+&lt;text x="12" y="65" class="card-desc">Session and long-term state&lt;/text>
+&lt;text x="12" y="80" class="card-desc">Vector database indices&lt;/text>
+&lt;/g>
+&lt;!-- Row 1: Agent Layer -->
+&lt;g transform="translate(365, 50)" filter="url(#ds2)">
+&lt;rect width="155" height="100" rx="8" fill="url(#gAgent)" />
+&lt;text x="12" y="22" class="card-num">LAYER 03&lt;/text>
+&lt;text x="12" y="45" class="card-title">Agentic Orchestration&lt;/text>
+&lt;text x="12" y="65" class="card-desc">Multi-agent coordination&lt;/text>
+&lt;text x="12" y="80" class="card-desc">Loop and graph engineering&lt;/text>
+&lt;/g>
+&lt;g transform="translate(535, 50)" filter="url(#ds2)">
+&lt;rect width="155" height="100" rx="8" fill="url(#gAgent)" />
+&lt;text x="12" y="22" class="card-num">LAYER 04&lt;/text>
+&lt;text x="12" y="45" class="card-title">Tool Use / MCP&lt;/text>
+&lt;text x="12" y="65" class="card-desc">Function calling&lt;/text>
+&lt;text x="12" y="80" class="card-desc">External API integration&lt;/text>
+&lt;/g>
+&lt;!-- Row 2: Eval Layer -->
+&lt;g transform="translate(25, 170)" filter="url(#ds2)">
+&lt;rect width="155" height="100" rx="8" fill="url(#gEval)" />
+&lt;text x="12" y="22" class="card-num">LAYER 05&lt;/text>
+&lt;text x="12" y="45" class="card-title">Evaluation Harness&lt;/text>
+&lt;text x="12" y="65" class="card-desc">Automated benchmarking&lt;/text>
+&lt;text x="12" y="80" class="card-desc">Regression tracking&lt;/text>
+&lt;/g>
+&lt;g transform="translate(195, 170)" filter="url(#ds2)">
+&lt;rect width="155" height="100" rx="8" fill="url(#gEval)" />
+&lt;text x="12" y="22" class="card-num">LAYER 06&lt;/text>
+&lt;text x="12" y="45" class="card-title">Guardrails&lt;/text>
+&lt;text x="12" y="65" class="card-desc">Input/output validation&lt;/text>
+&lt;text x="12" y="80" class="card-desc">Safety and compliance&lt;/text>
+&lt;/g>
+&lt;g transform="translate(365, 170)" filter="url(#ds2)">
+&lt;rect width="155" height="100" rx="8" fill="url(#gEval)" />
+&lt;text x="12" y="22" class="card-num">LAYER 07&lt;/text>
+&lt;text x="12" y="45" class="card-title">Observability&lt;/text>
+&lt;text x="12" y="65" class="card-desc">Trace logging and metrics&lt;/text>
+&lt;text x="12" y="80" class="card-desc">Latency profiling&lt;/text>
+&lt;/g>
+&lt;!-- Row 2: Infra Layer -->
+&lt;g transform="translate(535, 170)" filter="url(#ds2)">
+&lt;rect width="155" height="100" rx="8" fill="url(#gInfra)" />
+&lt;text x="12" y="22" class="card-num">LAYER 08&lt;/text>
+&lt;text x="12" y="45" class="card-title">Cost Optimization&lt;/text>
+&lt;text x="12" y="65" class="card-desc">Model routing and caching&lt;/text>
+&lt;text x="12" y="80" class="card-desc">Distillation pipelines&lt;/text>
+&lt;/g>
+&lt;!-- Bottom summary bar -->
+&lt;rect x="25" y="300" width="665" height="95" rx="10" fill="#1E293B" filter="url(#ds2)" />
+&lt;text x="45" y="330" font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="14" fill="#F1F5F9">The Model is One Component&lt;/text>
+&lt;text x="45" y="355" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#94A3B8">Production AI = Context + Retrieval + Tools + Agents + Evaluation + Guardrails + Observability + Cost Control&lt;/text>
+&lt;text x="45" y="378" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#94A3B8">Failures rarely stem from model intelligence. They stem from missing infrastructure around the model.&lt;/text>
+&lt;/svg>
+&lt;p>The workflow now looks more like systems design than conversation design:&lt;/p>
+&lt;ol>
+&lt;li>Define the task and decompose it into subtasks.&lt;/li>
+&lt;li>Assemble the right context dynamically from retrieval, memory, and structured data.&lt;/li>
+&lt;li>Let the system retrieve, reason, invoke tools, and verify its own outputs.&lt;/li>
+&lt;li>Monitor quality, latency, and cost across every component.&lt;/li>
+&lt;li>Improve the system continuously through evaluation-driven iteration.&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;h2 id="what-changed-layer-by-layer">What Changed, Layer by Layer&lt;/h2>
+&lt;h3 id="context-engineering-replaced-prompt-engineering">Context Engineering Replaced Prompt Engineering&lt;/h3>
+&lt;p>In 2023, &amp;ldquo;prompt engineering&amp;rdquo; meant crafting static instruction strings. By 2026, the term has largely been superseded by &lt;strong>context engineering&lt;/strong>: the practice of dynamically assembling the full input window from multiple sources at inference time. This includes retrieved documents, structured metadata, conversation history, tool outputs, and system instructions, all composed programmatically rather than written by hand.&lt;/p>
+&lt;p>The distinction matters because static prompts break as soon as the task requires information the prompt author did not anticipate. Context engineering treats the prompt as a computed artifact, assembled from live data sources based on the current query.&lt;/p>
+&lt;h3 id="retrieval-became-a-first-class-engineering-problem">Retrieval Became a First-Class Engineering Problem&lt;/h3>
+&lt;p>Early retrieval-augmented generation (RAG) pipelines were often naive: embed documents, store vectors, retrieve top-k, concatenate into the prompt. This approach suffered from chunk boundary errors, irrelevant retrieval, and poor handling of multi-hop reasoning.&lt;/p>
+&lt;p>By 2026, retrieval pipelines incorporate re-ranking models, hybrid search (combining dense embeddings with sparse keyword indices), query decomposition, and iterative retrieval where the model reformulates its own search queries based on partial results. The retrieval layer is now treated as a system that must be evaluated, versioned, and optimized independently of the language model.&lt;/p>
+&lt;h3 id="tool-use-moved-from-novelty-to-necessity">Tool Use Moved from Novelty to Necessity&lt;/h3>
+&lt;p>Function calling and tool use were experimental features in 2023. By 2026, they are foundational. Models routinely call APIs, execute code, query databases, browse the web, and operate within file systems. The Model Context Protocol (MCP) emerged as a standardized interface for connecting language models to external tools and data sources.&lt;/p>
+&lt;p>This shift changes what LLMs can do: instead of only generating text about a topic, they can take actions within a software environment. The engineering challenge moved from &amp;ldquo;Can the model call a function?&amp;rdquo; to &amp;ldquo;How do we define, scope, and permission tool access safely?&amp;rdquo;&lt;/p>
+&lt;h3 id="agentic-systems-replaced-single-turn-interactions">Agentic Systems Replaced Single-Turn Interactions&lt;/h3>
+&lt;p>Single-turn question-answering gave way to multi-step, goal-directed agent loops. An agent receives a task, decomposes it into subtasks, executes them sequentially or in parallel (potentially delegating to sub-agents), observes the results, and iterates until the objective is met or a stopping condition is reached.&lt;/p>
+&lt;p>This architectural pattern introduces new failure modes: agents can loop indefinitely, take incorrect actions with real-world consequences, or accumulate errors across steps. Managing these failure modes requires explicit loop budgets, verification checkpoints, and human-in-the-loop escalation paths.&lt;/p>
+&lt;h3 id="evaluation-became-non-negotiable">Evaluation Became Non-Negotiable&lt;/h3>
+&lt;p>In 2023, most LLM applications shipped without systematic evaluation. By 2026, evaluation harnesses are standard infrastructure. These include automated test suites that compare model outputs against reference answers, regression tests that detect quality degradation after prompt or model changes, and domain-specific metrics that go beyond generic accuracy scores.&lt;/p>
+&lt;p>Without evaluation, teams cannot distinguish between a system that works and a system that appears to work. The difference becomes visible only at scale, when edge cases, distribution shifts, and adversarial inputs expose latent failures.&lt;/p>
+&lt;h3 id="guardrails-and-observability-became-production-requirements">Guardrails and Observability Became Production Requirements&lt;/h3>
+&lt;p>Deploying an LLM without guardrails in 2023 was common. By 2026, production systems require input validation (blocking prompt injection, enforcing schema compliance), output validation (detecting hallucinations, enforcing format constraints), and safety layers (content filtering, PII detection).&lt;/p>
+&lt;p>Observability tools provide trace-level visibility into every step of a multi-component pipeline: which documents were retrieved, what tool calls were made, how long each step took, and where failures occurred. This infrastructure is borrowed directly from distributed systems engineering and applied to probabilistic AI pipelines.&lt;/p>
+&lt;h3 id="cost-optimization-became-a-design-constraint">Cost Optimization Became a Design Constraint&lt;/h3>
+&lt;p>Large model inference is expensive. Production systems now routinely implement model routing (sending simple queries to smaller, cheaper models and complex queries to larger ones), response caching, prompt compression, and knowledge distillation (training smaller task-specific models from larger model outputs). The economic viability of an AI product depends as much on inference cost management as on output quality.&lt;/p>
+&lt;hr>
+&lt;h2 id="what-being-good-at-ai-now-means">What &amp;ldquo;Being Good at AI&amp;rdquo; Now Means&lt;/h2>
+&lt;p>The competency profile for AI practitioners has expanded significantly:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: left">2023 Competency&lt;/th>
+&lt;th style="text-align: left">2026 Competency&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: left">Writing effective prompts&lt;/td>
+&lt;td style="text-align: left">Designing context assembly pipelines&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">Choosing the right model&lt;/td>
+&lt;td style="text-align: left">Selecting model routing strategies&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">Understanding tokenization&lt;/td>
+&lt;td style="text-align: left">Building retrieval and re-ranking systems&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">Manual output review&lt;/td>
+&lt;td style="text-align: left">Implementing automated evaluation harnesses&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">Ad hoc API calls&lt;/td>
+&lt;td style="text-align: left">Orchestrating multi-agent tool-use workflows&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">Cost as afterthought&lt;/td>
+&lt;td style="text-align: left">Cost as first-order design constraint&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>The field has become more interdisciplinary. Building a production AI system now requires elements of software engineering, distributed systems design, information retrieval, evaluation methodology, and ML operations, combined with enough domain expertise to define what &amp;ldquo;correct&amp;rdquo; means for the specific use case.&lt;/p>
+&lt;hr>
+&lt;h2 id="prompting-is-not-obsolete">Prompting is Not Obsolete&lt;/h2>
+&lt;p>Prompt construction remains important. Well-structured instructions, clear task decomposition, and appropriate few-shot examples still improve output quality. But prompting is now one component inside a larger system, not the system itself.&lt;/p>
+&lt;p>The best AI products in 2026 combine strong prompting with dynamic retrieval, persistent memory, verified tool use, automated evaluation, and continuous monitoring. The teams that build reliable AI products are the ones that treat the model as an inference engine embedded within an engineered pipeline, not as a standalone oracle.&lt;/p>
+&lt;hr>
+&lt;h2 id="takeaways">Takeaways&lt;/h2>
+&lt;ol>
+&lt;li>&lt;strong>2023 AI was about asking. 2026 AI is about orchestrating.&lt;/strong> The model is one layer in a multi-component architecture.&lt;/li>
+&lt;li>&lt;strong>Context engineering superseded prompt engineering.&lt;/strong> Dynamic, programmatic context assembly replaced static instruction strings.&lt;/li>
+&lt;li>&lt;strong>Evaluation is non-negotiable infrastructure.&lt;/strong> Without automated quality measurement, AI systems degrade silently.&lt;/li>
+&lt;li>&lt;strong>Tool use and agentic loops changed what LLMs can do.&lt;/strong> Models now act within environments, not just generate text about them.&lt;/li>
+&lt;li>&lt;strong>Cost optimization is a design constraint, not an afterthought.&lt;/strong> Economically viable AI requires model routing, caching, and distillation strategies.&lt;/li>
+&lt;/ol></description></item><item><title>Getting Real Work Out of Claude Code: A Practical Workflow Guide</title><link>https://yboulaamane.github.io/blog/claude-code-practical-workflow/</link><pubDate>Sun, 02 Aug 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/claude-code-practical-workflow/</guid><description>&lt;p>Claude Code is an agentic coding tool: it reads a repo, plans, edits files, runs commands, executes tests, and calls external tools. It is terminal-based but editor-agnostic, and works over SSH and inside tmux.&lt;/p>
+&lt;p>The single idea worth internalizing:&lt;/p>
+&lt;blockquote>
+&lt;p>Model quality sets the ceiling. Context, tools, feedback, and permission settings decide where you actually land.&lt;/p>&lt;/blockquote>
+&lt;p>Five levers, in rough order of impact:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Lever&lt;/th>
+&lt;th>What it means&lt;/th>
+&lt;th>Cost to set up&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;strong>Verification&lt;/strong>&lt;/td>
+&lt;td>Claude can check its own output (tests, types, screenshots, logs)&lt;/td>
+&lt;td>Medium, highest payoff&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Context&lt;/strong>&lt;/td>
+&lt;td>Architecture, commands, conventions in &lt;code>CLAUDE.md&lt;/code>&lt;/td>
+&lt;td>Low&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Planning&lt;/strong>&lt;/td>
+&lt;td>Investigate and propose before editing&lt;/td>
+&lt;td>Free&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Tools&lt;/strong>&lt;/td>
+&lt;td>Shell, git, internal CLIs, MCP servers, browser&lt;/td>
+&lt;td>Low to medium&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Controlled autonomy&lt;/strong>&lt;/td>
+&lt;td>Permission modes matched to task risk&lt;/td>
+&lt;td>Low&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;h2 id="1-start-with-questions-not-edits">1. Start with questions, not edits&lt;/h2>
+&lt;p>Before asking for changes, ask about the repo. It is zero-risk and it teaches you how much Claude infers on its own.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">How does authentication work here? Identify entry points, middleware, models, and tests.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Why does this function take so many arguments? Check git history for when each was added.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Which tests cover this feature?
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Claude can go past text search into call sites, tests, commit history, and linked issues. This is the fastest path through unfamiliar or legacy code.&lt;/p>
+&lt;hr>
+&lt;h2 id="2-give-full-context-in-the-first-turn">2. Give full context in the first turn&lt;/h2>
+&lt;p>Short prompts are the most common self-inflicted problem. State the goal, the constraints, and how you will judge the result:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">Goal: add rate limiting to /api/login
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Constraints: don&amp;#39;t touch the DB schema, keep the auth flow unchanged, use the existing Redis
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Acceptance: unit tests pass, 429 returned after 5 attempts in 60s
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>If Claude asks a lot of clarifying questions or drifts, the brief was usually incomplete. Voice dictation helps here mostly because spoken instructions carry more context than typed ones.&lt;/p>
+&lt;hr>
+&lt;h2 id="3-plan-before-large-changes">3. Plan before large changes&lt;/h2>
+&lt;p>Enter plan mode with &lt;code>Shift+Tab&lt;/code>, iterate on the plan, then switch to execution. Two questions decide how much process a task needs:&lt;/p>
+&lt;svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 680 470" role="img">
+&lt;style>
+.t{font:400 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;fill:#3d3d3a}
+.ts{font:400 12px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;fill:#73726c}
+.th{font:500 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;fill:#3d3d3a}
+.box{fill:#faf9f5;stroke:#b4b2a9}
+.arr{stroke:#73726c;stroke-width:1.5;fill:none}
+.c-purple rect,rect.c-purple{fill:#EEEDFE;stroke:#534AB7}
+.c-purple .th{fill:#3C3489}.c-purple .ts{fill:#534AB7}
+.c-teal rect,rect.c-teal{fill:#E1F5EE;stroke:#0F6E56}
+.c-teal .th{fill:#085041}.c-teal .ts{fill:#0F6E56}
+.c-gray rect,rect.c-gray{fill:#F1EFE8;stroke:#5F5E5A}
+.c-gray .th{fill:#444441}.c-gray .ts{fill:#5F5E5A}
+.c-amber rect,rect.c-amber{fill:#FAEEDA;stroke:#854F0B}
+.c-amber .th{fill:#633806}.c-amber .ts{fill:#854F0B}
+@media (prefers-color-scheme:dark){
+.t,.th{fill:#c2c0b6}.ts{fill:#9c9a92}
+.box{fill:#2b2a27;stroke:#5F5E5A}
+.arr{stroke:#9c9a92}
+.c-purple rect,rect.c-purple{fill:#3C3489;stroke:#AFA9EC}
+.c-purple .th{fill:#CECBF6}.c-purple .ts{fill:#AFA9EC}
+.c-teal rect,rect.c-teal{fill:#085041;stroke:#5DCAA5}
+.c-teal .th{fill:#9FE1CB}.c-teal .ts{fill:#5DCAA5}
+.c-gray rect,rect.c-gray{fill:#444441;stroke:#B4B2A9}
+.c-gray .th{fill:#D3D1C7}.c-gray .ts{fill:#B4B2A9}
+.c-amber rect,rect.c-amber{fill:#633806;stroke:#EF9F27}
+.c-amber .th{fill:#FAC775}.c-amber .ts{fill:#EF9F27}
+}
+&lt;/style>
+&lt;defs>&lt;marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">&lt;path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>&lt;/marker>&lt;/defs>
+&lt;title>Choosing how much process a Claude Code task needs&lt;/title>&lt;desc>A decision tree. Start with a new task. If the scope is not clear and bounded, use plan mode first and approve before editing; if it is, implement directly. Then ask whether Claude can verify the result. If not, build the check first using tests, types or a browser. If it can, let it iterate through run, observe and revise.&lt;/desc>
+&lt;rect class="box" x="280" y="30" width="120" height="44" rx="8" stroke-width="0.5"/>&lt;text class="th" x="340" y="52" text-anchor="middle" dominant-baseline="central">New task&lt;/text>
+&lt;line x1="340" y1="74" x2="340" y2="94" class="arr" marker-end="url(#arrow)"/>
+&lt;rect class="box" x="220" y="100" width="240" height="44" rx="8" stroke-width="0.5"/>&lt;text class="th" x="340" y="122" text-anchor="middle" dominant-baseline="central">Scope clear and bounded?&lt;/text>
+&lt;path d="M340 144 L340 170 L140 170 L140 190" class="arr" marker-end="url(#arrow)"/>
+&lt;path d="M340 144 L340 170 L540 170 L540 190" class="arr" marker-end="url(#arrow)"/>
+&lt;text class="ts" x="152" y="188">no&lt;/text>
+&lt;text class="ts" x="552" y="188">yes&lt;/text>
+&lt;g class="c-teal">&lt;rect x="50" y="196" width="180" height="56" rx="8" stroke-width="0.5"/>&lt;text class="th" x="140" y="216" text-anchor="middle" dominant-baseline="central">Plan mode first&lt;/text>&lt;text class="ts" x="140" y="236" text-anchor="middle" dominant-baseline="central">approve before editing&lt;/text>&lt;/g>
+&lt;g class="c-teal">&lt;rect x="450" y="196" width="180" height="56" rx="8" stroke-width="0.5"/>&lt;text class="th" x="540" y="216" text-anchor="middle" dominant-baseline="central">Implement directly&lt;/text>&lt;text class="ts" x="540" y="236" text-anchor="middle" dominant-baseline="central">small, well-defined&lt;/text>&lt;/g>
+&lt;path d="M140 252 L140 276 L340 276" class="arr"/>
+&lt;path d="M540 252 L540 276 L340 276" class="arr"/>
+&lt;line x1="340" y1="276" x2="340" y2="290" class="arr" marker-end="url(#arrow)"/>
+&lt;rect class="box" x="200" y="296" width="280" height="44" rx="8" stroke-width="0.5"/>&lt;text class="th" x="340" y="318" text-anchor="middle" dominant-baseline="central">Can Claude verify the result?&lt;/text>
+&lt;path d="M340 340 L340 366 L140 366 L140 386" class="arr" marker-end="url(#arrow)"/>
+&lt;path d="M340 340 L340 366 L540 366 L540 386" class="arr" marker-end="url(#arrow)"/>
+&lt;text class="ts" x="152" y="384">no&lt;/text>
+&lt;text class="ts" x="552" y="384">yes&lt;/text>
+&lt;g class="c-teal">&lt;rect x="50" y="392" width="180" height="56" rx="8" stroke-width="0.5"/>&lt;text class="th" x="140" y="412" text-anchor="middle" dominant-baseline="central">Build the check first&lt;/text>&lt;text class="ts" x="140" y="432" text-anchor="middle" dominant-baseline="central">tests, types, browser&lt;/text>&lt;/g>
+&lt;g class="c-teal">&lt;rect x="450" y="392" width="180" height="56" rx="8" stroke-width="0.5"/>&lt;text class="th" x="540" y="412" text-anchor="middle" dominant-baseline="central">Let it iterate&lt;/text>&lt;text class="ts" x="540" y="432" text-anchor="middle" dominant-baseline="central">run, observe, revise&lt;/text>&lt;/g>
+&lt;/svg>
+&lt;p>In table form:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Task&lt;/th>
+&lt;th>Approach&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Rename, small fix&lt;/td>
+&lt;td>Implement directly&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Bug with a known test&lt;/td>
+&lt;td>Implement and verify&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Cross-cutting feature&lt;/td>
+&lt;td>Plan first, approve, then implement&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Architectural change&lt;/td>
+&lt;td>Explore, plan with trade-offs, approve, implement, validate&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>Planning catches misread requirements before they become 400 lines of wrong code.&lt;/p>
+&lt;hr>
+&lt;h2 id="4-verification-is-the-highest-leverage-investment">4. Verification is the highest-leverage investment&lt;/h2>
+&lt;p>Without feedback, Claude is predicting. With feedback, it iterates. Quality improvements of 2x to 3x are typical when a robust verification loop exists.&lt;/p>
+&lt;p>Sources of feedback, in rough order of setup cost: type checks and linters, unit and integration tests, build commands, application logs and API responses, browser screenshots, simulators.&lt;/p>
+&lt;svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 680 220" role="img">
+&lt;style>
+.t{font:400 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;fill:#3d3d3a}
+.ts{font:400 12px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;fill:#73726c}
+.th{font:500 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;fill:#3d3d3a}
+.box{fill:#faf9f5;stroke:#b4b2a9}
+.arr{stroke:#73726c;stroke-width:1.5;fill:none}
+.c-purple rect,rect.c-purple{fill:#EEEDFE;stroke:#534AB7}
+.c-purple .th{fill:#3C3489}.c-purple .ts{fill:#534AB7}
+.c-teal rect,rect.c-teal{fill:#E1F5EE;stroke:#0F6E56}
+.c-teal .th{fill:#085041}.c-teal .ts{fill:#0F6E56}
+.c-gray rect,rect.c-gray{fill:#F1EFE8;stroke:#5F5E5A}
+.c-gray .th{fill:#444441}.c-gray .ts{fill:#5F5E5A}
+.c-amber rect,rect.c-amber{fill:#FAEEDA;stroke:#854F0B}
+.c-amber .th{fill:#633806}.c-amber .ts{fill:#854F0B}
+@media (prefers-color-scheme:dark){
+.t,.th{fill:#c2c0b6}.ts{fill:#9c9a92}
+.box{fill:#2b2a27;stroke:#5F5E5A}
+.arr{stroke:#9c9a92}
+.c-purple rect,rect.c-purple{fill:#3C3489;stroke:#AFA9EC}
+.c-purple .th{fill:#CECBF6}.c-purple .ts{fill:#AFA9EC}
+.c-teal rect,rect.c-teal{fill:#085041;stroke:#5DCAA5}
+.c-teal .th{fill:#9FE1CB}.c-teal .ts{fill:#5DCAA5}
+.c-gray rect,rect.c-gray{fill:#444441;stroke:#B4B2A9}
+.c-gray .th{fill:#D3D1C7}.c-gray .ts{fill:#B4B2A9}
+.c-amber rect,rect.c-amber{fill:#633806;stroke:#EF9F27}
+.c-amber .th{fill:#FAC775}.c-amber .ts{fill:#EF9F27}
+}
+&lt;/style>
+&lt;defs>&lt;marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">&lt;path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>&lt;/marker>&lt;/defs>
+&lt;title>The verification loop in Claude Code&lt;/title>&lt;desc>Five stages, implement, run, observe, diagnose and revise, connected left to right with a return arrow from revise back to implement. Implement and revise are generation steps, observe and diagnose are verification steps.&lt;/desc>
+&lt;g class="c-purple">&lt;rect x="40" y="60" width="96" height="44" rx="8" stroke-width="0.5"/>&lt;text class="th" x="88" y="82" text-anchor="middle" dominant-baseline="central">Implement&lt;/text>&lt;/g>
+&lt;g class="c-gray">&lt;rect x="166" y="60" width="96" height="44" rx="8" stroke-width="0.5"/>&lt;text class="th" x="214" y="82" text-anchor="middle" dominant-baseline="central">Run&lt;/text>&lt;/g>
+&lt;g class="c-teal">&lt;rect x="292" y="60" width="96" height="44" rx="8" stroke-width="0.5"/>&lt;text class="th" x="340" y="82" text-anchor="middle" dominant-baseline="central">Observe&lt;/text>&lt;/g>
+&lt;g class="c-teal">&lt;rect x="418" y="60" width="96" height="44" rx="8" stroke-width="0.5"/>&lt;text class="th" x="466" y="82" text-anchor="middle" dominant-baseline="central">Diagnose&lt;/text>&lt;/g>
+&lt;g class="c-purple">&lt;rect x="544" y="60" width="96" height="44" rx="8" stroke-width="0.5"/>&lt;text class="th" x="592" y="82" text-anchor="middle" dominant-baseline="central">Revise&lt;/text>&lt;/g>
+&lt;line x1="136" y1="82" x2="160" y2="82" class="arr" marker-end="url(#arrow)"/>
+&lt;line x1="262" y1="82" x2="286" y2="82" class="arr" marker-end="url(#arrow)"/>
+&lt;line x1="388" y1="82" x2="412" y2="82" class="arr" marker-end="url(#arrow)"/>
+&lt;line x1="514" y1="82" x2="538" y2="82" class="arr" marker-end="url(#arrow)"/>
+&lt;path d="M592 104 L592 144 L88 144 L88 110" class="arr" marker-end="url(#arrow)"/>
+&lt;text class="ts" x="340" y="166" text-anchor="middle">Repeats until the checks pass&lt;/text>
+&lt;rect class="c-purple" x="250" y="186" width="10" height="10" rx="2" stroke-width="0.5"/>
+&lt;text class="ts" x="266" y="195">generate&lt;/text>
+&lt;rect class="c-teal" x="370" y="186" width="10" height="10" rx="2" stroke-width="0.5"/>
+&lt;text class="ts" x="386" y="195">verify&lt;/text>
+&lt;/svg>
+&lt;p>For web UI, the Claude in Chrome extension provides a capable, token-efficient solution. Hand it a mock-up, let it launch the app, take a screenshot, compare, and revise.&lt;/p>
+&lt;p>The core design question for any workflow: &lt;strong>how will Claude know whether the result is correct?&lt;/strong>&lt;/p>
+&lt;hr>
+&lt;h2 id="5-persist-context-in-claudemd">5. Persist context in &lt;code>CLAUDE.md&lt;/code>&lt;/h2>
+&lt;p>Loaded at session start. Include information that would otherwise be retyped every session:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-markdown" data-lang="markdown">&lt;span class="line">&lt;span class="cl">&lt;span class="gh"># Project overview
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gh">&lt;/span>Web application and API.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gu">## Directories
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gu">&lt;/span>&lt;span class="k">-&lt;/span> &lt;span class="sb">`src/api`&lt;/span>: handlers
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">-&lt;/span> &lt;span class="sb">`src/services`&lt;/span>: business logic
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">-&lt;/span> &lt;span class="sb">`tests`&lt;/span>: integration tests
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gu">## Commands
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gu">&lt;/span>&lt;span class="k">-&lt;/span> Test: &lt;span class="sb">`npm test`&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">-&lt;/span> Single test: &lt;span class="sb">`npm test -- &amp;lt;name&amp;gt;`&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">-&lt;/span> Typecheck: &lt;span class="sb">`npm run typecheck`&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gu">## Rules
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gu">&lt;/span>&lt;span class="k">-&lt;/span> Keep handlers thin, logic in services
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">-&lt;/span> Add a test for every bug fix
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">-&lt;/span> Do not hand-edit generated files
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Key principles for effective memory configuration:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Keep it under roughly 200 lines.&lt;/strong> Memory consumes context every turn, and long files reduce rule adherence.&lt;/li>
+&lt;li>&lt;strong>Layer configuration:&lt;/strong> enterprise policy, user (&lt;code>~/.claude/CLAUDE.md&lt;/code>), project (&lt;code>./CLAUDE.md&lt;/code>), local, and nested subdirectory files loaded only when Claude reads files in that subtree.&lt;/li>
+&lt;li>&lt;strong>Commit the project file.&lt;/strong> Keep personal preferences in user memory, local machine details in a gitignored file.&lt;/li>
+&lt;li>&lt;strong>&lt;code>#&lt;/code> prefix&lt;/strong> adds a memory mid-session and prompts for which file to save it to. Use it when Claude repeats a mistake.&lt;/li>
+&lt;li>&lt;strong>Auto memory&lt;/strong> maintains notes from corrections in &lt;code>~/.claude/projects/&amp;lt;proj&amp;gt;/memory/&lt;/code>. Check &lt;code>/memory&lt;/code> to view active entries.&lt;/li>
+&lt;li>&lt;strong>&lt;code>/init&lt;/code>&lt;/strong> bootstraps a first draft from your codebase.&lt;/li>
+&lt;/ul>
+&lt;p>Add a rule when it reflects a true project invariant, not after a single isolated mistake.&lt;/p>
+&lt;hr>
+&lt;h2 id="6-tools-beyond-the-shell">6. Tools beyond the shell&lt;/h2>
+&lt;p>Claude infers standard git workflows without procedural prompting. A simple instruction like &lt;em>&amp;ldquo;Commit, push, open a PR&amp;rdquo;&lt;/em> is usually sufficient.&lt;/p>
+&lt;p>For internal CLIs, direct the model to read the help output:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">Use the `deploy-tool` CLI for this. Run `deploy-tool --help` first.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Document the CLI pattern in &lt;code>CLAUDE.md&lt;/code> so it does not need to be rediscovered in future sessions.&lt;/p>
+&lt;p>MCP servers connect Claude to issue trackers, monitoring, internal databases, documentation, and design tools. The main value is access to the same information sources the team already uses.&lt;/p>
+&lt;hr>
+&lt;h2 id="7-turn-repeated-prompts-into-slash-commands">7. Turn repeated prompts into slash commands&lt;/h2>
+&lt;p>Workflows performed multiple times a day belong in &lt;code>.claude/commands/&lt;/code>, checked into git:&lt;/p>
+&lt;p>&lt;code>/review-pr&lt;/code>, &lt;code>/commit-push-pr&lt;/code>, &lt;code>/prepare-release&lt;/code>, &lt;code>/label-issue&lt;/code>, &lt;code>/run-security-check&lt;/code>&lt;/p>
+&lt;p>Commands can embed inline bash to precompute context and cut a round trip. Configure once, share with the team.&lt;/p>
+&lt;p>Subagents protect the main context window. Use a subagent when you want the result of a subtask without its intermediate steps polluting your main session.&lt;/p>
+&lt;hr>
+&lt;h2 id="8-permission-modes">8. Permission modes&lt;/h2>
+&lt;p>&lt;code>Shift+Tab&lt;/code> cycles modes. The default configuration includes:&lt;/p>
+&lt;svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 680 210" role="img">
+&lt;style>
+.t{font:400 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;fill:#3d3d3a}
+.ts{font:400 12px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;fill:#73726c}
+.th{font:500 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;fill:#3d3d3a}
+.box{fill:#faf9f5;stroke:#b4b2a9}
+.arr{stroke:#73726c;stroke-width:1.5;fill:none}
+.c-purple rect,rect.c-purple{fill:#EEEDFE;stroke:#534AB7}
+.c-purple .th{fill:#3C3489}.c-purple .ts{fill:#534AB7}
+.c-teal rect,rect.c-teal{fill:#E1F5EE;stroke:#0F6E56}
+.c-teal .th{fill:#085041}.c-teal .ts{fill:#0F6E56}
+.c-gray rect,rect.c-gray{fill:#F1EFE8;stroke:#5F5E5A}
+.c-gray .th{fill:#444441}.c-gray .ts{fill:#5F5E5A}
+.c-amber rect,rect.c-amber{fill:#FAEEDA;stroke:#854F0B}
+.c-amber .th{fill:#633806}.c-amber .ts{fill:#854F0B}
+@media (prefers-color-scheme:dark){
+.t,.th{fill:#c2c0b6}.ts{fill:#9c9a92}
+.box{fill:#2b2a27;stroke:#5F5E5A}
+.arr{stroke:#9c9a92}
+.c-purple rect,rect.c-purple{fill:#3C3489;stroke:#AFA9EC}
+.c-purple .th{fill:#CECBF6}.c-purple .ts{fill:#AFA9EC}
+.c-teal rect,rect.c-teal{fill:#085041;stroke:#5DCAA5}
+.c-teal .th{fill:#9FE1CB}.c-teal .ts{fill:#5DCAA5}
+.c-gray rect,rect.c-gray{fill:#444441;stroke:#B4B2A9}
+.c-gray .th{fill:#D3D1C7}.c-gray .ts{fill:#B4B2A9}
+.c-amber rect,rect.c-amber{fill:#633806;stroke:#EF9F27}
+.c-amber .th{fill:#FAC775}.c-amber .ts{fill:#EF9F27}
+}
+&lt;/style>
+&lt;defs>&lt;marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">&lt;path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>&lt;/marker>&lt;/defs>
+&lt;title>Claude Code permission mode cycle&lt;/title>&lt;desc>Shift plus Tab cycles through four modes in order: default which always prompts, acceptEdits where file edits pass automatically, plan where no edits are made, and auto where a classifier gates each action. Auto is opt-in and only appears once enabled.&lt;/desc>
+&lt;g class="c-gray">&lt;rect x="40" y="50" width="128" height="56" rx="8" stroke-width="0.5"/>&lt;text class="th" x="104" y="70" text-anchor="middle" dominant-baseline="central">default&lt;/text>&lt;text class="ts" x="104" y="90" text-anchor="middle" dominant-baseline="central">always prompts&lt;/text>&lt;/g>
+&lt;g class="c-gray">&lt;rect x="197" y="50" width="128" height="56" rx="8" stroke-width="0.5"/>&lt;text class="th" x="261" y="70" text-anchor="middle" dominant-baseline="central">acceptEdits&lt;/text>&lt;text class="ts" x="261" y="90" text-anchor="middle" dominant-baseline="central">edits auto-pass&lt;/text>&lt;/g>
+&lt;g class="c-gray">&lt;rect x="354" y="50" width="128" height="56" rx="8" stroke-width="0.5"/>&lt;text class="th" x="418" y="70" text-anchor="middle" dominant-baseline="central">plan&lt;/text>&lt;text class="ts" x="418" y="90" text-anchor="middle" dominant-baseline="central">no edits made&lt;/text>&lt;/g>
+&lt;g class="c-amber">&lt;rect x="511" y="50" width="128" height="56" rx="8" stroke-width="0.5"/>&lt;text class="th" x="575" y="70" text-anchor="middle" dominant-baseline="central">auto&lt;/text>&lt;text class="ts" x="575" y="90" text-anchor="middle" dominant-baseline="central">auto-gated&lt;/text>&lt;/g>
+&lt;line x1="168" y1="78" x2="191" y2="78" class="arr" marker-end="url(#arrow)"/>
+&lt;line x1="325" y1="78" x2="348" y2="78" class="arr" marker-end="url(#arrow)"/>
+&lt;line x1="482" y1="78" x2="505" y2="78" class="arr" marker-end="url(#arrow)"/>
+&lt;path d="M575 106 L575 146 L104 146 L104 112" class="arr" marker-end="url(#arrow)"/>
+&lt;text class="ts" x="340" y="168" text-anchor="middle">Shift+Tab steps through the cycle&lt;/text>
+&lt;rect class="c-amber" x="248" y="188" width="10" height="10" rx="2" stroke-width="0.5"/>
+&lt;text class="ts" x="264" y="197">opt-in, absent until enabled&lt;/text>
+&lt;/svg>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Mode&lt;/th>
+&lt;th>Behavior&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>default&lt;/code> (Manual)&lt;/td>
+&lt;td>Prompts for edits and commands&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>acceptEdits&lt;/code>&lt;/td>
+&lt;td>File edits auto-approved, commands still prompt&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>plan&lt;/code>&lt;/td>
+&lt;td>Investigates and proposes, no edits&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>auto&lt;/code> (if enabled)&lt;/td>
+&lt;td>A classifier decides per action; reads, edits, and safe commands pass, risky ones block&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>bypassPermissions&lt;/code>&lt;/td>
+&lt;td>Sandboxes and containers only&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>Auto mode serves as the recommended replacement for &lt;code>--dangerously-skip-permissions&lt;/code>. It auto-blocks operations like &lt;code>curl | bash&lt;/code>, force-pushing to main, production deployments, and mass deletions. It includes a safety circuit breaker that reverts back to manual prompting after repeated blocked actions.&lt;/p>
+&lt;p>Start restricted on complex or unclear tasks, loosening permissions once direction is confirmed.&lt;/p>
+&lt;hr>
+&lt;h2 id="9-shortcuts-worth-muscle-memory">9. Shortcuts worth muscle memory&lt;/h2>
+&lt;p>Check &lt;code>?&lt;/code> on an empty prompt to confirm shortcuts for your installed version.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Key&lt;/th>
+&lt;th>Function&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>Shift+Tab&lt;/code>&lt;/td>
+&lt;td>Cycle permission modes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Esc&lt;/code>&lt;/td>
+&lt;td>Interrupt mid-turn, retain progress, redirect agent&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Esc Esc&lt;/code>&lt;/td>
+&lt;td>Clear input draft, or open the rewind menu on empty prompt&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Ctrl+O&lt;/code>&lt;/td>
+&lt;td>Toggle transcript viewer with full tool detail&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Ctrl+R&lt;/code>&lt;/td>
+&lt;td>Reverse search prompt history&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Ctrl+B&lt;/code>&lt;/td>
+&lt;td>Background a running command (twice in tmux)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>Ctrl+T&lt;/code>&lt;/td>
+&lt;td>Toggle task checklist&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>#&lt;/code>&lt;/td>
+&lt;td>Add a memory&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>@&lt;/code>&lt;/td>
+&lt;td>Reference a file, directory, or URL&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>!&lt;/code>&lt;/td>
+&lt;td>Shell mode: runs locally, output enters context&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/btw&lt;/code>&lt;/td>
+&lt;td>Ask a side question that bypasses conversation history&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;h2 id="10-headless-use">10. Headless use&lt;/h2>
+&lt;p>Executing &lt;code>claude -p&lt;/code> (or &lt;code>--print&lt;/code>) transforms the tool into a composable Unix utility with JSON or streaming output and per-invocation tool restrictions:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">some-command &lt;span class="p">|&lt;/span> claude -p &lt;span class="s2">&amp;#34;Analyze this output and identify the likely failure&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">some-command &lt;span class="p">|&lt;/span> claude -p &lt;span class="s2">&amp;#34;Return findings as JSON&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> jq &lt;span class="s1">&amp;#39;.findings&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Useful for CI failure triage, log summarization, diff review, issue classification, and release note generation.&lt;/p>
+&lt;hr>
+&lt;h2 id="11-parallel-sessions">11. Parallel sessions&lt;/h2>
+&lt;p>Multiple terminals, tmux sessions, or git worktrees provide isolated workspaces for concurrent agents. Avoid having two active agents share a single working tree.&lt;/p>
+&lt;p>Parallelism pays off when each task has clear boundaries and independent verification loops.&lt;/p>
+&lt;hr>
+&lt;h2 id="common-failure-modes">Common failure modes&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Mistake&lt;/th>
+&lt;th>Fix&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Single giant implementation prompt&lt;/td>
+&lt;td>Explore and plan first&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Missing feedback loops&lt;/td>
+&lt;td>Add tests, types, build, or browser checks&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Re-explaining project architecture&lt;/td>
+&lt;td>Maintain &lt;code>CLAUDE.md&lt;/code>, use &lt;code>#&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Unshared local configurations&lt;/td>
+&lt;td>Commit commands, MCP configs, and permissions&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Approving every trivial edit&lt;/td>
+&lt;td>Switch to &lt;code>acceptEdits&lt;/code> or &lt;code>auto&lt;/code> once on track&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Granting full autonomy initially&lt;/td>
+&lt;td>Transition after the plan is confirmed&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Using as a basic search engine&lt;/td>
+&lt;td>Request an engineering process, not a simple lookup&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;h2 id="adoption-path">Adoption path&lt;/h2>
+&lt;ol>
+&lt;li>Codebase Q&amp;amp;A and onboarding&lt;/li>
+&lt;li>Small bounded changes with existing tests&lt;/li>
+&lt;li>Planning required for larger features&lt;/li>
+&lt;li>Short shared &lt;code>CLAUDE.md&lt;/code>&lt;/li>
+&lt;li>Slash commands and MCP config in the repo&lt;/li>
+&lt;li>Automated verification loops&lt;/li>
+&lt;li>Headless use in CI and scripts&lt;/li>
+&lt;li>Parallel sessions on isolated worktrees&lt;/li>
+&lt;/ol>
+&lt;p>Each stage should be stabilized before adopting subsequent automation levels.&lt;/p>
+&lt;hr>
+&lt;h2 id="summary-principles">Summary Principles&lt;/h2>
+&lt;ol>
+&lt;li>&lt;strong>Verification is Key:&lt;/strong> Quality relies heavily on feedback loops (typechecks, tests, logs, or browser screenshots).&lt;/li>
+&lt;li>&lt;strong>Context Management:&lt;/strong> Maintain &lt;code>CLAUDE.md&lt;/code> under 200 lines to ensure high instruction adherence.&lt;/li>
+&lt;li>&lt;strong>Controlled Autonomy:&lt;/strong> Match permission modes to task risk, starting in plan mode for complex tasks and relaxing permissions as confidence grows.&lt;/li>
+&lt;/ol></description></item></channel></rss>

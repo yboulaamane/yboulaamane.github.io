@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>GROMACS | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/gromacs/</link><atom:link href="https://yboulaamane.github.io/tags/gromacs/index.xml" rel="self" type="application/rss+xml"/><description>GROMACS</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Fri, 04 Apr 2025 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>GROMACS</title><link>https://yboulaamane.github.io/tags/gromacs/</link></image><item><title>Step-by-Step MD Simulation of a Protein–Ligand Complex with GROMACS</title><link>https://yboulaamane.github.io/blog/an-in-depth-guide-to-md-simulation-and-analysis-of-a-protein-ligand-complex/</link><pubDate>Fri, 04 Apr 2025 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/an-in-depth-guide-to-md-simulation-and-analysis-of-a-protein-ligand-complex/</guid><description>&lt;p>This is a recorded CHARMM36 recipe, not a universal GROMACS map. The protein uses CHARMM36, the ligand uses CGenFF, and the write-up calls the solvent TIP3P. The commands below are the ones to copy. Menu numbers and index groups belong to the system they were answered on.&lt;/p>
+&lt;p>&lt;code>em.mdp&lt;/code>, &lt;code>nvt.mdp&lt;/code>, &lt;code>npt.mdp&lt;/code>, and &lt;code>md.mdp&lt;/code> are not in this note. The production run is the 100 ns job written as &lt;code>md_0_100&lt;/code>. Ions use the short &lt;code>ions.mdp&lt;/code> that is included.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 520" role="img" aria-labelledby="gmx-pipe-title gmx-pipe-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="gmx-pipe-title">CHARMM36 protein-ligand setup through production&lt;/title>
+&lt;desc id="gmx-pipe-desc">Nine stages: fix the PDB, build the protein topology, parameterize the ligand with CGenFF, merge, solvate and add ions, minimize, NVT, NPT, then a 100 ns production run named md_0_100.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-gmx-pipe" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="64" width="180" height="64" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="230" y="64" width="180" height="64" rx="12" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="432" y="64" width="180" height="64" rx="12" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="28" y="168" width="180" height="64" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="230" y="168" width="180" height="64" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="432" y="168" width="180" height="64" rx="12" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="28" y="292" width="180" height="64" rx="12" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="230" y="292" width="180" height="64" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="432" y="292" width="180" height="64" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;path d="M208 96 L222 96" marker-end="url(#arrow-gmx-pipe)" stroke="currentColor"/>
+&lt;path d="M410 96 L424 96" marker-end="url(#arrow-gmx-pipe)" stroke="currentColor"/>
+&lt;path d="M522 128 L522 148 L118 148 L118 160" marker-end="url(#arrow-gmx-pipe)" stroke="currentColor"/>
+&lt;path d="M208 200 L222 200" marker-end="url(#arrow-gmx-pipe)" stroke="currentColor"/>
+&lt;path d="M410 200 L424 200" marker-end="url(#arrow-gmx-pipe)" stroke="currentColor"/>
+&lt;path d="M522 232 L522 256 L118 256 L118 284" marker-end="url(#arrow-gmx-pipe)" stroke="currentColor"/>
+&lt;path d="M208 324 L222 324" marker-end="url(#arrow-gmx-pipe)" stroke="currentColor"/>
+&lt;path d="M410 324 L424 324" marker-end="url(#arrow-gmx-pipe)" stroke="currentColor"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="36" font-size="22" font-weight="700">One system, nine stages&lt;/text>
+&lt;text x="118" y="92" font-size="16" font-weight="700">Fix the PDB&lt;/text>
+&lt;text x="118" y="114" font-size="14">pdbfixer&lt;/text>
+&lt;text x="320" y="92" font-size="16" font-weight="700">Protein topology&lt;/text>
+&lt;text x="320" y="114" font-size="14">pdb2gmx&lt;/text>
+&lt;text x="522" y="92" font-size="16" font-weight="700">Ligand&lt;/text>
+&lt;text x="522" y="114" font-size="14">CGenFF&lt;/text>
+&lt;text x="118" y="196" font-size="16" font-weight="700">Merge&lt;/text>
+&lt;text x="118" y="218" font-size="14">complex.gro&lt;/text>
+&lt;text x="320" y="196" font-size="16" font-weight="700">Solvate, ions&lt;/text>
+&lt;text x="320" y="218" font-size="14">1.4 nm, 0.15 M&lt;/text>
+&lt;text x="522" y="196" font-size="16" font-weight="700">Minimize&lt;/text>
+&lt;text x="522" y="218" font-size="14">em.mdp&lt;/text>
+&lt;text x="118" y="320" font-size="16" font-weight="700">NVT&lt;/text>
+&lt;text x="118" y="342" font-size="14">300 K&lt;/text>
+&lt;text x="320" y="320" font-size="16" font-weight="700">NPT&lt;/text>
+&lt;text x="320" y="342" font-size="14">Parrinello–Rahman&lt;/text>
+&lt;text x="522" y="320" font-size="16" font-weight="700">100 ns&lt;/text>
+&lt;text x="522" y="342" font-size="14">md_0_100&lt;/text>
+&lt;text x="320" y="420" font-size="16" font-weight="700">Index groups are local&lt;/text>
+&lt;text x="320" y="448" font-size="15">genion answered 15. The complex group was 1 | 13.&lt;/text>
+&lt;text x="320" y="476" font-size="15">Read the menu on your build before reusing either.&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The box is cubic with a 1.4 nm buffer, and the salt command is 0.15 M NaCl. Group 15 at the ion step and &lt;code>1 | 13&lt;/code> in &lt;code>make_ndx&lt;/code> are the answers printed for this system. Solvation uses &lt;code>spc216.gro&lt;/code> even though the force field named here is CHARMM36 with TIP3P. That coordinate file is left as written.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="0-repair-the-pdb">0. Repair the PDB&lt;/h2>
+&lt;p>Missing atoms get filled before the force field sees the file.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">conda activate pdbfixer
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pdbfixer protein.pdb --output&lt;span class="o">=&lt;/span>protein_fixed.pdb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="1-separate-the-ligand">1. Separate the ligand&lt;/h2>
+&lt;p>Unknown residues and cofactors should not go through &lt;code>pdb2gmx&lt;/code> as part of the protein. Two variants are recorded. One pulls &lt;code>UNK&lt;/code> only. The other also drops &lt;code>FAD&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">grep UNK protein.pdb &amp;gt; unk.pdb
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">grep -v &lt;span class="s2">&amp;#34;UNK&amp;#34;&lt;/span> protein.pdb &amp;gt; clean.pdb
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">grep -v -e &lt;span class="s2">&amp;#34;UNK&amp;#34;&lt;/span> -e &lt;span class="s2">&amp;#34;FAD&amp;#34;&lt;/span> protein_fixed.pdb &amp;gt; clean.pdb
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">conda activate pdbfixer
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pdbfixer clean.pdb --output&lt;span class="o">=&lt;/span>clean.pdb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="2-protein-topology">2. Protein topology&lt;/h2>
+&lt;p>&lt;code>pdb2gmx&lt;/code> is run with &lt;code>-ter&lt;/code> and &lt;code>-ignh&lt;/code>. The six lines are the menu answers recorded for this CHARMM36 setup. On another GROMACS build the same digit can be a different force field or a different terminus. Read the menu.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx pdb2gmx -f clean.pdb -o processed.gro -ter -ignh &lt;span class="s">&amp;lt;&amp;lt; EOF
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="3-ligand-mol2">3. Ligand MOL2&lt;/h2>
+&lt;p>Hydrogens are added and a 3D guess is generated. The &lt;code>sed&lt;/code> line sets the residue name to &lt;code>UNK&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">obabel unk.pdb -O unk.mol2 --addh --gen3d
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s1">&amp;#39;2s/.*/UNK/; s/UNK1/UNK/g&amp;#39;&lt;/span> unk.mol2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="4-bond-order-in-the-mol2">4. Bond order in the MOL2&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">perl sort_mol2_bonds.pl unk.mol2 unk_fix.mol2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="5-cgenff">5. CGenFF&lt;/h2>
+&lt;p>The binary path is the one used on this machine. The conversion script targets &lt;code>charmm36-jul2022.ff&lt;/code>. Penalty scores in the CGenFF log are a reason to stop. This recipe does not inspect them for you.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">~/mdrun/silcsbio.2024.1/cgenff/cgenff unk_fix.mol2 -f unk.str
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod +x cgenff_charmm2gmx.py
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">conda activate cgenff
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">python cgenff_charmm2gmx.py UNK unk_fix.mol2 unk.str charmm36-jul2022.ff
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm cgenff_charmm2gmx.py
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="6-ligand-coordinates-as-gro">6. Ligand coordinates as GRO&lt;/h2>
+&lt;p>The next step expects &lt;code>unk_ini.pdb&lt;/code> and, when a cofactor is present, &lt;code>fad_ini.pdb&lt;/code>. The command that writes those two names is not in this note. The MOL2 above is the file that went to CGenFF.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx editconf -f unk_ini.pdb -o unk.gro
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx editconf -f fad_ini.pdb -o fad.gro
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="7-merge-into-one-gro">7. Merge into one GRO&lt;/h2>
+&lt;p>Protein plus ligand. The second line of a GRO file is the atom count, so it is rewritten after the append. The box line is dropped from the protein file and a blank box line is added back at the end.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">cp processed.gro complex.gro &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> sed -i &lt;span class="s1">&amp;#39;$d&amp;#39;&lt;/span> complex.gro &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> tail -n +3 unk.gro &amp;gt;&amp;gt; complex.gro &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34; &amp;#34;&lt;/span> &amp;gt;&amp;gt; complex.gro
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">num1&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>sed -n &lt;span class="s1">&amp;#39;2p&amp;#39;&lt;/span> complex.gro&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">num2&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>sed -n &lt;span class="s1">&amp;#39;2p&amp;#39;&lt;/span> unk.gro&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">sum&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$((&lt;/span>num1 &lt;span class="o">+&lt;/span> num2&lt;span class="k">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s2">&amp;#34;2s/.*/ &lt;/span>&lt;span class="nv">$sum&lt;/span>&lt;span class="s2">/&amp;#34;&lt;/span> complex.gro
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Protein plus FAD plus UNK:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">cp processed.gro complex.gro &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>sed -i &lt;span class="s1">&amp;#39;$d&amp;#39;&lt;/span> complex.gro &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>tail -n +3 fad.gro &amp;gt;&amp;gt; complex.gro &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>tail -n +3 unk.gro &amp;gt;&amp;gt; complex.gro &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34; &amp;#34;&lt;/span> &amp;gt;&amp;gt; complex.gro
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">num1&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>sed -n &lt;span class="s1">&amp;#39;2p&amp;#39;&lt;/span> processed.gro&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">num2&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>sed -n &lt;span class="s1">&amp;#39;2p&amp;#39;&lt;/span> fad.gro&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">num3&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>sed -n &lt;span class="s1">&amp;#39;2p&amp;#39;&lt;/span> unk.gro&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">sum&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$((&lt;/span>num1 &lt;span class="o">+&lt;/span> num2 &lt;span class="o">+&lt;/span> num3&lt;span class="k">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s2">&amp;#34;2s/.*/ &lt;/span>&lt;span class="nv">$sum&lt;/span>&lt;span class="s2">/&amp;#34;&lt;/span> complex.gro
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="8-topology-includes">8. Topology includes&lt;/h2>
+&lt;p>These &lt;code>sed&lt;/code> edits are brittle. They assume the CHARMM36 comments and the molecule name &lt;code>Protein_chain_A&lt;/code> are still in &lt;code>topol.top&lt;/code>. Open the topology after they run.&lt;/p>
+&lt;p>Ligand only:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s1">&amp;#39;/; Include Position restraint file/{:a;N;/#endif/!ba;s/\n#endif\n/\n#endif/;s/#endif/#endif\n\n; Include ligand topology\n#include &amp;#34;unk.itp&amp;#34;/}&amp;#39;&lt;/span> topol.top
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s1">&amp;#39;/; Include forcefield parameters/{:a;N;/#include &amp;#34;.\/charmm36-jul2022.ff\/forcefield.itp&amp;#34;/!ba;s/#include &amp;#34;.\/charmm36-jul2022.ff\/forcefield.itp&amp;#34;/&amp;amp;\n\n; Include ligand parameters\n#include &amp;#34;unk.prm&amp;#34;/}&amp;#39;&lt;/span> topol.top
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s1">&amp;#39;/\[ molecules \]/,/Protein_chain_A/ {/Protein_chain_A/ a\\nUNK 1\n}&amp;#39;&lt;/span> topol.top
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>FAD and UNK:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s1">&amp;#39;/; Include Position restraint file/{:a;N;/#endif/!ba;s/#endif/#endif\n\n; Include ligand topologies\n#include &amp;#34;fad.itp&amp;#34;\n#include &amp;#34;unk.itp&amp;#34;/}&amp;#39;&lt;/span> topol.top
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s1">&amp;#39;/; Include forcefield parameters/{:a;N;/#include &amp;#34;.\/charmm36-jul2022.ff\/forcefield.itp&amp;#34;/!ba;s|#include &amp;#34;.\/charmm36-jul2022.ff\/forcefield.itp&amp;#34;|&amp;amp;\n\n; Include ligand parameters\n#include &amp;#34;fad.prm&amp;#34;\n#include &amp;#34;unk.prm&amp;#34;|}&amp;#39;&lt;/span> topol.top
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s1">&amp;#39;/\[ molecules \]/,/Protein_chain_A/ {/Protein_chain_A/ a\\nFAD 1\\nUNK 1\n}&amp;#39;&lt;/span> topol.top
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="9-box-and-solvent">9. Box and solvent&lt;/h2>
+&lt;p>The buffer is 1.4 nm and the box is cubic. Solvation is &lt;code>spc216.gro&lt;/code>. That is the SPC216 coordinate file, used here with the CHARMM36 topology. It is not rewritten as &lt;code>tip3p.gro&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx editconf -f complex.gro -o newbox.gro -bt cubic -c -d 1.4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx solvate -cp newbox.gro -cs spc216.gro -p topol.top -o solv.gro
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="10-ions">10. Ions&lt;/h2>
+&lt;p>The ion &lt;code>.mdp&lt;/code> is only a steep minimizer so &lt;code>genion&lt;/code> has a &lt;code>.tpr&lt;/code>. Neutralize, then add 0.15 M NaCl. The heredoc answers group &lt;code>15&lt;/code>. On this system that was solvent. &lt;code>genion&lt;/code> prints the group list. Choose solvent, whatever number it has.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">cat &lt;span class="s">&amp;lt;&amp;lt;EOF &amp;gt; ions.mdp
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">integrator = steep
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">emtol = 1000.0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">nsteps = 50000
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">cutoff-scheme = Verlet
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">coulombtype = PME
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">rcoulomb = 1.0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">rvdw = 1.0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">constraints = none
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx grompp -f ions.mdp -c solv.gro -p topol.top -o ions.tpr -maxwarn &lt;span class="m">3&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx genion -s ions.tpr -o solv_ions.gro -p topol.top -pname NA -nname CL -neutral -conc 0.15 &lt;span class="s">&amp;lt;&amp;lt;EOF
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">15
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="11-energy-minimization">11. Energy minimization&lt;/h2>
+&lt;p>&lt;code>em.mdp&lt;/code> itself is not listed.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx grompp -f em.mdp -c solv_ions.gro -p topol.top -o em.tpr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx mdrun -v -deffnm em
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="12-ligand-position-restraints">12. Ligand position restraints&lt;/h2>
+&lt;p>Non-hydrogen atoms of the ligand are restrained with &lt;code>-fc 1000 1000 1000&lt;/code>. Group &lt;code>3&lt;/code> is the selection recorded after &lt;code>0 &amp;amp; ! a H*&lt;/code>. Check the index &lt;code>make_ndx&lt;/code> prints.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx make_ndx -f unk.gro -o index_unk.ndx &lt;span class="s">&amp;lt;&amp;lt; EOF
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">0 &amp;amp; ! a H*
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">q
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx genrestr -f unk.gro -n index_unk.ndx -o posre_unk.itp -fc &lt;span class="m">1000&lt;/span> &lt;span class="m">1000&lt;/span> &lt;span class="m">1000&lt;/span> &lt;span class="s">&amp;lt;&amp;lt;EOF
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">3
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s1">&amp;#39;/; Include water topology/{x;s/.*/\n; Ligand position restraints\n#ifdef POSRES\n#include &amp;#34;posre_unk.itp&amp;#34;\n#endif\n/;G}&amp;#39;&lt;/span> topol.top
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="13-complex-index">13. Complex index&lt;/h2>
+&lt;p>&lt;code>1 | 13&lt;/code> unions two groups that were protein and ligand on this system. Use the numbers your own index file prints.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx make_ndx -f solv_ions.gro -o index.ndx &lt;span class="s">&amp;lt;&amp;lt; EOF
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">1 | 13
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">q
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="14-nvt">14. NVT&lt;/h2>
+&lt;p>Temperature equilibration at 300 K, with position restraints. The thermostat settings live in &lt;code>nvt.mdp&lt;/code>, which is not pasted here.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx grompp -f nvt.mdp -c solv_ions.gro -r solv_ions.gro -p topol.top -n index.ndx -o nvt.tpr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx mdrun -deffnm nvt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="15-npt">15. NPT&lt;/h2>
+&lt;p>Pressure equilibration at 1 bar with the Parrinello–Rahman barostat.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx grompp -f npt.mdp -c nvt.gro -t nvt.cpt -r nvt.gro -p topol.top -n index.ndx -o npt.tpr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx mdrun -deffnm npt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="16-production">16. Production&lt;/h2>
+&lt;p>The file names are the 100 ns run.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -n index.ndx -o md_0_100.tpr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx mdrun -deffnm md_0_100
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="before-you-plot-anything">Before you plot anything&lt;/h2>
+&lt;p>Fix periodic boundary crossings before RMSD, radius of gyration, or SASA. Drop the first 5–10 ns. A flat RMSD, radius of gyration, and SASA is the stability check this note uses. PCA and a free-energy landscape are the next look at slow motions. Those analysis commands are a separate post.&lt;/p></description></item></channel></rss>

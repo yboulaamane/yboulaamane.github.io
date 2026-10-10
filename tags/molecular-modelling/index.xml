@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Molecular Modelling | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/molecular-modelling/</link><atom:link href="https://yboulaamane.github.io/tags/molecular-modelling/index.xml" rel="self" type="application/rss+xml"/><description>Molecular Modelling</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 08 Jun 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Molecular Modelling</title><link>https://yboulaamane.github.io/tags/molecular-modelling/</link></image><item><title>A History of Graph Neural Networks in Drug Discovery</title><link>https://yboulaamane.github.io/blog/a-history-of-graph-neural-networks-in-drug-discovery/</link><pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/a-history-of-graph-neural-networks-in-drug-discovery/</guid><description>&lt;p>The graph was already the model. ECFP hashed a neighborhood. A GNN learns the neighborhood. The later step, the one that changes a binding model, is putting the protein in the same graph and then refusing to trust a single pose.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 300" role="img" aria-labelledby="gnn-arc-title gnn-arc-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="gnn-arc-title">Four stages of graphs in drug discovery&lt;/title>
+&lt;desc id="gnn-arc-desc">Fingerprints and kernels encode a graph by hand. Ligand GNNs learn on the molecular graph. Complex graphs add the protein. Multiple instance learning pools an ensemble of poses.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-gnn-arc" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="20" y="78" width="136" height="120" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="176" y="78" width="136" height="120" rx="12" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="332" y="78" width="136" height="120" rx="12" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="488" y="78" width="132" height="120" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M156 138 L168 138" marker-end="url(#arrow-gnn-arc)" stroke="currentColor"/>
+&lt;path d="M312 138 L324 138" marker-end="url(#arrow-gnn-arc)" stroke="currentColor"/>
+&lt;path d="M468 138 L480 138" marker-end="url(#arrow-gnn-arc)" stroke="currentColor"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="40" font-size="22" font-weight="700">Each step adds something to ignore&lt;/text>
+&lt;text x="88" y="118" font-size="16" font-weight="700">Fingerprint&lt;/text>
+&lt;text x="88" y="148" font-size="15">Fixed vector&lt;/text>
+&lt;text x="244" y="118" font-size="16" font-weight="700">Ligand GNN&lt;/text>
+&lt;text x="244" y="148" font-size="15">Learned bonds&lt;/text>
+&lt;text x="400" y="118" font-size="16" font-weight="700">Complex&lt;/text>
+&lt;text x="400" y="148" font-size="15">Protein in graph&lt;/text>
+&lt;text x="554" y="118" font-size="16" font-weight="700">MIL&lt;/text>
+&lt;text x="554" y="148" font-size="15">Many poses&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> No years are attached here beyond the mid-2010s for the first learned ligand graphs. EdgeGATConv and attention-based MIL are the architecture names this note uses for the last stage. They are a pattern, not a benchmark.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="graphs-before-they-were-learned">Graphs before they were learned&lt;/h2>
+&lt;p>A molecule is a graph: atoms as nodes, bonds as edges. ECFP and Morgan fingerprints, and a lot of QSAR descriptors, hash a local neighborhood into a fixed vector. Graph kernels did the same job with a hand-built similarity, before message passing was trained.&lt;/p>
+&lt;p>Protein–ligand models already built interaction graphs. A ligand atom or a residue linked to a protein residue if they were in contact, and a summary of that graph went into a classical model. The graph was a feature recipe. It was not trained end to end.&lt;/p>
+&lt;h2 id="ligand-graphs-mid-2010s">Ligand graphs, mid-2010s&lt;/h2>
+&lt;p>Message passing, graph convolution, and graph attention made the graph the input. The first drug-discovery use was ligand-only: solubility, toxicity, activity, ADMET. The model learned embeddings and passed them along bonds. For several years that was what “a GNN for drug discovery” meant. The protein, if it appeared, arrived as a sequence or a profile, or not at all.&lt;/p>
+&lt;h2 id="the-complex-is-the-graph">The complex is the graph&lt;/h2>
+&lt;p>The shift is to treat the complex as one object.&lt;/p>
+&lt;ul>
+&lt;li>Two graphs, protein and ligand, plus edges between residues and atoms inside a distance cutoff.&lt;/li>
+&lt;li>One graph of both atom sets, with edges for contacts, distances, and interaction types.&lt;/li>
+&lt;li>Message passing that crosses those edges, so the 3D arrangement is part of the update.&lt;/li>
+&lt;/ul>
+&lt;p>The site is then learnable. Hydrogen bonds, hydrophobic contacts, and metal coordination can be edge labels. Attention decides which of them matter.&lt;/p>
+&lt;h2 id="geometry-and-attention">Geometry and attention&lt;/h2>
+&lt;p>Three habits stuck.&lt;/p>
+&lt;p>Distances, radial basis functions, or an SE(3)-equivariant layer keep the coordinates and the symmetry. The model starts to look like a scoring function with trained parameters.&lt;/p>
+&lt;p>Edges stop meaning only “bonded” or “within some angstrom cutoff.” They carry the interaction class. A cytochrome is the example in this note: iron coordination and a few C–H distances dominate the mechanism, so an edge label is the natural place for them.&lt;/p>
+&lt;p>GAT-style attention weights the neighbors. Attentive pooling, or multiple-instance learning over poses, pockets, and conformers, chooses which part of a messy input to trust.&lt;/p>
+&lt;h2 id="poses-as-a-bag">Poses as a bag&lt;/h2>
+&lt;p>Docking and MD return an ensemble. The pipeline this note describes:&lt;/p>
+&lt;ol>
+&lt;li>One protein–ligand graph per pose, with an edge-aware GAT such as EdgeGATConv.&lt;/li>
+&lt;li>A readout to one embedding per pose.&lt;/li>
+&lt;li>Attention-based MIL (ABMIL) pools those embeddings and learns which poses matter for binding or for substrate classification.&lt;/li>
+&lt;li>The prediction is made from that pooled vector.&lt;/li>
+&lt;/ol>
+&lt;p>The docking score is no longer the only way to pick a pose. The model can learn what a productive pose looks like, and it can also learn to ignore the rest.&lt;/p>
+&lt;p>Fingerprints made the graph implicit. Ligand GNNs made it trained. Complex graphs added the site. Equivariant layers tied the result to geometry. MIL is the step that stops pretending one frame was the complex.&lt;/p></description></item></channel></rss>

@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chemical Space | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/chemical-space/</link><atom:link href="https://yboulaamane.github.io/tags/chemical-space/index.xml" rel="self" type="application/rss+xml"/><description>Chemical Space</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Thu, 01 Oct 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Chemical Space</title><link>https://yboulaamane.github.io/tags/chemical-space/</link></image><item><title>Chemical Space Is Not One Map: PCA, t-SNE, UMAP, and What They Actually Show</title><link>https://yboulaamane.github.io/blog/chemical-space-is-not-one-map-pca-t-sne-umap-and-what-they-actually-show/</link><pubDate>Thu, 01 Oct 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/chemical-space-is-not-one-map-pca-t-sne-umap-and-what-they-actually-show/</guid><description>&lt;p>When we visualize a chemical dataset, we often talk about plotting its &lt;strong>chemical space&lt;/strong>.&lt;/p>
+&lt;p>The phrase sounds objective, almost as if every molecular dataset has one underlying map waiting to be discovered.&lt;/p>
+&lt;p>It does not.&lt;/p>
+&lt;p>A chemical-space plot is the result of several choices:&lt;/p>
+&lt;ol>
+&lt;li>How do we represent each molecule?&lt;/li>
+&lt;li>How do we define similarity between those representations?&lt;/li>
+&lt;li>How do we compress hundreds or thousands of dimensions into two?&lt;/li>
+&lt;/ol>
+&lt;p>Change any of these choices and the resulting map can change dramatically.&lt;/p>
+&lt;p>This becomes especially important when comparing three methods that appear constantly in cheminformatics papers: &lt;strong>PCA, t-SNE, and UMAP&lt;/strong>.&lt;/p>
+&lt;p>So which one should we use?&lt;/p>
+&lt;p>The answer depends less on which dimensionality-reduction algorithm is fashionable and more on &lt;strong>what we actually mean by chemical similarity&lt;/strong>.&lt;/p>
+&lt;h2 id="chemical-space-starts-before-pca-or-umap">Chemical Space Starts Before PCA or UMAP&lt;/h2>
+&lt;p>Suppose we have a dataset of 5,000 molecules.&lt;/p>
+&lt;p>Before applying any dimensionality-reduction algorithm, each molecule must first become a numerical representation. That representation defines the information available to every later step.&lt;/p>
+&lt;p>This first step is arguably more important than choosing between PCA, t-SNE, and UMAP.&lt;/p>
+&lt;p>A molecule represented using molecular weight, logP, TPSA, hydrogen-bond donors, and hydrogen-bond acceptors occupies a very different mathematical space from the same molecule represented using a 2048-bit ECFP fingerprint.&lt;/p>
+&lt;p>The first representation describes &lt;strong>physicochemical property space&lt;/strong>.&lt;/p>
+&lt;p>The second describes &lt;strong>local structural patterns&lt;/strong>.&lt;/p>
+&lt;p>Both are legitimate chemical spaces, but they answer different questions.&lt;/p>
+&lt;p>This is why saying:&lt;/p>
+&lt;blockquote>
+&lt;p>&amp;ldquo;I visualized the chemical space using UMAP&amp;rdquo;&lt;/p>&lt;/blockquote>
+&lt;p>is incomplete.&lt;/p>
+&lt;p>A more informative statement would be:&lt;/p>
+&lt;blockquote>
+&lt;p>&amp;ldquo;I projected ECFP4 fingerprints into two dimensions using UMAP with Jaccard distance.&amp;rdquo;&lt;/p>&lt;/blockquote>
+&lt;p>Now we know what molecular similarity means in that visualization.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 1120 430" role="img" aria-labelledby="pipeline-title pipeline-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="pipeline-title">How a chemical-space map is constructed&lt;/title>
+&lt;desc id="pipeline-desc">Molecules are converted into a representation, compared with a suitable similarity metric, projected into two dimensions, and interpreted according to the information encoded upstream.&lt;/desc>
+&lt;defs>&lt;marker id="arrow-pipeline" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>&lt;/defs>
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;rect x="30" y="28" width="1060" height="350" rx="24" opacity="0.18"/>
+&lt;rect x="65" y="135" width="215" height="125" rx="18" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="330" y="135" width="215" height="125" rx="18" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="595" y="135" width="215" height="125" rx="18" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="860" y="135" width="195" height="125" rx="18" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M280 198 L320 198" marker-end="url(#arrow-pipeline)"/>
+&lt;path d="M545 198 L585 198" marker-end="url(#arrow-pipeline)"/>
+&lt;path d="M810 198 L850 198" marker-end="url(#arrow-pipeline)"/>
+&lt;/g>
+&lt;g fill="currentColor" text-anchor="middle">
+&lt;text x="560" y="75" font-size="27" font-weight="700">A chemical-space map is a chain of choices&lt;/text>
+&lt;text x="560" y="106" font-size="16" opacity="0.72">The projection is only the final transformation&lt;/text>
+&lt;text x="173" y="174" font-size="20" font-weight="700">Representation&lt;/text>
+&lt;text x="173" y="207" font-size="16">Descriptors or ECFP4&lt;/text>
+&lt;text x="173" y="234" font-size="14" opacity="0.72">What information is encoded?&lt;/text>
+&lt;text x="438" y="174" font-size="20" font-weight="700">Geometry&lt;/text>
+&lt;text x="438" y="207" font-size="16">Euclidean or Jaccard&lt;/text>
+&lt;text x="438" y="234" font-size="14" opacity="0.72">What does “close” mean?&lt;/text>
+&lt;text x="703" y="174" font-size="20" font-weight="700">Projection&lt;/text>
+&lt;text x="703" y="207" font-size="16">PCA, t-SNE, or UMAP&lt;/text>
+&lt;text x="703" y="234" font-size="14" opacity="0.72">What structure is preserved?&lt;/text>
+&lt;text x="958" y="174" font-size="20" font-weight="700">Interpretation&lt;/text>
+&lt;text x="958" y="207" font-size="16">A two-dimensional view&lt;/text>
+&lt;text x="958" y="234" font-size="14" opacity="0.72">What can we claim?&lt;/text>
+&lt;text x="560" y="329" font-size="18" font-weight="700">The projection compresses geometry; it does not define the chemistry.&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Chemical space is constructed upstream of PCA, t-SNE, or UMAP. Molecular representation and the distance metric determine what proximity means before the data are projected.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="ecfp4-turning-molecules-into-structural-fingerprints">ECFP4: Turning Molecules Into Structural Fingerprints&lt;/h2>
+&lt;p>Extended-connectivity fingerprints, or ECFPs, encode local atomic environments around each atom.&lt;/p>
+&lt;p>In simplified terms, the algorithm starts from individual atoms and iteratively expands outward through neighboring bonds.&lt;/p>
+&lt;p>For ECFP4, the maximum diameter of the encoded environments is approximately four bonds, corresponding to a radius of two iterations.&lt;/p>
+&lt;p>A molecule can then be represented as a binary vector such as:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">0 1 0 0 1 0 1 0 0 1 0 ...
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Each activated bit indicates the presence of one or more hashed molecular environments.&lt;/p>
+&lt;p>This representation is particularly useful in medicinal chemistry because molecules sharing scaffolds or local structural motifs tend to activate overlapping fingerprint bits.&lt;/p>
+&lt;p>It therefore provides a practical definition of &lt;strong>structural similarity&lt;/strong>.&lt;/p>
+&lt;p>A terminology note is useful here. RDKit&amp;rsquo;s Morgan fingerprint with radius 2 is commonly referred to as ECFP4 in cheminformatics workflows. Strictly speaking, it is an implementation closely related to the ECFP algorithm rather than a guarantee of bit-for-bit identity with every commercial ECFP implementation.&lt;/p>
+&lt;h2 id="jaccard-and-tanimoto-what-does-close-mean">Jaccard and Tanimoto: What Does &amp;ldquo;Close&amp;rdquo; Mean?&lt;/h2>
+&lt;p>Once molecules become binary fingerprints, we need a way to compare them.&lt;/p>
+&lt;p>For two sets of fingerprint bits, A and B, the Jaccard similarity is:&lt;/p>
+&lt;p style="text-align:center;">&lt;strong>J(A,B) = |A ∩ B| / |A ∪ B|&lt;/strong>&lt;/p>
+&lt;p>For binary molecular fingerprints, this corresponds to the familiar &lt;strong>Tanimoto coefficient&lt;/strong> commonly used in cheminformatics.&lt;/p>
+&lt;p>If two molecules activate many of the same fingerprint bits, their similarity approaches 1.&lt;/p>
+&lt;p>If they share few structural features, their similarity approaches 0.&lt;/p>
+&lt;p>The corresponding distance is:&lt;/p>
+&lt;p style="text-align:center;">&lt;strong>d = 1 - J(A,B)&lt;/strong>&lt;/p>
+&lt;p>This gives us something chemically meaningful before dimensionality reduction has even started.&lt;/p>
+&lt;p>We have defined:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">similar molecules = molecules sharing fingerprint environments
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>That is why using a fingerprint-aware metric matters.&lt;/p>
+&lt;p>Applying ordinary Euclidean geometry blindly to sparse binary fingerprints is not always the most chemically natural choice.&lt;/p>
+&lt;h2 id="pca-the-old-method-that-is-still-extremely-useful">PCA: The Old Method That Is Still Extremely Useful&lt;/h2>
+&lt;p>Principal Component Analysis is sometimes treated as outdated now that nonlinear approaches such as t-SNE and UMAP are available.&lt;/p>
+&lt;p>That is a mistake.&lt;/p>
+&lt;p>PCA solves a different problem.&lt;/p>
+&lt;p>It identifies new orthogonal directions that capture progressively smaller amounts of variance in the original data.&lt;/p>
+&lt;p>The first principal component captures the largest possible amount of variance.&lt;/p>
+&lt;p>The second captures the largest remaining amount while remaining orthogonal to the first.&lt;/p>
+&lt;p>And so on.&lt;/p>
+&lt;p>The major advantage is interpretability.&lt;/p>
+&lt;p>If I calculate descriptors such as molecular weight, logP, TPSA, hydrogen-bond counts, rotatable bonds, aromatic fraction, and ring count, PCA can tell me which combinations dominate variation across the dataset.&lt;/p>
+&lt;p>I can also quantify how much variance is represented:&lt;/p>
+&lt;p>For example, if PC1 explains 37% of the variance and PC2 explains 21%, the displayed plane accounts for 58% of the variance in the standardized descriptor matrix.&lt;/p>
+&lt;p>That information has a clear statistical interpretation.&lt;/p>
+&lt;p>This is something UMAP and t-SNE do not provide.&lt;/p>
+&lt;h3 id="where-pca-works-particularly-well">Where PCA works particularly well&lt;/h3>
+&lt;p>PCA is excellent for visualizing &lt;strong>physicochemical descriptor space&lt;/strong>.&lt;/p>
+&lt;p>For example, if one region of the PCA plot corresponds to high molecular weight, high logP, and many aromatic rings, while another corresponds to smaller molecules with higher polarity and fewer rings, the axes can often be investigated through the PCA loadings.&lt;/p>
+&lt;p>The map is connected directly to the original variables.&lt;/p>
+&lt;h3 id="where-pca-struggles">Where PCA struggles&lt;/h3>
+&lt;p>The limitation is that PCA is linear.&lt;/p>
+&lt;p>Chemical structure rarely varies along neat linear directions.&lt;/p>
+&lt;p>Two compounds can be structurally related through complicated combinations of fragments that are difficult to express as a simple linear projection.&lt;/p>
+&lt;p>This becomes particularly noticeable for high-dimensional sparse fingerprints.&lt;/p>
+&lt;p>PCA can still be applied to fingerprints, but the geometry it assumes is often less aligned with the way medicinal chemists normally think about fingerprint similarity.&lt;/p>
+&lt;h2 id="t-sne-excellent-at-finding-neighborhoods">t-SNE: Excellent at Finding Neighborhoods&lt;/h2>
+&lt;p>t-distributed Stochastic Neighbor Embedding, better known as t-SNE, approaches dimensionality reduction differently.&lt;/p>
+&lt;p>Instead of asking:&lt;/p>
+&lt;blockquote>
+&lt;p>Which directions explain the most variance?&lt;/p>&lt;/blockquote>
+&lt;p>it asks something closer to:&lt;/p>
+&lt;blockquote>
+&lt;p>Which points should remain neighbors after projection?&lt;/p>&lt;/blockquote>
+&lt;p>High-dimensional similarities are converted into probability distributions, and the algorithm attempts to produce a low-dimensional map with similar local relationships.&lt;/p>
+&lt;p>This is why t-SNE often generates remarkably clean clusters.&lt;/p>
+&lt;p>A chemical series that is difficult to distinguish in PCA may suddenly appear as a compact island.&lt;/p>
+&lt;p>For exploratory visualization, this can be extremely useful.&lt;/p>
+&lt;h3 id="but-there-is-an-important-trap">But there is an important trap&lt;/h3>
+&lt;p>People naturally interpret scatterplots geometrically.&lt;/p>
+&lt;p>If two clusters appear far apart, we instinctively assume they are extremely different.&lt;/p>
+&lt;p>That interpretation is dangerous with t-SNE.&lt;/p>
+&lt;p>The algorithm prioritizes &lt;strong>local neighborhood preservation&lt;/strong>.&lt;/p>
+&lt;p>The spacing between distant clusters is much less informative.&lt;/p>
+&lt;p>Cluster size can also be misleading.&lt;/p>
+&lt;p>A visually large island does not necessarily represent greater molecular diversity than a smaller island.&lt;/p>
+&lt;p>This is one reason attractive t-SNE figures should be interpreted cautiously.&lt;/p>
+&lt;h2 id="umap-a-useful-compromise">UMAP: A Useful Compromise&lt;/h2>
+&lt;p>Uniform Manifold Approximation and Projection, or UMAP, also builds its representation around local neighborhoods.&lt;/p>
+&lt;p>At a high level, UMAP constructs a graph describing which observations are neighbors in high-dimensional space.&lt;/p>
+&lt;p>It then searches for a low-dimensional arrangement that reproduces this neighborhood structure as well as possible.&lt;/p>
+&lt;p>For chemical fingerprints, this creates a natural workflow: &lt;strong>ECFP4 → Jaccard distance → molecular-neighborhood graph → UMAP embedding&lt;/strong>.&lt;/p>
+&lt;p>This combination is one reason UMAP has become common in modern cheminformatics.&lt;/p>
+&lt;p>It is usually computationally efficient and often provides clearer structural organization than PCA when working with molecular fingerprints.&lt;/p>
+&lt;p>Compared with t-SNE, UMAP can also preserve more of the broader organization of the dataset in many situations.&lt;/p>
+&lt;p>But the word &lt;strong>can&lt;/strong> matters.&lt;/p>
+&lt;p>UMAP is still a nonlinear projection.&lt;/p>
+&lt;p>It does not magically reconstruct the true geometry of chemical space.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 1120 560" role="img" aria-labelledby="comparison-title comparison-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="comparison-title">Conceptual comparison of PCA, t-SNE, and UMAP&lt;/title>
+&lt;desc id="comparison-desc">Three projections of the same conceptual groups illustrate the different priorities of PCA, t-SNE, and UMAP.&lt;/desc>
+&lt;g fill="none" stroke="currentColor" stroke-width="1.8">
+&lt;rect x="25" y="90" width="340" height="390" rx="20" opacity="0.22"/>
+&lt;rect x="390" y="90" width="340" height="390" rx="20" opacity="0.22"/>
+&lt;rect x="755" y="90" width="340" height="390" rx="20" opacity="0.22"/>
+&lt;line x1="70" y1="385" x2="330" y2="385" opacity="0.3"/>&lt;line x1="70" y1="385" x2="70" y2="155" opacity="0.3"/>
+&lt;line x1="435" y1="385" x2="695" y2="385" opacity="0.3"/>&lt;line x1="435" y1="385" x2="435" y2="155" opacity="0.3"/>
+&lt;line x1="800" y1="385" x2="1060" y2="385" opacity="0.3"/>&lt;line x1="800" y1="385" x2="800" y2="155" opacity="0.3"/>
+&lt;/g>
+&lt;g fill="currentColor" text-anchor="middle">
+&lt;text x="560" y="38" font-size="28" font-weight="700">One dataset, three projection priorities&lt;/text>
+&lt;text x="560" y="68" font-size="16" opacity="0.7">Schematic points: the lesson is what each method tries to preserve&lt;/text>
+&lt;text x="195" y="128" font-size="25" font-weight="700">PCA&lt;/text>&lt;text x="195" y="450" font-size="16" font-weight="700">Global linear variance&lt;/text>&lt;text x="195" y="473" font-size="14" opacity="0.72">Interpret axes and loadings&lt;/text>
+&lt;text x="560" y="128" font-size="25" font-weight="700">t-SNE&lt;/text>&lt;text x="560" y="450" font-size="16" font-weight="700">Local neighborhoods&lt;/text>&lt;text x="560" y="473" font-size="14" opacity="0.72">Do not interpret island spacing&lt;/text>
+&lt;text x="925" y="128" font-size="25" font-weight="700">UMAP&lt;/text>&lt;text x="925" y="450" font-size="16" font-weight="700">Neighborhood graph&lt;/text>&lt;text x="925" y="473" font-size="14" opacity="0.72">Broader geometry is approximate&lt;/text>
+&lt;text x="560" y="530" font-size="15" opacity="0.68">The coordinates are conceptual and do not represent an experimental molecular dataset.&lt;/text>
+&lt;/g>
+&lt;g opacity="0.88">
+&lt;g fill="#2f80ed">&lt;circle cx="120" cy="300" r="10"/>&lt;circle cx="142" cy="282" r="9"/>&lt;circle cx="159" cy="308" r="11"/>&lt;circle cx="181" cy="289" r="8"/>&lt;circle cx="195" cy="321" r="9"/>&lt;/g>
+&lt;g fill="#f2994a">&lt;circle cx="171" cy="260" r="9"/>&lt;circle cx="194" cy="248" r="11"/>&lt;circle cx="218" cy="268" r="9"/>&lt;circle cx="238" cy="244" r="8"/>&lt;circle cx="253" cy="277" r="10"/>&lt;/g>
+&lt;g fill="#27ae60">&lt;circle cx="211" cy="330" r="8"/>&lt;circle cx="235" cy="315" r="10"/>&lt;circle cx="258" cy="340" r="9"/>&lt;circle cx="282" cy="320" r="11"/>&lt;circle cx="302" cy="347" r="8"/>&lt;/g>
+&lt;g fill="#9b51e0">&lt;circle cx="245" cy="217" r="9"/>&lt;circle cx="269" cy="205" r="11"/>&lt;circle cx="292" cy="228" r="9"/>&lt;circle cx="316" cy="210" r="8"/>&lt;/g>
+&lt;g fill="#2f80ed">&lt;circle cx="478" cy="262" r="11"/>&lt;circle cx="500" cy="244" r="9"/>&lt;circle cx="520" cy="270" r="10"/>&lt;circle cx="542" cy="250" r="8"/>&lt;circle cx="497" cy="287" r="8"/>&lt;/g>
+&lt;g fill="#f2994a">&lt;circle cx="626" cy="235" r="10"/>&lt;circle cx="649" cy="250" r="9"/>&lt;circle cx="672" cy="230" r="11"/>&lt;circle cx="688" cy="258" r="8"/>&lt;circle cx="645" cy="273" r="8"/>&lt;/g>
+&lt;g fill="#27ae60">&lt;circle cx="546" cy="340" r="10"/>&lt;circle cx="570" cy="352" r="9"/>&lt;circle cx="593" cy="333" r="11"/>&lt;circle cx="617" cy="357" r="8"/>&lt;circle cx="580" cy="313" r="8"/>&lt;/g>
+&lt;g fill="#9b51e0">&lt;circle cx="535" cy="190" r="10"/>&lt;circle cx="560" cy="177" r="9"/>&lt;circle cx="585" cy="196" r="11"/>&lt;circle cx="610" cy="181" r="8"/>&lt;/g>
+&lt;g fill="#2f80ed">&lt;circle cx="840" cy="300" r="10"/>&lt;circle cx="862" cy="282" r="8"/>&lt;circle cx="882" cy="307" r="11"/>&lt;circle cx="904" cy="289" r="8"/>&lt;/g>
+&lt;g fill="#27ae60">&lt;circle cx="900" cy="347" r="10"/>&lt;circle cx="925" cy="332" r="8"/>&lt;circle cx="947" cy="354" r="11"/>&lt;circle cx="969" cy="337" r="8"/>&lt;/g>
+&lt;g fill="#f2994a">&lt;circle cx="950" cy="240" r="10"/>&lt;circle cx="974" cy="225" r="8"/>&lt;circle cx="997" cy="248" r="11"/>&lt;circle cx="1020" cy="230" r="8"/>&lt;/g>
+&lt;g fill="#9b51e0">&lt;circle cx="1010" cy="310" r="10"/>&lt;circle cx="1035" cy="295" r="8"/>&lt;circle cx="1055" cy="321" r="11"/>&lt;/g>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> PCA, t-SNE, and UMAP can produce different visual stories from the same input because they optimize different properties. Clean separation is not automatically a more truthful map.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="the-same-dataset-can-produce-three-different-stories">The Same Dataset Can Produce Three Different Stories&lt;/h2>
+&lt;p>None of these maps is necessarily wrong.&lt;/p>
+&lt;p>They are preserving different properties of the original high-dimensional dataset.&lt;/p>
+&lt;p>This is the central idea:&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>Dimensionality reduction does not simply reveal structure. It decides which structure is worth preserving.&lt;/strong>&lt;/p>&lt;/blockquote>
+&lt;h2 id="so-why-do-people-still-use-pca">So Why Do People Still Use PCA?&lt;/h2>
+&lt;p>Because PCA gives us things nonlinear embeddings cannot.&lt;/p>
+&lt;p>It is:&lt;/p>
+&lt;ul>
+&lt;li>fast&lt;/li>
+&lt;li>deterministic&lt;/li>
+&lt;li>mathematically transparent&lt;/li>
+&lt;li>interpretable through feature loadings&lt;/li>
+&lt;li>accompanied by explained variance&lt;/li>
+&lt;li>useful for detecting correlated descriptors&lt;/li>
+&lt;li>appropriate for many continuous molecular properties&lt;/li>
+&lt;/ul>
+&lt;p>If I want to understand the physicochemical composition of a library, PCA may be exactly the method I want.&lt;/p>
+&lt;p>Replacing PCA with UMAP simply because UMAP produces more visually separated clusters would not necessarily improve the analysis.&lt;/p>
+&lt;p>In fact, it might remove useful interpretability.&lt;/p>
+&lt;h2 id="and-why-is-t-sne-still-used">And Why Is t-SNE Still Used?&lt;/h2>
+&lt;p>Because local structure matters.&lt;/p>
+&lt;p>If the goal is exploratory analysis of closely related molecular families, t-SNE can produce informative visualizations.&lt;/p>
+&lt;p>It also has a long history, is implemented in essentially every machine-learning ecosystem, and is familiar to researchers and reviewers.&lt;/p>
+&lt;p>The mistake is not using t-SNE.&lt;/p>
+&lt;p>The mistake is interpreting a t-SNE plot as if it were an ordinary Cartesian map where all global distances are meaningful.&lt;/p>
+&lt;h2 id="my-preferred-workflow-for-structural-chemical-space">My Preferred Workflow for Structural Chemical Space&lt;/h2>
+&lt;p>For a typical QSAR dataset where I want to inspect &lt;strong>structural diversity&lt;/strong>, I would usually begin with Morgan/ECFP4 fingerprints generated at radius 2 and 2048 bits, followed by UMAP with Jaccard distance. Reasonable exploratory ranges are approximately 15–50 neighbors and a minimum distance of 0.05–0.3.&lt;/p>
+&lt;p>A reasonable starting configuration would be:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">rdkit&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">Chem&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">rdkit.Chem&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">rdFingerprintGenerator&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">rdkit&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">DataStructs&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">numpy&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">np&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">umap&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">generator&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">rdFingerprintGenerator&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">GetMorganGenerator&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">radius&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">fpSize&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">2048&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">fps&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">arrays&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">smi&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">smiles&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mol&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Chem&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">MolFromSmiles&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">smi&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">fp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">generator&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">GetFingerprint&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mol&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">fps&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">fp&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">arr&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">zeros&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="mi">2048&lt;/span>&lt;span class="p">,),&lt;/span> &lt;span class="n">dtype&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">uint8&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">DataStructs&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">ConvertToNumpyArray&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">fp&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">arr&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">arrays&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">arr&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">X&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">asarray&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">arrays&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">reducer&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">umap&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">UMAP&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">n_neighbors&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">min_dist&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mf">0.1&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">metric&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;jaccard&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">random_state&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">42&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">embedding&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">reducer&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">fit_transform&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">X&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>I would then reuse the exact same coordinates and recolor the map by activity class, train/test assignment, experimental pIC50, molecular weight, or scaffold cluster.&lt;/p>
+&lt;p>This is often much more informative than generating a new embedding for every question.&lt;/p>
+&lt;p>The geometry stays fixed while the interpretation changes.&lt;/p>
+&lt;h2 id="the-most-useful-qsar-plot-might-be-train-vs-test">The Most Useful QSAR Plot Might Be Train vs Test&lt;/h2>
+&lt;p>One of my favorite applications is visualizing whether the external test set occupies similar structural space to the training compounds.&lt;/p>
+&lt;p>Color the same UMAP embedding by dataset assignment, using one marker style for training compounds and another for the external test set.&lt;/p>
+&lt;p>A heavily intermixed map suggests that many test compounds live within structural neighborhoods represented during training.&lt;/p>
+&lt;p>Large isolated regions containing only test compounds may indicate extrapolation.&lt;/p>
+&lt;p>But even here, the UMAP plot should not be treated as proof.&lt;/p>
+&lt;p>A two-dimensional projection necessarily discards information.&lt;/p>
+&lt;p>Two points that look close after projection may not actually have exceptionally high fingerprint similarity.&lt;/p>
+&lt;p>Two points that look distant may still share substantial structural features.&lt;/p>
+&lt;p>This is why a visual analysis should be paired with quantitative similarity measurements.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 1120 540" role="img" aria-labelledby="validation-title validation-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="validation-title">Visual and quantitative assessment of train-test chemical-space overlap&lt;/title>
+&lt;desc id="validation-desc">A UMAP view shows training and test compounds together, while maximum Tanimoto similarity quantifies how close selected test molecules are to their nearest training neighbor.&lt;/desc>
+&lt;g fill="none" stroke="currentColor" stroke-width="1.8">
+&lt;rect x="25" y="70" width="560" height="430" rx="20" opacity="0.22"/>
+&lt;rect x="610" y="70" width="485" height="430" rx="20" opacity="0.22"/>
+&lt;ellipse cx="205" cy="245" rx="120" ry="92" fill="#2f80ed" fill-opacity="0.08" stroke="#2f80ed" stroke-opacity="0.35"/>
+&lt;ellipse cx="405" cy="300" rx="118" ry="86" fill="#27ae60" fill-opacity="0.08" stroke="#27ae60" stroke-opacity="0.35"/>
+&lt;line x1="720" y1="175" x2="1030" y2="175" opacity="0.18"/>&lt;line x1="720" y1="245" x2="1030" y2="245" opacity="0.18"/>&lt;line x1="720" y1="315" x2="1030" y2="315" opacity="0.18"/>&lt;line x1="720" y1="385" x2="1030" y2="385" opacity="0.18"/>
+&lt;rect x="720" y="151" width="270" height="32" rx="8" fill="#2f80ed" fill-opacity="0.78" stroke="none"/>
+&lt;rect x="720" y="221" width="226" height="32" rx="8" fill="#27ae60" fill-opacity="0.78" stroke="none"/>
+&lt;rect x="720" y="291" width="158" height="32" rx="8" fill="#f2994a" fill-opacity="0.82" stroke="none"/>
+&lt;rect x="720" y="361" width="90" height="32" rx="8" fill="#eb5757" fill-opacity="0.82" stroke="none"/>
+&lt;line x1="720" y1="420" x2="1030" y2="420"/>&lt;line x1="720" y1="415" x2="720" y2="425"/>&lt;line x1="875" y1="415" x2="875" y2="425"/>&lt;line x1="1030" y1="415" x2="1030" y2="425"/>
+&lt;/g>
+&lt;g fill="currentColor" text-anchor="middle">
+&lt;text x="560" y="34" font-size="28" font-weight="700">The picture and the measurement answer different questions&lt;/text>
+&lt;text x="305" y="108" font-size="21" font-weight="700">UMAP: where are the neighborhoods?&lt;/text>
+&lt;text x="853" y="108" font-size="21" font-weight="700">Tanimoto: how novel is each test molecule?&lt;/text>
+&lt;text x="853" y="478" font-size="14" opacity="0.72">Maximum similarity to any training compound&lt;/text>
+&lt;text x="720" y="447" font-size="13" opacity="0.65">0.0&lt;/text>&lt;text x="875" y="447" font-size="13" opacity="0.65">0.5&lt;/text>&lt;text x="1030" y="447" font-size="13" opacity="0.65">1.0&lt;/text>
+&lt;/g>
+&lt;g fill="#2f80ed" opacity="0.78">&lt;circle cx="120" cy="230" r="8"/>&lt;circle cx="145" cy="195" r="8"/>&lt;circle cx="168" cy="250" r="8"/>&lt;circle cx="196" cy="210" r="8"/>&lt;circle cx="222" cy="270" r="8"/>&lt;circle cx="250" cy="225" r="8"/>&lt;circle cx="280" cy="255" r="8"/>&lt;/g>
+&lt;g fill="#27ae60" opacity="0.78">&lt;circle cx="330" cy="315" r="8"/>&lt;circle cx="355" cy="280" r="8"/>&lt;circle cx="382" cy="335" r="8"/>&lt;circle cx="410" cy="295" r="8"/>&lt;circle cx="438" cy="345" r="8"/>&lt;circle cx="465" cy="305" r="8"/>&lt;circle cx="500" cy="325" r="8"/>&lt;/g>
+&lt;g fill="none" stroke="currentColor" stroke-width="3">&lt;path d="M190 180 l10 10 -10 10 -10 -10 Z"/>&lt;path d="M275 300 l10 10 -10 10 -10 -10 Z"/>&lt;path d="M455 235 l10 10 -10 10 -10 -10 Z"/>&lt;path d="M520 170 l10 10 -10 10 -10 -10 Z"/>&lt;/g>
+&lt;g fill="currentColor" font-size="15" font-weight="700">&lt;text x="205" y="178">A&lt;/text>&lt;text x="290" y="300">B&lt;/text>&lt;text x="470" y="233">C&lt;/text>&lt;text x="535" y="168">D&lt;/text>&lt;/g>
+&lt;g fill="currentColor" font-size="14">&lt;circle cx="118" cy="420" r="7" fill="#2f80ed"/>&lt;text x="135" y="425">Training compound&lt;/text>&lt;path d="M282 412 l8 8 -8 8 -8 -8 Z" fill="none" stroke="currentColor" stroke-width="2"/>&lt;text x="300" y="425">Test compound&lt;/text>&lt;/g>
+&lt;g fill="currentColor" font-size="16" font-weight="700">&lt;text x="685" y="174">A&lt;/text>&lt;text x="685" y="244">B&lt;/text>&lt;text x="685" y="314">C&lt;/text>&lt;text x="685" y="384">D&lt;/text>&lt;text x="1005" y="174">0.87&lt;/text>&lt;text x="961" y="244">0.73&lt;/text>&lt;text x="893" y="314">0.51&lt;/text>&lt;text x="825" y="384">0.29&lt;/text>&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 3.&lt;/strong> A fixed UMAP embedding is useful for seeing train–test coverage, but nearest-neighbor Tanimoto similarity provides the quantitative novelty measurement. Molecule D is visibly isolated and also has the lowest similarity to the training set.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="umap-is-the-picture-tanimoto-is-the-measurement">UMAP Is the Picture. Tanimoto Is the Measurement.&lt;/h2>
+&lt;p>Suppose I want to know how novel each test compound is relative to the training set.&lt;/p>
+&lt;p>For every test molecule, I can calculate:&lt;/p>
+&lt;p style="text-align:center;">&lt;strong>max Tanimoto(test, training)&lt;/strong>&lt;/p>
+&lt;p>This asks:&lt;/p>
+&lt;blockquote>
+&lt;p>What is the most structurally similar molecule this test compound has already seen during training?&lt;/p>&lt;/blockquote>
+&lt;p>In Figure 3, molecule A has a nearest-training similarity of 0.87, whereas molecule D has a value of only 0.29. Molecule A therefore lies close to known chemical territory.&lt;/p>
+&lt;p>Molecule D represents substantially stronger structural extrapolation.&lt;/p>
+&lt;p>This quantity is much easier to interpret than measuring distances between points on a UMAP plot.&lt;/p>
+&lt;p>That leads to a useful distinction:&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>UMAP is excellent for seeing chemical space. Fingerprint similarity is better for measuring it.&lt;/strong>&lt;/p>&lt;/blockquote>
+&lt;h2 id="do-not-forget-the-representation">Do Not Forget the Representation&lt;/h2>
+&lt;p>Suppose two molecules occupy neighboring positions in an ECFP4-based UMAP.&lt;/p>
+&lt;p>What does that mean?&lt;/p>
+&lt;p>It means they have similar &lt;strong>local topological environments according to that fingerprint representation&lt;/strong>.&lt;/p>
+&lt;p>It does not automatically mean they have:&lt;/p>
+&lt;ul>
+&lt;li>similar conformations&lt;/li>
+&lt;li>similar electrostatics&lt;/li>
+&lt;li>similar pharmacophores&lt;/li>
+&lt;li>similar biological activity&lt;/li>
+&lt;li>similar binding modes&lt;/li>
+&lt;li>similar metabolism&lt;/li>
+&lt;/ul>
+&lt;p>Chemical similarity is always conditional on the representation.&lt;/p>
+&lt;p>The same dataset embedded from physicochemical descriptors might reveal a very different organization.&lt;/p>
+&lt;p>This is not a contradiction.&lt;/p>
+&lt;p>It means the two maps are answering different questions.&lt;/p>
+&lt;h2 id="why-i-would-sometimes-show-both-pca-and-umap">Why I Would Sometimes Show Both PCA and UMAP&lt;/h2>
+&lt;p>Rather than asking which method wins, it can be more useful to combine complementary views.&lt;/p>
+&lt;h3 id="pca-on-physicochemical-descriptors">PCA on physicochemical descriptors&lt;/h3>
+&lt;p>This view emphasizes size, lipophilicity, polarity, hydrogen bonding, and molecular complexity.&lt;/p>
+&lt;p>This describes &lt;strong>property space&lt;/strong>.&lt;/p>
+&lt;h3 id="umap-on-ecfp4-fingerprints">UMAP on ECFP4 fingerprints&lt;/h3>
+&lt;p>This view emphasizes scaffold relationships, local fragments, structural analogues, and chemical series.&lt;/p>
+&lt;p>This describes &lt;strong>structural space&lt;/strong>.&lt;/p>
+&lt;p>Together, the plots provide more information than either one individually.&lt;/p>
+&lt;p>Two compounds may be structurally unrelated but occupy similar physicochemical space.&lt;/p>
+&lt;p>Conversely, close structural analogues can sometimes have substantially different properties after relatively small chemical modifications.&lt;/p>
+&lt;p>That distinction is central to medicinal chemistry.&lt;/p>
+&lt;h2 id="a-practical-comparison">A Practical Comparison&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Method&lt;/th>
+&lt;th>What it emphasizes&lt;/th>
+&lt;th>Strongest advantage&lt;/th>
+&lt;th>Main caution&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>PCA&lt;/td>
+&lt;td>Global linear variance&lt;/td>
+&lt;td>Interpretability&lt;/td>
+&lt;td>Misses nonlinear relationships&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>t-SNE&lt;/td>
+&lt;td>Local neighborhoods&lt;/td>
+&lt;td>Strong visual separation&lt;/td>
+&lt;td>Global distances are difficult to interpret&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>UMAP&lt;/td>
+&lt;td>Local neighborhoods and some broader organization&lt;/td>
+&lt;td>Flexible and efficient&lt;/td>
+&lt;td>Geometry remains projection-dependent&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>For molecular fingerprints specifically, I would generally prefer &lt;strong>ECFP4 + Jaccard + UMAP&lt;/strong> for visualization.&lt;/p>
+&lt;p>For physicochemical descriptors, PCA remains extremely valuable.&lt;/p>
+&lt;p>For investigating strongly local cluster structure, t-SNE remains a legitimate tool.&lt;/p>
+&lt;h2 id="there-is-no-single-chemical-space">There Is No Single Chemical Space&lt;/h2>
+&lt;p>Perhaps the most important lesson is that chemical space is not a single object.&lt;/p>
+&lt;p>Consider the same compounds represented using ECFP fingerprints, MACCS keys, RDKit descriptors, 3D shape descriptors, pharmacophore fingerprints, molecular embeddings, or protein–ligand interaction fingerprints. Each representation produces a different notion of similarity.&lt;/p>
+&lt;p>Each therefore creates a different chemical space.&lt;/p>
+&lt;p>UMAP cannot solve this problem because it appears only at the end of the pipeline.&lt;/p>
+&lt;p>The most important question comes earlier:&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>What molecular information do I want proximity in this map to represent?&lt;/strong>&lt;/p>&lt;/blockquote>
+&lt;p>Once that is clear, choosing the dimensionality-reduction algorithm becomes much easier.&lt;/p>
+&lt;h2 id="final-takeaway">Final Takeaway&lt;/h2>
+&lt;p>There is no universal winner between PCA, t-SNE, and UMAP.&lt;/p>
+&lt;p>For continuous physicochemical descriptors, PCA provides an interpretable and statistically transparent view of molecular property space.&lt;/p>
+&lt;p>For discovering local neighborhoods, t-SNE remains powerful, provided that distances between clusters are not overinterpreted.&lt;/p>
+&lt;p>For high-dimensional structural fingerprints such as ECFP4, UMAP combined with a binary similarity metric such as Jaccard is one of the most useful default approaches for visual exploration.&lt;/p>
+&lt;p>But even then, the plot should remain what it is:&lt;/p>
+&lt;p>&lt;strong>a visualization.&lt;/strong>&lt;/p>
+&lt;p>If the goal is to quantify structural overlap, novelty, or train-test extrapolation, return to the original fingerprints and calculate the similarities directly.&lt;/p>
+&lt;p>The picture helps us explore the chemical space.&lt;/p>
+&lt;p>The high-dimensional representation is where that space actually lives.&lt;/p>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ol>
+&lt;li>Rogers, D.; Hahn, M. Extended-Connectivity Fingerprints. &lt;em>Journal of Chemical Information and Modeling&lt;/em> &lt;strong>2010&lt;/strong>, 50, 742-754.&lt;/li>
+&lt;li>van der Maaten, L.; Hinton, G. Visualizing Data using t-SNE. &lt;em>Journal of Machine Learning Research&lt;/em> &lt;strong>2008&lt;/strong>, 9, 2579-2605.&lt;/li>
+&lt;li>McInnes, L.; Healy, J.; Melville, J. UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction. arXiv:1802.03426.&lt;/li>
+&lt;/ol></description></item></channel></rss>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Simulation Best Practices | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/simulation-best-practices/</link><atom:link href="https://yboulaamane.github.io/tags/simulation-best-practices/index.xml" rel="self" type="application/rss+xml"/><description>Simulation Best Practices</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sun, 21 Dec 2025 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Simulation Best Practices</title><link>https://yboulaamane.github.io/tags/simulation-best-practices/</link></image><item><title>Ten Critical Pitfalls in Molecular Dynamics Simulations and Strategies for Mitigation</title><link>https://yboulaamane.github.io/blog/ten-critical-pitfalls-in-molecular-dynamics-simulations-and-strategies-for-mitigation/</link><pubDate>Sun, 21 Dec 2025 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/ten-critical-pitfalls-in-molecular-dynamics-simulations-and-strategies-for-mitigation/</guid><description>&lt;p>The dangerous MD error is the one that finishes. A missing atom, a mixed force field, or a broken periodic image will still give you a plot. The ten items below are the ones that show up as a plausible trajectory rather than as a crash.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 360" role="img" aria-labelledby="mdpit-title mdpit-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="mdpit-title">Checks before production and checks before a claim&lt;/title>
+&lt;desc id="mdpit-desc">Before production: structure, a matched force field and water model, ligand parameters, minimization and equilibration, and a 2 fs step with constraints. Before a claim: fix periodic images, run 3 to 5 replicates, do not stop at RMSD, and compare with experiment.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="64" width="280" height="260" rx="16" fill="#2f80ed" fill-opacity="0.08" stroke="#2f80ed"/>
+&lt;rect x="332" y="64" width="280" height="260" rx="16" fill="#f2994a" fill-opacity="0.08" stroke="#f2994a"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="36" font-size="22" font-weight="700" text-anchor="middle">A finished run is not a checked run&lt;/text>
+&lt;text x="48" y="96" font-size="18" font-weight="700">Before production&lt;/text>
+&lt;text x="48" y="132" font-size="16">Structure and protonation&lt;/text>
+&lt;text x="48" y="164" font-size="16">Force field matches the water&lt;/text>
+&lt;text x="48" y="196" font-size="16">Ligand topology is a draft&lt;/text>
+&lt;text x="48" y="228" font-size="16">Minimize, then equilibrate&lt;/text>
+&lt;text x="48" y="260" font-size="16">2 fs, hydrogens constrained&lt;/text>
+&lt;text x="48" y="292" font-size="16">4 fs only with HMR&lt;/text>
+&lt;text x="352" y="96" font-size="18" font-weight="700">Before a claim&lt;/text>
+&lt;text x="352" y="140" font-size="16">Unwrap periodic images&lt;/text>
+&lt;text x="352" y="180" font-size="16">3 to 5 replicates&lt;/text>
+&lt;text x="352" y="220" font-size="16">RMSD plus RMSF, Rg, SASA&lt;/text>
+&lt;text x="352" y="260" font-size="16">Compare with experiment&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The left column is how the trajectory goes wrong quietly. The right column is how a single smooth RMSD gets over-read. The force threshold cited for minimization is 1000 kJ/mol/nm. The replicate count is 3 to 5, with different initial velocities.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="1-the-pdb-is-not-a-starting-model">1. The PDB is not a starting model&lt;/h2>
+&lt;p>A downloaded structure can miss atoms, leave residues unresolved, or include crystal contacts that are not present in solution. Build missing loops, clear steric clashes, and set protonation for the pH you are simulating. Histidine tautomers are the usual example of a default that is wrong. pdbfixer, H++, and PropKa are the tools named for that cleanup.&lt;/p>
+&lt;h2 id="2-the-force-field-has-to-match-the-molecule">2. The force field has to match the molecule&lt;/h2>
+&lt;p>Popularity is a weak reason. A protein force field is not automatically a membrane force field. Mixing parameter sets is worse: CHARMM protein parameters with OPLS ligand parameters do not share one potential. If you do combine sets, they need compatible functional forms and Lennard-Jones combination rules, and the combination needs to have been validated for that class of molecule.&lt;/p>
+&lt;h2 id="3-the-water-model-was-part-of-the-parameterization">3. The water model was part of the parameterization&lt;/h2>
+&lt;p>TIP3P and a 4-point model such as OPC are not interchangeable add-ons. The force field paper says which water was used. A mismatch moves density, protein–solvent interaction, and diffusion, which is enough to make a thermodynamic property meaningless.&lt;/p>
+&lt;h2 id="4-automated-ligand-parameters-are-a-draft">4. Automated ligand parameters are a draft&lt;/h2>
+&lt;p>CGenFF, PRODRG, and MCPB will write a topology. They also approximate charges and bonded terms, and they say so in penalty scores or warnings. Read the log. For a result you will defend, check partial charges against a QM calculation and bonded terms against experiment or a higher level of theory.&lt;/p>
+&lt;h2 id="5-production-starts-after-the-system-has-settled">5. Production starts after the system has settled&lt;/h2>
+&lt;p>Minimize until the maximum force is below a tight threshold. The example given is 1000 kJ/mol/nm. Then watch NVT and NPT. Density and potential energy need a plateau before you collect data. Starting earlier is a common source of a trajectory that looks unstable for a boring reason.&lt;/p>
+&lt;h2 id="6-the-time-step">6. The time step&lt;/h2>
+&lt;p>2 fs is the standard biological step when bonds to hydrogen are constrained with LINCS or SHAKE. A larger step, such as 4 fs, belongs with hydrogen mass repartitioning. A step that is too long integrates badly. A step that is too short mostly wastes time.&lt;/p>
+&lt;h2 id="7-periodic-images">7. Periodic images&lt;/h2>
+&lt;p>The box is required. It also splits molecules across the boundary. Radius of gyration ($R_g$) and RMSD on a broken molecule are the wrong numbers. Recenter and unwrap first. &lt;code>gmx trjconv&lt;/code> and &lt;code>cpptraj&lt;/code> are the usual tools.&lt;/p>
+&lt;h2 id="8-one-trajectory-is-an-anecdote">8. One trajectory is an anecdote&lt;/h2>
+&lt;p>The integrator is stochastic once the initial velocities are. Run the same system 3 to 5 times with different seeds. A rare event in one run is not a property of the system until the other runs agree.&lt;/p>
+&lt;h2 id="9-a-flat-rmsd-is-a-weak-stability-claim">9. A flat RMSD is a weak stability claim&lt;/h2>
+&lt;p>RMSD says the structure has stopped drifting from the reference you chose. It does not certify local packing, hydrogen bonds, or the energy. Read it with RMSF, $R_g$, SASA, and a clustering of the trajectory.&lt;/p>
+&lt;h2 id="10-compare-with-something-measured">10. Compare with something measured&lt;/h2>
+&lt;p>A simulation that does not crash can still be the wrong physical system. Crystallographic B-factors, chemical shifts, and NOEs are the experimental contacts named here. Use the observable you actually have. The comparison is what licenses the interpretation.&lt;/p></description></item></channel></rss>

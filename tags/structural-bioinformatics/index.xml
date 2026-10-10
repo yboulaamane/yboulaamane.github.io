@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Structural Bioinformatics | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/structural-bioinformatics/</link><atom:link href="https://yboulaamane.github.io/tags/structural-bioinformatics/index.xml" rel="self" type="application/rss+xml"/><description>Structural Bioinformatics</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 21 Sep 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Structural Bioinformatics</title><link>https://yboulaamane.github.io/tags/structural-bioinformatics/</link></image><item><title>From Molecules to Decisions: My Takeaways from EFMC-ISMC 2026</title><link>https://yboulaamane.github.io/blog/from-molecules-to-decisions-my-takeaways-from-efmc-ismc-2026/</link><pubDate>Mon, 21 Sep 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/from-molecules-to-decisions-my-takeaways-from-efmc-ismc-2026/</guid><description>&lt;p>The &lt;strong>EFMC International Symposium on Medicinal Chemistry 2026&lt;/strong> brought the medicinal chemistry community to Basel for five days of science spanning chemical design, computational modeling, pharmacology, structural biology, and drug development.&lt;/p>
+&lt;p>According to the closing figures shared at the meeting, nearly 1,100 participants attended, with 115 scientific presentations (including eight first-time disclosures), 443 posters, and 60 flash talks.&lt;/p>
+&lt;p>Those numbers capture the scale of the conference, but not its central message.&lt;/p>
+&lt;p>The strongest theme was not simply that artificial intelligence is entering drug discovery. That transition is already well underway.&lt;/p>
+&lt;p>The more important shift is that drug discovery is becoming an integrated decision system in which medicinal chemistry, biology, DMPK, structural modeling, automation, and machine learning must operate together.&lt;/p>
+&lt;p>AI can generate molecules. Physics-based models can estimate how those molecules interact with proteins. Automated laboratories can synthesize and test them.&lt;/p>
+&lt;p>But none of these technologies removes the need to decide:&lt;/p>
+&lt;p>&lt;strong>Which hypothesis is worth pursuing?&lt;/strong>&lt;/p>
+&lt;p>&lt;strong>Which experiment will reduce uncertainty most efficiently?&lt;/strong>&lt;/p>
+&lt;p>&lt;strong>Which molecule should advance, and which project should stop?&lt;/strong>&lt;/p>
+&lt;p>My main takeaway from EFMC-ISMC 2026 was therefore simple:&lt;/p>
+&lt;blockquote>
+&lt;p>The future of drug discovery will depend less on producing more predictions and more on turning predictions into better decisions.&lt;/p>&lt;/blockquote>
+&lt;hr>
+&lt;h2 id="drug-discovery-is-becoming-a-connected-system">Drug discovery is becoming a connected system&lt;/h2>
+&lt;p>For much of its history, drug discovery could be represented as a sequence of relatively distinct activities.&lt;/p>
+&lt;p>Chemists designed molecules. Biologists tested them. DMPK scientists investigated exposure and clearance. Computational chemists modeled binding and properties. Project teams periodically brought these results together to decide what to make next.&lt;/p>
+&lt;p>That sequence is becoming a continuously connected loop.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 1080 500" role="img" aria-labelledby="ecosystem-title ecosystem-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="ecosystem-title">The integrated drug-discovery ecosystem&lt;/title>
+&lt;desc id="ecosystem-desc">Medicinal chemistry, computational design, experimental biology, and DMPK feed a shared decision layer that guides the next design cycle.&lt;/desc>
+&lt;defs>&lt;marker id="arrow-ecosystem" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>&lt;/defs>
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;rect x="20" y="20" width="1040" height="440" rx="24" opacity="0.2"/>
+&lt;circle cx="540" cy="245" r="105" fill="#2f80ed" fill-opacity="0.12" stroke="#2f80ed" stroke-width="3"/>
+&lt;rect x="60" y="65" width="290" height="105" rx="17" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="730" y="65" width="290" height="105" rx="17" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="60" y="325" width="290" height="105" rx="17" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="730" y="325" width="290" height="105" rx="17" fill="#eb5757" fill-opacity="0.10" stroke="#eb5757"/>
+&lt;path d="M350 145 C420 170 445 190 457 205" marker-end="url(#arrow-ecosystem)" opacity="0.7"/>
+&lt;path d="M730 145 C660 170 635 190 623 205" marker-end="url(#arrow-ecosystem)" opacity="0.7"/>
+&lt;path d="M350 350 C420 325 445 300 457 285" marker-end="url(#arrow-ecosystem)" opacity="0.7"/>
+&lt;path d="M730 350 C660 325 635 300 623 285" marker-end="url(#arrow-ecosystem)" opacity="0.7"/>
+&lt;/g>
+&lt;g fill="currentColor" text-anchor="middle">
+&lt;text x="540" y="225" font-size="24" font-weight="700">Decision quality&lt;/text>
+&lt;text x="540" y="258" font-size="16">What should we make, test,&lt;/text>
+&lt;text x="540" y="283" font-size="16">advance, or stop?&lt;/text>
+&lt;text x="205" y="107" font-size="21" font-weight="700">Medicinal chemistry&lt;/text>
+&lt;text x="205" y="139" font-size="15">Synthesis · SAR · chemical intuition&lt;/text>
+&lt;text x="875" y="107" font-size="21" font-weight="700">Computational design&lt;/text>
+&lt;text x="875" y="139" font-size="15">Physics · AI/ML · virtual screening&lt;/text>
+&lt;text x="205" y="367" font-size="21" font-weight="700">Experimental biology&lt;/text>
+&lt;text x="205" y="399" font-size="15">Assays · mechanism · translation&lt;/text>
+&lt;text x="875" y="367" font-size="21" font-weight="700">DMPK and safety&lt;/text>
+&lt;text x="875" y="399" font-size="15">Exposure · clearance · liabilities&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Modern drug discovery is less a chain of isolated disciplines than a connected decision system.&lt;/figcaption>
+&lt;/figure>
+&lt;p>This integration sounds straightforward. In practice, it requires shared data infrastructure, compatible experimental and computational workflows, and teams willing to expose uncertainty rather than protect disciplinary boundaries.&lt;/p>
+&lt;p>That organizational challenge appeared repeatedly throughout the meeting.&lt;/p>
+&lt;hr>
+&lt;h2 id="attrition-is-not-only-a-molecular-problem">Attrition is not only a molecular problem&lt;/h2>
+&lt;p>In an opening keynote, Dr. Muneto Mogi of Novartis Biomedical Research placed the technological excitement against the stubborn reality of pharmaceutical R&amp;amp;D.&lt;/p>
+&lt;figure style="margin:2.5rem 0;" class="not-prose">
+&lt;div class="overflow-hidden rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 bg-gray-900">
+&lt;img src="https://yboulaamane.github.io/uploads/efmc-2026-themes-muneto-mogi.jpg" alt="Dr. Muneto Mogi delivering the keynote at EFMC-ISMC 2026 in Basel, presenting emerging themes in medicinal chemistry and drug discovery" class="w-full h-auto object-cover" loading="lazy" />
+&lt;/div>
+&lt;figcaption class="mt-3 text-center text-sm text-gray-600 dark:text-gray-400">
+&lt;strong>Keynote Address at EFMC-ISMC 2026 (Basel).&lt;/strong> Dr. Muneto Mogi (Novartis Biomedical Research) presenting the major emerging scientific themes. Beyond AI/ML and structure-based design, the presentation underscored targeted protein degradation, molecular glues, chemoproteomics, and covalent medicines as decisive industry frontiers.
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Standing on stage in the Basel auditorium, Dr. Mogi mapped out the landscape of the conference: while computational tools like AI/ML, structure-based design, and direct-to-biology automation frame modern discovery workflows, therapeutic innovation has decisively gravitated toward proximity-inducing modalities (targeted protein degradation, molecular glues), covalent medicines, chemoproteomics, and radiopharmaceuticals.&lt;/p>
+&lt;p>Yet behind these emerging modalities lies an enduring challenge: developing a medicine can still require more than a decade.&lt;/p>
+&lt;p>Phase II remains a major point of attrition. The figures presented at the meeting placed Phase II success at approximately 28.9%, with insufficient efficacy accounting for a large fraction of failures and safety liabilities responsible for many others.&lt;/p>
+&lt;p>Another striking statistic concerned target concentration. Of approximately 13,600 investigated drug–target pairs presented in the analysis, roughly one quarter were concentrated around only 37 heavily studied targets, including EGFR, GLP-1, PD-1, CD19, HER2, and KRAS.&lt;/p>
+&lt;p>The exact numbers vary depending on the dataset and definition of success, but the strategic message is difficult to miss:&lt;/p>
+&lt;p>&lt;strong>The industry continues to invest heavily in a comparatively narrow region of biological space.&lt;/strong>&lt;/p>
+&lt;p>Exploring less established targets could create new therapeutic opportunities. It also introduces greater uncertainty around target validation, disease relevance, biomarkers, translational models, and safety.&lt;/p>
+&lt;p>Better algorithms alone will not solve that uncertainty. They must be accompanied by better experimental design and better scientific judgment.&lt;/p>
+&lt;hr>
+&lt;h2 id="from-models-to-mindset">From models to mindset&lt;/h2>
+&lt;p>The Novartis keynote framed the next generation of drug discovery around six complementary capabilities:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Scientific depth:&lt;/strong> maintaining strong foundations in chemistry, biology, pharmacology, pharmacokinetics, and toxicology.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Digital fluency:&lt;/strong> understanding data, model outputs, uncertainty, and the practical limitations of AI systems.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Curiosity:&lt;/strong> exploring unfamiliar chemical and biological spaces instead of repeatedly returning to familiar solutions.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Adaptability:&lt;/strong> learning new tools and adjusting scientific workflows as automation and modeling evolve.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Open-mindedness:&lt;/strong> combining human expertise with computational evidence and interdisciplinary perspectives.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Decision quality:&lt;/strong> using predictions to make accountable choices, including the difficult decision to terminate low-value work early.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>I found the last capability particularly important.&lt;/p>
+&lt;p>Drug discovery does not fail because scientists lack ideas. Projects often fail because uncertainty is resolved too slowly, critical liabilities are discovered too late, or teams continue optimizing molecules that no longer have a credible path to a medicine.&lt;/p>
+&lt;p>The purpose of prediction should therefore not be to make a project look more certain.&lt;/p>
+&lt;p>It should be to determine &lt;strong>which uncertainty matters next&lt;/strong>.&lt;/p>
+&lt;hr>
+&lt;h2 id="the-gps-analogy-for-machine-learning">The GPS analogy for machine learning&lt;/h2>
+&lt;p>One of the clearest analogies presented at the meeting compared machine learning with a navigation system.&lt;/p>
+&lt;p>A navigation system can evaluate many possible routes and respond to new information. It cannot decide why the journey matters or whether the destination is still appropriate.&lt;/p>
+&lt;p>In drug discovery:&lt;/p>
+&lt;ul>
+&lt;li>The &lt;strong>Target Product Profile&lt;/strong> defines the destination.&lt;/li>
+&lt;li>Property guidelines and project constraints define the rules of the road.&lt;/li>
+&lt;li>Experimental and computational KPIs indicate the current position.&lt;/li>
+&lt;li>Predictive models propose possible routes.&lt;/li>
+&lt;li>Human scientists remain responsible for steering.&lt;/li>
+&lt;/ul>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 1080 480" role="img" aria-labelledby="gps-title gps-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="gps-title">Drug discovery as a navigation problem&lt;/title>
+&lt;desc id="gps-desc">The target product profile defines the destination, property constraints define the road rules, models propose routes, and scientists remain accountable for navigation.&lt;/desc>
+&lt;defs>&lt;marker id="arrow-gps" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>&lt;/defs>
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;path d="M125 300 C275 120 410 365 575 190 S830 120 945 165" stroke="#2f80ed" stroke-width="8" stroke-linecap="round" stroke-dasharray="15 12"/>
+&lt;circle cx="125" cy="300" r="42" fill="#27ae60" fill-opacity="0.14" stroke="#27ae60" stroke-width="3"/>
+&lt;circle cx="945" cy="165" r="42" fill="#eb5757" fill-opacity="0.14" stroke="#eb5757" stroke-width="3"/>
+&lt;rect x="320" y="35" width="280" height="82" rx="15" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="320" y="360" width="300" height="82" rx="15" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="750" y="335" width="270" height="92" rx="15" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;path d="M460 117 L460 155" marker-end="url(#arrow-gps)" opacity="0.65"/>
+&lt;path d="M620 400 C675 390 710 375 746 360" marker-end="url(#arrow-gps)" opacity="0.65"/>
+&lt;/g>
+&lt;g fill="currentColor" text-anchor="middle">
+&lt;text x="125" y="306" font-size="19" font-weight="700">Start&lt;/text>
+&lt;text x="945" y="160" font-size="17" font-weight="700">TPP&lt;/text>
+&lt;text x="945" y="183" font-size="13">destination&lt;/text>
+&lt;text x="460" y="69" font-size="19" font-weight="700">Predictive models&lt;/text>
+&lt;text x="460" y="96" font-size="15">Propose and update routes&lt;/text>
+&lt;text x="470" y="394" font-size="19" font-weight="700">Property constraints&lt;/text>
+&lt;text x="470" y="421" font-size="15">Potency · PK · safety · developability&lt;/text>
+&lt;text x="885" y="369" font-size="19" font-weight="700">Human scientists&lt;/text>
+&lt;text x="885" y="395" font-size="14">Choose the route and remain accountable&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> Predictive models can recommend routes, but the destination and final decisions remain human responsibilities.&lt;/figcaption>
+&lt;/figure>
+&lt;p>This analogy avoids two equally unhelpful extremes.&lt;/p>
+&lt;p>The first is the belief that machine learning will autonomously solve medicinal chemistry. The second is the belief that computational models are merely optional suggestions that can be ignored whenever they conflict with intuition.&lt;/p>
+&lt;p>A useful navigation system is neither an oracle nor a decoration. It is a decision-support system whose reliability must be understood.&lt;/p>
+&lt;hr>
+&lt;h2 id="generative-chemistry-inside-a-closed-dmta-loop">Generative chemistry inside a closed DMTA loop&lt;/h2>
+&lt;p>Generative chemistry featured prominently throughout the meeting, but the most convincing examples were not demonstrations of molecules appearing on a screen.&lt;/p>
+&lt;p>They were examples in which generation was connected to an operational &lt;strong>Design–Make–Test–Analyze cycle&lt;/strong>.&lt;/p>
+&lt;p>A generative model can encode molecules in a continuous latent representation, search that space for structures predicted to satisfy multiple objectives, and decode promising points back into chemical structures.&lt;/p>
+&lt;p>The practical challenge is that drug discovery rarely has one objective. A molecule may need to balance target potency, selectivity, solubility, permeability, metabolic stability, exposure, synthetic accessibility, and safety-related properties such as hERG activity.&lt;/p>
+&lt;p>Improving one property may damage another. Generative chemistry is therefore most useful when embedded in multi-parameter optimization rather than optimized toward a single score.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 1080 590" role="img" aria-labelledby="dmta-title dmta-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="dmta-title">A closed Design Make Test Analyze cycle&lt;/title>
+&lt;desc id="dmta-desc">Design, Make, Test, and Analyze form a closed learning loop supported by shared data and uncertainty-aware models.&lt;/desc>
+&lt;defs>&lt;marker id="arrow-dmta" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>&lt;/defs>
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;circle cx="540" cy="295" r="105" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed" stroke-width="3"/>
+&lt;rect x="395" y="35" width="290" height="95" rx="17" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="760" y="245" width="270" height="95" rx="17" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="395" y="460" width="290" height="95" rx="17" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="50" y="245" width="270" height="95" rx="17" fill="#eb5757" fill-opacity="0.10" stroke="#eb5757"/>
+&lt;path d="M685 90 C810 120 885 175 895 240" marker-end="url(#arrow-dmta)"/>
+&lt;path d="M895 340 C870 415 790 495 690 505" marker-end="url(#arrow-dmta)"/>
+&lt;path d="M390 505 C285 492 205 415 185 345" marker-end="url(#arrow-dmta)"/>
+&lt;path d="M185 240 C205 165 285 105 390 90" marker-end="url(#arrow-dmta)"/>
+&lt;path d="M540 130 L540 183" marker-end="url(#arrow-dmta)" opacity="0.5"/>
+&lt;path d="M760 295 L652 295" marker-end="url(#arrow-dmta)" opacity="0.5"/>
+&lt;path d="M540 460 L540 407" marker-end="url(#arrow-dmta)" opacity="0.5"/>
+&lt;path d="M320 295 L428 295" marker-end="url(#arrow-dmta)" opacity="0.5"/>
+&lt;/g>
+&lt;g fill="currentColor" text-anchor="middle">
+&lt;text x="540" y="272" font-size="23" font-weight="700">Shared data&lt;/text>
+&lt;text x="540" y="304" font-size="16">Models + uncertainty&lt;/text>
+&lt;text x="540" y="330" font-size="16">Human decisions&lt;/text>
+&lt;text x="540" y="78" font-size="23" font-weight="700">DESIGN&lt;/text>
+&lt;text x="540" y="108" font-size="15">Generate and prioritize ideas&lt;/text>
+&lt;text x="895" y="287" font-size="23" font-weight="700">MAKE&lt;/text>
+&lt;text x="895" y="317" font-size="15">Synthesize selected compounds&lt;/text>
+&lt;text x="540" y="503" font-size="23" font-weight="700">TEST&lt;/text>
+&lt;text x="540" y="533" font-size="15">Measure biology, ADME, and safety&lt;/text>
+&lt;text x="185" y="287" font-size="23" font-weight="700">ANALYZE&lt;/text>
+&lt;text x="185" y="317" font-size="15">Learn and update hypotheses&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 3.&lt;/strong> Automation becomes most valuable when each experiment improves the next design cycle.&lt;/figcaption>
+&lt;/figure>
+&lt;h3 id="from-55216-possibilities-to-nine-compounds">From 55,216 possibilities to nine compounds&lt;/h3>
+&lt;p>One case study began with a combinatorial design space containing 203 head groups, two central cores, and 136 tail groups. Together, these components produced 55,216 virtual combinations.&lt;/p>
+&lt;p>A conventional medicinal chemistry strategy might explore only a small neighborhood of that space through matched molecular pairs, requiring the synthesis of perhaps 100–200 compounds over multiple cycles.&lt;/p>
+&lt;p>The presented workflow instead enumerated the complete accessible library, predicted relevant properties, applied multi-parameter scoring, and selected only &lt;strong>nine compounds&lt;/strong> for experimental synthesis.&lt;/p>
+&lt;p>The important achievement was not simply numerical compression from 55,216 to nine.&lt;/p>
+&lt;p>The model created a defensible connection between the project objectives and the molecules that were synthesized. It also reduced the risk that promising regions of the enumerated space would remain unexplored merely because they were not obvious to the project team.&lt;/p>
+&lt;p>However, this efficiency depends on the reliability of the underlying property models. A molecule can only be optimized for liabilities represented in the scoring function.&lt;/p>
+&lt;p>An omitted objective does not disappear. It becomes an invisible risk.&lt;/p>
+&lt;hr>
+&lt;h2 id="automation-turns-experimental-data-into-a-strategic-asset">Automation turns experimental data into a strategic asset&lt;/h2>
+&lt;p>The &lt;strong>MicroCycle&lt;/strong> platform provided a useful example of what a genuinely integrated discovery loop can look like.&lt;/p>
+&lt;p>MicroCycle combines microscale synthesis, automated purification, robotic handling, biological testing, and machine-learning-driven compound selection. Rather than treating experimental data as the final output of a project cycle, the platform feeds standardized results directly into the next round of decisions.&lt;/p>
+&lt;p>The deeper advantage is not only speed.&lt;/p>
+&lt;p>Automation can improve the consistency and completeness of the data generated during each cycle. Negative results become useful training information rather than disappearing into laboratory notebooks or project archives.&lt;/p>
+&lt;p>This changes the role of the experimental laboratory. It is no longer only a place where computational hypotheses are validated. It becomes an active &lt;strong>data-generation engine&lt;/strong> that continuously improves the models guiding the project.&lt;/p>
+&lt;hr>
+&lt;h2 id="can-a-model-learn-medicinal-chemistry-intuition">Can a model learn medicinal chemistry intuition?&lt;/h2>
+&lt;p>A recurring problem in generative chemistry is that a molecule can satisfy formal property constraints while still looking unconvincing to an experienced medicinal chemist.&lt;/p>
+&lt;p>The objection may involve an unstable functional group, excessive synthetic complexity, an undesirable chemotype, suspicious three-dimensional geometry, a likely reactive metabolite, or a structural pattern associated with previous project failures.&lt;/p>
+&lt;p>Not all of this knowledge can be represented by a fixed molecular-weight cutoff or a single structural alert.&lt;/p>
+&lt;p>A preference-learning tool presented as &lt;strong>MolSkill&lt;/strong> attempted to capture part of this tacit expertise by learning from human rankings of molecular designs.&lt;/p>
+&lt;p>The aim is not to replace the medicinal chemist. It is to make expert preference available earlier and more consistently during molecular generation.&lt;/p>
+&lt;p>This is promising, but it raises an important question:&lt;/p>
+&lt;p>&lt;strong>Whose intuition is the model learning?&lt;/strong>&lt;/p>
+&lt;p>Medicinal chemistry preferences can contain valuable accumulated knowledge. They can also contain historical bias, organizational habits, or unnecessary aversion to unfamiliar chemistry.&lt;/p>
+&lt;p>Preference models therefore need the same scrutiny as property models. Their value depends on the diversity and consistency of the judgments used for training.&lt;/p>
+&lt;hr>
+&lt;h2 id="predicting-clearance-and-admitting-uncertainty">Predicting clearance and admitting uncertainty&lt;/h2>
+&lt;p>Metabolic stability remains one of the properties that can undermine an otherwise attractive lead series.&lt;/p>
+&lt;p>A multispecies modeling study discussed at the meeting used a multitask graph neural network to predict in vitro intrinsic clearance, written as CL&lt;sub>int&lt;/sub>, across six species simultaneously.&lt;/p>
+&lt;p>Multitask learning can be useful here because related assays and species contain shared information. The model can learn common structure–metabolism relationships while retaining species-specific outputs.&lt;/p>
+&lt;p>But the most valuable aspect of the work was not the graph architecture. It was the explicit treatment of uncertainty.&lt;/p>
+&lt;p>A clearance prediction without an estimate of confidence can encourage false precision. An uncertainty-aware model can distinguish between a prediction supported by related training compounds, a prediction based on sparse chemical precedent, and a molecule sufficiently unfamiliar that new experimental data are needed.&lt;/p>
+&lt;p>This distinction is crucial in prospective design.&lt;/p>
+&lt;p>The model does not need to be certain about every molecule. It needs to help the project recognize when it is uncertain.&lt;/p>
+&lt;hr>
+&lt;h2 id="structural-bioinformatics-is-moving-beyond-obvious-pockets">Structural bioinformatics is moving beyond obvious pockets&lt;/h2>
+&lt;p>Another strong theme came from the Cournia group, whose work focused on binding sites that conventional docking workflows may overlook.&lt;/p>
+&lt;p>Traditional structure-based design often begins with a well-defined pocket visible in an experimental structure. Many biologically important targets do not provide such a convenient starting point.&lt;/p>
+&lt;p>Potential intervention sites may be transient, allosteric, conformationally dependent, partially exposed to a membrane, or formed only in a specific protein state.&lt;/p>
+&lt;p>Two approaches, &lt;strong>DREAMM&lt;/strong> and &lt;strong>AlloPockets&lt;/strong>, illustrated how structural bioinformatics is expanding toward these more difficult environments.&lt;/p>
+&lt;h3 id="dreamm-targeting-proteinmembrane-interfaces">DREAMM: targeting protein–membrane interfaces&lt;/h3>
+&lt;p>Peripheral membrane proteins often depend on transient contact with a lipid bilayer. The protein–membrane interface can therefore contribute directly to localization, conformation, and function.&lt;/p>
+&lt;p>Yet these interfaces are difficult to study from a single soluble protein structure.&lt;/p>
+&lt;p>DREAMM (&lt;strong>Drugging pRotein mEmbrAne Machine learning Method&lt;/strong>) uses an ensemble machine-learning model to predict membrane-penetrating residues. It then searches protein conformational ensembles for nearby pockets that could potentially support small-molecule binding.&lt;/p>
+&lt;p>The resulting workflow can be summarized as:&lt;/p>
+&lt;p>&lt;strong>Protein structure → membrane-interface prediction → conformational ensemble → interfacial pocket detection → structure-based design&lt;/strong>&lt;/p>
+&lt;p>The important conceptual shift is that the membrane is no longer treated merely as part of the simulation environment. It becomes part of the binding-site definition.&lt;/p>
+&lt;p>DREAMM does not prove that a predicted pocket will bind a useful ligand. It prioritizes experimentally and computationally testable hypotheses in a region that standard pocket-detection workflows might ignore.&lt;/p>
+&lt;h3 id="allopockets-identifying-candidate-allosteric-sites">AlloPockets: identifying candidate allosteric sites&lt;/h3>
+&lt;p>Allosteric modulation offers the possibility of controlling a protein through a site distinct from its primary orthosteric pocket.&lt;/p>
+&lt;p>Such sites can provide new routes to selectivity or allow modulation of targets whose functional sites are difficult to inhibit directly.&lt;/p>
+&lt;p>Finding them is challenging because allosteric behavior is not determined by geometry alone. A useful prediction may require information about pocket shape, physicochemical properties, solvent exposure, sequence conservation, protein flexibility, mechanical coupling, and the relationship between the pocket and functional motions.&lt;/p>
+&lt;p>The AlloPockets approach presented at the meeting combined structural pocket descriptors, sequence information, elastic-network-derived dynamics, and protein language model embeddings.&lt;/p>
+&lt;p>The EFMC-ISMC presentation reported a curated dataset containing more than 3,000 allosteric protein structures and encouraging classification performance for selected model configurations.&lt;/p>
+&lt;p>Because the software and benchmarks were still evolving in 2026, these values are best interpreted as conference-reported model results rather than a final universal estimate of performance.&lt;/p>
+&lt;p>The larger lesson is more durable:&lt;/p>
+&lt;p>&lt;strong>A pocket is not allosteric simply because it exists away from the active site.&lt;/strong>&lt;/p>
+&lt;p>The important question is whether perturbing that pocket can influence function through the protein’s energetic and dynamical network.&lt;/p>
+&lt;hr>
+&lt;h2 id="potency-is-only-the-beginning">Potency is only the beginning&lt;/h2>
+&lt;p>Some of the most instructive project disclosures concerned molecules that looked highly attractive until a later liability changed the development decision.&lt;/p>
+&lt;p>These examples were useful reminders that medicinal chemistry is not an optimization contest for the lowest IC&lt;sub>50&lt;/sub>.&lt;/p>
+&lt;p>A successful drug candidate must operate as a complete system.&lt;/p>
+&lt;h3 id="a-usp1-inhibitor-and-the-cyp3a4-problem">A USP1 inhibitor and the CYP3A4 problem&lt;/h3>
+&lt;p>A presentation from Eikon Therapeutics described optimization of a USP1 inhibitor series.&lt;/p>
+&lt;p>The initial purine hit had challenging physicochemical properties, including a cLogD of 5.4 and ligand-efficiency metrics that left considerable room for improvement.&lt;/p>
+&lt;p>A scaffold-hopping campaign produced the imidazotriazine compound &lt;strong>USP1i-11&lt;/strong>, with reported nanomolar activity:&lt;/p>
+&lt;ul>
+&lt;li>USP1 IC&lt;sub>50&lt;/sub>: 58 nM&lt;/li>
+&lt;li>Ub-PCNA IC&lt;sub>50&lt;/sub>: 10 nM&lt;/li>
+&lt;li>reported oral bioavailability: approximately 70–141% across the studied conditions&lt;/li>
+&lt;li>tumor regression in an MDA-MB-436 xenograft model&lt;/li>
+&lt;/ul>
+&lt;p>On potency, exposure, and efficacy, the compound appeared highly promising.&lt;/p>
+&lt;p>The difficulty emerged in human-donor hepatocytes, where the compound induced expression of CYP2B6 and &lt;strong>CYP3A4&lt;/strong>.&lt;/p>
+&lt;p>This mattered because USP1 inhibitors were intended for combination with PARP inhibitors, several of which depend strongly on CYP3A4 for their disposition.&lt;/p>
+&lt;p>Inducing CYP3A4 could reduce exposure to the combination partner and create a clinically important drug–drug interaction risk.&lt;/p>
+&lt;p>The project therefore illustrated a central principle of medicinal chemistry:&lt;/p>
+&lt;blockquote>
+&lt;p>A molecule can succeed against its target and still fail as a medicine.&lt;/p>&lt;/blockquote>
+&lt;p>The CYP result was not a peripheral assay detail. It altered the therapeutic strategy.&lt;/p>
+&lt;hr>
+&lt;h2 id="new-modalities-still-obey-old-constraints">New modalities still obey old constraints&lt;/h2>
+&lt;p>The meeting also highlighted continued expansion beyond conventional occupancy-driven inhibitors.&lt;/p>
+&lt;h3 id="selective-molecular-glues">Selective molecular glues&lt;/h3>
+&lt;p>A compound presented as &lt;strong>KFA118&lt;/strong> was described as a selective molecular glue degrader targeting IKZF3 and IKZF4.&lt;/p>
+&lt;p>The relevant protein names are:&lt;/p>
+&lt;ul>
+&lt;li>IKZF3: &lt;strong>Aiolos&lt;/strong>&lt;/li>
+&lt;li>IKZF4: &lt;strong>Eos&lt;/strong>&lt;/li>
+&lt;/ul>
+&lt;p>Helios is IKZF2, not IKZF3.&lt;/p>
+&lt;p>Molecular glues are appealing because relatively small molecules can create or stabilize interactions between a target protein and an E3 ubiquitin ligase, leading to target degradation.&lt;/p>
+&lt;p>But selectivity remains critical. Degrading several closely related transcription factors may produce a different biological and safety profile from selectively degrading one family member.&lt;/p>
+&lt;p>The modality changes the pharmacology. It does not remove the need for careful structure–activity relationships, exposure control, and translational biology.&lt;/p>
+&lt;h3 id="one-stereocenter-can-change-the-project">One stereocenter can change the project&lt;/h3>
+&lt;p>Another optimization campaign demonstrated the importance of stereochemistry when a single chiral methyl group separated desired antiviral activity from an unwanted mGlu2 negative-allosteric-modulator liability.&lt;/p>
+&lt;p>The optimized stereochemical configuration reportedly achieved:&lt;/p>
+&lt;ul>
+&lt;li>antiviral EC&lt;sub>50&lt;/sub>: approximately 20 nM&lt;/li>
+&lt;li>mGlu2 NAM IC&lt;sub>50&lt;/sub>: greater than 50 μM&lt;/li>
+&lt;/ul>
+&lt;p>This is medicinal chemistry at its most precise.&lt;/p>
+&lt;p>A small three-dimensional change can reorganize binding interactions sufficiently to preserve one activity while eliminating another.&lt;/p>
+&lt;p>Machine learning can help prioritize such changes. Only synthesis and experiment can establish what each stereoisomer actually does.&lt;/p>
+&lt;hr>
+&lt;h2 id="what-i-took-away-from-the-meeting">What I took away from the meeting&lt;/h2>
+&lt;p>After five days of presentations, several broader conclusions stayed with me.&lt;/p>
+&lt;h3 id="1-ai-is-becoming-infrastructure">1. AI is becoming infrastructure&lt;/h3>
+&lt;p>Machine learning is moving from occasional project support into the operational core of design, compound prioritization, property prediction, and experimental planning.&lt;/p>
+&lt;p>The most successful examples were not standalone models. They were models connected to chemistry, assays, automation, and project decisions.&lt;/p>
+&lt;h3 id="2-multi-parameter-optimization-is-the-real-problem">2. Multi-parameter optimization is the real problem&lt;/h3>
+&lt;p>Generating potent molecules is rarely enough.&lt;/p>
+&lt;p>Drug discovery requires simultaneous movement through a landscape containing potency, selectivity, exposure, metabolism, safety, formulation, and synthesis constraints.&lt;/p>
+&lt;p>The goal is not the molecule with the best individual score. It is the molecule with the most credible overall path to a medicine.&lt;/p>
+&lt;h3 id="3-uncertainty-must-become-a-first-class-output">3. Uncertainty must become a first-class output&lt;/h3>
+&lt;p>A prediction without uncertainty encourages teams to confuse numerical precision with scientific confidence.&lt;/p>
+&lt;p>Models should help identify when a prediction is reliable, when it is extrapolative, and when an experiment is needed.&lt;/p>
+&lt;h3 id="4-structural-biology-is-becoming-more-dynamic">4. Structural biology is becoming more dynamic&lt;/h3>
+&lt;p>Static structures remain enormously valuable, but the field is increasingly interested in transient pockets, conformational ensembles, membrane-associated states, and allosteric networks.&lt;/p>
+&lt;p>The target is no longer represented adequately by one structure. It is represented by an ensemble of states with different populations, functions, and druggabilities.&lt;/p>
+&lt;h3 id="5-dmpk-can-overturn-an-otherwise-successful-design">5. DMPK can overturn an otherwise successful design&lt;/h3>
+&lt;p>The USP1 example showed how potency and in vivo efficacy can be insufficient when a compound creates a serious combination-therapy liability.&lt;/p>
+&lt;p>DMPK and safety are not final filters applied after molecular design. They are part of molecular design.&lt;/p>
+&lt;h3 id="6-human-judgment-remains-accountable">6. Human judgment remains accountable&lt;/h3>
+&lt;p>Algorithms can enumerate more molecules than a chemist could draw. They can predict dozens of properties and rank enormous virtual libraries.&lt;/p>
+&lt;p>But models do not carry responsibility for the decision to synthesize a compound, expose an animal, advance a candidate, or begin a clinical trial.&lt;/p>
+&lt;p>Scientists do.&lt;/p>
+&lt;hr>
+&lt;h2 id="a-changing-european-scientific-landscape">A changing European scientific landscape&lt;/h2>
+&lt;p>The meeting also closed with announcements about the future of European medicinal chemistry and chemical biology conferences.&lt;/p>
+&lt;p>The inaugural &lt;strong>EuroChemBio&lt;/strong> meeting will take place at Palazzo Lombardia in Milan from &lt;strong>5–8 October 2027&lt;/strong>.&lt;/p>
+&lt;p>EuroChemBio brings together two chemical-biology meeting series:&lt;/p>
+&lt;ul>
+&lt;li>the European Chemical Biology Symposium, or ECBS;&lt;/li>
+&lt;li>and the EFMC International Symposium on Chemical Biology, or EFMC-ISCB.&lt;/li>
+&lt;/ul>
+&lt;p>This should not be confused with EFMC-ISMC, the medicinal chemistry symposium discussed in this article.&lt;/p>
+&lt;p>The EFMC medicinal chemistry meeting series will continue separately, with its next edition planned for Madrid in summer 2028.&lt;/p>
+&lt;hr>
+&lt;h2 id="final-perspective">Final perspective&lt;/h2>
+&lt;p>EFMC-ISMC 2026 did not present one technology that will transform drug discovery by itself.&lt;/p>
+&lt;p>Instead, it showed several technologies beginning to converge:&lt;/p>
+&lt;ul>
+&lt;li>generative chemistry proposes molecular ideas;&lt;/li>
+&lt;li>physics-based modeling evaluates molecular interactions;&lt;/li>
+&lt;li>machine learning predicts complex properties;&lt;/li>
+&lt;li>structural bioinformatics reveals unconventional pockets;&lt;/li>
+&lt;li>automation accelerates synthesis and testing;&lt;/li>
+&lt;li>DMPK identifies liabilities that potency alone cannot reveal;&lt;/li>
+&lt;li>and medicinal chemists integrate the evidence into decisions.&lt;/li>
+&lt;/ul>
+&lt;p>That final step remains the most difficult.&lt;/p>
+&lt;p>The future of drug discovery is unlikely to belong to AI alone, computational chemistry alone, or automation alone.&lt;/p>
+&lt;p>It will belong to teams that can connect these tools, understand their uncertainty, and make better decisions with the evidence they generate.&lt;/p>
+&lt;p>The frontier is not simply the ability to design more molecules.&lt;/p>
+&lt;p>It is the ability to learn more from every molecule we decide to make.&lt;/p>
+&lt;hr>
+&lt;h2 id="notes-on-the-conference-disclosures">Notes on the conference disclosures&lt;/h2>
+&lt;p>Compound-level results and numerical project details in this article reflect presentations and notes from EFMC-ISMC 2026. Some were described as first-time disclosures and may not yet have corresponding peer-reviewed publications.&lt;/p>
+&lt;p>Published references and public resources are provided below where available.&lt;/p>
+&lt;hr>
+&lt;h2 id="references-and-further-reading">References and further reading&lt;/h2>
+&lt;ol>
+&lt;li>
+&lt;p>European Federation for Medicinal Chemistry and Chemical Biology. “EFMC International Symposium on Medicinal Chemistry 2026.” Basel, Switzerland, 6–10 September 2026.&lt;br>
+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Brocklehurst, C. E.; et al. “MicroCycle: An Integrated and Automated Platform to Accelerate Drug Discovery.” &lt;em>Journal of Medicinal Chemistry&lt;/em> &lt;strong>2024&lt;/strong>, 67, 2118–2128.&lt;br>
+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Rodríguez-Pérez, R.; Trunzer, M.; Schneider, N.; Faller, B.; Gerebtzoff, G. “Multispecies Machine Learning Predictions of In Vitro Intrinsic Clearance with Uncertainty Quantification Analyses.” &lt;em>Molecular Pharmaceutics&lt;/em> &lt;strong>2023&lt;/strong>, 20, 383–394.&lt;br>
+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Chatzigoulas, A.; Cournia, Z. “Predicting Protein–Membrane Interfaces of Peripheral Membrane Proteins Using Ensemble Machine Learning.” &lt;em>Briefings in Bioinformatics&lt;/em> &lt;strong>2022&lt;/strong>, 23, bbab518.&lt;br>
+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Chatzigoulas, A.; Cournia, Z. “DREAMM: A Web-Based Server for Drugging Protein–Membrane Interfaces as a Novel Workflow for Targeted Drug Design.” &lt;em>Bioinformatics&lt;/em> &lt;strong>2022&lt;/strong>, 38, 5449–5451.&lt;br>
+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>AlloPockets software repository.&lt;br>
+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>EuroChemBio 2027. Milan, Italy, 5–8 October 2027.&lt;br>
+&lt;/p>
+&lt;/li>
+&lt;/ol></description></item><item><title>Understanding Molecular Dynamics Simulations</title><link>https://yboulaamane.github.io/blog/understanding-molecular-dynamics-simulations/</link><pubDate>Sun, 12 Mar 2023 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/understanding-molecular-dynamics-simulations/</guid><description>&lt;p>Molecular dynamics does not search for a single best structure. It takes the structure you give it and asks what that structure does next.&lt;/p>
+&lt;p>You start with positions, velocities, and masses. A force field turns the current arrangement of atoms into forces. A short step, a few femtoseconds, uses those forces to update the positions and velocities. Then you do it again. The record of those updates is the trajectory.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 520" role="img" aria-labelledby="md-step-title md-step-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="md-step-title">One molecular dynamics step&lt;/title>
+&lt;desc id="md-step-desc">Positions and velocities go in. The force field computes forces from neighboring atoms. A femtosecond update writes new positions and velocities. Repeating that update builds the trajectory.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-md-step" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;rect x="70" y="24" width="500" height="84" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="70" y="148" width="500" height="84" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="70" y="272" width="500" height="84" rx="16" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="70" y="396" width="500" height="84" rx="16" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M320 108 L320 140" marker-end="url(#arrow-md-step)"/>
+&lt;path d="M320 232 L320 264" marker-end="url(#arrow-md-step)"/>
+&lt;path d="M320 356 L320 388" marker-end="url(#arrow-md-step)"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="56" font-size="20" font-weight="700">Configuration&lt;/text>
+&lt;text x="320" y="84" font-size="16">Positions, velocities, masses&lt;/text>
+&lt;text x="320" y="180" font-size="20" font-weight="700">Forces&lt;/text>
+&lt;text x="320" y="208" font-size="16">From neighbors, through the force field&lt;/text>
+&lt;text x="320" y="304" font-size="20" font-weight="700">Update&lt;/text>
+&lt;text x="320" y="332" font-size="16">Move a few femtoseconds, then repeat&lt;/text>
+&lt;text x="320" y="428" font-size="20" font-weight="700">Trajectory&lt;/text>
+&lt;text x="320" y="456" font-size="16">The history of those configurations&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> A trajectory is not a separate analysis. It is the stack of configurations produced by repeating the force evaluation and the short update. The force field decides which interactions exist. The time step decides how finely that motion is chopped up.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="what-the-step-is-doing">What the step is doing&lt;/h2>
+&lt;p>The force on an atom depends on the other atoms within range of the model: bonded terms for the bonds, angles, and dihedrals it belongs to, and nonbonded terms for electrostatics and van der Waals contacts. The force field is that model. It is an approximation with parameters, not a direct evaluation of the electronic Schrödinger equation.&lt;/p>
+&lt;p>The step has to be short because the forces are recomputed from the new geometry. A few femtoseconds is the usual scale, so that the fastest vibrations are not skipped. A nanosecond of simulation is therefore on the order of a million such updates. Nothing in the method jumps the system to a preferred pose. If a ligand moves, it moves because the accumulated steps carried it there.&lt;/p>
+&lt;h2 id="what-people-use-it-for">What people use it for&lt;/h2>
+&lt;p>In structural biology the interesting objects are already moving: side chains, loops, domains, and ligands. A crystal or cryo-EM structure is one configuration. The trajectory is a sample of configurations around and away from that start. Binding, conformational change, and contacts between molecules are read from that sample, which is why a single pretty frame from the run is a weak result.&lt;/p>
+&lt;p>The same loop is used in materials work. Polymers, ceramics, and metals are sets of particles with a force field appropriate to that material. Mechanical response, stability, and the effect of changing the conditions are again questions about the trajectory.&lt;/p>
+&lt;p>Two practical strengths follow from the setup. The system can contain many particles, so a protein of thousands of atoms is a normal target rather than a special case. The conditions are inputs. Temperature, pressure, and composition can be changed, and the comparison between two trajectories is often the actual experiment.&lt;/p>
+&lt;h2 id="what-comes-out">What comes out&lt;/h2>
+&lt;p>The raw output is the trajectory: positions, and usually velocities and energies, along the time axis. Almost every figure in a paper is a reduction of that record.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 300" role="img" aria-labelledby="md-out-title md-out-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="md-out-title">Common reductions of a trajectory&lt;/title>
+&lt;desc id="md-out-desc">From the trajectory, typical plots report energy, a radial distribution function, and a density profile. Each one discards most of the atomic detail in exchange for one question.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="70" width="286" height="90" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="326" y="70" width="286" height="90" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="28" y="176" width="286" height="90" rx="16" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="326" y="176" width="286" height="90" rx="16" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="40" font-size="22" font-weight="700" text-anchor="middle">The trajectory is the result. Plots are views of it.&lt;/text>
+&lt;text x="48" y="108" font-size="18" font-weight="700">Trajectory&lt;/text>
+&lt;text x="48" y="136" font-size="15">Where each atom went&lt;/text>
+&lt;text x="346" y="108" font-size="18" font-weight="700">Energy&lt;/text>
+&lt;text x="346" y="136" font-size="15">Did the run stay well behaved?&lt;/text>
+&lt;text x="48" y="214" font-size="18" font-weight="700">Radial distribution&lt;/text>
+&lt;text x="48" y="242" font-size="15">What sits at this distance?&lt;/text>
+&lt;text x="346" y="214" font-size="18" font-weight="700">Density profile&lt;/text>
+&lt;text x="346" y="242" font-size="15">Where does the material pack?&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> Energy traces are a sanity check on the integration. Radial distribution functions and density profiles collapse the coordinates into a distance or a position, which is what you want for solvation and for layered materials. They do not, by themselves, show a binding pose.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="where-the-method-stops">Where the method stops&lt;/h2>
+&lt;p>Two limits dominate.&lt;/p>
+&lt;p>The forces are only as faithful as the force field. A missing interaction, or a bad parameter, is integrated with the same confidence as a good one. The trajectory will not announce that the potential was wrong.&lt;/p>
+&lt;p>The other limit is cost. Each step looks at a large number of pairs, and interesting motions can require an enormous number of steps. Hardware and better algorithms have made routine protein–ligand runs accessible. They have not removed the gap between a femtosecond step and a slow biological event. How long a given question actually needs is a separate decision. The
+are the companion to this note.&lt;/p>
+&lt;h2 id="bottom-line">Bottom line&lt;/h2>
+&lt;p>An MD simulation is a loop. Configuration, forces, a femtosecond update, and a growing trajectory. Structural biology and materials work use that loop because the experiment they want is about motion under stated conditions. The interpretation lives in the reductions of the trajectory, and it inherits both the force field and the length of the run.&lt;/p></description></item></channel></rss>

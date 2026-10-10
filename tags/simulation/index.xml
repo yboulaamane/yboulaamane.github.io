@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Simulation | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/simulation/</link><atom:link href="https://yboulaamane.github.io/tags/simulation/index.xml" rel="self" type="application/rss+xml"/><description>Simulation</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 09 Jan 2023 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Simulation</title><link>https://yboulaamane.github.io/tags/simulation/</link></image><item><title>How Long Should Molecular Dynamics Simulations Run? A Practical Guide</title><link>https://yboulaamane.github.io/blog/determining-the-appropriate-length-for-protein-ligand-md-simulations/</link><pubDate>Mon, 09 Jan 2023 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/determining-the-appropriate-length-for-protein-ligand-md-simulations/</guid><description>&lt;p>A protein–ligand simulation is long enough when the motion you care about has had time to happen, and the traces you are willing to trust have stopped drifting.&lt;/p>
+&lt;p>There is no single correct length. The ranges below are the ones that have proved useful for common questions. They are starting points. The trajectory, not the number you typed into the input file, tells you whether to stop.&lt;/p>
+&lt;h2 id="match-the-length-to-the-event">Match the length to the event&lt;/h2>
+&lt;p>Several windows have become usual for protein–ligand work, from published practice and from running these systems:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>50–100 nanoseconds.&lt;/strong> Often enough to judge initial binding stability, particularly with a small, rigid ligand and a relatively stable protein.&lt;/li>
+&lt;li>&lt;strong>100–200 nanoseconds.&lt;/strong> Room for ligand flexibility, side-chain reorganization, or early conformational change inside the pocket.&lt;/li>
+&lt;li>&lt;strong>200–500 nanoseconds.&lt;/strong> Slower events: partial unbinding, induced fit, or a shift at the domain level.&lt;/li>
+&lt;li>&lt;strong>500 nanoseconds to 1 microsecond, or longer.&lt;/strong> Long-timescale processes: allosteric communication, full ligand unbinding, or a global rearrangement of the protein.&lt;/li>
+&lt;/ul>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 460" role="img" aria-labelledby="md-time-title md-time-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="md-time-title">Simulation length matched to the event&lt;/title>
+&lt;desc id="md-time-desc">Four practical windows: 50 to 100 nanoseconds for pose stability, 100 to 200 for flexibility in the pocket, 200 to 500 for induced fit and partial unbinding, and 500 nanoseconds to 1 microsecond for allostery, full unbinding, and global rearrangement.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="70" width="286" height="160" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="326" y="70" width="286" height="160" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="28" y="250" width="286" height="160" rx="16" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="326" y="250" width="286" height="160" rx="16" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="40" font-size="22" font-weight="700" text-anchor="middle">Pick the window for the motion, not for the habit&lt;/text>
+&lt;text x="48" y="108" font-size="20" font-weight="700">50–100 ns&lt;/text>
+&lt;text x="48" y="142" font-size="16">Is the pose still there?&lt;/text>
+&lt;text x="48" y="170" font-size="15" opacity="0.75">Rigid ligand, stable pocket&lt;/text>
+&lt;text x="346" y="108" font-size="20" font-weight="700">100–200 ns&lt;/text>
+&lt;text x="346" y="142" font-size="16">Ligand flex, side chains&lt;/text>
+&lt;text x="346" y="170" font-size="15" opacity="0.75">Early change inside the pocket&lt;/text>
+&lt;text x="48" y="288" font-size="20" font-weight="700">200–500 ns&lt;/text>
+&lt;text x="48" y="322" font-size="16">Induced fit, domain shift&lt;/text>
+&lt;text x="48" y="350" font-size="15" opacity="0.75">Partial unbinding&lt;/text>
+&lt;text x="346" y="288" font-size="20" font-weight="700">500 ns–1 µs&lt;/text>
+&lt;text x="346" y="322" font-size="16">Allostery, full unbinding&lt;/text>
+&lt;text x="346" y="350" font-size="15" opacity="0.75">Global rearrangement. Or longer.&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The four windows used in this note. A rigid ligand in a quiet pocket can be readable in the first. Unbinding and allostery sit in the last, and sometimes beyond it. The cards are the same size so they can be compared. The times are not.&lt;/figcaption>
+&lt;/figure>
+&lt;p>These are guidelines. The required time moves with the system and with the question. A short run can be the right experiment when the question is whether a docked pose survives relaxation. It is the wrong experiment when the question is how the ligand leaves.&lt;/p>
+&lt;h2 id="convergence-is-the-stopping-rule">Convergence is the stopping rule&lt;/h2>
+&lt;p>Convergence here means that the structural and energetic quantities you intend to interpret have settled. A long simulation that is still drifting does not become trustworthy because it is long. A short one that has plateaued on the observables you care about can be enough for that question.&lt;/p>
+&lt;p>Five checks cover the usual protein–ligand case.&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Root-mean-square deviation (RMSD).&lt;/strong> Deviation of the chosen atoms, often the protein backbone, from a reference over time. A plateau suggests that this part of the structure has stopped walking away from the reference. An RMSD that is still climbing means the rearrangement is not finished.&lt;/li>
+&lt;li>&lt;strong>Root-mean-square fluctuation (RMSF).&lt;/strong> Flexibility per residue across the run. Once the trajectory is stable, RMSF profiles from successive windows look alike. A window that redraws the profile is a sign you have not settled.&lt;/li>
+&lt;li>&lt;strong>Energy.&lt;/strong> Total, potential, and kinetic energy. A system at equilibrium should not show a long drift. Sharp, persistent swings are a sign the equilibration was not long enough, or that something in the setup is wrong.&lt;/li>
+&lt;li>&lt;strong>Secondary structure.&lt;/strong> For a folded protein, helices and sheets that keep their assignment are a useful stability check. Assignments that keep flipping after the start of the production run are a reason to extend it.&lt;/li>
+&lt;li>&lt;strong>Interaction fingerprints.&lt;/strong> Hydrogen bonds, salt bridges, stacking, and the other contacts you claim as the binding pose. A pose is hard to defend when those contacts appear and vanish from one slice of the trajectory to the next.&lt;/li>
+&lt;/ol>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 250" role="img" aria-labelledby="md-check-title md-check-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="md-check-title">Five convergence checks&lt;/title>
+&lt;desc id="md-check-desc">Before stopping a protein-ligand simulation, look at RMSD, RMSF, energy, secondary structure, and the persistence of protein-ligand contacts.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="24" y="78" width="112" height="120" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="148" y="78" width="112" height="120" rx="14" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="272" y="78" width="112" height="120" rx="14" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="396" y="78" width="112" height="120" rx="14" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="520" y="78" width="100" height="120" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="40" font-size="22" font-weight="700">Stop when these settle, not when the clock does&lt;/text>
+&lt;text x="320" y="66" font-size="14" opacity="0.75">A climbing trace is a reason to continue&lt;/text>
+&lt;text x="80" y="132" font-size="16" font-weight="700">RMSD&lt;/text>
+&lt;text x="80" y="162" font-size="13">plateau&lt;/text>
+&lt;text x="204" y="132" font-size="16" font-weight="700">RMSF&lt;/text>
+&lt;text x="204" y="162" font-size="13">stable&lt;/text>
+&lt;text x="204" y="180" font-size="13">windows&lt;/text>
+&lt;text x="328" y="132" font-size="16" font-weight="700">Energy&lt;/text>
+&lt;text x="328" y="162" font-size="13">no long&lt;/text>
+&lt;text x="328" y="180" font-size="13">drift&lt;/text>
+&lt;text x="452" y="126" font-size="15" font-weight="700">Secondary&lt;/text>
+&lt;text x="452" y="148" font-size="15" font-weight="700">structure&lt;/text>
+&lt;text x="452" y="178" font-size="13">holds&lt;/text>
+&lt;text x="570" y="126" font-size="15" font-weight="700">Contacts&lt;/text>
+&lt;text x="570" y="162" font-size="13">persist&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> Five traces that have to be read together. A flat RMSD with contacts that keep rearranging is not a stable pose. A quiet energy with a protein that is still unfolding its secondary structure is not a finished run.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="an-illustrative-scenario">An illustrative scenario&lt;/h2>
+&lt;p>Imagine a complex whose RMSD rises over the first 50 nanoseconds while the pose settles, then levels off near 100 nanoseconds. Over that same later window the interaction fingerprint stops changing and the total energy no longer drifts. For a question about pose stability, extending the run may add little.&lt;/p>
+&lt;p>The opposite pattern is also common. The ligand keeps sliding in the pocket, or a domain keeps moving in one direction. That trajectory is asking for more time, or for an enhanced-sampling method aimed at the slow coordinate. Adding nanoseconds at random is a weaker response than naming the motion that has not converged.&lt;/p>
+&lt;h2 id="what-pushes-the-length-up-or-down">What pushes the length up or down&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Size and flexibility.&lt;/strong> A larger or more flexible protein has more conformational space to cross.&lt;/li>
+&lt;li>&lt;strong>The ligand.&lt;/strong> Many rotatable bonds mean many poses. The dominant one may not be the pose you started from, and it may take longer to identify.&lt;/li>
+&lt;li>&lt;strong>The question.&lt;/strong> Pose checking and a mechanism of unbinding are different experiments.&lt;/li>
+&lt;li>&lt;strong>Replicates.&lt;/strong> Several independent runs often say more than one very long trajectory. A single run can look converged and still be stuck in the basin where it started.&lt;/li>
+&lt;li>&lt;strong>The checks above.&lt;/strong> Decide in advance which observables would make you stop, and compute them before you interpret the pose.&lt;/li>
+&lt;/ul>
+&lt;h2 id="bottom-line">Bottom line&lt;/h2>
+&lt;p>For many protein–ligand questions about pose stability and interaction patterns, 50 to 200 nanoseconds is the window where those traces become readable. Unbinding, allosteric modulation, and large conformational change often need longer, sometimes past a microsecond.&lt;/p>
+&lt;p>Length is not a badge. A conclusion about a binding mode needs the traces that support it to have settled. If they have not, the honest result is that the simulation has not answered the question yet.&lt;/p></description></item></channel></rss>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Generative Ai | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/generative-ai/</link><atom:link href="https://yboulaamane.github.io/tags/generative-ai/index.xml" rel="self" type="application/rss+xml"/><description>Generative Ai</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Thu, 30 Jul 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Generative Ai</title><link>https://yboulaamane.github.io/tags/generative-ai/</link></image><item><title>Making AI Work in Discovery Chemistry: Precision, Trust, and Practical Value</title><link>https://yboulaamane.github.io/blog/making-ai-work-in-discovery-chemistry-optibrium-webinar/</link><pubDate>Thu, 30 Jul 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/making-ai-work-in-discovery-chemistry-optibrium-webinar/</guid><description>&lt;p>Artificial intelligence has transitioned from an emerging computational experiment to a central topic in pharmaceutical research and development. However, deploying machine learning models effectively requires moving beyond statistical performance benchmarks and addressing practical integration challenges.&lt;/p>
+&lt;p>This article summarizes key insights from the Optibrium panel webinar, &lt;strong>&amp;ldquo;Making AI Work in Discovery Chemistry: Precision, Trust, and the Cost of Getting It Wrong.&amp;rdquo;&lt;/strong> Hosted by &lt;strong>Nathan Brown&lt;/strong> (Director of Science, Optibrium), the panel brought together leading experts across academia, biotechnology, and consultancy:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Charlotte Deane&lt;/strong> (Oxford University / Executive Chair, EPSRC / OpenBind)&lt;/li>
+&lt;li>&lt;strong>Pat Walters&lt;/strong> (Chief Data Officer, Open AdMet)&lt;/li>
+&lt;li>&lt;strong>Chris Swain&lt;/strong> (Cambridge MedChem Consulting)&lt;/li>
+&lt;li>&lt;strong>Paul Czodrowski&lt;/strong> (Professor of Physical Chemistry, TU Dortmund)&lt;/li>
+&lt;/ul>
+&lt;p>The full webinar recording is available on YouTube:&lt;/p>
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/VbijXde4RDY?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
+&lt;/div>
+&lt;hr>
+&lt;h2 id="strategic-framework-for-ai-in-chemistry">Strategic Framework for AI in Chemistry&lt;/h2>
+&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 260" width="100%" height="100%">
+&lt;defs>
+&lt;linearGradient id="p1Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#0284C7" />
+&lt;stop offset="100%" stop-color="#0369A1" />
+&lt;/linearGradient>
+&lt;linearGradient id="p2Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#0D9488" />
+&lt;stop offset="100%" stop-color="#0F766E" />
+&lt;/linearGradient>
+&lt;linearGradient id="p3Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#D97706" />
+&lt;stop offset="100%" stop-color="#B45309" />
+&lt;/linearGradient>
+&lt;linearGradient id="p4Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#6D28D9" />
+&lt;stop offset="100%" stop-color="#5B21B6" />
+&lt;/linearGradient>
+&lt;filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+&lt;feDropShadow dx="1" dy="3" stdDeviation="3" flood-opacity="0.1" />
+&lt;/filter>
+&lt;/defs>
+&lt;style>
+.header-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: 18px; fill: #111827; }
+.card-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 13px; fill: #FFFFFF; }
+.card-desc { font-family: 'Inter', system-ui, sans-serif; font-size: 11px; fill: #F3F4F6; }
+.card-num { font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: 14px; fill: rgba(255, 255, 255, 0.3); }
+&lt;/style>
+&lt;rect width="850" height="260" fill="#F9FAFB" rx="12" />
+&lt;text x="25" y="35" class="header-title">Four Pillars of Practical AI in Discovery Chemistry&lt;/text>
+&lt;!-- Pillar 1 -->
+&lt;g transform="translate(25, 60)" filter="url(#shadow)">
+&lt;rect width="170" height="150" rx="8" fill="url(#p1Grad)" />
+&lt;text x="15" y="25" class="card-num">PILLAR 01&lt;/text>
+&lt;text x="15" y="55" class="card-title">Value Over Accuracy&lt;/text>
+&lt;text x="15" y="80" class="card-desc">Target bottlenecks&lt;/text>
+&lt;text x="15" y="98" class="card-desc">Rapid iterations&lt;/text>
+&lt;text x="15" y="116" class="card-desc">Decision-support role&lt;/text>
+&lt;/g>
+&lt;!-- Pillar 2 -->
+&lt;g transform="translate(230, 60)" filter="url(#shadow)">
+&lt;rect width="170" height="150" rx="8" fill="url(#p2Grad)" />
+&lt;text x="15" y="25" class="card-num">PILLAR 02&lt;/text>
+&lt;text x="15" y="55" class="card-title">Data Integrity&lt;/text>
+&lt;text x="15" y="80" class="card-desc">Prevent data leakage&lt;/text>
+&lt;text x="15" y="98" class="card-desc">Standardized assays&lt;/text>
+&lt;text x="15" y="116" class="card-desc">Blind prospective tests&lt;/text>
+&lt;/g>
+&lt;!-- Pillar 3 -->
+&lt;g transform="translate(435, 60)" filter="url(#shadow)">
+&lt;rect width="170" height="150" rx="8" fill="url(#p3Grad)" />
+&lt;text x="15" y="25" class="card-num">PILLAR 03&lt;/text>
+&lt;text x="15" y="55" class="card-title">Generative Guardrails&lt;/text>
+&lt;text x="15" y="80" class="card-desc">Catch plausible errors&lt;/text>
+&lt;text x="15" y="98" class="card-desc">Expand chemist scope&lt;/text>
+&lt;text x="15" y="116" class="card-desc">Robust MPO scoring&lt;/text>
+&lt;/g>
+&lt;!-- Pillar 4 -->
+&lt;g transform="translate(640, 60)" filter="url(#shadow)">
+&lt;rect width="170" height="150" rx="8" fill="url(#p4Grad)" />
+&lt;text x="15" y="25" class="card-num">PILLAR 04&lt;/text>
+&lt;text x="15" y="55" class="card-title">Workforce Evolution&lt;/text>
+&lt;text x="15" y="80" class="card-desc">Democratized tools&lt;/text>
+&lt;text x="15" y="98" class="card-desc">Bench chemistry intuition&lt;/text>
+&lt;text x="15" y="116" class="card-desc">Elevated CADD roles&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;hr>
+&lt;h2 id="1-defining-ai-strategy-value-over-marginal-accuracy">1. Defining AI Strategy: Value Over Marginal Accuracy&lt;/h2>
+&lt;p>Organizations frequently attempt to deploy machine learning across every stage of the pipeline or chase statistical metrics without evaluating bench utility.&lt;/p>
+&lt;h3 id="rate-determining-steps">Rate-Determining Steps&lt;/h3>
+&lt;p>Successful deployment requires identifying specific workflow bottlenecks where computational models accelerate decisions or eliminate unnecessary wet-lab synthesis cycles.&lt;/p>
+&lt;h3 id="speed-vs-precision">Speed vs. Precision&lt;/h3>
+&lt;p>High cross-validation scores ($R^2$ or AUC) on retrospective datasets do not guarantee real-world value. A lower-complexity model delivering rapid, actionable predictions or failing quickly is often more valuable than a computationally intensive model yielding marginal statistical gains.&lt;/p>
+&lt;h3 id="managing-expectations">Managing Expectations&lt;/h3>
+&lt;p>Internal skepticism often stems from treating models as absolute oracles. When an algorithm fails to predict a complex property, teams may reject the technology entirely. Framing AI as an iterative decision-support system establishes realistic expectations and improves adoption.&lt;/p>
+&lt;hr>
+&lt;h2 id="2-data-integrity-leakage-and-open-benchmarks">2. Data Integrity, Leakage, and Open Benchmarks&lt;/h2>
+&lt;p>Data quality and validation methodology remain primary technical bottlenecks in molecular property prediction and de novo design.&lt;/p>
+&lt;h3 id="data-leakage-and-memorization">Data Leakage and Memorization&lt;/h3>
+&lt;p>Deep learning architectures frequently achieve inflated benchmark scores by memorizing training distributions or exploiting structural scaffold overlaps between training and evaluation splits.&lt;/p>
+&lt;h3 id="public-dataset-limitations">Public Dataset Limitations&lt;/h3>
+&lt;p>Data aggregated from public repositories carries inherent assay noise, variable experimental conditions, and inter-laboratory bias. Training models on uncurated literature data limits downstream generalization.&lt;/p>
+&lt;h3 id="pre-competitive-standardized-data">Pre-Competitive Standardized Data&lt;/h3>
+&lt;p>Industry initiatives are creating prospective, standardized benchmarks to evaluate predictive models:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Open AdMet:&lt;/strong> Generating standardized ADMET data for open modeling challenges.&lt;/li>
+&lt;li>&lt;strong>OpenBind:&lt;/strong> Constructing open, large-scale small molecule to protein interaction databases.&lt;/li>
+&lt;/ul>
+&lt;p>These pre-competitive collaborations provide the foundation needed for rigorous evaluation.&lt;/p>
+&lt;hr>
+&lt;h2 id="3-generative-chemistry-and-human-biases">3. Generative Chemistry and Human Biases&lt;/h2>
+&lt;p>Generative AI and de novo design algorithms offer value in expanding chemical hypothesis generation, but require objective functions and guardrails.&lt;/p>
+&lt;h3 id="distinguishing-error-types">Distinguishing Error Types&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: left">Error Classification&lt;/th>
+&lt;th style="text-align: left">Characteristics&lt;/th>
+&lt;th style="text-align: left">Risk Profile&lt;/th>
+&lt;th style="text-align: left">Mitigation Strategy&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>Silly Errors&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">Chemically unstable, non-synthesizable, or structurally invalid molecules.&lt;/td>
+&lt;td style="text-align: left">Low risk&lt;/td>
+&lt;td style="text-align: left">Filtered out automatically using rule-based chemical filters.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>Plausible Errors&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">Aesthetically pleasing structures that fit binding pockets but contain unmodeled liabilities.&lt;/td>
+&lt;td style="text-align: left">High risk&lt;/td>
+&lt;td style="text-align: left">Requires rigorous multi-parameter evaluation and experimental validation.&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="countering-cognitive-bias">Countering Cognitive Bias&lt;/h3>
+&lt;p>Medicinal chemists naturally favor familiar chemical series, established reactions, and known building blocks. Generative algorithms assist by proposing unexpected starting points that push design teams outside traditional chemical space.&lt;/p>
+&lt;h3 id="multi-parameter-optimization-mpo">Multi-Parameter Optimization (MPO)&lt;/h3>
+&lt;p>Multi-objective optimization remains challenging because algorithms frequently exploit mathematical loopholes in scoring functions rather than identifying true balanced leads. Robust objective functions must penalize extreme parameter trade-offs.&lt;/p>
+&lt;hr>
+&lt;h2 id="4-llms-democratization-and-the-future-workforce">4. LLMs, Democratization, and the Future Workforce&lt;/h2>
+&lt;p>Large Language Models (LLMs) and code-generation tools are altering how medicinal chemists interact with computational tools.&lt;/p>
+&lt;h3 id="democratization-at-the-bench">Democratization at the Bench&lt;/h3>
+&lt;p>Synthetic and medicinal chemists without formal programming backgrounds are utilizing LLMs to write Python scripts, build custom data visualizations, and analyze structure-activity relationships directly.&lt;/p>
+&lt;h3 id="the-necessity-of-domain-expertise">The Necessity of Domain Expertise&lt;/h3>
+&lt;p>Democratization increases rather than decreases the demand for deep domain knowledge. Because language models generate plausible responses regardless of factual accuracy, scientists must apply domain intuition to verify outputs and identify hallucinations.&lt;/p>
+&lt;h3 id="the-evolving-role-of-cadd-specialists">The Evolving Role of CADD Specialists&lt;/h3>
+&lt;p>As routine visualization and basic property calculations become self-serve for bench chemists, Computer-Aided Drug Design (CADD) specialists can shift focus toward complex methodological development, structural modeling, and applicability domain assessment.&lt;/p>
+&lt;hr>
+&lt;h2 id="key-takeaways">Key Takeaways&lt;/h2>
+&lt;ol>
+&lt;li>&lt;strong>Focus on Workflow Bottlenecks:&lt;/strong> Prioritize AI integration where computation directly reduces synthesis cycles rather than optimizing global accuracy metrics.&lt;/li>
+&lt;li>&lt;strong>Standardize Evaluation Data:&lt;/strong> Support open, prospective benchmarks to eliminate data leakage and memorization artifacts.&lt;/li>
+&lt;li>&lt;strong>Guard Against Plausible Errors:&lt;/strong> Implement strict physical and chemical filters to detect generated compounds with subtle liabilities.&lt;/li>
+&lt;li>&lt;strong>Combine LLMs with Chemical Intuition:&lt;/strong> Leverage language models to automate computational tasks while maintaining rigorous manual verification of results.&lt;/li>
+&lt;/ol></description></item></channel></rss>

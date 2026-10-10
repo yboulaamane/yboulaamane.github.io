@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chemistry | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/chemistry/</link><atom:link href="https://yboulaamane.github.io/tags/chemistry/index.xml" rel="self" type="application/rss+xml"/><description>Chemistry</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 08 Nov 2023 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Chemistry</title><link>https://yboulaamane.github.io/tags/chemistry/</link></image><item><title>Data-Driven Chemistry: How Data Science Empowers Drug Discovery</title><link>https://yboulaamane.github.io/blog/data-driven-chemistry-how-data-science-empowers-drug-discovery/</link><pubDate>Wed, 08 Nov 2023 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/data-driven-chemistry-how-data-science-empowers-drug-discovery/</guid><description>&lt;p>A chemical dataset is not yet a decision. It becomes one when each row is a defined experiment and the model is judged on rows it did not fit.&lt;/p>
+&lt;p>Chemistry already writes those rows down. A structure, a set of conditions, and a measurement: a yield, an IC50, a spectrum, a stability. Data science is the set of tools that asks whether the measurement was predictable from the rest of the row, and what experiment is worth running next. The tools are statistics, machine learning, code, and plots. None of them supplies the chemistry.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 560" role="img" aria-labelledby="ddc-loop-title ddc-loop-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="ddc-loop-title">From a chemical question to the next experiment&lt;/title>
+&lt;desc id="ddc-loop-desc">A question defines the table. The table holds structures, conditions, and measurements. A model is scored on held-out rows. The useful output is the next experiment, whose result becomes a new row.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-ddc" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;rect x="70" y="24" width="500" height="88" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="70" y="148" width="500" height="88" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="70" y="272" width="500" height="88" rx="16" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="70" y="396" width="500" height="88" rx="16" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M320 112 L320 140" marker-end="url(#arrow-ddc)"/>
+&lt;path d="M320 236 L320 264" marker-end="url(#arrow-ddc)"/>
+&lt;path d="M320 360 L320 388" marker-end="url(#arrow-ddc)"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="58" font-size="20" font-weight="700">1. Question&lt;/text>
+&lt;text x="320" y="86" font-size="16">What measurement are you trying to anticipate?&lt;/text>
+&lt;text x="320" y="182" font-size="20" font-weight="700">2. Table&lt;/text>
+&lt;text x="320" y="210" font-size="16">Structure, conditions, and the measured value&lt;/text>
+&lt;text x="320" y="306" font-size="20" font-weight="700">3. Model&lt;/text>
+&lt;text x="320" y="334" font-size="16">Scored on rows that were held out&lt;/text>
+&lt;text x="320" y="430" font-size="20" font-weight="700">4. Next experiment&lt;/text>
+&lt;text x="320" y="458" font-size="16">Its result is a new row, not a trophy&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The loop closes when the experiment writes back into the table. A model that is never allowed to be wrong by a new measurement has not been tested.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="what-a-row-has-to-contain">What a row has to contain&lt;/h2>
+&lt;p>The usual chemical objects are already structured. A SMILES string or a connection table describes the molecule. A reaction record adds reagents, solvent, temperature, and time. A bioactivity record adds the target, the assay, and a number. A spectrum is the same idea in another form: conditions in, signal out.&lt;/p>
+&lt;p>The work starts by saying which of those fields is the thing to be predicted, and which fields the model is allowed to see. A column that was measured in the same experiment as the label, or that leaks the label by construction, will make a flattering model and a useless one. Cleaning is part of that decision. Duplicate structures, mixed units, and missing assay conditions change the meaning of the row before any algorithm runs.&lt;/p>
+&lt;h2 id="the-loop-without-the-slogan">The loop, without the slogan&lt;/h2>
+&lt;p>Seven steps are enough. They are ordinary, and skipping one is how a notebook full of plots fails to change an experiment.&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Name the problem.&lt;/strong> Predicting a property, ranking compounds for a screen, and optimizing a reaction are different problems. They do not share a metric just because they share a library.&lt;/li>
+&lt;li>&lt;strong>Collect and clean.&lt;/strong> The rows have to agree on units, identifiers, and what was actually measured. A mean taken across unmatched assays is a choice, and it belongs in the methods.&lt;/li>
+&lt;li>&lt;strong>Look before you fit.&lt;/strong> Plots of the chemical space you defined, of the label distribution, and of obvious confounders will retire a bad question faster than a new model will.&lt;/li>
+&lt;li>&lt;strong>Fit a model.&lt;/strong> In this setting that is a predictor of a molecular property, a reaction outcome, or a class you defined with an explicit cutoff.&lt;/li>
+&lt;li>&lt;strong>Evaluate on rows the fit did not use.&lt;/strong> The metric has to match the decision. A classifier&amp;rsquo;s accuracy on a lopsided label is a weak report. A regression&amp;rsquo;s error on the training rows is a weaker one.&lt;/li>
+&lt;li>&lt;strong>Hand the result to someone who can act on it.&lt;/strong> In a discovery project that is often a ranked list for the next assay, not a service running unattended.&lt;/li>
+&lt;li>&lt;strong>Watch it age.&lt;/strong> New chemical space, a new assay protocol, or a new batch of data can move the errors. A model that is not rechecked against later measurements is a snapshot.&lt;/li>
+&lt;/ol>
+&lt;p>Deployment and monitoring matter when a model really does sit in a pipeline. For most of the chemistry in this list, the production environment is the next round of experiments.&lt;/p>
+&lt;h2 id="where-the-loop-changes-the-work">Where the loop changes the work&lt;/h2>
+&lt;p>Drug discovery uses it to decide which compounds to make or test, and which measured series are already explained by a simple property. Materials work uses it when the measurement is a stability, a band gap, or a performance number and the row is a composition plus a process. Energy research uses the same shape when the experiment is expensive and the space of candidates is large.&lt;/p>
+&lt;p>In each case the gain is the same. Patterns that a person would not scan by eye become visible, and the next experiment can be chosen because of a stated error rather than because the compound was next on the list. The gain disappears when the rows were not the experiment you thought they were.&lt;/p>
+&lt;h2 id="what-this-does-not-do">What this does not do&lt;/h2>
+&lt;p>A fitted model does not create the measurement. It also does not excuse a narrow chemical series: high accuracy inside one scaffold says little about the next scaffold. The useful habit is the loop in Figure 1. Define the row, hold data out, and let the following experiment write the next line of the table.&lt;/p></description></item></channel></rss>

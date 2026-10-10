@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Genomics | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/genomics/</link><atom:link href="https://yboulaamane.github.io/tags/genomics/index.xml" rel="self" type="application/rss+xml"/><description>Genomics</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Thu, 11 Jan 2024 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Genomics</title><link>https://yboulaamane.github.io/tags/genomics/</link></image><item><title>A Comprehensive Guide to Hybrid Assembly Pipeline for Genomic Sequencing</title><link>https://yboulaamane.github.io/blog/a-comprehensive-guide-to-hybrid-assembly-pipeline-for-genomic-sequencing/</link><pubDate>Thu, 11 Jan 2024 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/a-comprehensive-guide-to-hybrid-assembly-pipeline-for-genomic-sequencing/</guid><description>&lt;p>Long reads tell you how a microbial genome is spanned. Short reads tell you which bases to trust. A hybrid assembly uses each read set for the job it is good at: span first, then correct.&lt;/p>
+&lt;p>The pipeline below is written for Oxford Nanopore long reads and Illumina paired short reads. The commands are the ones this note was built around. Several flags are tied to the chemistry and to the tool version, and those are called out where a copy-paste would be the wrong experiment.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 520" role="img" aria-labelledby="asm-title asm-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="asm-title">Hybrid assembly from two read types&lt;/title>
+&lt;desc id="asm-desc">Quality-check both read sets, filter the long reads with the short reads, assemble with Flye, polish with Medaka and then Polypolish, then score the assembly and annotate it.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-asm" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;rect x="70" y="24" width="500" height="80" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="70" y="140" width="500" height="80" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="70" y="256" width="500" height="80" rx="16" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="70" y="372" width="500" height="80" rx="16" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M320 104 L320 132" marker-end="url(#arrow-asm)"/>
+&lt;path d="M320 220 L320 248" marker-end="url(#arrow-asm)"/>
+&lt;path d="M320 336 L320 364" marker-end="url(#arrow-asm)"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="54" font-size="20" font-weight="700">1. Look at both read sets&lt;/text>
+&lt;text x="320" y="80" font-size="16">NanoPlot for ONT, FastQC for Illumina&lt;/text>
+&lt;text x="320" y="170" font-size="20" font-weight="700">2. Keep the long reads worth spanning&lt;/text>
+&lt;text x="320" y="196" font-size="16">Filtlong, using the short reads as a guide&lt;/text>
+&lt;text x="320" y="286" font-size="20" font-weight="700">3. Assemble, then polish twice&lt;/text>
+&lt;text x="320" y="312" font-size="16">Flye, then Medaka, then Polypolish&lt;/text>
+&lt;text x="320" y="402" font-size="20" font-weight="700">4. Score it, then annotate&lt;/text>
+&lt;text x="320" y="428" font-size="16">BUSCO, QUAST, Prokka, and RAST&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Short reads enter twice. Filtlong uses them to decide which long reads to keep. Polypolish uses them again to correct the assembly the long reads built. They are not a second independent genome.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="what-to-install">What to install&lt;/h2>
+&lt;p>
+or another conda distribution is the practical way to pin these tools. Medaka and BUSCO pull different stacks, so this note activates them in their own environments rather than forcing one environment to hold every package.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">conda create --name myenv
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">conda activate myenv
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Quality control:&lt;/p>
+&lt;ul>
+&lt;li>
+plots length and quality for long reads.&lt;/li>
+&lt;li>
+reports the Illumina reads.&lt;/li>
+&lt;li>
+drops long reads that are short or low quality, and it can use the Illumina reads as an external reference while it does so.&lt;/li>
+&lt;/ul>
+&lt;p>Assembly and polishing:&lt;/p>
+&lt;ul>
+&lt;li>
+builds the long-read assembly.&lt;/li>
+&lt;li>
+polishes that assembly with a neural network trained for Nanopore reads.&lt;/li>
+&lt;li>
+maps the Illumina reads back to the polished contigs.&lt;/li>
+&lt;li>
+uses those alignments for a second, short-read polish.&lt;/li>
+&lt;/ul>
+&lt;p>Assessment and annotation come after the sequence exists:&lt;/p>
+&lt;ul>
+&lt;li>
+asks whether expected single-copy genes are present.&lt;/li>
+&lt;li>
+reports length, contiguity, GC, and, when you give it a reference, misassemblies. This note runs it without a reference.&lt;/li>
+&lt;/ul>
+&lt;p>The file names below (&lt;code>LR_input.fastq&lt;/code>, &lt;code>SR_input_1.fastq&lt;/code>, &lt;code>SR_input_2.fastq&lt;/code>) are placeholders. Thread count is 8 throughout. Change both.&lt;/p>
+&lt;h2 id="quality-control">Quality control&lt;/h2>
+&lt;p>Long reads:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mkdir -p nanoplot_lr_raw
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NanoPlot --fastq LR_input.fastq --N50 --verbose --outdir nanoplot_lr_raw/ -t &lt;span class="m">8&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Short reads:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mkdir -p fastqc_reports
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">fastqc SR_input_1.fastq SR_input_2.fastq -o fastqc_reports/ -t &lt;span class="m">8&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Read the length distribution and the per-base quality before filtering. A filter cannot repair a library that failed. It can only discard reads.&lt;/p>
+&lt;h2 id="filter-the-long-reads">Filter the long reads&lt;/h2>
+&lt;p>Filtlong keeps long reads of at least 1000 bases and retains 90 percent of them by its ranking. The Illumina pair is the external reference for that ranking.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">filtlong -1 SR_input_1.fastq -2 SR_input_2.fastq --min_length &lt;span class="m">1000&lt;/span> --keep_percent &lt;span class="m">90&lt;/span> LR_input.fastq &amp;gt; LR_filtered.fastq
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir -p nanoplot_lr_filtered
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NanoPlot --fastq LR_filtered.fastq --N50 --verbose --outdir nanoplot_lr_filtered/ -t &lt;span class="m">8&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Compare the second NanoPlot report with the first. You want the N50 to hold or improve because short fragments left, not because the filter kept a handful of reads.&lt;/p>
+&lt;h2 id="assemble-with-flye">Assemble with Flye&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">flye --nano-raw LR_filtered.fastq --out-dir Flye/ --threads &lt;span class="m">8&lt;/span> --scaffold -g 6m
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Two flags are specific to this example. &lt;code>--nano-raw&lt;/code> is Flye&amp;rsquo;s preset for that class of Nanopore reads. If your reads were basecalled with a high-quality model, use the matching Flye preset instead of copying this one. &lt;code>-g 6m&lt;/code> tells Flye to expect a genome of about 6 megabases, which is a plausible bacterial size and a poor guess for anything else. Replace &lt;code>6m&lt;/code> with the size you actually expect.&lt;/p>
+&lt;h2 id="polish-with-the-long-reads">Polish with the long reads&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">conda activate medaka
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">medaka_consensus -i LR_filtered.fastq -d Flye/assembly.fasta -o Polish1/ -m r941_min_fast_g303 -t &lt;span class="m">8&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The model string &lt;code>r941_min_fast_g303&lt;/code> belongs to an older R9.4.1 and Guppy combination. Medaka will apply whatever model you name. Name the one that matches the flow cell and the basecaller that produced &lt;code>LR_filtered.fastq&lt;/code>. The input assembly is Flye&amp;rsquo;s &lt;code>assembly.fasta&lt;/code>. The polished sequence is written under &lt;code>Polish1/&lt;/code>.&lt;/p>
+&lt;h2 id="polish-with-the-short-reads">Polish with the short reads&lt;/h2>
+&lt;p>Polypolish wants the Illumina alignments, including secondary and supplementary ones, which is why &lt;code>bwa mem&lt;/code> is run with &lt;code>-a&lt;/code>. The insert-filter helper is part of the Polypolish interface these commands were written for. A newer release may have renamed that step. Use the flags your installed version documents.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mkdir -p Polish2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bwa index Polish1/consensus.fasta
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bwa mem -t &lt;span class="m">8&lt;/span> -a Polish1/consensus.fasta SR_input_1.fastq &amp;gt; Polish2/alignments_1.sam
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bwa mem -t &lt;span class="m">8&lt;/span> -a Polish1/consensus.fasta SR_input_2.fastq &amp;gt; Polish2/alignments_2.sam
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">polypolish_insert_filter.py --in1 Polish2/alignments_1.sam --in2 Polish2/alignments_2.sam --out1 Polish2/filtered_1.sam --out2 Polish2/filtered_2.sam
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">polypolish Polish1/consensus.fasta Polish2/filtered_1.sam Polish2/filtered_2.sam &amp;gt; final_assembly.fasta
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The file you assess from here on is &lt;code>final_assembly.fasta&lt;/code>.&lt;/p>
+&lt;h2 id="did-the-assembly-hold-together">Did the assembly hold together?&lt;/h2>
+&lt;p>BUSCO here uses the bacterial lineage &lt;code>bacteria_odb10&lt;/code>. That lineage is the right check for the genome this example assumes. A different microbe needs its own lineage.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">conda activate busco
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">busco -i final_assembly.fasta -l bacteria_odb10 -m genome -o busco_final_assembly
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">quast -o quast_final_assembly -t &lt;span class="m">8&lt;/span> final_assembly.fasta
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Read the two reports together. BUSCO can look complete on an assembly whose contigs are still in the wrong order, and QUAST&amp;rsquo;s N50 can look excellent on a sequence that is missing genes. Without a reference, QUAST cannot call misassemblies.&lt;/p>
+&lt;h2 id="annotation">Annotation&lt;/h2>
+&lt;p>Prokka predicts genes and attaches the annotation it can infer. RAST is a second, web-based functional annotation. They will disagree on names. That is a reason to keep both, not a reason to average them.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">conda install -c conda-forge -c bioconda prokka
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">prokka --outdir prokka_annotation --prefix final_assembly final_assembly.fasta
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>RAST takes the same assembly through its upload page:
+.&lt;/p>
+&lt;h2 id="bottom-line">Bottom line&lt;/h2>
+&lt;p>The long reads build the contigs. Medaka polishes them with the same long reads. Polypolish polishes again with the Illumina pair that already helped choose which long reads to trust. BUSCO and QUAST tell you whether that sequence is complete and contiguous. Prokka and RAST name the genes. The numbers in the commands that are not about your sample — genome size, Medaka model, Flye preset, BUSCO lineage — have to be changed to match it.&lt;/p></description></item></channel></rss>

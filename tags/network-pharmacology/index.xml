@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Network Pharmacology | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/network-pharmacology/</link><atom:link href="https://yboulaamane.github.io/tags/network-pharmacology/index.xml" rel="self" type="application/rss+xml"/><description>Network Pharmacology</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 23 Apr 2024 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Network Pharmacology</title><link>https://yboulaamane.github.io/tags/network-pharmacology/</link></image><item><title>Computational Drug Repurposing with Multiscale Interactomes</title><link>https://yboulaamane.github.io/blog/computational-drug-repurposing-with-multiscale-interactomes/</link><pubDate>Tue, 23 Apr 2024 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/computational-drug-repurposing-with-multiscale-interactomes/</guid><description>&lt;p>Repurposing starts from a molecule that already exists. The interactome is how you ask whether that molecule sits near a disease for a reason the label &amp;ldquo;approved for something else&amp;rdquo; does not contain.&lt;/p>
+&lt;p>The workflow in this note puts drugs, proteins, pathways, and one disease into a single graph, embeds the nodes, and ranks them by similarity to the disease. The ranking is a shortlist. The assay is still the test.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 560" role="img" aria-labelledby="ix-title ix-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="ix-title">From a multiscale graph to a ranked shortlist&lt;/title>
+&lt;desc id="ix-desc">Drugs, proteins, pathways, and a disease node form one graph. Node2Vec and a graph convolutional network embed the nodes. Cosine similarity to the disease ranks drugs and proteins. Filters and a cell assay come after the rank.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-ix" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;rect x="28" y="78" width="136" height="78" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="176" y="78" width="136" height="78" rx="14" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="324" y="78" width="136" height="78" rx="14" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="472" y="78" width="140" height="78" rx="14" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="70" y="230" width="500" height="72" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="70" y="360" width="500" height="72" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="70" y="468" width="500" height="72" rx="16" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M320 156 L320 222" marker-end="url(#arrow-ix)"/>
+&lt;path d="M320 302 L320 352" marker-end="url(#arrow-ix)"/>
+&lt;path d="M320 432 L320 460" marker-end="url(#arrow-ix)"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="40" font-size="22" font-weight="700">One graph, then a distance to the disease&lt;/text>
+&lt;text x="96" y="112" font-size="16" font-weight="700">Drugs&lt;/text>
+&lt;text x="96" y="136" font-size="13">DrugBank edges&lt;/text>
+&lt;text x="244" y="112" font-size="16" font-weight="700">Proteins&lt;/text>
+&lt;text x="244" y="136" font-size="13">Interactions&lt;/text>
+&lt;text x="392" y="112" font-size="16" font-weight="700">Pathways&lt;/text>
+&lt;text x="392" y="136" font-size="13">Membership&lt;/text>
+&lt;text x="542" y="112" font-size="16" font-weight="700">Disease&lt;/text>
+&lt;text x="542" y="136" font-size="13">Known proteins&lt;/text>
+&lt;text x="320" y="262" font-size="18" font-weight="700">Node2Vec, then a graph convolutional network&lt;/text>
+&lt;text x="320" y="286" font-size="14">Diffusion loss pulls nodes toward the disease neighborhood&lt;/text>
+&lt;text x="320" y="392" font-size="18" font-weight="700">Cosine similarity to the disease node&lt;/text>
+&lt;text x="320" y="416" font-size="14">A score for every drug and every protein&lt;/text>
+&lt;text x="320" y="500" font-size="18" font-weight="700">Filter, then a cell assay&lt;/text>
+&lt;text x="320" y="524" font-size="14">The rank is not the experiment&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Edges are not all the same kind of fact. A DrugBank binding edge, a protein-protein interaction, a pathway membership, and a disease association are four statements. The embedding treats the graph as one object, so those statements have to be ones you are willing to mix.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="the-graph">The graph&lt;/h2>
+&lt;p>Nodes are drugs, proteins, pathways, and diseases. Edges are the relations you have a source for. Drug-protein links can come from DrugBank. Protein-protein links should be the high-confidence set you would defend, not every interaction a database has ever stored. Pathway edges are membership. Disease edges are the associations you add for the condition you care about: host-pathogen interactions in an infection, or reported α-synuclein partners if the disease is Parkinson&amp;rsquo;s. Those are examples of edge types. They are not results of this note.&lt;/p>
+&lt;p>Until the disease node is in the graph and tied to the proteins or pathways you claim are relevant, &amp;ldquo;proximity to the disease&amp;rdquo; is undefined. Add that node before any embedding.&lt;/p>
+&lt;h2 id="what-the-embedding-is-optimizing">What the embedding is optimizing&lt;/h2>
+&lt;p>Node2Vec is the first representation. It walks the graph so that a node&amp;rsquo;s vector reflects both its immediate neighbors and a wider neighborhood. A graph convolutional network then adjusts those vectors. The loss used here is a diffusion loss: nodes that the diffusion treats as close to the disease are pulled together in the embedding.&lt;/p>
+&lt;p>Every drug, protein, and pathway ends as a vector. Candidates are ranked by cosine similarity to the disease vector. You get two lists from the same geometry. Drugs near the disease are direct repurposing candidates. Proteins near the disease are candidate targets, which still need a ligand.&lt;/p>
+&lt;h2 id="three-ways-to-read-the-same-ranking">Three ways to read the same ranking&lt;/h2>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 360" role="img" aria-labelledby="pick-title pick-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="pick-title">Three ways to turn the ranking into a shortlist&lt;/title>
+&lt;desc id="pick-desc">Target-centric selection takes drugs closest to the disease. Protein-centric selection takes proteins closest to the disease and then looks up ligands. Polypharmacology selection prefers drugs close to several of those proteins at once.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="64" width="584" height="80" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="28" y="156" width="584" height="80" rx="14" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="28" y="248" width="584" height="80" rx="14" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="36" font-size="22" font-weight="700" text-anchor="middle">The rank is one list. The shortlist is a choice.&lt;/text>
+&lt;text x="48" y="96" font-size="18" font-weight="700">Target-centric&lt;/text>
+&lt;text x="48" y="124" font-size="15">Take the drugs closest to the disease node&lt;/text>
+&lt;text x="48" y="188" font-size="18" font-weight="700">Protein-centric&lt;/text>
+&lt;text x="48" y="216" font-size="15">Take the closest proteins, then their predicted binders&lt;/text>
+&lt;text x="48" y="280" font-size="18" font-weight="700">Polypharmacology&lt;/text>
+&lt;text x="48" y="308" font-size="15">Prefer a drug close to several of those proteins&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> All three shortlists are views of the same embedding. Protein-centric selection needs a second resource, such as PolypharmDB, to turn a protein hit into a compound. That second lookup is not the cosine score.&lt;/figcaption>
+&lt;/figure>
+&lt;p>Use more than one of these on purpose, and keep track of which route produced each name. A drug that appears on two of the lists is a more interesting candidate than a drug that appears on one. It is still a candidate.&lt;/p>
+&lt;h2 id="filters-before-the-assay">Filters before the assay&lt;/h2>
+&lt;p>Keep the list inside the chemical space you can actually test. In this workflow that means FDA-approved small molecules with drug-like properties, enough scaffold diversity that you are not ordering five near-duplicates, and no pile-up on a single target or a single mechanism. A filter that only sorts by the cosine score will hand you a chemically boring set.&lt;/p>
+&lt;h2 id="the-experiment">The experiment&lt;/h2>
+&lt;p>The cell assay has to match the disease you put in the graph. For an infection that may be an inhibition assay or a pseudovirus entry assay. For another phenotype it is the screen that reads that phenotype. A hit is then checked by an orthogonal measurement, such as qRT-PCR or a targeted inhibition assay. The orthogonal assay is there because a proximity score and a single phenotypic well can agree for the wrong reason.&lt;/p>
+&lt;h2 id="bottom-line">Bottom line&lt;/h2>
+&lt;p>The interactome gives you a geometry in which &amp;ldquo;near the disease&amp;rdquo; is a number. Node2Vec and the graph convolutional network are how this workflow builds that geometry. Cosine similarity is how it reads it. The three selection routes are three questions you can ask of the same vectors. None of them is a demonstrated new use. That demonstration is the assay, run on a shortlist you can explain in terms of the edges you chose to include.&lt;/p></description></item></channel></rss>

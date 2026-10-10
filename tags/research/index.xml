@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Research | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/research/</link><atom:link href="https://yboulaamane.github.io/tags/research/index.xml" rel="self" type="application/rss+xml"/><description>Research</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 23 Jan 2024 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Research</title><link>https://yboulaamane.github.io/tags/research/</link></image><item><title>A Comprehensive Guide to Scientific Writing and Publishing</title><link>https://yboulaamane.github.io/blog/a-comprehensive-guide-to-scientific-writing-and-publishing/</link><pubDate>Tue, 23 Jan 2024 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/a-comprehensive-guide-to-scientific-writing-and-publishing/</guid><description>&lt;p>A paper is an argument with a paper trail. The reader has to find the question, the evidence, and the limit of that evidence without reconstructing them from your notebooks.&lt;/p>
+&lt;p>Reporting the results is the smaller half of the job. The manuscript also has to show where the work sits in what has already been published, and it has to survive a reviewer who does not share your assumptions. The lists below are the checks that make that possible. They are compiled from writing guides, not from the style rules of one journal.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 640" role="img" aria-labelledby="paper-title paper-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="paper-title">The order of a research argument&lt;/title>
+&lt;desc id="paper-desc">State the problem, say what is already known, describe what you did, report what you found, name the limits, and then say why the finding matters.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="70" width="584" height="72" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="28" y="154" width="584" height="72" rx="14" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="28" y="238" width="584" height="72" rx="14" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="28" y="322" width="584" height="72" rx="14" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="28" y="406" width="584" height="72" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="28" y="490" width="584" height="72" rx="14" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="40" font-size="22" font-weight="700" text-anchor="middle">What the reader is looking for, in order&lt;/text>
+&lt;text x="52" y="100" font-size="18" font-weight="700">1. Introduction&lt;/text>
+&lt;text x="52" y="126" font-size="15">What is the problem, and why does it matter?&lt;/text>
+&lt;text x="52" y="184" font-size="18" font-weight="700">2. Literature&lt;/text>
+&lt;text x="52" y="210" font-size="15">What is known, and what is missing?&lt;/text>
+&lt;text x="52" y="268" font-size="18" font-weight="700">3. Methods&lt;/text>
+&lt;text x="52" y="294" font-size="15">What did you do about that gap?&lt;/text>
+&lt;text x="52" y="352" font-size="18" font-weight="700">4. Results&lt;/text>
+&lt;text x="52" y="378" font-size="15">What did you find? One claim per figure.&lt;/text>
+&lt;text x="52" y="436" font-size="18" font-weight="700">5. Limits&lt;/text>
+&lt;text x="52" y="462" font-size="15">What can this evidence not support?&lt;/text>
+&lt;text x="52" y="520" font-size="18" font-weight="700">6. Conclusion&lt;/text>
+&lt;text x="52" y="546" font-size="15">Why it matters, and what should happen next.&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Draft the results first and the introduction last if that is easier. The published order is still this one. A reader who cannot point to each box does not have your argument.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="words-that-carry-the-logic">Words that carry the logic&lt;/h2>
+&lt;p>Connectors are not decoration. They tell the reader whether the next sentence adds, follows, contradicts, or concludes. Pick the relation you mean.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>You are about to&lt;/th>
+&lt;th>Words that say so&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Add&lt;/td>
+&lt;td>Additionally, Furthermore, Moreover, In addition&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Draw a consequence&lt;/td>
+&lt;td>Therefore, Thus, As a result, Hence&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Stress a point&lt;/td>
+&lt;td>Especially, Certainly, Indeed&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Give a reason&lt;/td>
+&lt;td>Because, Due to, Owing to, Since&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Contrast&lt;/td>
+&lt;td>However, Although, Whereas, In contrast, Nevertheless&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Summarize&lt;/td>
+&lt;td>In summary, To conclude, In short, In brief&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Give an example&lt;/td>
+&lt;td>For instance, Such as, Namely, In particular&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&amp;ldquo;However&amp;rdquo; and &amp;ldquo;Therefore&amp;rdquo; do a lot of work and become invisible when every paragraph starts with one of them. Vary them only when the relation really changes. A contrast word in front of a sentence that does not contrast is worse than repeating &amp;ldquo;and.&amp;rdquo;&lt;/p>
+&lt;h2 id="discussion-and-conclusion">Discussion and conclusion&lt;/h2>
+&lt;p>The discussion is where the result has to earn its place. A reliable order:&lt;/p>
+&lt;ol>
+&lt;li>Answer the question you posed. Restate the finding in the form of that answer.&lt;/li>
+&lt;li>Put the answer next to the studies it agrees with and the studies it does not.&lt;/li>
+&lt;li>Deal with the other explanation a skeptical reader will reach for.&lt;/li>
+&lt;li>Say what the study can and cannot support. Sample, method, and scope belong here.&lt;/li>
+&lt;li>Stop on the implication you are willing to defend, or on the next experiment. A forward look is specific: which cohort, which assay, which comparison. &amp;ldquo;Further studies are needed&amp;rdquo; is not a conclusion.&lt;/li>
+&lt;/ol>
+&lt;h2 id="literature-review">Literature review&lt;/h2>
+&lt;p>A literature review that lists papers in the order you read them is a diary. A review that a paper needs is a map.&lt;/p>
+&lt;ul>
+&lt;li>Group studies by the claim they share, not by author.&lt;/li>
+&lt;li>Say where your question sits on that map.&lt;/li>
+&lt;li>Name the gap in terms of evidence, not in terms of your wish to publish.&lt;/li>
+&lt;li>Leave the reader with the disagreement that is still open.&lt;/li>
+&lt;/ul>
+&lt;p>The review has a few jobs at once. It shows which results depend on which other results. It puts your question in context. It records which methods have already failed at this problem. It surfaces contradictions instead of averaging them into a smooth paragraph. A table or a concept map of those clusters is often shorter than the prose, and harder to fudge.&lt;/p>
+&lt;h2 id="methods-someone-else-can-run">Methods someone else can run&lt;/h2>
+&lt;p>The methods section is the part a stranger should be able to follow without emailing you. Include the procedure, the amounts, the times, the settings, the software and dataset versions, the equipment, and the statistical test, including what you treated as the threshold for a claim.&lt;/p>
+&lt;p>Write it in the past tense, because the experiment has already happened. Name the actor when the actor matters (&amp;ldquo;we excluded&amp;rdquo;, &amp;ldquo;the pipeline dropped&amp;rdquo;). Passive voice is allowed. It is not a requirement, and it is a bad habit when it hides who made a choice.&lt;/p>
+&lt;p>Split a long protocol into materials, instrumentation, procedure, and statistics. Move a step-by-step recipe that would swamp the paper into the supplement, and point to it.&lt;/p>
+&lt;h2 id="research-paper-or-review">Research paper or review&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;/th>
+&lt;th>Research paper&lt;/th>
+&lt;th>Review&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Job&lt;/td>
+&lt;td>Report what you measured or computed&lt;/td>
+&lt;td>Judge a body of work that already exists&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Evidence&lt;/td>
+&lt;td>Primary data&lt;/td>
+&lt;td>The papers you are reviewing&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Shape&lt;/td>
+&lt;td>Introduction, methods, results, discussion&lt;/td>
+&lt;td>Themes, or time&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Length often quoted&lt;/td>
+&lt;td>3,000–12,000 words&lt;/td>
+&lt;td>3,000–5,000 words for a short review&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>Those lengths are the ranges this checklist often sees. The journal you submit to publishes its own limit, and a review of a large field is commonly longer than the short-review range.&lt;/p>
+&lt;h2 id="the-sections-one-at-a-time">The sections, one at a time&lt;/h2>
+&lt;h3 id="abstract">Abstract&lt;/h3>
+&lt;p>Six sentences are enough for a first draft, in this order. The field. The gap. What you did. The main result, with the number or comparison that makes it a result. What that result means. What it changes. If sentence four has no result in it, the abstract is still a plan.&lt;/p>
+&lt;h3 id="results">Results&lt;/h3>
+&lt;p>Walk the figures in the order a reader meets them. Each figure gets one claim in the text. The sentence says what is true in the figure. Interpretation that compares your claim with other papers belongs in the discussion. A results section that is only interpretation has hidden the observations.&lt;/p>
+&lt;h3 id="discussion">Discussion&lt;/h3>
+&lt;p>Lead with the main finding. Then the comparison, the limits, and the move you think the field can make because of this result. The five-part order above is the same thing, written as a checklist.&lt;/p>
+&lt;h2 id="while-you-are-still-drafting">While you are still drafting&lt;/h2>
+&lt;p>Keep the introduction short enough that the question arrives before the reader has forgotten why they opened the file. Let a figure or a table carry a list you would otherwise write out. Write the results while the analysis is fresh, and write the introduction after you know which result survived. Revise in passes: can a stranger follow the logic, then can anything be cut, then the wording. Someone who did not do the experiment is the right reader for the second pass.&lt;/p>
+&lt;p>At the end of a writing session, put the paper in one sentence. If that sentence does not name the finding, the draft does not have one yet.&lt;/p>
+&lt;h2 id="bottom-line">Bottom line&lt;/h2>
+&lt;p>Clear writing is how a reader comes to trust the result. Structure makes the question, the evidence, and the limit findable. The prose is in service of that. A manuscript that is pleasant and vague does not become more publishable by another pass of synonyms.&lt;/p>
+&lt;p>Credit: adapted from OpenAcademics, &lt;em>Nature&lt;/em>, &lt;em>Science Translational Medicine&lt;/em>, the MIT Biological Engineering Communication Lab, and other writing guides.&lt;/p></description></item><item><title>Understanding Molecular Dynamics Simulations</title><link>https://yboulaamane.github.io/blog/understanding-molecular-dynamics-simulations/</link><pubDate>Sun, 12 Mar 2023 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/understanding-molecular-dynamics-simulations/</guid><description>&lt;p>Molecular dynamics does not search for a single best structure. It takes the structure you give it and asks what that structure does next.&lt;/p>
+&lt;p>You start with positions, velocities, and masses. A force field turns the current arrangement of atoms into forces. A short step, a few femtoseconds, uses those forces to update the positions and velocities. Then you do it again. The record of those updates is the trajectory.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 520" role="img" aria-labelledby="md-step-title md-step-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="md-step-title">One molecular dynamics step&lt;/title>
+&lt;desc id="md-step-desc">Positions and velocities go in. The force field computes forces from neighboring atoms. A femtosecond update writes new positions and velocities. Repeating that update builds the trajectory.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-md-step" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;rect x="70" y="24" width="500" height="84" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="70" y="148" width="500" height="84" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="70" y="272" width="500" height="84" rx="16" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="70" y="396" width="500" height="84" rx="16" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M320 108 L320 140" marker-end="url(#arrow-md-step)"/>
+&lt;path d="M320 232 L320 264" marker-end="url(#arrow-md-step)"/>
+&lt;path d="M320 356 L320 388" marker-end="url(#arrow-md-step)"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="56" font-size="20" font-weight="700">Configuration&lt;/text>
+&lt;text x="320" y="84" font-size="16">Positions, velocities, masses&lt;/text>
+&lt;text x="320" y="180" font-size="20" font-weight="700">Forces&lt;/text>
+&lt;text x="320" y="208" font-size="16">From neighbors, through the force field&lt;/text>
+&lt;text x="320" y="304" font-size="20" font-weight="700">Update&lt;/text>
+&lt;text x="320" y="332" font-size="16">Move a few femtoseconds, then repeat&lt;/text>
+&lt;text x="320" y="428" font-size="20" font-weight="700">Trajectory&lt;/text>
+&lt;text x="320" y="456" font-size="16">The history of those configurations&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> A trajectory is not a separate analysis. It is the stack of configurations produced by repeating the force evaluation and the short update. The force field decides which interactions exist. The time step decides how finely that motion is chopped up.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="what-the-step-is-doing">What the step is doing&lt;/h2>
+&lt;p>The force on an atom depends on the other atoms within range of the model: bonded terms for the bonds, angles, and dihedrals it belongs to, and nonbonded terms for electrostatics and van der Waals contacts. The force field is that model. It is an approximation with parameters, not a direct evaluation of the electronic Schrödinger equation.&lt;/p>
+&lt;p>The step has to be short because the forces are recomputed from the new geometry. A few femtoseconds is the usual scale, so that the fastest vibrations are not skipped. A nanosecond of simulation is therefore on the order of a million such updates. Nothing in the method jumps the system to a preferred pose. If a ligand moves, it moves because the accumulated steps carried it there.&lt;/p>
+&lt;h2 id="what-people-use-it-for">What people use it for&lt;/h2>
+&lt;p>In structural biology the interesting objects are already moving: side chains, loops, domains, and ligands. A crystal or cryo-EM structure is one configuration. The trajectory is a sample of configurations around and away from that start. Binding, conformational change, and contacts between molecules are read from that sample, which is why a single pretty frame from the run is a weak result.&lt;/p>
+&lt;p>The same loop is used in materials work. Polymers, ceramics, and metals are sets of particles with a force field appropriate to that material. Mechanical response, stability, and the effect of changing the conditions are again questions about the trajectory.&lt;/p>
+&lt;p>Two practical strengths follow from the setup. The system can contain many particles, so a protein of thousands of atoms is a normal target rather than a special case. The conditions are inputs. Temperature, pressure, and composition can be changed, and the comparison between two trajectories is often the actual experiment.&lt;/p>
+&lt;h2 id="what-comes-out">What comes out&lt;/h2>
+&lt;p>The raw output is the trajectory: positions, and usually velocities and energies, along the time axis. Almost every figure in a paper is a reduction of that record.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 300" role="img" aria-labelledby="md-out-title md-out-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="md-out-title">Common reductions of a trajectory&lt;/title>
+&lt;desc id="md-out-desc">From the trajectory, typical plots report energy, a radial distribution function, and a density profile. Each one discards most of the atomic detail in exchange for one question.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="70" width="286" height="90" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="326" y="70" width="286" height="90" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="28" y="176" width="286" height="90" rx="16" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="326" y="176" width="286" height="90" rx="16" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="40" font-size="22" font-weight="700" text-anchor="middle">The trajectory is the result. Plots are views of it.&lt;/text>
+&lt;text x="48" y="108" font-size="18" font-weight="700">Trajectory&lt;/text>
+&lt;text x="48" y="136" font-size="15">Where each atom went&lt;/text>
+&lt;text x="346" y="108" font-size="18" font-weight="700">Energy&lt;/text>
+&lt;text x="346" y="136" font-size="15">Did the run stay well behaved?&lt;/text>
+&lt;text x="48" y="214" font-size="18" font-weight="700">Radial distribution&lt;/text>
+&lt;text x="48" y="242" font-size="15">What sits at this distance?&lt;/text>
+&lt;text x="346" y="214" font-size="18" font-weight="700">Density profile&lt;/text>
+&lt;text x="346" y="242" font-size="15">Where does the material pack?&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> Energy traces are a sanity check on the integration. Radial distribution functions and density profiles collapse the coordinates into a distance or a position, which is what you want for solvation and for layered materials. They do not, by themselves, show a binding pose.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="where-the-method-stops">Where the method stops&lt;/h2>
+&lt;p>Two limits dominate.&lt;/p>
+&lt;p>The forces are only as faithful as the force field. A missing interaction, or a bad parameter, is integrated with the same confidence as a good one. The trajectory will not announce that the potential was wrong.&lt;/p>
+&lt;p>The other limit is cost. Each step looks at a large number of pairs, and interesting motions can require an enormous number of steps. Hardware and better algorithms have made routine protein–ligand runs accessible. They have not removed the gap between a femtosecond step and a slow biological event. How long a given question actually needs is a separate decision. The
+are the companion to this note.&lt;/p>
+&lt;h2 id="bottom-line">Bottom line&lt;/h2>
+&lt;p>An MD simulation is a loop. Configuration, forces, a femtosecond update, and a growing trajectory. Structural biology and materials work use that loop because the experiment they want is about motion under stated conditions. The interpretation lives in the reductions of the trajectory, and it inherits both the force field and the length of the run.&lt;/p></description></item></channel></rss>

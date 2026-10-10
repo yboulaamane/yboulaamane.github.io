@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Databases | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/databases/</link><atom:link href="https://yboulaamane.github.io/tags/databases/index.xml" rel="self" type="application/rss+xml"/><description>Databases</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 12 Sep 2022 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Databases</title><link>https://yboulaamane.github.io/tags/databases/</link></image><item><title>Chemical Databases Every ML Scientist Should Know for Drug Discovery</title><link>https://yboulaamane.github.io/blog/chemical-databases-machine-learning-drug-discovery/</link><pubDate>Mon, 12 Sep 2022 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/chemical-databases-machine-learning-drug-discovery/</guid><description>&lt;p>The model is the last step. Before it, you have to decide which database actually holds the measurement you need.&lt;/p>
+&lt;p>Five public resources cover most of what a small-molecule project asks for. They are not substitutes. ChEMBL and BindingDB are bioactivity tables. PubChem is the broad assay archive. PDBbind pairs a bound structure with an affinity. BRENDA describes enzymes. Downloading the largest file is not the same as downloading the right one.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 640" role="img" aria-labelledby="db-map-title db-map-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="db-map-title">Five databases, five questions&lt;/title>
+&lt;desc id="db-map-desc">ChEMBL holds target bioactivity, BindingDB holds binding measurements, PubChem holds deposited assay outcomes, PDBbind pairs a structure with an affinity, and BRENDA describes enzymes.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="78" width="584" height="96" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="28" y="186" width="584" height="96" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="28" y="294" width="584" height="96" rx="16" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="28" y="402" width="584" height="96" rx="16" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="28" y="510" width="584" height="96" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="40" font-size="22" font-weight="700" text-anchor="middle">Start from the question, then open the database&lt;/text>
+&lt;text x="52" y="114" font-size="20" font-weight="700">ChEMBL&lt;/text>
+&lt;text x="52" y="146" font-size="16">Which drug-like molecules were measured on this target?&lt;/text>
+&lt;text x="52" y="222" font-size="20" font-weight="700">BindingDB&lt;/text>
+&lt;text x="52" y="254" font-size="16">What binding affinity was reported for this pair?&lt;/text>
+&lt;text x="52" y="330" font-size="20" font-weight="700">PubChem&lt;/text>
+&lt;text x="52" y="362" font-size="16">What did this deposited assay call active or inactive?&lt;/text>
+&lt;text x="52" y="438" font-size="20" font-weight="700">PDBbind&lt;/text>
+&lt;text x="52" y="470" font-size="16">Which affinity belongs to this bound 3D complex?&lt;/text>
+&lt;text x="52" y="546" font-size="20" font-weight="700">BRENDA&lt;/text>
+&lt;text x="52" y="578" font-size="16">What reaction and kinetics does this enzyme have?&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The five databases overlap, but each one is organized around a different object: a bioactivity row, a binding measurement, an assay deposit, a structure–affinity pair, or an enzyme.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="chembl">ChEMBL&lt;/h2>
+&lt;p>
+is a manually curated set of bioactive molecules with drug-like properties, joined to the measurements reported for them. Those measurements include Ki, Kd, IC50, percent inhibition, and EC50.&lt;/p>
+&lt;p>That shape is what you want when the unit of analysis is &amp;ldquo;a molecule tested on a target.&amp;rdquo; Filtered well, the table becomes a screening set or a labelled file. A separate note walks through that curation for one target: search the protein, keep one activity type, collapse duplicate compounds, and only then assign a class. See
+.&lt;/p>
+&lt;p>The release notes are the place to read the current size. Quoting a compound count without saying whether it means unique structures or deposition records is how those two numbers get swapped.&lt;/p>
+&lt;h2 id="bindingdb">BindingDB&lt;/h2>
+&lt;p>
+is a public collection of measured binding affinities, mainly for proteins and small molecules. It also holds protein–protein, protein–peptide, and host–guest measurements.&lt;/p>
+&lt;p>A 2024 account of the database reported 2.9 million binding measurements spanning 1.3 million compounds and thousands of protein targets [1]. The first version of this note, written in 2022, described a smaller collection: more than 1.2 million measurements, more than 6,400 protein targets, and about 550,000 small molecules. Both figures are snapshots. The live site is the one to quote for a paper.&lt;/p>
+&lt;p>The practical entry points are searches, prepared datasets, and a similarity screen that takes an external compound set and looks for related bioactivity already in the database. Downloads have included SD files, TSV, and a database dump. Programmatic access has included a REST API, structured URLs, and KNIME. Menus move. The distinction that does not move is the content: affinities, with the target and the ligand identified.&lt;/p>
+&lt;h3 id="find-my-compounds-target">Find My Compound&amp;rsquo;s Target&lt;/h3>
+&lt;p>This tool takes a query molecule, finds similar compounds already in BindingDB, and returns the targets of those neighbors when they pass a similarity cutoff and an affinity cutoff. It is a neighbor search. It is not a model trained to predict a new mechanism, and a target that appears in the result is only as reliable as the neighbor and the cutoff you set.&lt;/p>
+&lt;h3 id="find-compounds-for-my-target">Find Compounds for My Target&lt;/h3>
+&lt;p>The companion search goes the other way. You name a target and ask which compounds have measurements against it. The curated rows draw on BindingDB itself and on outside sources, including ChEMBL, PubChem BioAssay, and D3R. Read the source of each row. A Ki from one database and an IC50 imported from another are not the same label.&lt;/p>
+&lt;h2 id="pubchem">PubChem&lt;/h2>
+&lt;p>
+, at the National Center for Biotechnology Information, is the broad public archive. For a given substance it can hold chemical identity together with biochemical, pharmacological, toxicological, and other deposited description. It is free to search.&lt;/p>
+&lt;p>PubChem BioAssay stores the experimental records: small-molecule screens and RNAi experiments, each tied to the depositor who submitted it. Every tested substance is given an activity outcome, commonly active, inactive, or inconclusive. The depositor assigns that outcome from the assay. PubChem does not impose one potency cutoff on every record. A reported IC50, EC50, or Ki can sit beside the flag. The flag does not replace the protocol.&lt;/p>
+&lt;p>You can query by name, by SMILES, or by a structure you draw, and ask for an exact compound, a similar one, or a substructure. The assay page is where you go when two values disagree: the record includes the experiment, not only the number. PubChem also groups assays by protein or gene target, by assay type, by project, and by relationships such as shared active compounds.&lt;/p>
+&lt;h3 id="pubchempy">PubChemPy&lt;/h3>
+&lt;p>
+is the Python client. It covers lookup by name, substructure, and similarity, plus standardization, format conversion, depiction, and property retrieval. Use it when the next step is a table in a notebook rather than a page in the browser.&lt;/p>
+&lt;h2 id="pdbbind">PDBbind&lt;/h2>
+&lt;p>
+collects experimentally measured Kd, Ki, and IC50 values for complexes that are already in the Protein Data Bank. The useful object is the pair. A structure without an affinity, or an affinity without the complex it was measured on, answers a different question.&lt;/p>
+&lt;p>Basic information on each complex has been open to browse. Downloading the full contents, and some of the site&amp;rsquo;s tools, has required a free registration under a license agreement, for both academic and industrial users. Access to this resource has changed more than once since this note was first written. Check the current terms before you build a pipeline on a bulk file.&lt;/p>
+&lt;h2 id="brenda">BRENDA&lt;/h2>
+&lt;p>
+is an enzyme information system compiled from the primary literature. The name comes from its start in Braunschweig. It was developed for years at the University of Cologne and remains a public enzyme resource, not a compound-screening warehouse.&lt;/p>
+&lt;p>An entry is organized around the enzyme. It covers classification and nomenclature, the reaction and its specificity, functional and kinetic parameters, structure and stability, how the enzyme was isolated or prepared, the literature those facts came from, and cross-references to sequence or three-dimensional structure. You search it by EC number, enzyme name, organism, or a combination of those.&lt;/p>
+&lt;p>Academic and other non-commercial use is free. Commercial use requires a license. The project site states the current terms. BRENDA is the wrong download if the goal is a matrix of drug-like molecules and their IC50 values. It is the right one if the question is what the enzyme does and under which conditions.&lt;/p>
+&lt;h2 id="which-one-to-open-first">Which one to open first&lt;/h2>
+&lt;p>Ask what a row in the training file is supposed to mean.&lt;/p>
+&lt;ul>
+&lt;li>A molecule tested on a target, with Ki, IC50, or a related potency: ChEMBL, then curate.&lt;/li>
+&lt;li>A binding affinity as the object of interest: BindingDB.&lt;/li>
+&lt;li>The original assay, including who decided &amp;ldquo;active&amp;rdquo;: PubChem BioAssay.&lt;/li>
+&lt;li>A 3D complex that must stay attached to its affinity: PDBbind.&lt;/li>
+&lt;li>The enzyme&amp;rsquo;s reaction, specificity, and kinetics: BRENDA.&lt;/li>
+&lt;/ul>
+&lt;p>ChEMBL, BindingDB, and PubChem can be pulled into a script. PDBbind and BRENDA are still databases you read carefully before you model anything derived from them. The script does not fix a file that answered a different question.&lt;/p>
+&lt;h2 id="reference">Reference&lt;/h2>
+&lt;p>[1] Liu, T. et al. BindingDB in 2024: a FAIR knowledgebase of protein-small molecule binding data. &lt;em>Nucleic Acids Research&lt;/em>, 2025, 53, D1633–D1644.
+&lt;/p></description></item></channel></rss>
