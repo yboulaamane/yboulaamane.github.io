@@ -1,0 +1,47 @@
+<svg viewBox="0 0 820 430" width="820" height="430" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="820" height="430" fill="#f8fafc"/>
+  <text x="410" y="36" text-anchor="middle" font-size="20" font-weight="800" fill="#0f172a">Reproducible is not the same as robust</text>
+  <text x="410" y="58" text-anchor="middle" font-size="12.5" fill="#64748b">A pinned seed makes one number repeatable — it says nothing about the other seeds</text>
+
+  <!-- left: reproducible -->
+  <rect x="40" y="80" width="350" height="310" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="215" y="108" text-anchor="middle" font-size="15" font-weight="800" fill="#1d4ed8">Reproducible</text>
+  <text x="215" y="128" text-anchor="middle" font-size="11.5" fill="#64748b">seed = 42, run it 5 times</text>
+
+  <!-- axis -->
+  <line x1="90" y1="350" x2="360" y2="350" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="225" y="375" text-anchor="middle" font-size="11.5" fill="#64748b">model performance →</text>
+  <!-- 5 identical points stacked at same x -->
+  <g fill="#2563eb">
+    <circle cx="270" cy="180" r="8"/>
+    <circle cx="270" cy="210" r="8"/>
+    <circle cx="270" cy="240" r="8"/>
+    <circle cx="270" cy="270" r="8"/>
+    <circle cx="270" cy="300" r="8"/>
+  </g>
+  <line x1="270" y1="160" x2="270" y2="350" stroke="#2563eb" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <text x="270" y="150" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1d4ed8">same answer, every run ✓</text>
+
+  <!-- right: robust -->
+  <rect x="430" y="80" width="350" height="310" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="605" y="108" text-anchor="middle" font-size="15" font-weight="800" fill="#16a34a">Robust</text>
+  <text x="605" y="128" text-anchor="middle" font-size="11.5" fill="#64748b">30 different seeds, one run each</text>
+
+  <line x1="480" y1="350" x2="750" y2="350" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="615" y="375" text-anchor="middle" font-size="11.5" fill="#64748b">model performance →</text>
+
+  <!-- spread of points -->
+  <g fill="#16a34a" opacity="0.8">
+    <circle cx="540" cy="300" r="6"/><circle cx="560" cy="270" r="6"/><circle cx="575" cy="240" r="6"/>
+    <circle cx="590" cy="290" r="6"/><circle cx="600" cy="200" r="6"/><circle cx="615" cy="250" r="6"/>
+    <circle cx="625" cy="220" r="6"/><circle cx="640" cy="280" r="6"/><circle cx="655" cy="210" r="6"/>
+    <circle cx="670" cy="260" r="6"/><circle cx="690" cy="240" r="6"/><circle cx="705" cy="290" r="6"/>
+    <circle cx="555" cy="230" r="6"/><circle cx="620" cy="305" r="6"/><circle cx="680" cy="200" r="6"/>
+  </g>
+  <!-- distribution curve -->
+  <path d="M500,330 C560,330 575,150 615,150 C655,150 670,330 730,330" fill="none" stroke="#15803d" stroke-width="2"/>
+  <!-- seed 42 marker -->
+  <line x1="540" y1="150" x2="540" y2="350" stroke="#ef4444" stroke-width="2" stroke-dasharray="5 4"/>
+  <text x="540" y="142" text-anchor="middle" font-size="11" font-weight="700" fill="#b91c1c">seed 42</text>
+  <text x="605" y="408" text-anchor="middle" font-size="11.5" fill="#64748b">is seed 42 typical — or a lucky draw?</text>
+</svg>

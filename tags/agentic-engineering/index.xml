@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Agentic-Engineering | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/agentic-engineering/</link><atom:link href="https://yboulaamane.github.io/tags/agentic-engineering/index.xml" rel="self" type="application/rss+xml"/><description>Agentic-Engineering</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sat, 04 Apr 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Agentic-Engineering</title><link>https://yboulaamane.github.io/tags/agentic-engineering/</link></image><item><title>What Agentic Engineering Means for Computational Drug Discovery</title><link>https://yboulaamane.github.io/blog/what-agentic-engineering-means-for-computational-drug-discovery/</link><pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/what-agentic-engineering-means-for-computational-drug-discovery/</guid><description>&lt;p>Simon Willison’s late-2025 claim, from
+and his
+, is that agentic coding crossed from “watch it” to “it usually does the thing.” Read that through a docking or MD project and the scarce resource is unchanged. It is still knowing whether the result is the science you asked for.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 280" role="img" aria-labelledby="agent-val-title agent-val-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="agent-val-title">Implementation got cheap. The check did not.&lt;/title>
+&lt;desc id="agent-val-desc">An agent can draft three pipelines. The scientist still chooses the receptor ensemble, reads the score, and checks protonation, atom indexing, and the train-test split.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-agent-val" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="24" y="72" width="170" height="120" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="234" y="72" width="172" height="120" rx="14" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="446" y="72" width="170" height="120" rx="14" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M194 132 L226 132" marker-end="url(#arrow-agent-val)" stroke="currentColor"/>
+&lt;path d="M406 132 L438 132" marker-end="url(#arrow-agent-val)" stroke="currentColor"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="40" font-size="22" font-weight="700">Three drafts. One judgment.&lt;/text>
+&lt;text x="109" y="118" font-size="16" font-weight="700">You ask&lt;/text>
+&lt;text x="109" y="148" font-size="15">The protocol&lt;/text>
+&lt;text x="320" y="118" font-size="16" font-weight="700">The agent drafts&lt;/text>
+&lt;text x="320" y="148" font-size="15">Code, fast&lt;/text>
+&lt;text x="531" y="112" font-size="16" font-weight="700">You still check&lt;/text>
+&lt;text x="531" y="140" font-size="15">Pose, split,&lt;/text>
+&lt;text x="531" y="164" font-size="15">protonation&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Willison’s point, as used here, is reliability: an agent that is right about 75% of the time creates debugging, and one that is right about 95% of the time changes how you plan the work. Neither number is a measured accuracy for a docking pipeline.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="what-got-cheaper">What got cheaper&lt;/h2>
+&lt;p>For an MD analysis script, a virtual screen, or a substrate classifier, the new fact is reliability rather than a demo that sometimes runs. The code is scaffolding. The science is whether the pose is the right pose, whether the model holds across CYP isoforms, and whether a geometric feature is the feature you think it is. An agent that can build the scaffolding moves time onto the ensemble, the score, and that feature.&lt;/p>
+&lt;h2 id="validation-was-already-the-slow-step">Validation was already the slow step&lt;/h2>
+&lt;p>Implementation is no longer the slow part of the software. Three prototypes cost what one used to. The constraint is deciding which prototype is right.&lt;/p>
+&lt;p>Docking already had that shape. A job is minutes. A binding measurement is weeks or months. A faster AutoDock Vina wrapper does not change that ratio. It raises the load on the experiment. What does get cheaper inside the dry lab is trying more than one featurization, more than one docking protocol, or more than one clustering of a trajectory, and comparing them. The comparison still needs a chemist.&lt;/p>
+&lt;h2 id="who-the-tool-amplifies">Who the tool amplifies&lt;/h2>
+&lt;p>Willison cites a ThoughtWorks finding: senior and junior engineers gain the most, and mid-career engineers are the ones disrupted. Seniors know what to build and how to judge it. Juniors get a patient explainer.&lt;/p>
+&lt;p>The same split fits this field. Someone who knows force fields, binding free energy, RMSD versus RMSF, and why a high docking score is not a drug can now have that protocol implemented quickly. The agent does not know that the receptor is in an odd conformation, or that a crystallographic water in the site should stay. That knowledge is the job.&lt;/p>
+&lt;p>The role that gets thinner is running a standard pipeline without a reason to doubt it. If an agent can run the pipeline, running it is no longer the skill.&lt;/p>
+&lt;h2 id="vibe-coding-stops-at-the-assay">Vibe coding stops at the assay&lt;/h2>
+&lt;p>Willison’s line is that assembling software without reading every line is acceptable when only you pay for the bugs. Other people depending on the output moves you off that line.&lt;/p>
+&lt;p>A wrong protonation state, an atom index off by one, or a split that leaks the test set does more than waste a queue. It points medicinal chemistry at the wrong compounds. Agents still belong in the work. The code gets the same suspicion you would give a script from a careful collaborator you have not worked with: tests, and a check of intermediate outputs against a reference set you already understand.&lt;/p>
+&lt;h2 id="the-question-is-still-the-expensive-part">The question is still the expensive part&lt;/h2>
+&lt;p>CADD could always emit a long list of candidates. Prioritizing them was always the limit. An agent does not prioritize. It lets someone who already has a view of the target, the chemical space, and the pose act on that view sooner. The inflection Willison describes is the same one arriving here. The use of it is either faster science or a faster pile of numbers.&lt;/p>
+&lt;p>&lt;em>Episode:
+, Lenny’s Podcast, April 2026. Highlights:
+.&lt;/em>&lt;/p></description></item></channel></rss>

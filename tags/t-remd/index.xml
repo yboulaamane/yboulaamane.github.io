@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>T-REMD | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/t-remd/</link><atom:link href="https://yboulaamane.github.io/tags/t-remd/index.xml" rel="self" type="application/rss+xml"/><description>T-REMD</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sun, 03 Aug 2025 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>T-REMD</title><link>https://yboulaamane.github.io/tags/t-remd/</link></image><item><title>A Quick Guide to Temperature Replica Exchange Molecular Dynamics</title><link>https://yboulaamane.github.io/blog/a-quick-guide-to-temperature-replica-exchange-molecular-dynamics/</link><pubDate>Sun, 03 Aug 2025 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/a-quick-guide-to-temperature-replica-exchange-molecular-dynamics/</guid><description>&lt;p>One thermostat at 300 K will sit in the basin where you started. Temperature replica exchange runs copies of the same system on a temperature ladder and swaps neighbors so that a barrier crossed at high temperature can appear in the 300 K ensemble.&lt;/p>
+&lt;p>The example is eight replicas from 300 K to 370 K, in 10 K steps, exchanging every 1000 steps. The &lt;code>.mdp&lt;/code> files are not pasted here. Only the temperatures and the &lt;code>mdrun&lt;/code> line are.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 340" role="img" aria-labelledby="remd-title remd-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="remd-title">Eight temperatures, exchanges, then the 300 K ensemble&lt;/title>
+&lt;desc id="remd-desc">A ladder from 300 K to 370 K in 10 K steps. Neighboring replicas attempt a swap every 1000 steps. After demux, analysis uses the 300 K trajectory. The acceptance target in this note is 20 to 30 percent.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-remd" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;path d="M48 168 L592 168"/>
+&lt;path d="M320 210 L320 248" marker-end="url(#arrow-remd)"/>
+&lt;/g>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="36" y="128" width="56" height="80" rx="8" fill="#2f80ed" fill-opacity="0.28" stroke="#2f80ed"/>
+&lt;rect x="108" y="128" width="56" height="72" rx="8" fill="#2f80ed" fill-opacity="0.18" stroke="#2f80ed"/>
+&lt;rect x="180" y="128" width="56" height="64" rx="8" fill="#9b51e0" fill-opacity="0.16" stroke="#9b51e0"/>
+&lt;rect x="252" y="128" width="56" height="56" rx="8" fill="#9b51e0" fill-opacity="0.14" stroke="#9b51e0"/>
+&lt;rect x="324" y="128" width="56" height="56" rx="8" fill="#f2994a" fill-opacity="0.16" stroke="#f2994a"/>
+&lt;rect x="396" y="128" width="56" height="64" rx="8" fill="#f2994a" fill-opacity="0.18" stroke="#f2994a"/>
+&lt;rect x="468" y="128" width="56" height="72" rx="8" fill="#27ae60" fill-opacity="0.16" stroke="#27ae60"/>
+&lt;rect x="540" y="128" width="56" height="80" rx="8" fill="#27ae60" fill-opacity="0.22" stroke="#27ae60"/>
+&lt;rect x="120" y="256" width="400" height="56" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="40" font-size="22" font-weight="700">Hot replicas cross. You analyze 300 K.&lt;/text>
+&lt;text x="320" y="68" font-size="15">Swap neighbors every 1000 steps. Aim for 20–30% accepted.&lt;/text>
+&lt;text x="64" y="118" font-size="14" font-weight="700">300&lt;/text>
+&lt;text x="136" y="118" font-size="14">310&lt;/text>
+&lt;text x="208" y="118" font-size="14">320&lt;/text>
+&lt;text x="280" y="118" font-size="14">330&lt;/text>
+&lt;text x="352" y="118" font-size="14">340&lt;/text>
+&lt;text x="424" y="118" font-size="14">350&lt;/text>
+&lt;text x="496" y="118" font-size="14">360&lt;/text>
+&lt;text x="568" y="118" font-size="14" font-weight="700">370&lt;/text>
+&lt;text x="320" y="290" font-size="16" font-weight="700">demux, then the 300 K frames&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The ladder is the eight temperatures in the example, 300 K through 370 K. Exchanges are attempted between neighbors. The trajectory you interpret is the one demultiplexed at the low temperature, not a splice of every replica.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="why-a-ladder">Why a ladder&lt;/h2>
+&lt;p>A rugged landscape traps a single 300 K run. A hotter replica crosses barriers more often. Swaps are accepted or rejected so that each temperature still samples the Boltzmann distribution at that temperature. In a protein–ligand system the states you are usually missing are induced fit, an alternate loop, a cryptic pocket, or a folding event. Short dynamics of a small molecule often do not need this.&lt;/p>
+&lt;h2 id="the-acceptance-probability">The acceptance probability&lt;/h2>
+&lt;p>For replicas \( i \) and \( j \), the swap probability \( P \) is the Metropolis form recorded for this method:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">P = min(1, exp[(1/Ti - 1/Tj) * (Ej - Ei)])
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Ti and Tj are the temperatures. Ei and Ej are the potential energies. Spacing that is too wide kills the acceptance. Spacing that is too tight spends replicas without helping. This note aims at a 20–30% acceptance rate.&lt;/p>
+&lt;h2 id="eight-gromacs-inputs">Eight GROMACS inputs&lt;/h2>
+&lt;p>Create &lt;code>md_300.mdp&lt;/code> through &lt;code>md_370.mdp&lt;/code> with the temperature each replica should hold. Then &lt;code>grompp&lt;/code> each one. &lt;code>-maxwarn 1&lt;/code> is part of the recorded command.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx grompp -f md_300.mdp -o topol_300.tpr -c conf.gro -p topol.top -maxwarn &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx grompp -f md_310.mdp -o topol_310.tpr -c conf.gro -p topol.top -maxwarn &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx grompp -f md_370.mdp -o topol_370.tpr -c conf.gro -p topol.top -maxwarn &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The middle temperatures follow the same pattern. The run itself:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mpirun -np &lt;span class="m">8&lt;/span> gmx_mpi mdrun -multi &lt;span class="m">8&lt;/span> -replex &lt;span class="m">1000&lt;/span> -s topol_.tpr -deffnm remd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>-multi 8&lt;/code> is the eight replicas. &lt;code>-replex 1000&lt;/code> attempts an exchange every 1000 steps. &lt;code>-s topol_.tpr&lt;/code> matches the shared prefix of the &lt;code>.tpr&lt;/code> files. One rank per replica is the cost model here.&lt;/p>
+&lt;h2 id="demux-before-you-analyze">Demux before you analyze&lt;/h2>
+&lt;p>&lt;code>mdrun -replex&lt;/code> writes trajectories that follow a rank, not a temperature. Demultiplex, then take the frames that sat at 300 K.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx demux -f remd0.xtc -demux replica_index.xvg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Equilibrate every replica before the exchange run. Analyze the lowest temperature. The hotter trajectories are the mechanism that feeds it, not a second ensemble to mix into the same plot.&lt;/p></description></item></channel></rss>

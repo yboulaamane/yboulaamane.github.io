@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Undruggable Targets | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/undruggable-targets/</link><atom:link href="https://yboulaamane.github.io/tags/undruggable-targets/index.xml" rel="self" type="application/rss+xml"/><description>Undruggable Targets</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sat, 22 Nov 2025 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Undruggable Targets</title><link>https://yboulaamane.github.io/tags/undruggable-targets/</link></image><item><title>Unlocking the Undruggable: How Biotechnology Is Rewriting Drug Discovery</title><link>https://yboulaamane.github.io/blog/unlocking-the-undruggable-how-biotechnology-is-rewriting-drug-discovery/</link><pubDate>Sat, 22 Nov 2025 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/unlocking-the-undruggable-how-biotechnology-is-rewriting-drug-discovery/</guid><description>&lt;p>“Undruggable” usually means “no useful pocket for a small molecule.” KRAS, BCL-2, transcription factors, and intrinsically disordered proteins sat in that category for a long time. A few approved drugs show the label was about the modality, not about the biology being unreachable.&lt;/p>
+&lt;p>The figures and examples below are the ones in the DrugBank overview this note follows. They are not a new census.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 420" role="img" aria-labelledby="undrug-title undrug-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="undrug-title">Why a target resists a pocket, and which modalities answer it&lt;/title>
+&lt;desc id="undrug-desc">Four reasons a target is called undruggable: conserved sites, disorder, flat protein-protein interfaces, and polar surfaces. Four modalities named in the note: PROTACs, multispecifics, nucleic acids, and peptidomimetics.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="64" width="284" height="64" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="328" y="64" width="284" height="64" rx="12" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="28" y="144" width="284" height="64" rx="12" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="328" y="144" width="284" height="64" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="28" y="268" width="284" height="64" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="328" y="268" width="284" height="64" rx="12" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="28" y="348" width="284" height="64" rx="12" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="328" y="348" width="284" height="64" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="36" font-size="22" font-weight="700" text-anchor="middle">The obstacle and the modality&lt;/text>
+&lt;text x="44" y="92" font-size="16" font-weight="700">Conserved active site&lt;/text>
+&lt;text x="44" y="114" font-size="14">Selectivity is the problem&lt;/text>
+&lt;text x="344" y="92" font-size="16" font-weight="700">Disordered protein&lt;/text>
+&lt;text x="344" y="114" font-size="14">No single bound pose&lt;/text>
+&lt;text x="44" y="172" font-size="16" font-weight="700">Flat PPI surface&lt;/text>
+&lt;text x="44" y="194" font-size="14">No obvious cavity&lt;/text>
+&lt;text x="344" y="172" font-size="16" font-weight="700">Polar, solvent-exposed&lt;/text>
+&lt;text x="344" y="194" font-size="14">Fights drug-like rules&lt;/text>
+&lt;text x="44" y="296" font-size="16" font-weight="700">PROTAC&lt;/text>
+&lt;text x="44" y="318" font-size="14">Degrade instead of inhibit&lt;/text>
+&lt;text x="344" y="296" font-size="16" font-weight="700">Multispecific&lt;/text>
+&lt;text x="344" y="318" font-size="14">More than one site&lt;/text>
+&lt;text x="44" y="376" font-size="16" font-weight="700">Nucleic acid&lt;/text>
+&lt;text x="44" y="398" font-size="14">RNA, antisense, siRNA, editing&lt;/text>
+&lt;text x="344" y="376" font-size="16" font-weight="700">Peptidomimetic&lt;/text>
+&lt;text x="344" y="398" font-size="14">Bind the flat surface&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The top row is why a pocket-shaped small molecule fails. The bottom row is the set of modalities named in this note. They are not assigned one-to-one. Venetoclax is the BCL-2 protein–protein example, and sotorasib is the KRAS G12C pocket that turned out to exist.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="how-the-pocket-became-the-default">How the pocket became the default&lt;/h2>
+&lt;p>Discovery started with phenotypic screens: an extract, a phenotype. Target-based design then went after receptors, channels, and enzymes that already had a cavity. Biologics widened that, and still reached only about 2% of the human proteome. Transcription factors, flexible proteins, and broad protein–protein interfaces stayed outside.&lt;/p>
+&lt;p>Imatinib and the kinase inhibitors that followed are the success of the pocket strategy. They are also the demonstration of its edge.&lt;/p>
+&lt;h2 id="why-the-difficult-targets-are-difficult">Why the difficult targets are difficult&lt;/h2>
+&lt;ul>
+&lt;li>Conserved active sites make selectivity hard.&lt;/li>
+&lt;li>Intrinsically disordered proteins do not offer one binding pose.&lt;/li>
+&lt;li>Protein–protein interfaces are flat.&lt;/li>
+&lt;li>Polar, solvent-exposed surfaces fight the usual drug-like property ranges.&lt;/li>
+&lt;/ul>
+&lt;p>Venetoclax, a BCL-2 inhibitor, and sotorasib, a KRAS G12C inhibitor, are the two cases this overview uses to show that those constraints can be worked around.&lt;/p>
+&lt;h2 id="repurposing">Repurposing&lt;/h2>
+&lt;p>Repurposing skips part of the early safety and manufacturing work. In the overview, it accounts for one-third of recent FDA approvals and about 25% of pharmaceutical revenue. Sildenafil, propranolol, and aspirin are the classic re-readings of an existing drug. Current practice adds transcriptomic matching, electronic health records, and network pharmacology.&lt;/p>
+&lt;p>The limits are the ones stated there: weaker intellectual-property protection, and data you cannot always get. The openings it names are rare disease, pandemics, and more personalized use.&lt;/p>
+&lt;h2 id="modalities-that-do-not-need-a-classical-pocket">Modalities that do not need a classical pocket&lt;/h2>
+&lt;ul>
+&lt;li>PROTACs hand the target to the cell’s degradation machinery.&lt;/li>
+&lt;li>Multispecifics, small molecules or antibodies, hit more than one function.&lt;/li>
+&lt;li>Nucleic-acid therapeutics act on expression: RNA, antisense, siRNA, gene editing.&lt;/li>
+&lt;li>Peptidomimetics copy a protein surface so they can bind a flat interface.&lt;/li>
+&lt;/ul>
+&lt;p>The same overview points at four results. Venetoclax got onto the BCL-2 interface. Sotorasib used a KRAS pocket that had not been the starting assumption. HIF-2α inhibitors reached a transcription factor. Peptilogics’ PLG0206 is the computational peptide example.&lt;/p>
+&lt;h2 id="the-development-path-is-still-the-bottleneck">The development path is still the bottleneck&lt;/h2>
+&lt;p>Approval rates in the 2000s are given as about 12% from Phase I to approval. The failure modes named are lack of efficacy, toxicity, and poor pharmacology. Outsourcing and academic partnerships do not remove that.&lt;/p>
+&lt;p>The process changes listed are adaptive trials, biomarker-based recruitment, AI-guided study planning, real-world evidence, and network pharmacology for multi-target questions. Orphan, fast-track, and breakthrough designations are the regulatory routes named alongside them.&lt;/p>
+&lt;h2 id="what-druggable-is-doing-in-this-sentence">What “druggable” is doing in this sentence&lt;/h2>
+&lt;p>The word expands when the toolbox expands: repurposing, PROTACs, multispecifics, nucleic acids, designed peptides, high-resolution structures, and large-scale computational screening. A protein can still be a bad target. It is less often a bad target only because a small molecule cannot find a hole.&lt;/p>
+&lt;p>&lt;strong>Source:&lt;/strong> DrugBank. &lt;em>Unlocking Undruggable Targets: Biotechnology’s Role in Expanding Drug Discovery&lt;/em>. 2024.&lt;/p></description></item></channel></rss>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Career | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/career/</link><atom:link href="https://yboulaamane.github.io/tags/career/index.xml" rel="self" type="application/rss+xml"/><description>Career</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sun, 16 Oct 2022 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Career</title><link>https://yboulaamane.github.io/tags/career/</link></image><item><title>Supervised vs. Unsupervised Methods in Machine Learning</title><link>https://yboulaamane.github.io/blog/supervised-vs-unsupervised-methods-machine-learning/</link><pubDate>Sun, 16 Oct 2022 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/supervised-vs-unsupervised-methods-machine-learning/</guid><description>&lt;p>The split is not about which algorithm is fashionable. It is about whether each example already has an answer.&lt;/p>
+&lt;p>If the table carries a label, the task is supervised: learn the map from the other columns to that label. If it does not, the task is unsupervised: look for structure the table never names. People sometimes list a third family, reinforcement learning, where the signal is a reward collected over a sequence of actions. A static bioactivity table has no such loop. This note stays with the two tasks that table can actually support.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 560" role="img" aria-labelledby="learn-split-title learn-split-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="learn-split-title">Supervised and unsupervised learning&lt;/title>
+&lt;desc id="learn-split-desc">Supervised learning trains on rows that already contain a class or a number. Unsupervised learning receives points with no answer column and returns groups or a lower-dimensional map.&lt;/desc>
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;rect x="28" y="24" width="584" height="248" rx="18" fill="#2f80ed" fill-opacity="0.08" stroke="#2f80ed"/>
+&lt;rect x="28" y="292" width="584" height="236" rx="18" fill="#9b51e0" fill-opacity="0.08" stroke="#9b51e0"/>
+&lt;rect x="52" y="118" width="250" height="34" rx="8" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="52" y="158" width="250" height="34" rx="8" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="52" y="198" width="250" height="34" rx="8" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;/g>
+&lt;g fill="#27ae60">
+&lt;circle cx="390" cy="400" r="8"/>&lt;circle cx="430" cy="392" r="8"/>&lt;circle cx="418" cy="430" r="8"/>&lt;circle cx="458" cy="418" r="8"/>
+&lt;/g>
+&lt;g fill="#f2994a">
+&lt;circle cx="520" cy="360" r="8"/>&lt;circle cx="556" cy="378" r="8"/>&lt;circle cx="540" cy="412" r="8"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="52" y="62" font-size="22" font-weight="700">Supervised&lt;/text>
+&lt;text x="52" y="92" font-size="16">Every row already has an answer&lt;/text>
+&lt;text x="68" y="140" font-size="15">ID · number · class 1&lt;/text>
+&lt;text x="68" y="180" font-size="15">ID · number · class 0&lt;/text>
+&lt;text x="68" y="220" font-size="15">ID · number · class 1&lt;/text>
+&lt;text x="340" y="150" font-size="16" font-weight="700">Predict the class&lt;/text>
+&lt;text x="340" y="178" font-size="15">classification&lt;/text>
+&lt;text x="340" y="214" font-size="16" font-weight="700">Predict the number&lt;/text>
+&lt;text x="340" y="242" font-size="15">regression&lt;/text>
+&lt;text x="52" y="332" font-size="22" font-weight="700">Unsupervised&lt;/text>
+&lt;text x="52" y="362" font-size="16">No answer column was provided&lt;/text>
+&lt;text x="52" y="430" font-size="16" font-weight="700">Return groups, or a map&lt;/text>
+&lt;text x="52" y="458" font-size="15">clustering, a projection,&lt;/text>
+&lt;text x="52" y="482" font-size="15">or a density&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The same molecules can sit in either panel. What changes is whether a column already holds the thing you want predicted. Identifiers in the supervised table name the row. They are not the features, and they are not the label.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="read-the-row-before-you-name-the-task">Read the row before you name the task&lt;/h2>
+&lt;p>Take a chemical table with one molecule per line and columns such as &lt;code>molecule_chembl_id&lt;/code>, &lt;code>smiles&lt;/code>, &lt;code>standard_value&lt;/code>, and &lt;code>class&lt;/code>.&lt;/p>
+&lt;p>A row is one observation. The ChEMBL ID and the SMILES string identify that molecule. They are columns, but they are not ready-made features. A model needs numbers, and a SMILES string becomes numbers only after you compute descriptors or a fingerprint.&lt;/p>
+&lt;p>&lt;code>standard_value&lt;/code> is already a number. If that number is what you are trying to predict, the task is regression. &lt;code>class&lt;/code> is a category. In the labelling used on the acetylcholinesterase set, 1 means active and 0 means inactive. If that category is what you are trying to predict, the task is classification.&lt;/p>
+&lt;p>Calling every column a feature hides this. The features are the numeric columns you show the model. The label is the column you withhold. The identifier is neither.&lt;/p>
+&lt;h2 id="supervised-learning">Supervised learning&lt;/h2>
+&lt;p>The model sees pairs: inputs, and the answer that went with them. After training, it assigns an answer to a row whose answer was hidden.&lt;/p>
+&lt;p>Two task types cover most bioactivity models.&lt;/p>
+&lt;ul>
+&lt;li>Classification predicts a discrete label. Active or inactive, after you have defined those words with a cutoff, is classification.&lt;/li>
+&lt;li>Regression predicts a continuous value. Predicting the IC50 or the pIC50 itself, rather than a class derived from it, is regression.&lt;/li>
+&lt;/ul>
+&lt;p>The cutoff that created &lt;code>class&lt;/code> is part of the supervised problem. Change the cutoff and you have changed the labels, even if every SMILES string stays the same.&lt;/p>
+&lt;h2 id="unsupervised-learning">Unsupervised learning&lt;/h2>
+&lt;p>Here the model never sees an answer column. It can group rows, compress them, or estimate where the points sit densely. It cannot be &amp;ldquo;right&amp;rdquo; in the sense of matching a class you never provided.&lt;/p>
+&lt;p>Three techniques are the ones that show up on a chemical table.&lt;/p>
+&lt;ul>
+&lt;li>Clustering groups points by similarity. On molecules, that is often a series of close analogs, or a point that sits in no series.&lt;/li>
+&lt;li>Dimensionality reduction draws a lower-dimensional map of the same rows. The map is a view of the representation you chose, not a photograph of chemical space.&lt;/li>
+&lt;li>Density estimation asks where the observations concentrate, which is also how isolated points become visible.&lt;/li>
+&lt;/ul>
+&lt;p>Association rules, known in retail as market-basket analysis, ask which items occur together in a basket. A single-molecule bioactivity table is not a basket. That method belongs to a different kind of data.&lt;/p>
+&lt;p>Evaluation is the uncomfortable part. With no held-out label, accuracy is the wrong word. What you can check is whether the grouping is stable under a second run or a second sample, and whether it lines up with a hypothesis you did not feed into the fit. Neither check turns the output into a supervised prediction.&lt;/p>
+&lt;h2 id="bottom-line">Bottom line&lt;/h2>
+&lt;p>Supervised learning requires a label on the training rows. Unsupervised learning starts without one. Classification and regression are the supervised pair. Clustering, projection, and density estimation are the unsupervised ones you will actually use on a compound table.&lt;/p>
+&lt;p>Choose the family from the table in front of you. If the answer column is missing, no change of algorithm will create it.&lt;/p></description></item></channel></rss>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CoMFA | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/comfa/</link><atom:link href="https://yboulaamane.github.io/tags/comfa/index.xml" rel="self" type="application/rss+xml"/><description>CoMFA</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Fri, 16 Oct 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>CoMFA</title><link>https://yboulaamane.github.io/tags/comfa/</link></image><item><title>3D-QSAR Explained: CoMFA vs CoMSIA</title><link>https://yboulaamane.github.io/blog/3d-qsar-explained-comfa-vs-comsia/</link><pubDate>Fri, 16 Oct 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/3d-qsar-explained-comfa-vs-comsia/</guid><description>&lt;p>CoMFA and CoMSIA answer the same question with different measurements. If a set of congeneric ligands binds the same site in the same way, differences in activity should show up as differences in the space around them. CoMFA samples that space with a probe and records interaction energies, which become extreme near atoms and have to be cut off. CoMSIA records smooth Gaussian similarity indices instead, and adds hydrophobic and hydrogen-bond fields to the steric and electrostatic ones.&lt;/p>
+&lt;p>An earlier post walks through
+, from pIC50 conversion to scrambled-label tests. This one stays with the two methods: what each field is, and what that implies for alignment, PLS, and the contour map.&lt;/p>
+&lt;h2 id="the-shared-idea">The shared idea&lt;/h2>
+&lt;p>Both methods put that assumption on a grid. The ligands are placed in a common frame, a 3D grid is built around them, and at every grid point a descriptor value is calculated for each molecule. The values record where the molecules are bulky, where they carry charge, and where they are polar or hydrophobic. Each compound becomes a long vector of field values. Partial least squares (PLS) then relates those values to activity, and the regression coefficients are mapped back onto the grid as contours.&lt;/p>
+&lt;p>The two methods differ mainly in how the field values are computed.&lt;/p>
+&lt;h2 id="comfa-interaction-energies-with-a-probe">CoMFA: interaction energies with a probe&lt;/h2>
+&lt;p>Comparative Molecular Field Analysis, introduced by Cramer and colleagues [1], places a probe atom (classically an sp³ carbon with a +1 charge) at each grid point and computes two interaction energies with each molecule:&lt;/p>
+&lt;ul>
+&lt;li>a &lt;strong>steric&lt;/strong> term from a Lennard-Jones potential, and&lt;/li>
+&lt;li>an &lt;strong>electrostatic&lt;/strong> term from a Coulomb potential.&lt;/li>
+&lt;/ul>
+&lt;p>These are physically intuitive, but both potentials become very steep close to atomic positions. Grid points inside or near a molecule produce extreme values that would dominate the model, so CoMFA applies energy cut-offs that truncate them. The model is therefore sensitive to cut-off choice, to grid placement, and above all to small shifts in alignment, because a slight move of a molecule relative to the grid can push points across those steep regions.&lt;/p>
+&lt;h2 id="comsia-smooth-similarity-indices">CoMSIA: smooth similarity indices&lt;/h2>
+&lt;p>Comparative Molecular Similarity Indices Analysis, introduced by Klebe and colleagues [2], replaces interaction energies with similarity indices calculated using a Gaussian function of distance. Because a Gaussian has no singularity at the atom position, there is no need for arbitrary cut-offs, and the field values change smoothly as a molecule moves.&lt;/p>
+&lt;p>CoMSIA also extends the field types. Alongside steric and electrostatic fields it typically includes:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>hydrophobic&lt;/strong>,&lt;/li>
+&lt;li>&lt;strong>hydrogen-bond donor&lt;/strong>, and&lt;/li>
+&lt;li>&lt;strong>hydrogen-bond acceptor&lt;/strong> fields.&lt;/li>
+&lt;/ul>
+&lt;p>The result is a set of maps that often read more naturally in medicinal chemistry terms, and a model that is generally less sensitive to small alignment changes than CoMFA. It is not alignment-free: a wrong binding hypothesis is still a wrong model.&lt;/p>
+&lt;h2 id="side-by-side">Side by side&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;/th>
+&lt;th>CoMFA&lt;/th>
+&lt;th>CoMSIA&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Descriptor&lt;/td>
+&lt;td>Probe interaction energy&lt;/td>
+&lt;td>Gaussian similarity index&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Typical fields&lt;/td>
+&lt;td>Steric, electrostatic&lt;/td>
+&lt;td>Steric, electrostatic, hydrophobic, H-bond donor, H-bond acceptor&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Cut-offs needed&lt;/td>
+&lt;td>Yes&lt;/td>
+&lt;td>No&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Behaviour near atoms&lt;/td>
+&lt;td>Steep, truncated&lt;/td>
+&lt;td>Smooth&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Sensitivity to alignment&lt;/td>
+&lt;td>High&lt;/td>
+&lt;td>Lower, but still essential&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Contour interpretation&lt;/td>
+&lt;td>Where the probe energy correlates with activity&lt;/td>
+&lt;td>Where the property in that region correlates with activity&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="alignment-comes-first">Alignment comes first&lt;/h2>
+&lt;p>For both methods, the alignment is the hypothesis. Common options are superposition on a shared substructure, pharmacophore-based alignment, or using docked poses in the binding site. Each makes a claim about how the ligands bind. If that claim is wrong, the fields describe the wrong overlap, and good statistics can still arise from fitting noise. Practical alignment checks are in the
+.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 400" role="img" aria-labelledby="comfa-title comfa-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="comfa-title">Where CoMFA and CoMSIA diverge&lt;/title>
+&lt;desc id="comfa-desc">An aligned congeneric series can be described with CoMFA probe energies or with CoMSIA Gaussian similarity fields. Both descriptions then go through PLS and validation before the contours are read.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-comfa" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;rect x="110" y="16" width="500" height="78" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="24" y="156" width="320" height="96" rx="16" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="376" y="156" width="320" height="96" rx="16" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="110" y="306" width="500" height="78" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;path d="M360 94 L360 124"/>
+&lt;path d="M184 124 L536 124"/>
+&lt;path d="M184 124 L184 156" marker-end="url(#arrow-comfa)"/>
+&lt;path d="M536 124 L536 156" marker-end="url(#arrow-comfa)"/>
+&lt;path d="M184 252 L184 278"/>
+&lt;path d="M536 252 L536 278"/>
+&lt;path d="M184 278 L536 278"/>
+&lt;path d="M360 278 L360 306" marker-end="url(#arrow-comfa)"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="360" y="48" font-size="18" font-weight="700">Aligned congeneric series&lt;/text>
+&lt;text x="360" y="74" font-size="15">One assay, one binding hypothesis&lt;/text>
+&lt;text x="184" y="192" font-size="18" font-weight="700">CoMFA&lt;/text>
+&lt;text x="184" y="216" font-size="14">Probe energies&lt;/text>
+&lt;text x="184" y="236" font-size="14">Steric and electrostatic, cut off&lt;/text>
+&lt;text x="536" y="192" font-size="18" font-weight="700">CoMSIA&lt;/text>
+&lt;text x="536" y="216" font-size="14">Gaussian similarity indices&lt;/text>
+&lt;text x="536" y="236" font-size="14">Plus hydrophobic and H-bond&lt;/text>
+&lt;text x="360" y="338" font-size="18" font-weight="700">Same next step&lt;/text>
+&lt;text x="360" y="364" font-size="15">PLS, validation, then contour maps&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The series and the alignment are shared. The field calculation is the choice. Contours come after the model has been tested, not before.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="pls-why-many-columns-and-few-compounds-still-work">PLS: why many columns and few compounds still work&lt;/h2>
+&lt;p>A 3D-QSAR dataset has far more grid columns than compounds. Ordinary regression would overfit immediately. PLS handles this by compressing the field data into a few latent components that are chosen to covary with activity. The number of components is usually selected by cross-validation, and that number matters: each extra component improves the fit to the training set but may add little or nothing to prediction.&lt;/p>
+&lt;p>A high cross-validated q² on the training set is not sufficient evidence of predictive power on its own [3]. External test compounds and randomisation tests are what tell you the model has learned something beyond the training data.&lt;/p>
+&lt;h2 id="reading-contour-maps-honestly">Reading contour maps honestly&lt;/h2>
+&lt;p>The contour map is the part people put in papers and design meetings, so it is worth being precise about what it shows. Each coloured region marks where the field values correlate with higher or lower activity across the training set, weighted by the PLS coefficients. That is a statistical statement about this dataset in this alignment.&lt;/p>
+&lt;p>Contours are not a picture of the receptor. A favourable steric region suggests bulk was tolerated where the series happened to explore it; it says nothing about regions the series never sampled. Reading contours alongside the binding site, when a structure is available, is the best check that they make physical sense.&lt;/p>
+&lt;h2 id="common-pitfalls">Common pitfalls&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Mixing assays.&lt;/strong> Activities from different protocols add noise that the fields cannot explain.&lt;/li>
+&lt;li>&lt;strong>Too few compounds or too narrow an activity range.&lt;/strong> The model has little variance to explain.&lt;/li>
+&lt;li>&lt;strong>Alignment bias.&lt;/strong> Aligning on the most active compound, or tuning the alignment to improve q², quietly fits the hypothesis to the answer.&lt;/li>
+&lt;li>&lt;strong>Too many PLS components.&lt;/strong> Training statistics rise while prediction does not.&lt;/li>
+&lt;li>&lt;strong>Extrapolating the contours.&lt;/strong> Suggestions far outside the explored chemical space are guesses.&lt;/li>
+&lt;/ul>
+&lt;h2 id="which-one-should-you-use">Which one should you use?&lt;/h2>
+&lt;p>In practice many studies build both and compare. CoMFA is a reasonable choice when steric and electrostatic effects are the main hypothesis and the alignment is well supported. CoMSIA is often easier to interpret when hydrophobic or hydrogen-bonding effects matter, and its smoother fields make it more forgiving of small alignment differences. Neither choice rescues a poor dataset or a wrong binding hypothesis.&lt;/p>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ol>
+&lt;li>Cramer RD, Patterson DE, Bunce JD. Comparative molecular field analysis (CoMFA). 1. Effect of shape on binding of steroids to carrier proteins. &lt;em>J Am Chem Soc&lt;/em> 1988;110:5959–5967. doi:
+&lt;/li>
+&lt;li>Klebe G, Abraham U, Mietzner T. Molecular similarity indices in a comparative analysis (CoMSIA) of drug molecules to correlate and predict their biological activity. &lt;em>J Med Chem&lt;/em> 1994;37:4130–4146. doi:
+&lt;/li>
+&lt;li>Golbraikh A, Tropsha A. Beware of q2! &lt;em>J Mol Graph Model&lt;/em> 2002;20:269–276. doi:
+&lt;/li>
+&lt;/ol></description></item></channel></rss>

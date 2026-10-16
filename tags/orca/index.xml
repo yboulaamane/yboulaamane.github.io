@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ORCA | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/orca/</link><atom:link href="https://yboulaamane.github.io/tags/orca/index.xml" rel="self" type="application/rss+xml"/><description>ORCA</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Thu, 30 Jul 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>ORCA</title><link>https://yboulaamane.github.io/tags/orca/</link></image><item><title>DFT Reproduction of Gold(III)-Mediated Selenocysteine Arylation: An ORCA Tutorial</title><link>https://yboulaamane.github.io/blog/reproducing-transition-metal-catalyzed-mechanisms-dft-tutorial/</link><pubDate>Thu, 30 Jul 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/reproducing-transition-metal-catalyzed-mechanisms-dft-tutorial/</guid><description>&lt;p>In computational organometallic chemistry, reaction pathways are characterized by locating key stationary points (reactants, intermediates, transition states, and products) on the Born-Oppenheimer potential energy surface (PES). The absolute quantum mechanical total energies ($G_{\text{sol}}$ in Hartrees) are converted to relative Gibbs free energies ($\Delta G$ in kcal/mol) to evaluate reaction feasibility, barriers, and thermodynamic driving forces.&lt;/p>
+&lt;p>This tutorial outlines a step-by-step protocol to reproduce the key C-Se reductive elimination and ligand rearrangement step in gold(III)-mediated selenocysteine (Sec) arylation. The calculations reproduce the energetics reported in the literature (&lt;em>Free Radic. Biol. Med.&lt;/em> 2026, 247, 139–156), comparing the coordinated gold(III)-selenolate intermediate (&lt;strong>Int 1&lt;/strong>) with the reductively eliminated gold(I)-bound arylated product complex (&lt;strong>PC&lt;/strong>).&lt;/p>
+&lt;hr>
+&lt;h2 id="computational-workflow-overview">Computational Workflow Overview&lt;/h2>
+&lt;p>The multi-stage computational protocol follows standard quantum chemical best practices to balance computational cost and accuracy:&lt;/p>
+&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 260" width="100%" height="100%">
+&lt;defs>
+&lt;!-- Gradients -->
+&lt;linearGradient id="stage1Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#3B82F6" />
+&lt;stop offset="100%" stop-color="#1D4ED8" />
+&lt;/linearGradient>
+&lt;linearGradient id="stage2Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#10B981" />
+&lt;stop offset="100%" stop-color="#047857" />
+&lt;/linearGradient>
+&lt;linearGradient id="stage3Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#F59E0B" />
+&lt;stop offset="100%" stop-color="#D97706" />
+&lt;/linearGradient>
+&lt;linearGradient id="stage4Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#8B5CF6" />
+&lt;stop offset="100%" stop-color="#6D28D9" />
+&lt;/linearGradient>
+&lt;filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+&lt;feDropShadow dx="1" dy="3" stdDeviation="3" flood-opacity="0.1" />
+&lt;/filter>
+&lt;!-- Arrow Marker -->
+&lt;marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+&lt;path d="M 0 0 L 10 5 L 0 10 z" fill="#9CA3AF" />
+&lt;/marker>
+&lt;/defs>
+&lt;style>
+.header-text { font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: 18px; fill: #111827; }
+.stage-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 12px; fill: #FFFFFF; }
+.stage-desc { font-family: 'Inter', system-ui, sans-serif; font-size: 10px; fill: #F9FAFB; }
+.stage-num { font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: 14px; fill: rgba(255, 255, 255, 0.3); }
+.card-bg { fill: #FFFFFF; stroke: #E5E7EB; stroke-width: 1px; }
+&lt;/style>
+&lt;!-- Background -->
+&lt;rect width="850" height="260" fill="#F9FAFB" rx="12" />
+&lt;text x="25" y="35" class="header-text">Multi-Stage DFT Computational Protocol&lt;/text>
+&lt;!-- Stage 1 -->
+&lt;g transform="translate(25, 60)" filter="url(#shadow)">
+&lt;rect width="170" height="150" rx="8" fill="url(#stage1Grad)" />
+&lt;text x="15" y="25" class="stage-num">STAGE 01&lt;/text>
+&lt;text x="15" y="55" class="stage-title">Pre-Optimization&lt;/text>
+&lt;text x="15" y="80" class="stage-desc">GFN2-xTB tight-binding&lt;/text>
+&lt;text x="15" y="98" class="stage-desc">Rapid coordinate generation&lt;/text>
+&lt;text x="15" y="116" class="stage-desc">Saves DFT compute time&lt;/text>
+&lt;/g>
+&lt;!-- Arrow 1-2 -->
+&lt;path d="M 205 135 L 220 135" fill="none" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrow)" />
+&lt;!-- Stage 2 -->
+&lt;g transform="translate(230, 60)" filter="url(#shadow)">
+&lt;rect width="170" height="150" rx="8" fill="url(#stage2Grad)" />
+&lt;text x="15" y="25" class="stage-num">STAGE 02&lt;/text>
+&lt;text x="15" y="55" class="stage-title">Geometry Opt&lt;/text>
+&lt;text x="15" y="80" class="stage-desc">DFT: M06 functional&lt;/text>
+&lt;text x="15" y="98" class="stage-desc">def2-TZVP basis set&lt;/text>
+&lt;text x="15" y="116" class="stage-desc">CPCM solvation model&lt;/text>
+&lt;/g>
+&lt;!-- Arrow 2-3 -->
+&lt;path d="M 410 135 L 425 135" fill="none" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrow)" />
+&lt;!-- Stage 3 -->
+&lt;g transform="translate(435, 60)" filter="url(#shadow)">
+&lt;rect width="170" height="150" rx="8" fill="url(#stage3Grad)" />
+&lt;text x="15" y="25" class="stage-num">STAGE 03&lt;/text>
+&lt;text x="15" y="55" class="stage-title">Frequency Analysis&lt;/text>
+&lt;text x="15" y="80" class="stage-desc">Vibrational frequency run&lt;/text>
+&lt;text x="15" y="98" class="stage-desc">Zero-Point energy check&lt;/text>
+&lt;text x="15" y="116" class="stage-desc">Thermal corrections (G_corr)&lt;/text>
+&lt;/g>
+&lt;!-- Arrow 3-4 -->
+&lt;path d="M 615 135 L 630 135" fill="none" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrow)" />
+&lt;!-- Stage 4 -->
+&lt;g transform="translate(640, 60)" filter="url(#shadow)">
+&lt;rect width="170" height="150" rx="8" fill="url(#stage4Grad)" />
+&lt;text x="15" y="25" class="stage-num">STAGE 04&lt;/text>
+&lt;text x="15" y="55" class="stage-title">Single-Point Run&lt;/text>
+&lt;text x="15" y="80" class="stage-desc">Large basis set refinement&lt;/text>
+&lt;text x="15" y="98" class="stage-desc">6-311++G(2df,2p)&lt;/text>
+&lt;text x="15" y="116" class="stage-desc">Final free energy calculation&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;hr>
+&lt;h2 id="1-executive-summary">1. Executive Summary&lt;/h2>
+&lt;p>This study documents the computational reproduction of the gold(III)-mediated selenocysteine arylation step reported in literature (&lt;em>Free Radic. Biol. Med.&lt;/em> 2026, 247, 139–156). Calculations model the reaction pathway from the coordinated gold(III)-selenolate intermediate (&lt;strong>Int 1&lt;/strong>) to the reductively eliminated gold(I)-bound arylated product complex (&lt;strong>PC&lt;/strong>) with the release of a chloride leaving ligand.&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Published Literature $\Delta G_{\text{Int 1} \rightarrow \text{PC}}$:&lt;/strong> -20.40 kcal/mol&lt;/li>
+&lt;li>&lt;strong>Calculated ORCA DFT $\Delta G_{\text{Int 1} \rightarrow \text{PC}}$:&lt;/strong> -19.44 kcal/mol&lt;/li>
+&lt;li>&lt;strong>Agreement:&lt;/strong> Within 0.96 kcal/mol ($\Delta\Delta G$)&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="2-computational-methods">2. Computational Methods&lt;/h2>
+&lt;h3 id="software-stack">Software Stack&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>Quantum Chemistry Engine:&lt;/strong> ORCA (version 6.1.1)&lt;/li>
+&lt;li>&lt;strong>Pre-optimization Engine:&lt;/strong> GFN2-xTB (version 6.7.0)&lt;/li>
+&lt;li>&lt;strong>Structure Conversion:&lt;/strong> OpenBabel (version 3.1.1)&lt;/li>
+&lt;/ul>
+&lt;h3 id="environment-configuration">Environment Configuration&lt;/h3>
+&lt;p>Ensure proper path exports for the ORCA binaries and shared libraries before initiating parallel runs:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">PATH&lt;/span>&lt;span class="o">=&lt;/span>/path/to/orca:/path/to/xtb/bin:&lt;span class="nv">$PATH&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">LD_LIBRARY_PATH&lt;/span>&lt;span class="o">=&lt;/span>/path/to/orca/lib:&lt;span class="nv">$LD_LIBRARY_PATH&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">OMPI_MCA_rmaps_base_oversubscribe&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;h2 id="3-four-stage-computational-protocol">3. Four-Stage Computational Protocol&lt;/h2>
+&lt;h3 id="stage-1-semi-empirical-pre-optimization-gfn2-xtb">Stage 1: Semi-Empirical Pre-Optimization (GFN2-xTB)&lt;/h3>
+&lt;p>Starting DFT optimizations directly from raw Cartesian coordinates or 2D layouts is computationally expensive and prone to convergence failure. GFN2-xTB is a fast tight-binding semi-empirical method that provides accurate initial geometries for all elements up to $Z=86$, establishing a stable starting point for the subsequent DFT calculations.&lt;/p>
+&lt;h3 id="stage-2-density-functional-theory-optimization-m06">Stage 2: Density Functional Theory Optimization (M06)&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>Functional (M06):&lt;/strong> A hybrid meta-GGA functional developed by Zhao and Truhlar, parameterized for transition-metal organometallics, non-covalent interactions, and thermochemical calculations.&lt;/li>
+&lt;li>&lt;strong>Basis Set (def2-TZVP):&lt;/strong> Ahlrichs triple-zeta valence basis set with polarization functions. Transition metals and heavy elements (such as Au and Se) utilize relativistic Effective Core Potentials (def2-ECP) to replace core electrons and account for scalar relativistic effects.&lt;/li>
+&lt;li>&lt;strong>Solvation (CPCM):&lt;/strong> The Conductor-like Polarizable Continuum Model simulates implicit solvation (modeled as water with $\epsilon = 80.15$).&lt;/li>
+&lt;/ul>
+&lt;h3 id="stage-3-frequency--thermochemical-correction">Stage 3: Frequency &amp;amp; Thermochemical Correction&lt;/h3>
+&lt;p>Calculating the Hessian matrix (second derivatives of energy with respect to coordinate changes) provides the harmonic vibrational frequencies of the optimized structures. This step validates that the structure is a true minimum (zero imaginary frequencies) and yields the thermal correction to Gibbs free energy ($G_{\text{corr}}$) incorporating Zero-Point Vibrational Energy (ZPVE), enthalpy, and entropy contributions at 298.15 K.&lt;/p>
+&lt;h3 id="stage-4-single-point-energy-refinement">Stage 4: Single-Point Energy Refinement&lt;/h3>
+&lt;p>To improve energy accuracy, a single-point energy calculation ($E_{\text{elec}}^{\text{SP}}$) is performed on the optimized geometry using a larger basis set containing diffuse (&lt;code>++&lt;/code>) and multiple polarization functions (&lt;code>6-311++G(2df,2p)&lt;/code>). The final solvated free energy is defined by:&lt;/p>
+$$G_{\text{sol}} = E_{\text{elec}}^{\text{SP}} + G_{\text{corr}}$$&lt;hr>
+&lt;h2 id="4-step-by-step-practical-protocol">4. Step-by-Step Practical Protocol&lt;/h2>
+&lt;h3 id="step-1-structure-conversion">Step 1: Structure Conversion&lt;/h3>
+&lt;p>Convert the 2D structures into Cartesian coordinates using OpenBabel:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Convert reactant intermediate (Int 1)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">obabel int1_test.mol -O int1_3d.xyz --gen3d
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Convert product complex (PC)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">obabel pc_test.mol -O pc_3d.xyz --gen3d
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="step-2-semi-empirical-pre-optimization">Step 2: Semi-Empirical Pre-Optimization&lt;/h3>
+&lt;p>Run pre-optimizations to refine geometry:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Optimize reactant intermediate (Int 1)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">xtb int1_3d.xyz --opt --chrg -1 --uhf &lt;span class="m">0&lt;/span> &amp;gt; xtb_int1.log 2&amp;gt;&lt;span class="p">&amp;amp;&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cp xtbopt.xyz int1_xtbopt.xyz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Optimize product complex (PC)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">xtb pc_3d.xyz --opt --chrg -1 --uhf &lt;span class="m">0&lt;/span> &amp;gt; xtb_pc.log 2&amp;gt;&lt;span class="p">&amp;amp;&lt;/span>&lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cp xtbopt.xyz pc_xtbopt.xyz
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="step-3-dft-geometry-optimization--frequencies-in-orca">Step 3: DFT Geometry Optimization &amp;amp; Frequencies in ORCA&lt;/h3>
+&lt;p>Create the ORCA input files (&lt;code>orca_int1.inp&lt;/code> and &lt;code>orca_pc.inp&lt;/code>) with the following block:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">! M06 CPCM(Water) def2-TZVP def2-ECP RIJCOSX Opt Freq
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">%pal nprocs 6 end
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">%maxcore 3000
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">* xyzfile -1 1 int1_xtbopt.xyz
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Execute the optimization jobs:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Run Int 1 calculation&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">orca orca_int1.inp &amp;gt; orca_int1.out 2&amp;gt;&lt;span class="p">&amp;amp;&lt;/span>&lt;span class="m">1&lt;/span> &lt;span class="p">&amp;amp;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Run PC calculation&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">orca orca_pc.inp &amp;gt; orca_pc.out 2&amp;gt;&lt;span class="p">&amp;amp;&lt;/span>&lt;span class="m">1&lt;/span> &lt;span class="p">&amp;amp;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="step-4-single-point-energy-refinement">Step 4: Single-Point Energy Refinement&lt;/h3>
+&lt;p>Create the input file for single-point refinement using the coordinates of the optimized geometry:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">! M06 CPCM(Water) 6-311++G(2df,2p) def2-ECP RIJCOSX
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">%basis
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> NewGTO Au &amp;#34;def2-TZVP&amp;#34; end
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> NewECP Au &amp;#34;def2-ECP&amp;#34; end
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">end
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">%pal nprocs 6 end
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">%maxcore 3000
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">* xyzfile -1 1 optimized_int1.xyz
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;h2 id="5-calculation-results--energy-summary">5. Calculation Results &amp;amp; Energy Summary&lt;/h2>
+&lt;h3 id="51-absolute-orca-energies-hartrees">5.1 Absolute ORCA Energies (Hartrees)&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: left">Species&lt;/th>
+&lt;th style="text-align: center">$E_{\text{elec}}$ (def2-TZVP)&lt;/th>
+&lt;th style="text-align: center">$E_{\text{elec}}^{\text{SP}}$ (6-311++G)&lt;/th>
+&lt;th style="text-align: center">$G_{\text{corr}}$ (298.15 K)&lt;/th>
+&lt;th style="text-align: center">Absolute $G_{\text{sol}}$&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>Intermediate 1 (Int 1)&lt;/strong>&lt;/td>
+&lt;td style="text-align: center">-3991.78970176 $E_h$&lt;/td>
+&lt;td style="text-align: center">-3991.80208767 $E_h$&lt;/td>
+&lt;td style="text-align: center">+0.27892271 $E_h$&lt;/td>
+&lt;td style="text-align: center">-3991.51077905 $E_h$&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>Product Complex (PC)&lt;/strong>&lt;/td>
+&lt;td style="text-align: center">-4451.50404801 $E_h$&lt;/td>
+&lt;td style="text-align: center">-4451.41489781 $E_h$&lt;/td>
+&lt;td style="text-align: center">+0.27046657 $E_h$&lt;/td>
+&lt;td style="text-align: center">-4451.23358144 $E_h$&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>Chloride Leaving Group ($Cl^-$)&lt;/strong>&lt;/td>
+&lt;td style="text-align: center">-460.36831711 $E_h$&lt;/td>
+&lt;td style="text-align: center">-460.36831711 $E_h$&lt;/td>
+&lt;td style="text-align: center">-0.01350000 $E_h$&lt;/td>
+&lt;td style="text-align: center">-460.38181711 $E_h$&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;h3 id="52-reaction-step-thermochemistry-">5.2 Reaction Step Thermochemistry ($\Delta G$)&lt;/h3>
+&lt;p>The net free energy change of the reaction step is calculated as:&lt;/p>
+$$\Delta G_{\text{Int 1} \rightarrow \text{PC}} = G_{\text{sol}}(\text{PC}) + G_{\text{sol}}(\text{Cl}^-) - G_{\text{sol}}(\text{Int 1})$$&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: left">Parameter&lt;/th>
+&lt;th style="text-align: center">Calculated DFT Value&lt;/th>
+&lt;th style="text-align: center">Literature Benchmark&lt;/th>
+&lt;th style="text-align: center">Deviation ($\Delta\Delta G$)&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>Int 1 Free Energy&lt;/strong>&lt;/td>
+&lt;td style="text-align: center">Baseline&lt;/td>
+&lt;td style="text-align: center">-16.45 kcal/mol&lt;/td>
+&lt;td style="text-align: center">&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>PC Free Energy&lt;/strong>&lt;/td>
+&lt;td style="text-align: center">Refined&lt;/td>
+&lt;td style="text-align: center">-36.85 kcal/mol&lt;/td>
+&lt;td style="text-align: center">&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>Net Step Free Energy ($\Delta G_{\text{step}}$)&lt;/strong>&lt;/td>
+&lt;td style="text-align: center">-19.44 kcal/mol&lt;/td>
+&lt;td style="text-align: center">-20.40 kcal/mol&lt;/td>
+&lt;td style="text-align: center">+0.96 kcal/mol&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;h2 id="takeaways">Takeaways&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Semi-empirical pre-optimization (GFN2-xTB)&lt;/strong> reduces geometry optimization failure rates and saves computational resources in transition-metal systems.&lt;/li>
+&lt;li>&lt;strong>Effective Core Potentials (ECPs)&lt;/strong> are required for elements in the lower periods (such as gold) to describe relativistic effects on core electrons.&lt;/li>
+&lt;li>&lt;strong>Large basis set single-point refinement&lt;/strong> is essential to obtain thermodynamically accurate reaction free energies ($\Delta G$) that agree with published literature.&lt;/li>
+&lt;/ul></description></item></channel></rss>

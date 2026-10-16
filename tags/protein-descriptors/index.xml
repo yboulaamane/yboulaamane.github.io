@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Protein Descriptors | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/protein-descriptors/</link><atom:link href="https://yboulaamane.github.io/tags/protein-descriptors/index.xml" rel="self" type="application/rss+xml"/><description>Protein Descriptors</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 20 Jul 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Protein Descriptors</title><link>https://yboulaamane.github.io/tags/protein-descriptors/</link></image><item><title>Protein Descriptors for Machine Learning in Drug Discovery</title><link>https://yboulaamane.github.io/blog/protein-descriptors/</link><pubDate>Mon, 20 Jul 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/protein-descriptors/</guid><description>&lt;p>When you&amp;rsquo;re modeling protein-ligand binding or reactivity, one of the first decisions is what to actually compute as a protein feature. The options range from a single vector derived from the amino acid sequence to a full ensemble of structural and interaction features extracted from molecular dynamics. Picking the wrong level of detail either throws away information the model needs, or buries it in noise the model can&amp;rsquo;t use.&lt;/p>
+&lt;p>The descriptors below split into three fundamentally different categories depending on what inputs they require and how they respond to target movement:&lt;/p>
+&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 380" width="100%" height="100%">
+&lt;defs>
+&lt;!-- Gradients -->
+&lt;linearGradient id="seqGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#3B82F6" />
+&lt;stop offset="100%" stop-color="#1D4ED8" />
+&lt;/linearGradient>
+&lt;linearGradient id="strGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#10B981" />
+&lt;stop offset="100%" stop-color="#047857" />
+&lt;/linearGradient>
+&lt;linearGradient id="cpxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#8B5CF6" />
+&lt;stop offset="100%" stop-color="#6D28D9" />
+&lt;/linearGradient>
+&lt;filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+&lt;feDropShadow dx="1" dy="3" stdDeviation="3" flood-opacity="0.1" />
+&lt;/filter>
+&lt;/defs>
+&lt;style>
+.header-text { font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: 20px; fill: #111827; }
+.col-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 14px; fill: #FFFFFF; }
+.col-subtitle { font-family: 'Inter', system-ui, sans-serif; font-weight: 500; font-size: 11px; fill: #E0E7FF; }
+.item-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 12px; fill: #1F2937; }
+.item-desc { font-family: 'Inter', system-ui, sans-serif; font-size: 11px; fill: #4B5563; }
+.card-bg { fill: #FFFFFF; stroke: #E5E7EB; stroke-width: 1px; }
+&lt;/style>
+&lt;!-- Background -->
+&lt;rect width="850" height="380" fill="#F9FAFB" rx="12" />
+&lt;text x="30" y="35" class="header-text">Protein Descriptor Landscape for Machine Learning Modeling&lt;/text>
+&lt;!-- COLUMN 1: Sequence-based -->
+&lt;g transform="translate(30, 60)" filter="url(#shadow)">
+&lt;!-- Header Card -->
+&lt;rect width="240" height="290" rx="8" class="card-bg" />
+&lt;path d="M 0 8 Q 0 0, 8 0 L 232 0 Q 240 0, 240 8 L 240 50 L 0 50 Z" fill="url(#seqGrad)" />
+&lt;text x="15" y="25" class="col-title">1. Sequence-Based&lt;/text>
+&lt;text x="15" y="40" class="col-subtitle">Invariant (computed once per protein)&lt;/text>
+&lt;!-- Items -->
+&lt;g transform="translate(15, 60)">
+&lt;!-- Item A -->
+&lt;circle cx="5" cy="11" r="3" fill="#3B82F6" />
+&lt;text x="15" y="15" class="item-title">Classical Sequence Metrics&lt;/text>
+&lt;text x="15" y="32" class="item-desc">AA Composition, PAAC, CTD descriptors&lt;/text>
+&lt;!-- Item B -->
+&lt;circle cx="5" cy="66" r="3" fill="#3B82F6" />
+&lt;text x="15" y="70" class="item-title">Evolutionary Profiles&lt;/text>
+&lt;text x="15" y="87" class="item-desc">PSSM profiles from sequence alignments&lt;/text>
+&lt;!-- Item C -->
+&lt;circle cx="5" cy="121" r="3" fill="#3B82F6" />
+&lt;text x="15" y="125" class="item-title">Protein Language Models&lt;/text>
+&lt;text x="15" y="142" class="item-desc">ESM, ProtBERT, UniRep embeddings&lt;/text>
+&lt;!-- Item D -->
+&lt;circle cx="5" cy="176" r="3" fill="#3B82F6" />
+&lt;text x="15" y="180" class="item-title">Mutation Indicators&lt;/text>
+&lt;text x="15" y="197" class="item-desc">Binary flags mapping catalytic mutations&lt;/text>
+&lt;/g>
+&lt;/g>
+&lt;!-- COLUMN 2: Structure-based -->
+&lt;g transform="translate(305, 60)" filter="url(#shadow)">
+&lt;!-- Header Card -->
+&lt;rect width="240" height="290" rx="8" class="card-bg" />
+&lt;path d="M 0 8 Q 0 0, 8 0 L 232 0 Q 240 0, 240 8 L 240 50 L 0 50 Z" fill="url(#strGrad)" />
+&lt;text x="15" y="25" class="col-title">2. Structure-Based&lt;/text>
+&lt;text x="15" y="40" class="col-subtitle">State-Dependent (needs 3D structure)&lt;/text>
+&lt;!-- Items -->
+&lt;g transform="translate(15, 60)">
+&lt;!-- Item A -->
+&lt;circle cx="5" cy="11" r="3" fill="#10B981" />
+&lt;text x="15" y="15" class="item-title">Pocket Geometry&lt;/text>
+&lt;text x="15" y="32" class="item-desc">Pocket volume, CAVER bottleneck radius&lt;/text>
+&lt;!-- Item B -->
+&lt;circle cx="5" cy="66" r="3" fill="#10B981" />
+&lt;text x="15" y="70" class="item-title">Internal Distances&lt;/text>
+&lt;text x="15" y="87" class="item-desc">Fe-to-residue and Cα-Cα distances&lt;/text>
+&lt;!-- Item C -->
+&lt;circle cx="5" cy="121" r="3" fill="#10B981" />
+&lt;text x="15" y="125" class="item-title">Secondary Structure&lt;/text>
+&lt;text x="15" y="142" class="item-desc">Backbone φ/ψ, loop folding (DSSP)&lt;/text>
+&lt;!-- Item D -->
+&lt;circle cx="5" cy="176" r="3" fill="#10B981" />
+&lt;text x="15" y="180" class="item-title">Fluctuations (RMSF)&lt;/text>
+&lt;text x="15" y="197" class="item-desc">Residue-level movement in MD snapshots&lt;/text>
+&lt;/g>
+&lt;/g>
+&lt;!-- COLUMN 3: Complex-based -->
+&lt;g transform="translate(580, 60)" filter="url(#shadow)">
+&lt;!-- Header Card -->
+&lt;rect width="240" height="290" rx="8" class="card-bg" />
+&lt;path d="M 0 8 Q 0 0, 8 0 L 232 0 Q 240 0, 240 8 L 240 50 L 0 50 Z" fill="url(#cpxGrad)" />
+&lt;text x="15" y="25" class="col-title">3. Complex-Based&lt;/text>
+&lt;text x="15" y="40" class="col-subtitle">Interaction-Dependent (needs complex)&lt;/text>
+&lt;!-- Items -->
+&lt;g transform="translate(15, 60)">
+&lt;!-- Item A -->
+&lt;circle cx="5" cy="11" r="3" fill="#8B5CF6" />
+&lt;text x="15" y="15" class="item-title">Reactant Geometry&lt;/text>
+&lt;text x="15" y="32" class="item-desc">Fe-C distance, reactant angles, SASA&lt;/text>
+&lt;!-- Item B -->
+&lt;circle cx="5" cy="66" r="3" fill="#8B5CF6" />
+&lt;text x="15" y="70" class="item-title">Interaction Fingerprints&lt;/text>
+&lt;text x="15" y="87" class="item-desc">PLIP, BINANA contacts (H-bonds, π-stack)&lt;/text>
+&lt;!-- Item C -->
+&lt;circle cx="5" cy="121" r="3" fill="#8B5CF6" />
+&lt;text x="15" y="125" class="item-title">PLEC Fingerprints&lt;/text>
+&lt;text x="15" y="142" class="item-desc">Protein-ligand extended connectivity&lt;/text>
+&lt;!-- Item D -->
+&lt;circle cx="5" cy="176" r="3" fill="#8B5CF6" />
+&lt;text x="15" y="180" class="item-title">Refinement Metrics&lt;/text>
+&lt;text x="15" y="197" class="item-desc">MMPBSA binding energies &amp;amp; QM/MM&lt;/text>
+&lt;/g>
+&lt;/g>
+&lt;/svg>
+&lt;ul>
+&lt;li>&lt;strong>Invariant (sequence-only):&lt;/strong> Invariant per protein and computed once from sequence inputs.&lt;/li>
+&lt;li>&lt;strong>State-dependent (structure/MD):&lt;/strong> Conformational state-dependent; computed per structure or trajectory frame.&lt;/li>
+&lt;li>&lt;strong>Complex-dependent (interaction):&lt;/strong> Dependent on the protein-ligand structural interface; calculated from bound complex snapshots.&lt;/li>
+&lt;/ul>
+&lt;p>Features are structured hierarchically: sequence descriptors form the invariant base layer, while structure and interaction descriptors are computed per snapshot and aggregated over the MD ensemble (using mean, standard deviation, percentiles, and state occupancies).&lt;/p>
+&lt;hr>
+&lt;h2 id="1-sequence-based-descriptors">1. Sequence-Based Descriptors&lt;/h2>
+&lt;p>Sequence features are computationally inexpensive and remain invariant across conformations.&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>AAindex / Z-scales:&lt;/strong> Residue-level physicochemical properties, including hydrophobicity, polarity, and volume, represented as compressed scales.&lt;/li>
+&lt;li>&lt;strong>BioVec / ProtVec:&lt;/strong> Distributed representation embeddings capturing local sequence context and motifs.&lt;/li>
+&lt;li>&lt;strong>PSSM:&lt;/strong> Position-Specific Scoring Matrices defining evolutionary conservation from multiple alignments.&lt;/li>
+&lt;li>&lt;strong>AA Composition (AAComp), CTD (CTDC/CTDT/CTDD), PAAC:&lt;/strong> Global composition, property transitions, and sequence-order correlations.&lt;/li>
+&lt;li>&lt;strong>Deep Protein Language Models (PLMs):&lt;/strong> Numerical representations from pretrained transformer models (such as ESM, ProtBERT, or UniRep) that capture structural and biophysical information directly from raw sequences.&lt;/li>
+&lt;/ul>
+&lt;p>Pretrained PLM embeddings are utilized for:&lt;/p>
+&lt;ul>
+&lt;li>Cross-species and cross-target transfer learning.&lt;/li>
+&lt;li>Classification of substrate and inhibitor specificity.&lt;/li>
+&lt;li>Modeling targets with sparse experimental datasets.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Mutation indicators&lt;/strong> are binary vectors encoding specific residue substitutions in active or allosteric sites, serving as another invariant sequence-level feature.&lt;/p>
+&lt;hr>
+&lt;h2 id="2-structure-based-descriptors">2. Structure-Based Descriptors&lt;/h2>
+&lt;p>Structure-based features characterize target conformations and vary across molecular dynamics trajectories.&lt;/p>
+&lt;ul>
+&lt;li>Secondary structure occupancy (such as loop regions surrounding the pocket).&lt;/li>
+&lt;li>Backbone dihedral angle ($\phi$/$\psi$) distributions.&lt;/li>
+&lt;li>Distances characterizing access channels and gate loop configurations.&lt;/li>
+&lt;li>Active site pocket geometry, including volume and bottleneck radius.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="3-complex-based-descriptors">3. Complex-Based Descriptors&lt;/h2>
+&lt;p>Complex-based descriptors characterize the protein-ligand interface and require coordinate data of the bound complex.&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Interaction Fingerprints (IFPs):&lt;/strong> Binary representation of hydrogen bonds, $\pi$-stacking, cation-$\pi$, hydrophobic contacts, and salt bridges (using tools such as PLIP, BINANA, or ODDT).&lt;/li>
+&lt;li>&lt;strong>PLEC Fingerprints&lt;/strong> &lt;em>(protein-ligand extended connectivity)&lt;/em>: Encode local atom environments for protein-ligand contacts within a cutoff. Useful for virtual screening, affinity prediction, and QSAR on docked or MD complexes, but not applicable to sequence-only modeling.&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>[!NOTE]
+Sequence-to-ligand generation frameworks (such as &lt;strong>Prot2Drug&lt;/strong>) demonstrate that sequence-only drug-target interaction (DTI) pipelines can generalize to uncharacterized proteins.&lt;/p>&lt;/blockquote>
+&lt;hr>
+&lt;h2 id="sequence-descriptor-characterization-using-propy3">Sequence Descriptor Characterization using Propy3&lt;/h2>
+&lt;p>The &lt;code>propy3&lt;/code> package calculates classical sequence descriptors:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Amino Acid Composition (AAComp) - 20 descriptors:&lt;/strong> Fraction of each amino acid in the sequence. Global composition, no order information.&lt;/li>
+&lt;li>&lt;strong>CTD Descriptors (Composition, Transition, Distribution) - 147 descriptors:&lt;/strong>
+&lt;ul>
+&lt;li>&lt;em>CTDC (Composition) - 21:&lt;/em> Physicochemical class composition including hydrophobicity, volume, and polarity.&lt;/li>
+&lt;li>&lt;em>CTDT (Transition) - 21:&lt;/em> Transition frequencies between property classes.&lt;/li>
+&lt;li>&lt;em>CTDD (Distribution) - 105:&lt;/em> Positions of class occurrences along the sequence (1%, 25%, 50%, 75%, and 100% position thresholds).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Pseudo Amino Acid Composition (PAAC) - 30 descriptors:&lt;/strong> Adds correlation factors on top of composition to capture local sequence-order effects.&lt;/li>
+&lt;/ul>
+&lt;h3 id="feature-selection-for-binding-models">Feature Selection for Binding Models&lt;/h3>
+&lt;p>Sequence-based feature relevance varies by modeling objective:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: center">Descriptor Type&lt;/th>
+&lt;th style="text-align: center">Status&lt;/th>
+&lt;th>Utility&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: center">&lt;strong>CTDC&lt;/strong> (Composition)&lt;/td>
+&lt;td style="text-align: center">Recommended&lt;/td>
+&lt;td>Captures pocket accessibility and chemical complementarity.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;strong>CTDT&lt;/strong> (Transition)&lt;/td>
+&lt;td style="text-align: center">Recommended&lt;/td>
+&lt;td>Encodes sequence alternations associated with loop gates.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;strong>CTDD&lt;/strong> (Distribution)&lt;/td>
+&lt;td style="text-align: center">Optional&lt;/td>
+&lt;td>Captures large-scale domain topology and length dependencies.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;strong>PAAC&lt;/strong>&lt;/td>
+&lt;td style="text-align: center">Recommended&lt;/td>
+&lt;td>Adds sequence-order correlations for baseline machine learning models.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;strong>AAComp&lt;/strong>&lt;/td>
+&lt;td style="text-align: center">Optional&lt;/td>
+&lt;td>Provides a simple baseline with minimal resolution.&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>The combination of PAAC, CTDC, and CTDT forms a robust sequence baseline.&lt;/p>
+&lt;hr>
+&lt;h2 id="ensemble-and-md-derived-descriptors">Ensemble and MD-Derived Descriptors&lt;/h2>
+&lt;p>Conformational and interaction descriptors must be calculated per trajectory frame and aggregated statistically over the ensemble:&lt;/p>
+&lt;h3 id="active-site-geometry">Active-Site Geometry&lt;/h3>
+&lt;ul>
+&lt;li>Distances from ligand reactive groups to active site centers, such as a metal atom or active site residue.&lt;/li>
+&lt;li>Pocket residue planarity and ligand centroid alignment.&lt;/li>
+&lt;li>Pocket volume and bottleneck radius (calculated using CAVER).&lt;/li>
+&lt;/ul>
+&lt;h3 id="access-and-dynamics">Access and Dynamics&lt;/h3>
+&lt;ul>
+&lt;li>Loop opening distances around target pockets.&lt;/li>
+&lt;li>Residue root-mean-square fluctuations (RMSF).&lt;/li>
+&lt;li>Secondary structure transitions (calculated via DSSP).&lt;/li>
+&lt;/ul>
+&lt;h3 id="contact-interfaces">Contact Interfaces&lt;/h3>
+&lt;ul>
+&lt;li>Hydrogen bonds, salt bridges, $\pi$-interactions, and hydrophobic contacts (using PLIP/BINANA/ODDT).&lt;/li>
+&lt;li>Frame-level PLEC profiles.&lt;/li>
+&lt;li>Residue-ligand contact occupancies and water-mediated network persistence.&lt;/li>
+&lt;/ul>
+&lt;h3 id="surface-and-electrostatics">Surface and Electrostatics&lt;/h3>
+&lt;ul>
+&lt;li>Solvent-accessible surface area (SASA) of the pocket and bound ligand.&lt;/li>
+&lt;li>Pocket electrostatic potential fields (calculated via APBS).&lt;/li>
+&lt;/ul>
+&lt;h3 id="dynamic-trajectory-metrics">Dynamic Trajectory Metrics&lt;/h3>
+&lt;ul>
+&lt;li>Fraction of trajectory frames meeting a defined catalytic cutoff, such as reaction site distance less than 4.5 Angstroms.&lt;/li>
+&lt;li>Dwell times in open or closed conformation states.&lt;/li>
+&lt;li>Markov State Model (MSM) state probabilities.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="feature-blueprint">Feature Blueprint&lt;/h2>
+&lt;ol>
+&lt;li>&lt;strong>Data Inputs:&lt;/strong>
+&lt;ul>
+&lt;li>Coordinates: Topology file (&lt;code>top.pdb&lt;/code>) and trajectory file (&lt;code>traj.xtc&lt;/code>).&lt;/li>
+&lt;li>Atom selections: Pocket reference center (such as a catalytic metal or pocket centroid C$\alpha$), ligand atom group, and pocket residues (within 6-8 Å of the pocket).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Feature Blocks:&lt;/strong>
+&lt;ul>
+&lt;li>&lt;em>3D Shape:&lt;/em> 3D Zernike moments computed on the pocket surface, aggregated over the trajectory (mean $\pm$ standard deviation).&lt;/li>
+&lt;li>&lt;em>Geometry:&lt;/em> Distance from catalytic center to reactive atom, ligand centroid to pocket plane, pocket volume and bottleneck radius, and solvent-accessible surface area (SASA), aggregated over frames.&lt;/li>
+&lt;li>&lt;em>Interactions:&lt;/em> PLEC profiles and PLIP contact classes, aggregated by state occupancy.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Output:&lt;/strong> A unified feature matrix combining continuous metrics with fingerprint occupancies.&lt;/li>
+&lt;li>&lt;strong>Data Preprocessing:&lt;/strong>
+&lt;ul>
+&lt;li>Thin trajectories to 10-50 ps intervals.&lt;/li>
+&lt;li>Standardize continuous features ($z$-score scaling).&lt;/li>
+&lt;li>Reduce high-dimensional shape vectors using Principal Component Analysis (PCA).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;h2 id="code-computing-basic-geometry-features-with-mdanalysis">Code: computing basic geometry features with MDAnalysis&lt;/h2>
+&lt;p>Script to compute reference distances and plane projections:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">MDAnalysis&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">mda&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">numpy&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">np&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">pandas&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">pd&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">u&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mda&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Universe&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;top.pdb&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;traj.xtc&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Select reference atom in the active site (such as pocket center CA)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">ref_atom&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">u&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">select_atoms&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;protein and resid 102 and name CA&amp;#34;&lt;/span>&lt;span class="p">)[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">lig&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">u&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">select_atoms&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;resname LIG&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Select specific reacting ligand atom&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">react_atom&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">lig&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">select_atoms&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;name C1&amp;#34;&lt;/span>&lt;span class="p">)[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Select pocket residues defining a local plane&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">plane_atoms&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">u&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">select_atoms&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;protein and name CA and (resid 90 or resid 95 or resid 100)&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">rows&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">ts&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">u&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">trajectory&lt;/span>&lt;span class="p">[::&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="p">]:&lt;/span> &lt;span class="c1"># thin trajectory&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># 1. Reference distance&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">d_ref&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">linalg&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">norm&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ref_atom&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">position&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">react_atom&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">position&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># 2. Ligand-to-pocket-plane distance&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">X&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">plane_atoms&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">positions&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">plane_atoms&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">positions&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">mean&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">_&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">vh&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">linalg&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">svd&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">X&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">full_matrices&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">False&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">n&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">vh&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="c1"># normal vector of the plane&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">p0&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">plane_atoms&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">positions&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">mean&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">lc&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">lig&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">center_of_mass&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">d_plane&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">abs&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">np&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">dot&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">lc&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">p0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">rows&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;frame&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ts&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">frame&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;d_ref&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">d_ref&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;d_plane&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">d_plane&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">pd&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">DataFrame&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">rows&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">to_csv&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;md_geom.csv&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">index&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">False&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;h2 id="shape-descriptors-zernike-moments-vs-reomokage-feature-points">Shape descriptors: Zernike moments vs ReOmokage feature points&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Method&lt;/th>
+&lt;th>Representation&lt;/th>
+&lt;th>Captures&lt;/th>
+&lt;th>Good for&lt;/th>
+&lt;th>Limitation&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;strong>Zernike&lt;/strong>&lt;/td>
+&lt;td>Mathematical expansion of 3D shape into orthogonal moments&lt;/td>
+&lt;td>Global and local surface geometry&lt;/td>
+&lt;td>ML descriptors, clustering, fast comparisons&lt;/td>
+&lt;td>Ignores absolute spatial alignment&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>ReOmokage&lt;/strong>&lt;/td>
+&lt;td>Real 3D coordinates of key shape landmarks&lt;/td>
+&lt;td>Shape and spatial arrangement&lt;/td>
+&lt;td>Structural alignment, conformation similarity&lt;/td>
+&lt;td>Not ML-friendly (variable length, alignment-dependent)&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>For machine learning workflows, &lt;strong>Zernike moments&lt;/strong> provide fixed-length feature vectors. For structural alignment, &lt;strong>ReOmokage-style landmarks&lt;/strong> preserve absolute spatial relationships.&lt;/p>
+&lt;hr>
+&lt;h2 id="takeaways">Takeaways&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Sequence descriptors form the invariant baseline&lt;/strong> of the feature space.&lt;/li>
+&lt;li>&lt;strong>Incorporate structure and interaction descriptors&lt;/strong> only when coordinate data are available, calculating them frame-by-frame.&lt;/li>
+&lt;li>&lt;strong>Aggregate descriptors statistically over trajectories;&lt;/strong> single-frame coordinates do not represent dynamic systems.&lt;/li>
+&lt;li>&lt;strong>Protein-ligand interaction fingerprints (PLEC, IFPs)&lt;/strong> capture transient contact states that static models omit.&lt;/li>
+&lt;/ul></description></item></channel></rss>

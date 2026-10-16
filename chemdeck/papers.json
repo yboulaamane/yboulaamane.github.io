@@ -1,0 +1,451 @@
+[
+  {
+    "id": "chronological-qsar-validation",
+    "venue": "J. Chem. Inf. Model.",
+    "date": "Oct 2026",
+    "title": "Validation Strategy Dominates Model Choice in Chronological QSAR Evaluation",
+    "authors": "Almendra & Falcao",
+    "url": "https://doi.org/10.1021/acs.jcim.6c02796",
+    "problem": "QSAR models are usually judged by random cross-validation, which may flatter them when test compounds sit close to the training data in structure or time. Is the optimism about the model, or the split?",
+    "method": "Fourteen curated ChEMBL classification sets, five validation schemes (random, chronological by publication year, a thinned control, and structurally filtered versions of each), and four model classes (RF, SVM, XGBoost, neural net) trained under one fixed workflow.",
+    "result": "Random validation looked great: MCC 0.75 in CV, 0.72 on validation. Structural filtering cut validation MCC to 0.48, and chronological validation collapsed it to 0.19 while CV still read 0.73. Model classes overlapped heavily: the split matters far more than the algorithm.",
+    "visual": {
+      "type": "bars",
+      "title": "Validation MCC by split (CV MCC ≈ 0.73 throughout)",
+      "unit": "",
+      "max": 1,
+      "data": [
+        [
+          "Random split",
+          0.72
+        ],
+        [
+          "Structurally filtered",
+          0.48
+        ],
+        [
+          "Chronological",
+          0.19,
+          true
+        ],
+        [
+          "Chronological + filtered",
+          0.15,
+          true
+        ]
+      ]
+    }
+  },
+  {
+    "id": "despot",
+    "venue": "J. Chem. Inf. Model.",
+    "date": "Oct 2026",
+    "title": "DESPOT: Direction-Enhanced Scoring POTentials for Scoring of Protein–Ligand Interactions",
+    "authors": "Poelmans, Van Eynde, … Voet",
+    "url": "https://doi.org/10.1021/acs.jcim.6c02173",
+    "problem": "Knowledge-based scoring functions are reliable and interpretable, but treat the space around each protein atom as isotropic and cannot represent regions that ligands should leave empty.",
+    "method": "An all-atom anisotropic potential: atoms are classed by symmetry from hybridisation, space around them is discretised accordingly, and a 'void' ligand atom type learns where space is preferentially left empty. Trained on 110,943 curated complexes and combined with a residue-level score.",
+    "result": "On CASF-2016, scoring power r = 0.61 and best-in-class docking power, 89.5% top-1 success for DESPOT-combo. All anisotropic variants beat isotropic potentials and established empirical scoring functions in virtual screening.",
+    "visual": {
+      "type": "stat",
+      "value": "89.5%",
+      "label": "top-1 docking power on CASF-2016"
+    }
+  },
+  {
+    "id": "acepka",
+    "venue": "J. Chem. Inf. Model.",
+    "date": "Oct 2026",
+    "title": "AcepKa: Thermodynamics-Informed pKa Prediction and Protonation-State Generation in PlayMolecule AI",
+    "authors": "Pesce, Farr & De Fabritiis",
+    "url": "https://doi.org/10.1021/acs.jcim.6c03037",
+    "problem": "pKa and protonation states drive solubility, permeability and binding, yet most predictors treat pKa as a single regression number and ignore how coupled ionisation sites interact.",
+    "method": "An implementation of the Uni-pKa framework on a retrained Uni-Mol backbone that models the full protonation ensemble with thermodynamic consistency, plus a GPU conformer generator and a 3D mode that protonates bound ligand poses directly.",
+    "result": "Matches state-of-the-art accuracy on public benchmarks. The conformer generator is about 7× faster than other GPU tools and over an order of magnitude faster than multithreaded RDKit, enabling library-scale protonation before docking or MD.",
+    "visual": {
+      "type": "stat",
+      "value": "~7×",
+      "label": "faster GPU conformer generation than other GPU tools"
+    }
+  },
+  {
+    "id": "fcd-stereo",
+    "venue": "J. Chem. Inf. Model.",
+    "date": "Sep 2026",
+    "title": "Fréchet ChemNet Distance Is Blind to Double-Bond Stereochemistry",
+    "authors": "Yim",
+    "url": "https://doi.org/10.1021/acs.jcim.6c02441",
+    "problem": "Fréchet ChemNet Distance is a default metric for judging generative models, but nobody had checked whether it sees E/Z stereochemistry.",
+    "method": "Traced the ChemNet tokenizer, inverted every double bond in MolT5-large's ChEBI-20 output, and compared models whose E/Z recall differs more than threefold.",
+    "result": "The tokenizer maps / and \\ to the same unknown token, so inverting 384 molecules shifted FCD by just 0.001 resampling SDs while per-bond accuracy fell from 98.97% to 1.03%. Report stereochemistry directly as coverage, precision and recall.",
+    "visual": {
+      "type": "bars",
+      "title": "E/Z per-bond accuracy before and after inverting every double bond",
+      "unit": "%",
+      "max": 100,
+      "data": [
+        [
+          "Original output",
+          98.97,
+          true
+        ],
+        [
+          "All bonds inverted",
+          1.03
+        ]
+      ]
+    }
+  },
+  {
+    "id": "abfe-gpcr",
+    "venue": "J. Chem. Theory Comput.",
+    "date": "Sep 2026",
+    "title": "Improving ABFE Calculations for GPCRs by Addressing Errors in Apo-State Representation",
+    "authors": "Anand, Panescu, … Biggin",
+    "url": "https://doi.org/10.1021/acs.jctc.6c01161",
+    "problem": "Absolute binding free energies can rank novel compounds without experimental anchors, but on membrane targets like GPCRs they systematically overestimate affinity.",
+    "method": "ABFE on A2A, D3 and mGlu5 receptors, targeting three error sources: poor pocket resolvation in apo-like states, metal-ion handling, and receptor relaxation. Fixes: a biased grand-canonical-like water transport scheme and a REUS correction for apo relaxation.",
+    "result": "Together the corrections reduce the systematic overestimation of binding affinities and improve agreement with experiment while keeping ranking performance.",
+    "visual": {
+      "type": "stat",
+      "value": "3 GPCRs",
+      "label": "A2A, D3 and mGlu5, with apo-state errors corrected"
+    }
+  },
+  {
+    "id": "retrochimera",
+    "venue": "Nature",
+    "date": "Sep 2026",
+    "title": "Chemist-aligned retrosynthesis by ensembling diverse inductive bias models",
+    "authors": "Maziarz, Liu, Pultar, … Segler",
+    "url": "https://doi.org/10.1038/s41586-026-11160-9",
+    "problem": "AI retrosynthesis still struggles with rare but strategically critical reactions and produces hallucinated routes that chemists don't trust.",
+    "method": "RetroChimera: two new models with complementary inductive biases, combined through a learned ensembling strategy, tested across several orders of magnitude of data scale.",
+    "result": "Outperforms leading baselines, stays robust outside its training data and learns from very few examples per reaction class. Organic chemists preferred its predictions over published reference reactions and other AI models, and it transferred zero-shot to internal data from two major pharma companies.",
+    "visual": {
+      "type": "stat",
+      "value": "Chemists' pick",
+      "label": "preferred over published reference reactions and other AI models"
+    }
+  },
+  {
+    "id": "multiparadigm-docking",
+    "venue": "J. Chem. Inf. Model.",
+    "date": "Sep 2026",
+    "title": "Multiparadigm Benchmark of Molecular Docking: From Physics to Co-Folding and Hybrid Models",
+    "authors": "Xu, Lam, Nakano & Katritch",
+    "url": "https://doi.org/10.1021/acs.jcim.6c01293",
+    "problem": "Co-folding models look excellent on standard docking benchmarks, but how well do they generalise to genuinely new targets and chemotypes?",
+    "method": "A systematic benchmark of physics-based docking, hybrid rescoring models and co-folding approaches, stratified by how similar each test complex is to previously known ones.",
+    "result": "Co-folding wins on targets resembling its training data but drops to 20–40% success on novel dissimilar systems, consistent with memorisation. Physics-based and hybrid methods keep above 60% success even with minimal similarity to known complexes.",
+    "visual": {
+      "type": "stat",
+      "value": ">60% vs 20–40%",
+      "label": "physics/hybrid vs co-folding success on novel, dissimilar complexes"
+    }
+  },
+  {
+    "id": "dockm8",
+    "venue": "J. Cheminformatics",
+    "date": "Sep 2026",
+    "title": "DockM8: an all-in-one open-source platform for consensus virtual screening in drug design",
+    "authors": "Lacour, Agha, Hirsch & Volkamer",
+    "url": "https://doi.org/10.1186/s13321-026-01287-2",
+    "problem": "Virtual screening results vary a lot with the docking program and scoring function chosen, and assembling a consensus pipeline by hand is tedious and hard to reproduce.",
+    "method": "One open-source workflow covering pocket detection, ligand preparation, docking, rescoring and consensus ranking: five docking engines, 17 pose-selection methods, 17 scoring functions and five consensus schemes, through a GUI or Python API.",
+    "result": "Median relative enrichments of 100% on DEKOIS 2.0, 82.6% on DUD-E and 8.9% on LIT-PCBA, often matching or beating state-of-the-art approaches. No single pose-selection or consensus strategy won everywhere, so workflows should be tuned per target.",
+    "visual": {
+      "type": "bars",
+      "title": "Median relative enrichment by benchmark",
+      "unit": "%",
+      "max": 100,
+      "data": [
+        [
+          "DEKOIS 2.0",
+          100,
+          true
+        ],
+        [
+          "DUD-E",
+          82.59
+        ],
+        [
+          "LIT-PCBA",
+          8.85
+        ]
+      ]
+    }
+  },
+  {
+    "id": "del-generalizability",
+    "venue": "J. Chem. Inf. Model.",
+    "date": "Sep 2026",
+    "title": "Assessing the Generalizability of Machine Learning and Physics-Based Methods with DNA-Encoded Libraries",
+    "authors": "Dolorfino, Santos Perez, … Sztain",
+    "url": "https://doi.org/10.1021/acs.jcim.6c01611",
+    "problem": "ML models trained on DNA-encoded library data look excellent in-distribution, but a NeurIPS competition showed they fail on out-of-distribution chemical space. Can structural modelling close that gap?",
+    "method": "A systematic comparison of ML, docking (Glide, Rosetta GALigandDock) and co-folding (Boltz-2) across three biologically diverse targets screened against libraries with multiple DEL synthesis formats.",
+    "result": "ML excels in-distribution, but out-of-distribution hit discrimination depends on both target and ligand context, with no single method consistently dominating. Benchmark performance alone does not predict OOD performance. Released as the open-source package DEL-iver.",
+    "visual": {
+      "type": "stat",
+      "value": "No winner",
+      "label": "no single method dominated out-of-distribution across targets"
+    }
+  },
+  {
+    "id": "tox21-leaderboard",
+    "venue": "J. Chem. Inf. Model.",
+    "date": "Sep 2026",
+    "title": "Measuring AI Progress in Drug Discovery: A Reproducible Leaderboard for the Tox21 Challenge",
+    "authors": "Ebner, Bartmann, Topf, … Luukkonen",
+    "url": "https://doi.org/10.1021/acs.jcim.6c01148",
+    "problem": "Tox21 was deep learning's 'ImageNet moment' for drug discovery, but when it was folded into MoleculeNet and OGB its labels were altered and imputed, so a decade of results can't be compared.",
+    "method": "A reproducible Hugging Face leaderboard using the original Tox21 Challenge data set, with baseline and representative methods evaluated under the same conditions.",
+    "result": "The original 2015 winner, the DeepTox ensemble, and descriptor-based self-normalising networks from 2017 still rank among the top methods, so measured progress over the last decade is far smaller than benchmark tables suggest.",
+    "visual": {
+      "type": "stat",
+      "value": "2015",
+      "label": "the original Tox21 winner is still among the top methods"
+    }
+  },
+  {
+    "id": "ctmd",
+    "venue": "J. Chem. Inf. Model.",
+    "date": "Sep 2026",
+    "title": "Early-Enrichment Hit Discovery via Reversible-Work c(t) Estimation in Metadynamics (CTMD)",
+    "authors": "Adury, Tiwary, Gu & Shekhar",
+    "url": "https://doi.org/10.1021/acs.jcim.6c01439",
+    "problem": "Docking hit lists are full of false positives, free energy calculations are too expensive to triage them, and co-folding shortcuts can be confounded by memorisation.",
+    "method": "CTMD ranks binding stability using the c(t) reversible-work estimator computed from a few short, independent well-tempered metadynamics runs, without needing converged binding free energies.",
+    "result": "Robust early enrichment across diverse targets and chemotypes with minimal parameter tuning. By contrast, Boltz-2's enrichment tracked similarity to its training set, a memorisation artefact the physics-based protocol avoids.",
+    "visual": {
+      "type": "stat",
+      "value": "Physics > memory",
+      "label": "metadynamics triage resists the training-set bias seen in co-folding"
+    }
+  },
+  {
+    "id": "gnn-chembl-benchmark",
+    "venue": "J. Chem. Inf. Model.",
+    "date": "Sep 2026",
+    "title": "Systematic Evaluation of Graph Neural Networks for Ligand-Based Virtual Screening on ChEMBL Datasets",
+    "authors": "Liu, Lin, Fan, … Hou",
+    "url": "https://doi.org/10.1021/acs.jcim.6c02160",
+    "problem": "Ligand-based GNN performance depends heavily on data size, class imbalance and evaluation choices, yet most benchmarks hide this behind a handful of tidy data sets.",
+    "method": "GCN, GAT, GIN and GraphSAGE evaluated across 5,368 ChEMBL targets and 1.59 million activity records, comparing random and similarity-aware splits, single- and multi-task learning.",
+    "result": "GIN is best on targets with more than 100 samples (mean ROC–AUC up to 0.94), while simpler architectures hold up better when data are scarce. Similarity-aware splits drop AUC by more than 0.3 versus random splits. Multi-task learning stabilises small targets.",
+    "visual": {
+      "type": "stat",
+      "value": ">0.3",
+      "label": "AUC lost when random splits are replaced by similarity-aware ones"
+    }
+  },
+  {
+    "id": "t4l-sampling-benchmark",
+    "venue": "J. Chem. Inf. Model.",
+    "date": "Sep 2026",
+    "title": "Benchmarking Generative AI and Physics-Based Molecular Simulation for Sampling Conformational Heterogeneity in T4 Lysozyme",
+    "authors": "Bhakat",
+    "url": "https://doi.org/10.1021/acs.jcim.6c02044",
+    "problem": "Generative structure models are increasingly sold as a shortcut to conformational ensembles. Do they actually recover the states that MD and experiment see?",
+    "method": "T4 lysozyme as a test case with a four-state model built on physically meaningful collective variables, comparing seven generative AI methods (AF-cluster, AlphaFlow, BioEmu and others), AI-accelerated simulation and physics-based enhanced MD.",
+    "result": "The generative methods largely sampled only the exposed/open state. AI-accelerated simulation, which feeds generative ensembles into physics-based MD, recovered all four states with populations matching enhanced MD and smFRET.",
+    "visual": {
+      "type": "stat",
+      "value": "1 of 4",
+      "label": "states generative AI mostly sampled; simulation-based methods recovered all four"
+    }
+  },
+  {
+    "id": "vilya-2",
+    "venue": "arXiv",
+    "date": "Jul 2026",
+    "title": "Accurate structural modeling of chemically diverse molecular interfaces with Vilya-2",
+    "authors": "Sturmfels, Hiranuma, … Anishchenko",
+    "url": "https://arxiv.org/abs/2607.25156",
+    "problem": "Co-folding networks built on co-evolutionary statistics do not transfer to peptide therapeutics, a modality full of non-canonical residues, macrocycles and unusual topologies.",
+    "method": "An all-atom diffusion transformer that drops residue-level tokens, extending Vilya-1 from single molecules to their complexes with protein targets, evaluated on Riptides, a new benchmark of complex protein–peptide interfaces.",
+    "result": "On Riptides, 59.1% of bound peptide backbones recovered below 2 Å RMSD at 1000 samples, against 40.9% for Boltz-2 and 22.0% for Schrödinger docking. On PoseX cross-docking, 71.1% success, falling to 66.5% when poses must also pass physical-validity checks.",
+    "visual": {
+      "type": "bars",
+      "title": "Peptide backbone recovered below 2 Å RMSD, Riptides",
+      "unit": "%",
+      "max": 100,
+      "data": [
+        [
+          "Vilya-2",
+          59.1,
+          true
+        ],
+        [
+          "Boltz-2",
+          40.9
+        ],
+        [
+          "Schrödinger docking",
+          22.0
+        ]
+      ]
+    }
+  },
+  {
+    "id": "fingerprint-benchmarking",
+    "venue": "J. Cheminformatics",
+    "date": "Jun 2026",
+    "title": "Count your bits: fingerprint benchmarking to assess broad chemical space representation",
+    "authors": "Huber & Pollmann",
+    "url": "https://doi.org/10.1186/s13321-026-01245-y",
+    "problem": "Tanimoto similarity on 2D fingerprints underpins virtual screening, nearest-neighbour search and model evaluation, yet its behaviour depends heavily on fingerprint type, binary versus count, and whether you fold to a fixed length. Most people use the defaults.",
+    "method": "A multi-criteria benchmark of dictionary-based, Morgan/FCFP, RDKit path, Atom Pair, MAP4, torsion, LINGO and Avalon fingerprints with several representation variants, probing specificity, score distributions, compound-size dependence, top-k ranking agreement and a graph-based reference.",
+    "result": "Count and log-count variants generally improve specificity and structural alignment, while folding-induced bit collisions badly distort similarities for high-occupancy fingerprints: unfolded variants matter for RDKit and are often necessary for MAP4. Released as the open-source library chemap.",
+    "visual": {
+      "type": "stat",
+      "value": "Unfold it",
+      "label": "folding defaults distort high-occupancy fingerprints"
+    }
+  },
+  {
+    "id": "data-leakage-affinity",
+    "venue": "bioRxiv",
+    "date": "Jun 2026",
+    "title": "Identifying and Addressing Systematic Data Leakage in Protein-Ligand Affinity Benchmarks",
+    "authors": "Mattsson & Walters",
+    "url": "https://doi.org/10.64898/2026.06.29.735309",
+    "problem": "Co-folding models such as Boltz-2 are reported to match FEP accuracy, but if the benchmarks leak training data, those claims measure memorisation rather than biophysics.",
+    "method": "A meta-analysis of ChEMBL 36 for 'target mirroring', where homologous proteins with low sequence identity still show correlated binding profiles, plus a structure-blind ligand-only baseline run against the FEP+ and OpenFE benchmarks.",
+    "result": "Over 6,000 leaking assay pairs found, with leakage persisting down to 0.2 sequence identity. A ligand-only model with no protein structure reached r = 0.66 on FEP+. Their Novelty-Tiered Affinity Benchmark drops that baseline to r = 0.14 below 0.35 Tanimoto similarity.",
+    "visual": {
+      "type": "bars",
+      "title": "Ligand-only baseline (no protein structure), Pearson r",
+      "unit": "",
+      "max": 1,
+      "data": [
+        [
+          "FEP+ benchmark",
+          0.66,
+          true
+        ],
+        [
+          "OpenFE benchmark",
+          0.36
+        ],
+        [
+          "NTAB, hardest tier",
+          0.14
+        ]
+      ]
+    }
+  },
+  {
+    "id": "struct2query",
+    "venue": "J. Chem. Inf. Model.",
+    "date": "Apr 2026",
+    "title": "Struct2Query: Structure-Guided Virtual Screening via Composite-Molecule ROCS Queries Derived from Protein Pocket Similarity",
+    "authors": "Shmilovich, Suriana & Sresht",
+    "url": "https://doi.org/10.1021/acs.jcim.6c00591",
+    "problem": "ROCS screens billions of molecules fast but needs a known active as the query, which biases hits toward close analogs. Docking avoids that but is too slow to deploy at the same scale.",
+    "method": "Protein pockets are turned into composite-molecule ROCS queries: SiteHopper searches over 78,000 crystallographic complexes for analogous pockets, transplants their ligands, and keeps all shape and colour features so dense regions emerge as hotspots.",
+    "result": "On DEKOIS 2.0 (81 targets) and DUDE-Z (43 targets), early enrichment matched or exceeded Glide and HYBRID docking at ligand-based throughput, with better chemotype coverage than single-ligand ROCS for three of four purchasable libraries.",
+    "visual": {
+      "type": "stat",
+      "value": "78,000+",
+      "label": "crystallographic pockets mined to build each query"
+    }
+  },
+  {
+    "id": "residence-time",
+    "venue": "J. Chem. Inf. Model.",
+    "date": "Dec 2025",
+    "title": "Toward Automated Physics-Based Absolute Drug Residence Time Predictions",
+    "authors": "Smith, Branduardi, … Krilov",
+    "url": "https://doi.org/10.1021/acs.jcim.5c01832",
+    "problem": "Residence time matters as much as affinity for a drug's profile, but predicting it usually means hand-tuning enhanced sampling for every system.",
+    "method": "A two-stage scheme: Random Acceleration MD harvests plausible egress pathways, then Infrequent Metadynamics estimates the residence time, aimed at the accuracy–throughput–usability compromise real programmes face.",
+    "result": "Benchmarked on five diverse targets with congeneric series, 29 drug–target complexes in total: RMSE 1.22 and R² 0.80 in log₁₀(τ), without manually tuning the enhanced sampling parameters.",
+    "visual": {
+      "type": "stat",
+      "value": "1.22",
+      "label": "RMSE in log₁₀(τ) across 29 complexes, no manual tuning"
+    }
+  },
+  {
+    "id": "lsf-geometric-dl",
+    "venue": "Nature Chemistry",
+    "date": "Nov 2023",
+    "title": "Enabling late-stage drug diversification by high-throughput experimentation with geometric deep learning",
+    "authors": "Nippa, Atz, … Schneider",
+    "url": "https://doi.org/10.1038/s41557-023-01360-5",
+    "problem": "Late-stage functionalisation is the cheap way to tune a drug candidate, but the chemical complexity of real drug molecules makes site-selective C–H diversification hard to predict.",
+    "method": "A platform pairing high-throughput borylation screening with geometric deep learning, trained on an informer library of diverse drug molecules, plus a simple user-friendly reaction format for sharing the data.",
+    "result": "Yields predicted to 4–5% mean absolute error. Reactivity of novel reactions classified at 92% balanced accuracy for known substrates and 67% for unknown. Regioselectivity of major products captured at F-score 67%. Applied to 23 commercial drugs, it found many diversification opportunities.",
+    "visual": {
+      "type": "bars",
+      "title": "Model performance on borylation screening",
+      "unit": "%",
+      "max": 100,
+      "data": [
+        [
+          "Reactivity, known substrates",
+          92,
+          true
+        ],
+        [
+          "Reactivity, unknown substrates",
+          67
+        ],
+        [
+          "Regioselectivity F-score",
+          67
+        ]
+      ]
+    }
+  },
+  {
+    "id": "gign",
+    "venue": "J. Phys. Chem. Lett.",
+    "date": "Feb 2023",
+    "title": "Geometric Interaction Graph Neural Network for Predicting Protein–Ligand Binding Affinities from 3D Structures (GIGN)",
+    "authors": "Yang, Zhong, Lv, … Chen",
+    "url": "https://doi.org/10.1021/acs.jpclett.2c03906",
+    "problem": "Most ML affinity predictors ignore the 3D structure of the complex and the physical interactions between protein and ligand, the very things that explain binding.",
+    "method": "A heterogeneous interaction layer that unifies covalent and noncovalent interactions in the message-passing phase, built to be invariant to translation and rotation of the complex so no data augmentation is needed.",
+    "result": "State-of-the-art performance on three external test sets, and visualising the learned representations of complexes shows the predictions are biologically meaningful.",
+    "visual": {
+      "type": "stat",
+      "value": "No augmentation",
+      "label": "rotation and translation invariance built into the layer"
+    }
+  },
+  {
+    "id": "xai-sar",
+    "venue": "J. Chem. Inf. Model.",
+    "date": "Jan 2022",
+    "title": "Interpretation of Structure–Activity Relationships in Real-World Drug Design Data Sets Using Explainable Artificial Intelligence",
+    "authors": "Harren, Matter, Hessler, … Grebner",
+    "url": "https://doi.org/10.1021/acs.jcim.1c01263",
+    "problem": "Deep neural networks predict activity well, but their black-box character hides which structural features drive it, and that is exactly what a medicinal chemist needs to guide the next round.",
+    "method": "Multiple explainable-AI methods applied and compared on lead optimisation data sets with well-established SARs and available X-ray structures, with a visualisation scheme based on atom-level heatmaps.",
+    "result": "Combining DNN models with strong interpretation methods gave comprehensive, understandable explanations, with SHAP-based methods the most promising. The authors stress that every interpretation is only meaningful in the context of its model and training data.",
+    "visual": {
+      "type": "stat",
+      "value": "SHAP",
+      "label": "the most promising family for reading SAR out of a neural network"
+    }
+  },
+  {
+    "id": "dbbad",
+    "venue": "J. Chem. Inf. Model.",
+    "date": "Dec 2018",
+    "title": "A Distance-Based Boolean Applicability Domain for Classification of High Throughput Screening Data",
+    "authors": "Berenger & Yamanishi",
+    "url": "https://doi.org/10.1021/acs.jcim.8b00499",
+    "problem": "A QSAR model needs an applicability domain as well as an activity model, but existing methods are complex, hard to interpret, or make the user pick a threshold by hand.",
+    "method": "A fully automatic, trivial-to-interpret Distance-Based Boolean Applicability Domain for category QSAR, with no user-selected threshold and no embedded empirical constant.",
+    "result": "In retrospective experiments on high-throughput screening data sets, it improved classification performance and early retrieval for both SVM and random forest classifiers, while improving scaffold diversity among the top-ranked actives.",
+    "visual": {
+      "type": "stat",
+      "value": "0 knobs",
+      "label": "no user-chosen threshold, no embedded constant"
+    }
+  }
+]
