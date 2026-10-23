@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Enzyme Mechanisms | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/enzyme-mechanisms/</link><atom:link href="https://yboulaamane.github.io/tags/enzyme-mechanisms/index.xml" rel="self" type="application/rss+xml"/><description>Enzyme Mechanisms</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Fri, 23 Oct 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Enzyme Mechanisms</title><link>https://yboulaamane.github.io/tags/enzyme-mechanisms/</link></image><item><title>QM Cluster Models vs QM/MM for Enzyme Active Sites: What Each One Actually Models</title><link>https://yboulaamane.github.io/blog/qm-cluster-models-vs-qm-mm-for-enzyme-active-sites/</link><pubDate>Fri, 23 Oct 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/qm-cluster-models-vs-qm-mm-for-enzyme-active-sites/</guid><description>&lt;p>A paper that studied an enzyme &amp;ldquo;at the QM level&amp;rdquo; has not said which model was used. A QM cluster is a finite piece of the active site, cut out of the protein and treated entirely with quantum mechanics, usually DFT. QM/MM keeps the rest of the protein, and usually the solvent, in the calculation and couples that environment to the quantum region. Both have a long record in computational enzymology. They are different approximations, and a methods section that swaps the names is describing a calculation that was not run.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 300" role="img" aria-labelledby="qmcl-split-title qmcl-split-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="qmcl-split-title">A cluster deletes the protein. QM/MM keeps it and couples it.&lt;/title>
+&lt;desc id="qmcl-split-desc">On the left, only a small active-site fragment is treated with DFT and the rest of the protein is absent. On the right, the same fragment is the QM region and the surrounding protein and solvent remain as an MM environment, with a coupling term between them.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="16" y="16" width="332" height="268" rx="16" fill="#2f80ed" fill-opacity="0.06" stroke="#2f80ed"/>
+&lt;rect x="372" y="16" width="332" height="268" rx="16" fill="#27ae60" fill-opacity="0.06" stroke="#27ae60"/>
+&lt;rect x="48" y="78" width="268" height="150" rx="14" stroke="currentColor" stroke-dasharray="5 4"/>
+&lt;rect x="124" y="112" width="116" height="82" rx="12" fill="#2f80ed" fill-opacity="0.18" stroke="#2f80ed"/>
+&lt;rect x="404" y="78" width="268" height="150" rx="14" fill="#27ae60" fill-opacity="0.12" stroke="#27ae60"/>
+&lt;rect x="478" y="112" width="120" height="82" rx="12" fill="#2f80ed" fill-opacity="0.18" stroke="#2f80ed"/>
+&lt;path d="M478 153 H404" stroke="#f2994a" stroke-width="2"/>
+&lt;path d="M598 153 H672" stroke="#f2994a" stroke-width="2"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="182" y="48" font-size="18" font-weight="700">Cluster&lt;/text>
+&lt;text x="182" y="108" font-size="13">Protein deleted&lt;/text>
+&lt;text x="182" y="150" font-size="15" font-weight="700">DFT on the fragment&lt;/text>
+&lt;text x="182" y="172" font-size="13">No MM region&lt;/text>
+&lt;text x="182" y="256" font-size="13">Continuum, if used, is still not a protein&lt;/text>
+&lt;text x="538" y="48" font-size="18" font-weight="700">QM/MM&lt;/text>
+&lt;text x="538" y="108" font-size="13">MM protein and solvent&lt;/text>
+&lt;text x="538" y="150" font-size="15" font-weight="700">QM region&lt;/text>
+&lt;text x="538" y="172" font-size="13">Coupled to the MM part&lt;/text>
+&lt;text x="538" y="256" font-size="13">The orange links are the coupling, not a cut&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Same active-site question, two models. A dielectric around a cluster does not turn the left panel into the right one.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="a-cluster-is-the-fragment-that-remains">A cluster is the fragment that remains&lt;/h2>
+&lt;p>The atoms that enter a cluster are the ones the chemistry needs: the substrate, the cofactor or the metal and its ligands, and the side chains that bind, donate or accept a proton, or stabilize charge. Everything else is deleted. Bonds that were cut are capped with hydrogen, and the fragment is optimized with DFT [1–3].&lt;/p>
+&lt;p>The deleted protein is either ignored, which is a gas-phase calculation, or replaced by a dielectric continuum around the cluster. There is no explicit protein past the fragment, no MM force field, and no QM–MM interaction term. The shape the protein used to impose is imitated by freezing a few atoms at the cuts.&lt;/p>
+&lt;p>Siegbahn and Himo argued for this approach over many years. Their central claim is that a larger cluster is less sensitive to the dielectric, so a carefully chosen cluster can carry the chemistry that matters [1–3]. Later reviews, including a tutorial on how to set the models up, go through the practical choices [3, 4]. de Visser and coauthors report that clusters of more than about 300 atoms, once the key hydrogen bonds and charged residues are inside, can reproduce experimental product distributions and barriers to within several kcal/mol [4]. That is a statement about large models that contain those groups. It is not a license for a small fragment in the gas phase.&lt;/p>
+&lt;h2 id="qmmm-keeps-the-protein-in-the-hamiltonian">QM/MM keeps the protein in the Hamiltonian&lt;/h2>
+&lt;p>QM/MM goes back to Warshel and Levitt&amp;rsquo;s study of lysozyme [5]. The system is partitioned. The reacting region is QM. The rest of the protein, and usually the solvent, is MM. In the additive form used for most enzyme calculations, the energy is the QM energy, the MM energy, and a coupling term [6]:&lt;/p>
+$$
+E = E_{\mathrm{QM}} + E_{\mathrm{MM}} + E_{\mathrm{QM-MM}}.
+$$&lt;p>A subtractive scheme such as ONIOM builds the same partition by a different route. It is still QM/MM when the low level is MM. A cluster in a continuum is neither.&lt;/p>
+&lt;p>How the coupling is evaluated is the flavor of the method [6].&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 268" role="img" aria-labelledby="qmcl-emb-title qmcl-emb-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="qmcl-emb-title">Three ways to couple the MM charges to the QM region&lt;/title>
+&lt;desc id="qmcl-emb-desc">Mechanical embedding leaves the MM charges out of the QM Hamiltonian. Electrostatic embedding lets those charges polarize the QM region and is the usual choice for enzymes. Polarizable embedding also lets the MM region respond to the QM charge distribution.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-qmcl-emb" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="16" y="16" width="220" height="236" rx="14" fill="#9b51e0" fill-opacity="0.08" stroke="#9b51e0"/>
+&lt;rect x="250" y="16" width="220" height="236" rx="14" fill="#2f80ed" fill-opacity="0.08" stroke="#2f80ed"/>
+&lt;rect x="484" y="16" width="220" height="236" rx="14" fill="#27ae60" fill-opacity="0.08" stroke="#27ae60"/>
+&lt;rect x="76" y="108" width="100" height="64" rx="10" fill="#2f80ed" fill-opacity="0.16" stroke="#2f80ed"/>
+&lt;rect x="310" y="108" width="100" height="64" rx="10" fill="#2f80ed" fill-opacity="0.16" stroke="#2f80ed"/>
+&lt;rect x="544" y="108" width="100" height="64" rx="10" fill="#2f80ed" fill-opacity="0.16" stroke="#2f80ed"/>
+&lt;path d="M268 140 H308" marker-end="url(#arrow-qmcl-emb)" stroke="currentColor"/>
+&lt;path d="M452 140 H412" marker-end="url(#arrow-qmcl-emb)" stroke="currentColor"/>
+&lt;path d="M504 126 H542" marker-end="url(#arrow-qmcl-emb)" stroke="currentColor"/>
+&lt;path d="M684 126 H646" marker-end="url(#arrow-qmcl-emb)" stroke="currentColor"/>
+&lt;path d="M542 158 H504" marker-end="url(#arrow-qmcl-emb)" stroke="#f2994a"/>
+&lt;path d="M646 158 H684" marker-end="url(#arrow-qmcl-emb)" stroke="#f2994a"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="126" y="46" font-size="15" font-weight="700">Mechanical&lt;/text>
+&lt;text x="126" y="92" font-size="13">Charges stay outside&lt;/text>
+&lt;text x="126" y="144" font-size="14" font-weight="700">QM&lt;/text>
+&lt;text x="40" y="214" font-size="13" text-anchor="start">+ −&lt;/text>
+&lt;text x="176" y="214" font-size="13">+ −&lt;/text>
+&lt;text x="126" y="236" font-size="12">Wavefunction ignores them&lt;/text>
+&lt;text x="360" y="46" font-size="15" font-weight="700">Electrostatic&lt;/text>
+&lt;text x="360" y="70" font-size="12">Usual choice for enzymes&lt;/text>
+&lt;text x="360" y="92" font-size="13">Charges enter the QM part&lt;/text>
+&lt;text x="360" y="144" font-size="14" font-weight="700">QM&lt;/text>
+&lt;text x="268" y="208" font-size="13" text-anchor="start">+ −&lt;/text>
+&lt;text x="412" y="208" font-size="13">+ −&lt;/text>
+&lt;text x="360" y="236" font-size="12">The QM region is polarized&lt;/text>
+&lt;text x="594" y="46" font-size="15" font-weight="700">Polarizable&lt;/text>
+&lt;text x="594" y="92" font-size="13">Both sides respond&lt;/text>
+&lt;text x="594" y="144" font-size="14" font-weight="700">QM&lt;/text>
+&lt;text x="512" y="214" font-size="13" text-anchor="start">+ −&lt;/text>
+&lt;text x="656" y="214" font-size="13">+ −&lt;/text>
+&lt;text x="594" y="236" font-size="12">MM charges can move too&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> Embedding is about whether the MM charges polarize the QM region, and whether the MM region can polarize back. Electrostatic embedding is the usual enzyme setup [6].&lt;/figcaption>
+&lt;/figure>
+&lt;p>Where the boundary cuts a covalent bond, the cut needs its own scheme. The common one is a link atom, usually hydrogen, plus a rule that stops the nearest MM charges from over-polarising the QM region. Early combined potentials already used a link atom [7]. Senn and Thiel review the boundary treatments [6].&lt;/p>
+&lt;h2 id="building-a-cluster">Building a cluster&lt;/h2>
+&lt;p>Protonation states are chosen on the intact structure, before anything is deleted. The starting coordinates are a crystal structure with a relevant ligand, or one MD snapshot that is actually a candidate for the reactive state.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 196" role="img" aria-labelledby="qmcl-flow-title qmcl-flow-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="qmcl-flow-title">Eight steps from a structure to a tested cluster&lt;/title>
+&lt;desc id="qmcl-flow-desc">Start from a crystal structure or an MD snapshot, choose what enters, truncate, cap with hydrogen, freeze the anchor atoms, assign charge and spin, optimize with DFT, then repeat the key energies on a larger cluster.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="16" y="16" width="164" height="72" rx="12" fill="#2f80ed" fill-opacity="0.12" stroke="#2f80ed"/>
+&lt;rect x="192" y="16" width="164" height="72" rx="12" fill="#27ae60" fill-opacity="0.12" stroke="#27ae60"/>
+&lt;rect x="368" y="16" width="164" height="72" rx="12" fill="#f2994a" fill-opacity="0.12" stroke="#f2994a"/>
+&lt;rect x="544" y="16" width="160" height="72" rx="12" fill="#9b51e0" fill-opacity="0.12" stroke="#9b51e0"/>
+&lt;rect x="16" y="108" width="164" height="72" rx="12" fill="#9b51e0" fill-opacity="0.12" stroke="#9b51e0"/>
+&lt;rect x="192" y="108" width="164" height="72" rx="12" fill="#f2994a" fill-opacity="0.12" stroke="#f2994a"/>
+&lt;rect x="368" y="108" width="164" height="72" rx="12" fill="#27ae60" fill-opacity="0.12" stroke="#27ae60"/>
+&lt;rect x="544" y="108" width="160" height="72" rx="12" fill="#2f80ed" fill-opacity="0.12" stroke="#2f80ed"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="98" y="46" font-size="14" font-weight="700">1. Structure&lt;/text>
+&lt;text x="98" y="68" font-size="12">Crystal or snapshot&lt;/text>
+&lt;text x="274" y="46" font-size="14" font-weight="700">2. Selection&lt;/text>
+&lt;text x="274" y="68" font-size="12">Who does chemistry&lt;/text>
+&lt;text x="450" y="46" font-size="14" font-weight="700">3. Truncate&lt;/text>
+&lt;text x="450" y="68" font-size="12">Cut at a carbon&lt;/text>
+&lt;text x="624" y="46" font-size="14" font-weight="700">4. Cap&lt;/text>
+&lt;text x="624" y="68" font-size="12">Hydrogen on the cut&lt;/text>
+&lt;text x="98" y="138" font-size="14" font-weight="700">5. Freeze&lt;/text>
+&lt;text x="98" y="160" font-size="12">Anchor atoms fixed&lt;/text>
+&lt;text x="274" y="138" font-size="14" font-weight="700">6. Charge, spin&lt;/text>
+&lt;text x="274" y="160" font-size="12">Assigned, not guessed&lt;/text>
+&lt;text x="450" y="138" font-size="14" font-weight="700">7. Optimize&lt;/text>
+&lt;text x="450" y="160" font-size="12">DFT, then frequencies&lt;/text>
+&lt;text x="624" y="138" font-size="14" font-weight="700">8. Enlarge&lt;/text>
+&lt;text x="624" y="160" font-size="12">Do the energies hold?&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 3.&lt;/strong> The last box is part of the model, not a follow-up project. If the barrier moves when residues are added, the smaller cluster was not converged.&lt;/figcaption>
+&lt;/figure>
+&lt;p>What goes in is the substrate, the cofactor, the metal and its first-shell ligands, residues in the proton or electron transfers, and residues or waters hydrogen-bonded to groups whose charge changes. Second-shell residues are where a cluster that looked complete often is not.&lt;/p>
+&lt;p>Truncate the same way at every residue. Side chains are commonly cut at a carbon: a histidine becomes a methylimidazole. Keep a backbone fragment only where its amide takes part in the chemistry. Every cut bond is saturated with hydrogen, and the cap sits roughly along the bond that was removed.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 250" role="img" aria-labelledby="qmcl-cut-title qmcl-cut-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="qmcl-cut-title">What is kept, capped, and frozen when a side chain is cut&lt;/title>
+&lt;desc id="qmcl-cut-desc">The backbone is deleted. The side chain that participates stays. The carbon at the cut is capped with hydrogen and frozen so the fragment cannot drift away from the crystallographic direction.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="36" y="78" width="150" height="88" rx="12" stroke="currentColor" stroke-dasharray="5 4"/>
+&lt;path d="M186 122 H250" stroke="currentColor" stroke-dasharray="5 4"/>
+&lt;circle cx="286" cy="122" r="28" fill="#9b51e0" fill-opacity="0.16" stroke="#9b51e0"/>
+&lt;path d="M314 122 H390" stroke="#2f80ed"/>
+&lt;polygon points="390,86 470,110 448,168 362,168 348,114" fill="#2f80ed" fill-opacity="0.16" stroke="#2f80ed"/>
+&lt;path d="M270 150 L236 196" stroke="#f2994a"/>
+&lt;circle cx="228" cy="204" r="16" fill="#f2994a" fill-opacity="0.18" stroke="#f2994a"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="360" y="36" font-size="16" font-weight="700">A histidine cut, drawn as a scheme&lt;/text>
+&lt;text x="111" y="118" font-size="14" font-weight="700">Backbone&lt;/text>
+&lt;text x="111" y="140" font-size="13">Deleted&lt;/text>
+&lt;text x="286" y="118" font-size="13" font-weight="700">C&lt;/text>
+&lt;text x="286" y="136" font-size="11">frozen&lt;/text>
+&lt;text x="408" y="140" font-size="14" font-weight="700">Side chain&lt;/text>
+&lt;text x="408" y="160" font-size="12">Kept&lt;/text>
+&lt;text x="228" y="208" font-size="12" font-weight="700">H&lt;/text>
+&lt;text x="520" y="122" font-size="13" text-anchor="start">Cap along&lt;/text>
+&lt;text x="520" y="142" font-size="13" text-anchor="start">the old bond&lt;/text>
+&lt;text x="360" y="236" font-size="13">Not a computed residue. The frozen carbon is the anchor.&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 4.&lt;/strong> The frozen atom is there to hold the crystallographic direction [1, 3]. Constraints of this kind leave small imaginary frequencies. Report them, and treat them as an artifact of the freeze.&lt;/figcaption>
+&lt;/figure>
+&lt;p>The total charge follows from the protonation states and the metal oxidation state. For a transition-metal site, compute the spin states that the chemistry can occupy. One assumed multiplicity is a different model.&lt;/p>
+&lt;p>Then test the size. Add residues and recompute the steps that the conclusion rests on. A barrier that moves is a cluster that has not converged. Convergence with size can be slow. Liao and Thiel compared QM-only and QM/MM models of acetylene hydratase: gas-phase QM-only relative energies on their 408-atom region stayed within a mean absolute deviation of 1.7 kcal/mol of the QM/MM profile, after a smaller region had disagreed by 7.9 kcal/mol [8]. Separate QM/MM studies ask the same size question from the other side, by growing the QM region inside an MM protein [9, 10].&lt;/p>
+&lt;p>The DFT choices are the same ones as for any molecular calculation: a dispersion-corrected functional, a basis that can carry the property, and frequencies at the stationary points. The
+is the input-level walkthrough. The
+is why that old default is not the protocol to copy onto an active site.&lt;/p>
+&lt;h2 id="a-heme-site-shows-what-the-minimal-cluster-leaves-out">A heme site shows what the minimal cluster leaves out&lt;/h2>
+&lt;p>A cytochrome P450 cluster can be small and still ask a chemical question. Porphyrin, often with the side chains truncated, the iron-oxo unit of Compound I, a truncated cysteine thiolate as the axial ligand, and the substrate are enough to compare hydrogen-abstraction paths or to compute spin states.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 300" role="img" aria-labelledby="qmcl-heme-title qmcl-heme-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="qmcl-heme-title">A minimal P450 cluster, and two effects that sit outside it&lt;/title>
+&lt;desc id="qmcl-heme-desc">The inner set is porphyrin, the iron-oxo of Compound I, a truncated cysteine thiolate, and the substrate. Hydrogen bonds to the thiolate and the electrostatics of the pocket sit outside that set. If the question depends on them, the cluster has to grow or the calculation has to become QM/MM.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="150" y="36" width="420" height="228" rx="18" stroke="currentColor" stroke-dasharray="6 4"/>
+&lt;rect x="250" y="64" width="220" height="46" rx="10" fill="#f2994a" fill-opacity="0.14" stroke="#f2994a"/>
+&lt;rect x="230" y="122" width="260" height="52" rx="10" fill="#2f80ed" fill-opacity="0.14" stroke="#2f80ed"/>
+&lt;rect x="270" y="186" width="180" height="46" rx="10" fill="#9b51e0" fill-opacity="0.14" stroke="#9b51e0"/>
+&lt;path d="M230 148 H168" stroke="#27ae60"/>
+&lt;path d="M490 148 H552" stroke="#27ae60"/>
+&lt;rect x="28" y="124" width="132" height="56" rx="10" fill="#27ae60" fill-opacity="0.12" stroke="#27ae60"/>
+&lt;rect x="560" y="124" width="132" height="56" rx="10" fill="#27ae60" fill-opacity="0.12" stroke="#27ae60"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="360" y="28" font-size="15" font-weight="700">Minimal cluster inside the dashed line&lt;/text>
+&lt;text x="360" y="92" font-size="14" font-weight="700">Substrate&lt;/text>
+&lt;text x="360" y="144" font-size="14" font-weight="700">Porphyrin and Fe=O&lt;/text>
+&lt;text x="360" y="164" font-size="12">Compound I&lt;/text>
+&lt;text x="360" y="214" font-size="14" font-weight="700">Cys thiolate&lt;/text>
+&lt;text x="94" y="148" font-size="13" font-weight="700">H-bonds&lt;/text>
+&lt;text x="94" y="166" font-size="12">to the thiolate&lt;/text>
+&lt;text x="626" y="148" font-size="13" font-weight="700">Pocket&lt;/text>
+&lt;text x="626" y="166" font-size="12">electrostatics&lt;/text>
+&lt;text x="360" y="286" font-size="13">Scheme of what is included. Not a computed Compound I.&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 5.&lt;/strong> The protein around P450 Compound I changes its electronic structure, through hydrogen bonds to the thiolate and through the pocket electrostatics [11]. A question that depends on either one needs those groups in the cluster, or a move to QM/MM.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="when-the-cluster-is-the-right-model">When the cluster is the right model&lt;/h2>
+&lt;p>A cluster is a reasonable choice when the question is the feasibility of a mechanism, or a comparison of paths computed in the same model. It fits chemistry that is local to the metal, the cofactor, and a few residues, in a buried site where long-range charge is not the effect under study. It is also how a wide scan stays affordable: spin states, protonation states, and several substrates.&lt;/p>
+&lt;p>QM/MM is the safer model when a charged residue outside any cluster you can defend moves the energy, or when charge shifts along the reaction. It is the safer model when the result depends on protein motion that one frozen geometry cannot sample, when the site is solvent-exposed, or when water or substrate has to enter and leave. It is also the model that can still see a mutant whose changed residue never entered the cluster.&lt;/p>
+&lt;p>The useful evidence is a comparison on one enzyme, not a general ranking. For LigW decarboxylase, Prejanò, Marino, and Russo found the cluster and the QM/MM energetics consistent, and read that reaction as active-site dominated [12]. Acetylene hydratase is the contrasting case: agreement arrived only after the quantum region was large [8]. Read that pair before treating either outcome as the default.&lt;/p>
+&lt;h2 id="pitfalls">Pitfalls&lt;/h2>
+&lt;ul>
+&lt;li>A cluster with no MM region and no coupling term is a cluster. The name QM/MM does not apply.&lt;/li>
+&lt;li>A dielectric is bulk screening. It does not install a named hydrogen bond or a named charged residue.&lt;/li>
+&lt;li>Too many frozen atoms build strain into the fragment. Too few let it drift off the enzyme geometry.&lt;/li>
+&lt;li>One missing second-shell hydrogen bond to a transition state can move the barrier.&lt;/li>
+&lt;li>One crystal structure, or one MD frame, may not be the reactive state.&lt;/li>
+&lt;li>Truncation, caps, frozen atoms, charge, and spin decide the number. A paper that omits them cannot be repeated.&lt;/li>
+&lt;/ul>
+&lt;h2 id="what-the-methods-section-should-say">What the methods section should say&lt;/h2>
+&lt;p>In my own work on small active-site clusters, the sentence that names the model has mattered as much as the energies. For a cluster, wording of this kind is accurate:&lt;/p>
+&lt;blockquote>
+&lt;p>The active site was modeled with the quantum chemical cluster approach. The model contained the substrate, the cofactor, and the side chains of the surrounding residues, extracted from the crystal structure. Residues were truncated at carbon, and the cut bonds were saturated with hydrogen. Those truncation carbons were held fixed at their crystallographic positions during the geometry optimizations. The optimizations were DFT calculations in the gas phase. The surroundings were estimated afterward by single-point calculations with an implicit solvent model. The calculation included no explicit protein environment and no QM/MM coupling.&lt;/p>&lt;/blockquote>
+&lt;p>Swap in the real choices: which residues, which atoms were fixed, the functional, the basis, the dielectric, the charge, and the spin. The last sentence is the one most often missing, and the one a reader needs in order to know which panel of Figure 1 was computed.&lt;/p>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ol>
+&lt;li>Siegbahn PEM, Himo F. The quantum chemical cluster approach for modeling enzyme reactions. &lt;em>WIREs Comput Mol Sci&lt;/em> 2011;1:323–336. doi:
+&lt;/li>
+&lt;li>Himo F. Recent trends in quantum chemical modeling of enzymatic reactions. &lt;em>J Am Chem Soc&lt;/em> 2017;139:6780–6786. doi:
+&lt;/li>
+&lt;li>Himo F, de Visser SP. Status report on the quantum chemical cluster approach for modeling enzyme reactions. &lt;em>Commun Chem&lt;/em> 2022;5:29. doi:
+&lt;/li>
+&lt;li>de Visser SP, Wong HPH, Zhang Y, Yadav R, Sastri CV. Tutorial review on the set-up and running of quantum mechanical cluster models for enzymatic reaction mechanisms. &lt;em>Chem Eur J&lt;/em> 2024;30:e202402468. doi:
+&lt;/li>
+&lt;li>Warshel A, Levitt M. Theoretical studies of enzymic reactions: dielectric, electrostatic and steric stabilization of the carbonium ion in the reaction of lysozyme. &lt;em>J Mol Biol&lt;/em> 1976;103:227–249. doi:
+&lt;/li>
+&lt;li>Senn HM, Thiel W. QM/MM methods for biomolecular systems. &lt;em>Angew Chem Int Ed&lt;/em> 2009;48:1198–1229. doi:
+&lt;/li>
+&lt;li>Field MJ, Bash PA, Karplus M. A combined quantum mechanical and molecular mechanical potential for molecular dynamics simulations. &lt;em>J Comput Chem&lt;/em> 1990;11:700–733. doi:
+&lt;/li>
+&lt;li>Liao RZ, Thiel W. Convergence in the QM-only and QM/MM modeling of enzymatic reactions: a case study for acetylene hydratase. &lt;em>J Comput Chem&lt;/em> 2013;34:2389–2397. doi:
+&lt;/li>
+&lt;li>Sumowski CV, Ochsenfeld C. A convergence study of QM/MM isomerization energies with the selected size of the QM region for peptidic systems. &lt;em>J Phys Chem A&lt;/em> 2009;113:11734–11741. doi:
+&lt;/li>
+&lt;li>Kulik HJ, Zhang J, Klinman JP, Martínez TJ. How large should the QM region be in QM/MM calculations? The case of catechol O-methyltransferase. &lt;em>J Phys Chem B&lt;/em> 2016;120:11381–11394. doi:
+&lt;/li>
+&lt;li>Shaik S, Cohen S, Wang Y, Chen H, Kumar D, Thiel W. P450 enzymes: their structure, reactivity, and selectivity—modeled by QM/MM calculations. &lt;em>Chem Rev&lt;/em> 2010;110:949–1017. doi:
+&lt;/li>
+&lt;li>Prejanò M, Marino T, Russo N. QM cluster or QM/MM in computational enzymology: the test case of LigW-decarboxylase. &lt;em>Front Chem&lt;/em> 2018;6:249. doi:
+&lt;/li>
+&lt;/ol></description></item></channel></rss>

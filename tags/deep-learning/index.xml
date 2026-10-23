@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Deep Learning | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/deep-learning/</link><atom:link href="https://yboulaamane.github.io/tags/deep-learning/index.xml" rel="self" type="application/rss+xml"/><description>Deep Learning</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sat, 24 Oct 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Deep Learning</title><link>https://yboulaamane.github.io/tags/deep-learning/</link></image><item><title>A Chemist's Glossary of Neural Network and GNN Training Terms</title><link>https://yboulaamane.github.io/blog/a-chemists-glossary-of-neural-network-and-gnn-training-terms/</link><pubDate>Sat, 24 Oct 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/a-chemists-glossary-of-neural-network-and-gnn-training-terms/</guid><description>&lt;p>The words in a training script are the steps of one loop. An epoch, a batch, a loss, and a scaffold split are not four topics. They are where you are in that loop, and what you are allowed to look at while you are there.&lt;/p>
+&lt;p>This note is the vocabulary. The
+and the
+are the hands-on graph code. The
+is how those models arrived in drug discovery. The
+and the
+are why the split decides whether a good number means anything.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 292" role="img" aria-labelledby="glos-loop-title glos-loop-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="glos-loop-title">One training loop, from a mini-batch to the decision to stop&lt;/title>
+&lt;desc id="glos-loop-desc">Each mini-batch goes through a forward pass, a loss, a backward pass, and an optimizer step. Those four steps repeat until every training molecule has been seen, which is one epoch. The validation set is scored after the epoch. Training then stops or starts another epoch.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-glos-loop" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="16" y="48" width="124" height="72" rx="12" fill="#2f80ed" fill-opacity="0.12" stroke="#2f80ed"/>
+&lt;path d="M140 84 H156" marker-end="url(#arrow-glos-loop)" stroke="currentColor"/>
+&lt;rect x="164" y="48" width="124" height="72" rx="12" fill="#27ae60" fill-opacity="0.12" stroke="#27ae60"/>
+&lt;path d="M288 84 H304" marker-end="url(#arrow-glos-loop)" stroke="currentColor"/>
+&lt;rect x="312" y="48" width="124" height="72" rx="12" fill="#f2994a" fill-opacity="0.12" stroke="#f2994a"/>
+&lt;path d="M436 84 H452" marker-end="url(#arrow-glos-loop)" stroke="currentColor"/>
+&lt;rect x="460" y="48" width="124" height="72" rx="12" fill="#9b51e0" fill-opacity="0.12" stroke="#9b51e0"/>
+&lt;path d="M584 84 H600" marker-end="url(#arrow-glos-loop)" stroke="currentColor"/>
+&lt;rect x="608" y="48" width="96" height="72" rx="12" fill="#2f80ed" fill-opacity="0.12" stroke="#2f80ed"/>
+&lt;rect x="16" y="176" width="220" height="72" rx="12" fill="#27ae60" fill-opacity="0.12" stroke="#27ae60"/>
+&lt;path d="M236 212 H268" marker-end="url(#arrow-glos-loop)" stroke="currentColor"/>
+&lt;rect x="276" y="176" width="200" height="72" rx="12" fill="#f2994a" fill-opacity="0.12" stroke="#f2994a"/>
+&lt;path d="M476 212 H508" marker-end="url(#arrow-glos-loop)" stroke="currentColor"/>
+&lt;rect x="516" y="168" width="188" height="36" rx="10" fill="#9b51e0" fill-opacity="0.12" stroke="#9b51e0"/>
+&lt;rect x="516" y="214" width="188" height="36" rx="10" fill="#2f80ed" fill-opacity="0.12" stroke="#2f80ed"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="360" y="28" font-size="16" font-weight="700">Repeat the top row once per batch&lt;/text>
+&lt;text x="78" y="78" font-size="13" font-weight="700">Mini-batch&lt;/text>
+&lt;text x="78" y="98" font-size="12">molecules in&lt;/text>
+&lt;text x="226" y="78" font-size="13" font-weight="700">Forward&lt;/text>
+&lt;text x="226" y="98" font-size="12">predictions&lt;/text>
+&lt;text x="374" y="78" font-size="13" font-weight="700">Loss&lt;/text>
+&lt;text x="374" y="98" font-size="12">one error number&lt;/text>
+&lt;text x="522" y="78" font-size="13" font-weight="700">Backward&lt;/text>
+&lt;text x="522" y="98" font-size="12">gradients&lt;/text>
+&lt;text x="656" y="78" font-size="13" font-weight="700">Step&lt;/text>
+&lt;text x="656" y="98" font-size="12">weights move&lt;/text>
+&lt;text x="126" y="206" font-size="14" font-weight="700">Epoch ends&lt;/text>
+&lt;text x="126" y="226" font-size="12">every training molecule seen&lt;/text>
+&lt;text x="376" y="206" font-size="14" font-weight="700">Validation&lt;/text>
+&lt;text x="376" y="226" font-size="12">score, do not train&lt;/text>
+&lt;text x="610" y="190" font-size="13" font-weight="700">Stop&lt;/text>
+&lt;text x="610" y="236" font-size="13" font-weight="700">Another epoch&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The top row is one iteration. A full pass of those iterations is an epoch. The validation number is computed after the epoch, and it is not a license to keep editing the model against the test set.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="epoch-batch-iteration">Epoch, batch, iteration&lt;/h2>
+&lt;p>&lt;strong>Epoch.&lt;/strong> One complete pass of the training set through the model. Twenty epochs means every training molecule is seen twenty times. Seeing a molecule again is the point: the first pass rarely fits a nonlinear model.&lt;/p>
+&lt;p>&lt;strong>Batch, or mini-batch.&lt;/strong> The subset processed together before the weights change. A batch of 32 molecular graphs is one input to the forward pass, not 32 separate trainings.&lt;/p>
+&lt;p>&lt;strong>Batch size.&lt;/strong> How many samples are in that subset. It is a hyperparameter. It is not learned.&lt;/p>
+&lt;p>&lt;strong>Iteration, or step.&lt;/strong> One trip around the top row of Figure 1. One batch in, one weight update out. An epoch is a pile of iterations.&lt;/p>
+&lt;p>&lt;strong>Learning rate.&lt;/strong> How far the optimizer moves each weight. Too large and the loss jumps or diverges. Too small and the same epoch count barely moves the fit.&lt;/p>
+&lt;p>&lt;strong>Weights, or parameters.&lt;/strong> The numbers inside the model that training changes. In a GNN the matrices that transform atom features at each layer are weights. They start random. A seed makes that start repeatable.&lt;/p>
+&lt;p>&lt;strong>Hyperparameters.&lt;/strong> Choices fixed before training: learning rate, batch size, depth, hidden size, dropout. They are not updated by &lt;code>loss.backward()&lt;/code>.&lt;/p>
+&lt;p>&lt;strong>Activation.&lt;/strong> A nonlinear function after a layer. Without it, stacking layers is still one linear map. ReLU replaces negative values with zero and leaves positive values alone. It is a common choice, not a law.&lt;/p>
+&lt;p>&lt;strong>Gradient.&lt;/strong> How the loss changes if one weight is nudged. Backpropagation computes one gradient per weight [1]. A large positive gradient means increasing that weight would increase the loss, so the optimizer moves the other way.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 210" role="img" aria-labelledby="glos-count-title glos-count-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="glos-count-title">How 1,000 molecules and batch size 32 become 640 updates&lt;/title>
+&lt;desc id="glos-count-desc">One epoch contains 31 batches of 32 molecules and one last batch of 8, which is 32 iterations. Twenty epochs are 640 weight updates, provided the final partial batch is kept.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="16" y="56" width="520" height="48" rx="8" fill="#2f80ed" fill-opacity="0.12" stroke="#2f80ed"/>
+&lt;rect x="544" y="56" width="160" height="48" rx="8" fill="#f2994a" fill-opacity="0.16" stroke="#f2994a"/>
+&lt;rect x="16" y="140" width="336" height="48" rx="8" fill="#27ae60" fill-opacity="0.12" stroke="#27ae60"/>
+&lt;rect x="368" y="140" width="336" height="48" rx="8" fill="#9b51e0" fill-opacity="0.12" stroke="#9b51e0"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="360" y="32" font-size="16" font-weight="700">1,000 training molecules, batch size 32&lt;/text>
+&lt;text x="276" y="84" font-size="14" font-weight="700">31 batches × 32 = 992&lt;/text>
+&lt;text x="624" y="84" font-size="14" font-weight="700">last batch: 8&lt;/text>
+&lt;text x="184" y="168" font-size="14" font-weight="700">1 epoch = 32 iterations&lt;/text>
+&lt;text x="536" y="168" font-size="14" font-weight="700">20 epochs = 640 updates&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> The arithmetic for a training set of 1,000 molecules. Some loaders drop the last partial batch. Then the epoch has 31 iterations, those 8 molecules are never seen, and 20 epochs are 620 updates.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="forward-loss-backward-step">Forward, loss, backward, step&lt;/h2>
+&lt;p>&lt;strong>Forward pass.&lt;/strong> The batch goes through the model and comes out as predictions. For a regression GNN that is one predicted pIC50 per molecule. The model does not know that a higher pIC50 is more potent. It is fitting the number you handed it.&lt;/p>
+&lt;p>&lt;strong>Loss.&lt;/strong> One number that says how wrong those predictions are. Training minimizes it. A lower training loss means a closer fit to the training labels, including whatever noise is in them.&lt;/p>
+&lt;p>&lt;strong>Mean squared error.&lt;/strong> The average squared gap between prediction and target.&lt;/p>
+$$
+\mathrm{MSE} = \frac{1}{n}\sum_i (y_i - \hat{y}_i)^2
+$$&lt;p>Suppose three pIC50 values are 5, 5, and 5, and the model says 5, 5, and 8. The errors are 0, 0, and 3. MSE is $(0 + 0 + 9) / 3 = 3$. The one miss dominates because the error was squared. That is why MSE is a common default for pIC50 or solubility, and why a few bad labels can steer it.&lt;/p>
+&lt;p>&lt;strong>Mean absolute error.&lt;/strong> The average of the absolute gaps, $|y - \hat{y}|$. On the same three points it is $(0 + 0 + 3) / 3 = 1$. The outlier still hurts, but it is not squared. MAE is the loss to reach for when a few noisy assays should not run the fit.&lt;/p>
+&lt;p>&lt;strong>Binary cross-entropy.&lt;/strong> The loss for a yes/no label. The model offers a probability of &amp;ldquo;active&amp;rdquo;, and the loss compares it with 0 or 1. Some implementations want that probability. PyTorch&amp;rsquo;s &lt;code>BCEWithLogitsLoss&lt;/code> wants the raw score and applies the sigmoid itself. Mixing those two double-applies the sigmoid.&lt;/p>
+&lt;p>&lt;strong>Categorical cross-entropy.&lt;/strong> The same idea for more than two exclusive classes. One compound, one class, a predicted distribution over the classes.&lt;/p>
+&lt;p>&lt;strong>Backward pass.&lt;/strong> The gradient of that one loss number is computed for every weight, by the chain rule run from the loss back to the inputs [1]. In PyTorch, &lt;code>loss.backward()&lt;/code> does this. It adds the new gradients onto whatever is already stored.&lt;/p>
+&lt;p>&lt;strong>Optimizer step.&lt;/strong> The optimizer turns those gradients into a change in the weights. &lt;code>optimizer.step()&lt;/code> does that. &lt;code>optimizer.zero_grad()&lt;/code> has to come first. Skip it and the second batch&amp;rsquo;s update still contains the first batch&amp;rsquo;s gradient.&lt;/p>
+&lt;h2 id="loss-is-not-the-metric">Loss is not the metric&lt;/h2>
+&lt;p>The loss is what the optimizer sees. A metric is what you use to decide the model is worth keeping. They are often different functions, and the metric has to be computed on molecules the weights did not train on. The
+is that rule in full.&lt;/p>
+&lt;p>&lt;strong>Accuracy.&lt;/strong> The fraction of labels that match. It is a bad compass on a screen. If 95 of 100 compounds are inactive, predicting &amp;ldquo;inactive&amp;rdquo; for all of them scores 0.95 and finds no active.&lt;/p>
+&lt;p>&lt;strong>Precision.&lt;/strong> Of the compounds called active, the fraction that are active. Precision 0.90 means most of the shortlist is real. The cost of a false active is a synthesis or a purchase that fails.&lt;/p>
+&lt;p>&lt;strong>Recall.&lt;/strong> Of the true actives, the fraction the model names. Recall 0.10 with precision 0.90 is a careful model that misses almost everything.&lt;/p>
+&lt;p>&lt;strong>F1.&lt;/strong> The harmonic mean of precision and recall:&lt;/p>
+$$
+F_1 = \frac{2PR}{P + R}.
+$$&lt;p>With $P = 0.90$ and $R = 0.10$, the ordinary average is 0.50 and $F_1 = 0.18$. The harmonic mean refuses to be impressed by one of the two being high.&lt;/p>
+&lt;p>For regression the usual reported numbers are RMSE, MAE, and $R^2$. RMSE is the square root of MSE, in the same units as pIC50. $R^2$ compares the errors with the errors of predicting the training mean. It is not a percent correct.&lt;/p>
+&lt;h2 id="optimizers">Optimizers&lt;/h2>
+&lt;p>&lt;strong>Optimizer.&lt;/strong> The rule that converts gradients into the step.&lt;/p>
+&lt;p>&lt;strong>SGD.&lt;/strong> Subtract learning rate times the mini-batch gradient from each weight. Often used with momentum, which keeps a running average of recent gradients so one noisy batch does not reverse the step.&lt;/p>
+&lt;p>&lt;strong>RMSProp.&lt;/strong> Gives each weight its own step size from a running average of squared gradients. Useful when some weights see huge gradients and others see tiny ones.&lt;/p>
+&lt;p>&lt;strong>Adam.&lt;/strong> Momentum and a per-weight step size together [2]. It is a common default for GNNs because it often trains without a long search over the learning rate. &amp;ldquo;Often&amp;rdquo; is not &amp;ldquo;for every dataset&amp;rdquo;.&lt;/p>
+&lt;p>&lt;strong>Learning-rate scheduler.&lt;/strong> A rule that changes the learning rate as training goes. A typical one lowers it after the validation loss has stalled.&lt;/p>
+&lt;h2 id="when-training-goes-wrong">When training goes wrong&lt;/h2>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 300" role="img" aria-labelledby="glos-curves-title glos-curves-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="glos-curves-title">Four shapes of training and validation loss&lt;/title>
+&lt;desc id="glos-curves-desc">Healthy training has both curves falling and staying close. Overfitting has the training curve falling while validation rises. Underfitting has both curves flat and high. An exploding run spikes. These are sketches, not a logged experiment.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="16" y="40" width="336" height="112" rx="12" stroke="currentColor" stroke-opacity="0.35"/>
+&lt;rect x="368" y="40" width="336" height="112" rx="12" stroke="currentColor" stroke-opacity="0.35"/>
+&lt;rect x="16" y="168" width="336" height="112" rx="12" stroke="currentColor" stroke-opacity="0.35"/>
+&lt;rect x="368" y="168" width="336" height="112" rx="12" stroke="currentColor" stroke-opacity="0.35"/>
+&lt;path d="M40 130 C110 110 150 80 330 62" stroke="#2f80ed" stroke-width="2.5"/>
+&lt;path d="M40 134 C120 118 170 96 330 78" stroke="#f2994a" stroke-width="2.5"/>
+&lt;path d="M392 130 C470 90 540 70 680 58" stroke="#2f80ed" stroke-width="2.5"/>
+&lt;path d="M392 128 C470 100 540 90 600 96 C640 102 660 120 680 132" stroke="#f2994a" stroke-width="2.5"/>
+&lt;path d="M40 210 H330" stroke="#2f80ed" stroke-width="2.5"/>
+&lt;path d="M40 224 H330" stroke="#f2994a" stroke-width="2.5"/>
+&lt;path d="M392 258 C450 250 500 220 560 198 C620 186 650 184 678 182" stroke="#f2994a" stroke-width="2.5"/>
+&lt;path d="M392 262 C460 258 520 250 620 246" stroke="#2f80ed" stroke-width="2.5"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="28" y="58" font-size="14" font-weight="700">Healthy&lt;/text>
+&lt;text x="380" y="58" font-size="14" font-weight="700">Overfitting&lt;/text>
+&lt;text x="28" y="186" font-size="14" font-weight="700">Underfitting&lt;/text>
+&lt;text x="380" y="186" font-size="14" font-weight="700">Exploding or erratic&lt;/text>
+&lt;text x="200" y="138" font-size="12">both fall, stay close&lt;/text>
+&lt;text x="560" y="86" font-size="12">train falls, val rises&lt;/text>
+&lt;text x="150" y="248" font-size="12">both stay high&lt;/text>
+&lt;text x="560" y="266" font-size="12">learning rate, or the scale of y&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 3.&lt;/strong> Blue is training loss, orange is validation loss, and the horizontal axis is the epoch. Match the shape before changing the architecture. An explosion is often a learning rate that is too high, or targets that were never scaled.&lt;/figcaption>
+&lt;/figure>
+&lt;p>&lt;strong>Overfitting.&lt;/strong> Training loss keeps falling while validation loss rises. The model is fitting the training set&amp;rsquo;s noise. Early stopping, dropout, weight decay, or more diverse molecules are the usual responses. A bigger model is not.&lt;/p>
+&lt;p>&lt;strong>Underfitting.&lt;/strong> Both losses stay high. The model is too small, the training is too short, or the learning rate is too low to move.&lt;/p>
+&lt;p>&lt;strong>Dropout.&lt;/strong> During training, a random fraction of the activations is set to zero, so the network cannot depend on one path [3]. At evaluation that randomness is turned off. In PyTorch, &lt;code>model.train()&lt;/code> uses dropout and &lt;code>model.eval()&lt;/code> disables it. Scoring the validation set in train mode makes the number noisy for no reason.&lt;/p>
+&lt;p>&lt;strong>Weight decay.&lt;/strong> A penalty on large weights, the L2 penalty, set with &lt;code>weight_decay&lt;/code> on most PyTorch optimizers. It is not the same knob as dropout. Dropout hits activations. Weight decay hits the parameters.&lt;/p>
+&lt;p>&lt;strong>Normalization.&lt;/strong> Putting numbers on a stable scale. Standardizing the input descriptors, or the pIC50 values, is the chemist&amp;rsquo;s version. Batch normalization does a related rescaling inside the network, using the mean and variance of the current batch [4]. Because that mean depends on the batch, batch normalization also cares about &lt;code>train()&lt;/code> versus &lt;code>eval()&lt;/code>.&lt;/p>
+&lt;p>&lt;strong>Early stopping.&lt;/strong> Stop when validation performance has not improved for a set number of epochs, and keep the weights from the best epoch, not the last one.&lt;/p>
+&lt;p>&lt;strong>Seed.&lt;/strong> A random seed fixes the split, the initial weights, the shuffle, and the dropout masks. One seed makes a run repeatable. It does not make the number typical. The
+is that argument in full.&lt;/p>
+&lt;h2 id="tuning-on-the-right-set">Tuning, on the right set&lt;/h2>
+&lt;p>&lt;strong>Grid search.&lt;/strong> Every combination from a short list. Three learning rates and three batch sizes are nine trainings.&lt;/p>
+&lt;p>&lt;strong>Random search.&lt;/strong> Draw combinations from ranges. Bergstra and Bengio showed that, for the same number of trainings, random search beats a grid when only a few of the hyperparameters actually matter [5].&lt;/p>
+&lt;p>&lt;strong>Bayesian optimization.&lt;/strong> Fit a model of how the validation score depends on the hyperparameters, and use it to pick the next trial [6]. It earns its cost when one training run is expensive.&lt;/p>
+&lt;p>All three read the validation score. Using the test score to pick a learning rate turns the test set into a second validation set. The number you then &amp;ldquo;report&amp;rdquo; has already been used to choose the model.&lt;/p>
+&lt;h2 id="graphs-in-the-same-loop">Graphs, in the same loop&lt;/h2>
+&lt;p>Nothing above changes when the input is a graph. The forward pass does.&lt;/p>
+&lt;p>&lt;strong>Graph.&lt;/strong> Nodes and edges. For a molecule the usual choice is atoms as nodes and bonds as edges. Ethanol drawn without hydrogens is three nodes and two edges, C–C–O. Including hydrogens is a different graph and a different model.&lt;/p>
+&lt;p>&lt;strong>Node features.&lt;/strong> The vector on each atom: element, formal charge, aromaticity, hybridization, hydrogen count. The network does not see the periodic table except through this vector.&lt;/p>
+&lt;p>&lt;strong>Edge features.&lt;/strong> The vector on each bond: order, conjugation, ring membership.&lt;/p>
+&lt;p>&lt;strong>Message passing.&lt;/strong> A node builds a new vector from its own features and its neighbors&amp;rsquo; features. Gilmer and colleagues put a large family of molecular GNNs into this one pattern [7]. After one round, a carbon&amp;rsquo;s vector contains information about the atoms bonded to it, and nothing further.&lt;/p>
+&lt;p>&lt;strong>Aggregation.&lt;/strong> How the neighbors&amp;rsquo; messages become one vector: sum, mean, or max. Sum can tell a carbon with three neighbors from a carbon with one. Mean divides that difference out.&lt;/p>
+&lt;p>&lt;strong>Depth.&lt;/strong> The number of message-passing layers. Each layer adds one bond of reach. Three layers mean an atom can be influenced by atoms three bonds away, not by the whole molecule.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 230" role="img" aria-labelledby="glos-mp-title glos-mp-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="glos-mp-title">What one and two message-passing layers let the oxygen see&lt;/title>
+&lt;desc id="glos-mp-desc">On a three-atom chain the oxygen starts knowing only itself. After one layer it knows the carbon it is bonded to. After two layers that carbon's other neighbor is included. A third layer would not add atoms on this chain.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;circle cx="150" cy="78" r="26" fill="#2f80ed" fill-opacity="0.15" stroke="#2f80ed"/>
+&lt;circle cx="250" cy="78" r="26" fill="#27ae60" fill-opacity="0.15" stroke="#27ae60"/>
+&lt;circle cx="350" cy="78" r="26" fill="#f2994a" fill-opacity="0.18" stroke="#f2994a"/>
+&lt;path d="M176 78 H224" stroke="currentColor"/>
+&lt;path d="M276 78 H324" stroke="currentColor"/>
+&lt;circle cx="250" cy="78" r="58" stroke="#9b51e0" stroke-dasharray="4 3"/>
+&lt;rect x="430" y="36" width="260" height="56" rx="10" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="430" y="108" width="260" height="56" rx="10" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="150" y="82" font-size="14" font-weight="700">C&lt;/text>
+&lt;text x="250" y="82" font-size="14" font-weight="700">C&lt;/text>
+&lt;text x="350" y="82" font-size="14" font-weight="700">O&lt;/text>
+&lt;text x="250" y="162" font-size="13">1 layer: O sees the bonded C&lt;/text>
+&lt;text x="560" y="60" font-size="13" font-weight="700">2 layers&lt;/text>
+&lt;text x="560" y="78" font-size="12">O also sees the far C&lt;/text>
+&lt;text x="560" y="132" font-size="13" font-weight="700">More layers&lt;/text>
+&lt;text x="560" y="150" font-size="12">no new atoms on this chain&lt;/text>
+&lt;text x="250" y="206" font-size="13">Hydrogens omitted. A drawing, not a featurized molecule.&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 4.&lt;/strong> Reach grows by one bond per layer. On a real drug the third layer still adds atoms. Stacking far past that is where oversmoothing shows up: node vectors become more alike and the atom identity washes out [8].&lt;/figcaption>
+&lt;/figure>
+&lt;p>&lt;strong>Oversmoothing.&lt;/strong> As layers repeat, the node vectors move toward each other and become less useful as a description of one atom [8]. When a deeper GNN gets worse, this is one of the first suspects, ahead of &amp;ldquo;needs more epochs&amp;rdquo;.&lt;/p>
+&lt;p>&lt;strong>Readout, or pooling.&lt;/strong> The step that turns every atom vector into one molecule vector, often by a sum or a mean. A molecular property such as pIC50 is predicted from that vector, not from a single atom. The
+is where readout sits in a DGL model.&lt;/p>
+&lt;h2 id="splits">Splits&lt;/h2>
+&lt;p>&lt;strong>Training, validation, and test.&lt;/strong> Train on the training set. Choose hyperparameters and the stopping epoch on the validation set. Touch the test set once, at the end. An 80/10/10 cut is a common starting point, not a justified one. The
+separates internal fit, cross-validation, and an external check.&lt;/p>
+&lt;p>&lt;strong>Random split.&lt;/strong> Each molecule is assigned independently. Close analogues of a test compound usually land in training. The model can look strong by recognizing a near neighbor.&lt;/p>
+&lt;p>&lt;strong>Scaffold split.&lt;/strong> Molecules are grouped by core, and a whole core goes to one side. MoleculeNet&amp;rsquo;s split uses the Bemis–Murcko scaffold so that the test molecules are new chemotypes relative to training [9]. The Chemprop paper evaluates property models on that kind of split as well as on a random one [10]. It is harder, and it is closer to &amp;ldquo;would this work on a series we have not made&amp;rdquo;.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 230" role="img" aria-labelledby="glos-split-title glos-split-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="glos-split-title">A random split shares a scaffold. A scaffold split does not.&lt;/title>
+&lt;desc id="glos-split-desc">On the left, molecules that share a core are free to land in both training and test. On the right, every molecule with the first core stays in training and the second core is entirely in the test set.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="16" y="40" width="336" height="168" rx="14" fill="#f2994a" fill-opacity="0.08" stroke="#f2994a"/>
+&lt;rect x="368" y="40" width="336" height="168" rx="14" fill="#27ae60" fill-opacity="0.08" stroke="#27ae60"/>
+&lt;rect x="40" y="78" width="140" height="44" rx="8" fill="#2f80ed" fill-opacity="0.15" stroke="#2f80ed"/>
+&lt;rect x="196" y="78" width="132" height="44" rx="8" fill="#2f80ed" fill-opacity="0.15" stroke="#2f80ed"/>
+&lt;rect x="40" y="140" width="140" height="44" rx="8" fill="#9b51e0" fill-opacity="0.15" stroke="#9b51e0"/>
+&lt;rect x="196" y="140" width="132" height="44" rx="8" fill="#2f80ed" fill-opacity="0.15" stroke="#2f80ed"/>
+&lt;rect x="392" y="78" width="140" height="44" rx="8" fill="#2f80ed" fill-opacity="0.15" stroke="#2f80ed"/>
+&lt;rect x="548" y="78" width="132" height="44" rx="8" fill="#9b51e0" fill-opacity="0.15" stroke="#9b51e0"/>
+&lt;rect x="392" y="140" width="140" height="44" rx="8" fill="#2f80ed" fill-opacity="0.15" stroke="#2f80ed"/>
+&lt;rect x="548" y="140" width="132" height="44" rx="8" fill="#9b51e0" fill-opacity="0.15" stroke="#9b51e0"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="184" y="62" font-size="14" font-weight="700">Random&lt;/text>
+&lt;text x="110" y="104" font-size="13">Train, core A&lt;/text>
+&lt;text x="262" y="104" font-size="13">Test, core A&lt;/text>
+&lt;text x="110" y="166" font-size="13">Train, core B&lt;/text>
+&lt;text x="262" y="166" font-size="13">Test, core A&lt;/text>
+&lt;text x="536" y="62" font-size="14" font-weight="700">Scaffold&lt;/text>
+&lt;text x="462" y="104" font-size="13">Train, core A&lt;/text>
+&lt;text x="614" y="104" font-size="13">Test, core B&lt;/text>
+&lt;text x="462" y="166" font-size="13">Train, core A&lt;/text>
+&lt;text x="614" y="166" font-size="13">Test, core B&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 5.&lt;/strong> Same compounds, two questions. The left panel can be solved by remembering core A. The right panel cannot.&lt;/figcaption>
+&lt;/figure>
+&lt;p>&lt;strong>Data leakage.&lt;/strong> Anything from the evaluation molecules that is allowed to influence training. A near-duplicate compound is the obvious case. The same protein, or a label derived from the test rows, is the less obvious one. The
+is a laptop-scale check of how large that effect is for one GNN, and when it is not.&lt;/p>
+&lt;p>&lt;strong>Regression target.&lt;/strong> A continuous label: pIC50, logS, a computed free energy. State the units.&lt;/p>
+&lt;p>&lt;strong>Classification target.&lt;/strong> A class, often active or inactive at a potency cutoff. The cutoff is part of the model. A different cutoff is a different dataset, and it changes precision and recall even when the molecules do not change.&lt;/p>
+&lt;h2 id="the-loop-in-pytorch">The loop in PyTorch&lt;/h2>
+&lt;p>The sketch below is the top row of Figure 1, then the validation step. &lt;code>MyModel&lt;/code> and the two loaders are stand-ins. DGL and PyTorch Geometric supply loaders that batch graphs into one disconnected graph. The order of the seven calls does not change.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">torch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">model&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">MyModel&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">optimizer&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">torch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">optim&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Adam&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">model&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">parameters&lt;/span>&lt;span class="p">(),&lt;/span> &lt;span class="n">lr&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mf">1e-3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">weight_decay&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mf">1e-5&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">loss_fn&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">torch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">nn&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">MSELoss&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">epoch&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">20&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">model&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">train&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">train_loader&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">optimizer&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">zero_grad&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">pred&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">model&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">loss&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">loss_fn&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">pred&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">loss&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">backward&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">optimizer&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">step&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">model&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">eval&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">with&lt;/span> &lt;span class="n">torch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">no_grad&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">totals&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">loss_fn&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">model&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">item&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">val_loader&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">val_loss&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">sum&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">totals&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">totals&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;epoch &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">epoch&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">: validation loss &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">val_loss&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s2">.3f&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>torch.no_grad()&lt;/code> stops PyTorch from storing the graph of operations it would need for a backward pass. Evaluation does not take a step, so that graph is wasted memory. The printed &lt;code>val_loss&lt;/code> averages one number per batch, so a final batch of 8 counts as much as a batch of 32. A mean over molecules weights each compound once. Either is fine if you say which one you plotted.&lt;/p>
+&lt;h2 id="cheat-sheet">Cheat sheet&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Term&lt;/th>
+&lt;th>In one line&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Epoch&lt;/td>
+&lt;td>One full pass over the training set&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Batch, batch size&lt;/td>
+&lt;td>Samples per update, and how many&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Iteration&lt;/td>
+&lt;td>One weight update&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Learning rate&lt;/td>
+&lt;td>Size of that update&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Weights&lt;/td>
+&lt;td>The numbers training changes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Hyperparameters&lt;/td>
+&lt;td>The numbers you set before training&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Activation&lt;/td>
+&lt;td>The nonlinearity after a layer&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Gradient&lt;/td>
+&lt;td>How the loss moves if one weight moves&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Forward pass&lt;/td>
+&lt;td>Batch in, predictions out&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Loss&lt;/td>
+&lt;td>The number being minimized&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Backward pass&lt;/td>
+&lt;td>Gradients by the chain rule&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Optimizer step&lt;/td>
+&lt;td>Weights updated from those gradients&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>MSE, MAE&lt;/td>
+&lt;td>Squared error, absolute error&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Cross-entropy&lt;/td>
+&lt;td>Classification loss&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Accuracy&lt;/td>
+&lt;td>Fraction correct; hollow if one class dominates&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Precision, recall, F1&lt;/td>
+&lt;td>Shortlist quality, actives found, and their balance&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>SGD, RMSProp, Adam&lt;/td>
+&lt;td>Three common optimizers&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Scheduler&lt;/td>
+&lt;td>Changes the learning rate on a schedule&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Overfitting&lt;/td>
+&lt;td>Training fit improves, new molecules get worse&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Dropout&lt;/td>
+&lt;td>Random activations dropped, and only while training&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Weight decay&lt;/td>
+&lt;td>Penalty on large weights&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Normalization&lt;/td>
+&lt;td>A stable scale for inputs or for a layer&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Early stopping&lt;/td>
+&lt;td>Keep the best epoch, not the last&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Seed&lt;/td>
+&lt;td>Makes one run repeatable&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Grid, random, Bayesian&lt;/td>
+&lt;td>Three ways to search hyperparameters&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Graph&lt;/td>
+&lt;td>Atoms as nodes, bonds as edges&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Node and edge features&lt;/td>
+&lt;td>The vectors the GNN is allowed to see&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Message passing&lt;/td>
+&lt;td>A node rewritten from its neighbors&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Aggregation&lt;/td>
+&lt;td>Sum, mean, or max of those messages&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Depth&lt;/td>
+&lt;td>One layer, one bond of reach&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Oversmoothing&lt;/td>
+&lt;td>Deeper layers, less distinct atoms&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Readout&lt;/td>
+&lt;td>Atom vectors to one molecule vector&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Train, validation, test&lt;/td>
+&lt;td>Fit, choose, report once&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Scaffold split&lt;/td>
+&lt;td>A new core in the test set&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Data leakage&lt;/td>
+&lt;td>Evaluation information reaching training&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Regression, classification&lt;/td>
+&lt;td>A pIC50, or a cutoff called active&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ol>
+&lt;li>Rumelhart DE, Hinton GE, Williams RJ. Learning representations by back-propagating errors. &lt;em>Nature&lt;/em> 1986;323:533–536. doi:
+&lt;/li>
+&lt;li>Kingma DP, Ba J. Adam: a method for stochastic optimization. arXiv:1412.6980.
+&lt;/li>
+&lt;li>Srivastava N, Hinton G, Krizhevsky A, Sutskever I, Salakhutdinov R. Dropout: a simple way to prevent neural networks from overfitting. &lt;em>J Mach Learn Res&lt;/em> 2014;15:1929–1958.
+&lt;/li>
+&lt;li>Ioffe S, Szegedy C. Batch normalization: accelerating deep network training by reducing internal covariate shift. arXiv:1502.03167.
+&lt;/li>
+&lt;li>Bergstra J, Bengio Y. Random search for hyper-parameter optimization. &lt;em>J Mach Learn Res&lt;/em> 2012;13:281–305.
+&lt;/li>
+&lt;li>Snoek J, Larochelle H, Adams RP. Practical Bayesian optimization of machine learning algorithms. &lt;em>Advances in Neural Information Processing Systems&lt;/em> 25, 2012. arXiv:1206.2944.
+&lt;/li>
+&lt;li>Gilmer J, Schoenholz SS, Riley PF, Vinyals O, Dahl GE. Neural message passing for quantum chemistry. &lt;em>Proceedings of the 34th International Conference on Machine Learning&lt;/em>, PMLR 70, 2017.
+&lt;/li>
+&lt;li>Li Q, Han Z, Wu XM. Deeper insights into graph convolutional networks for semi-supervised learning. AAAI 2018. arXiv:1801.07606.
+&lt;/li>
+&lt;li>Wu Z, Ramsundar B, Feinberg EN, Gomes J, Geniesse C, Pappu AS, Leswing K, Pande V. MoleculeNet: a benchmark for molecular machine learning. &lt;em>Chem Sci&lt;/em> 2018;9:513–530. doi:
+&lt;/li>
+&lt;li>Yang K, Swanson K, Jin W, Coley C, Eiden P, Gao H, Guzman-Perez A, Hopper T, Kelley B, Mathea M, Palmer A, Settels V, Jaakkola T, Jensen K, Barzilay R. Analyzing learned molecular representations for property prediction. &lt;em>J Chem Inf Model&lt;/em> 2019;59:3370–3388. doi:
+&lt;/li>
+&lt;/ol></description></item></channel></rss>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Matched Molecular Pairs | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/matched-molecular-pairs/</link><atom:link href="https://yboulaamane.github.io/tags/matched-molecular-pairs/index.xml" rel="self" type="application/rss+xml"/><description>Matched Molecular Pairs</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 07 Jan 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Matched Molecular Pairs</title><link>https://yboulaamane.github.io/tags/matched-molecular-pairs/</link></image><item><title>Bioisosteric Replacement In Silico: From Classical Rules to Data-Driven Suggestions</title><link>https://yboulaamane.github.io/blog/bioisosteric-replacement-in-silico/</link><pubDate>Wed, 07 Jan 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/bioisosteric-replacement-in-silico/</guid><description>&lt;p>A lead compound rarely fails everywhere at once. More often it is potent and selective enough, and one part of the molecule causes one problem: fast clearance, poor solubility, low permeability, an off-target liability, or a metabolic soft spot. Bioisosteric replacement is the attempt to change that part, and only that part, while keeping the interactions that made the compound active.&lt;/p>
+&lt;p>The idea is old. What has changed is how candidate replacements are found. Instead of relying only on a medicinal chemist&amp;rsquo;s memory of which groups &amp;ldquo;behave alike&amp;rdquo;, we can now describe fragments numerically, mine large compound collections for the swaps chemists actually made, and look at what those swaps did to measured properties.&lt;/p>
+&lt;h2 id="classical-and-non-classical-bioisosteres">Classical and non-classical bioisosteres&lt;/h2>
+&lt;p>The classical view groups atoms and groups by valence and size: monovalent replacements such as F for H, or Cl for CH₃; divalent swaps such as -O- for -S- or -CH₂-; ring equivalents such as benzene and thiophene [1].&lt;/p>
+&lt;p>Non-classical bioisosteres do not share the same number of atoms or a simple structural relationship, but reproduce the physicochemical role of the original group. The textbook examples are carboxylic acid surrogates such as tetrazoles and acyl sulfonamides, amide replacements, and heterocycles used in place of esters or amides [1, 2]. Meanwell&amp;rsquo;s review is a good catalogue of these tactics and, importantly, of the context-dependent outcomes they produced in real programmes [2].&lt;/p>
+&lt;p>That context dependence is the central lesson. A replacement is not bioisosteric in general; it is bioisosteric for a particular target, binding mode and property problem. A tetrazole can keep the ionic interaction of a carboxylic acid and still change permeability, pKa and distribution in ways that matter more than potency.&lt;/p>
+&lt;h2 id="describing-fragments-by-their-properties">Describing fragments by their properties&lt;/h2>
+&lt;p>One data-driven approach, developed by Ertl, starts from the substituents that actually appear in large collections of organic and drug-like molecules [3]. Each substituent is described by a small set of calculated properties that capture what a medicinal chemist cares about: size and shape, hydrogen-bond donor and acceptor character, polarity, and electronic effects similar in spirit to Hammett constants.&lt;/p>
+&lt;p>Once substituents live in that property space, bioisostere candidates are simply near neighbours of the group you want to replace. Two practical advantages follow:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>The suggestions are explainable.&lt;/strong> You can say why a group was proposed (similar volume, similar acceptor pattern, comparable electron-withdrawing effect), which is more useful in a design meeting than a fingerprint similarity score.&lt;/li>
+&lt;li>&lt;strong>The suggestions are realistic.&lt;/strong> Because the substituents were mined from real compounds, they tend to be groups that chemists know how to make and are willing to put in a molecule.&lt;/li>
+&lt;/ul>
+&lt;p>The same logic extends beyond terminal substituents to linkers and ring systems, which is where it meets scaffold hopping.&lt;/p>
+&lt;h2 id="matched-molecular-pairs-what-the-swap-actually-did">Matched molecular pairs: what the swap actually did&lt;/h2>
+&lt;p>Property similarity tells you which groups might behave alike. Matched molecular pairs (MMPs) tell you what happened when chemists made the swap. An MMP is a pair of compounds that differ by a single, well-defined structural transformation, for example replacing a phenyl ring with a pyridyl ring at the same position. Collect enough pairs for the same transformation, and you can look at the distribution of changes in potency, solubility, lipophilicity or clearance.&lt;/p>
+&lt;p>Hussain and Rea described a fragmentation-based algorithm that makes MMP identification tractable for large datasets [4], and mmpdb provides an open-source implementation that can be run on in-house or public data with multiple properties [5].&lt;/p>
+&lt;p>Two cautions apply. First, the average effect of a transformation can hide a wide spread; the same swap can help in one series and hurt in another. Second, MMP statistics are only as good as the data behind them, so mixing assays or sources without care will blur the signal.&lt;/p>
+&lt;h2 id="swissbioisostere">SwissBioisostere&lt;/h2>
+&lt;p>
+is a freely accessible database of molecular replacements derived from matched pairs in bioactivity data, with information on how often each replacement has been made and how it affected activity [6]. It is a convenient starting point when you do not have a large internal dataset: query the fragment you want to replace, inspect the proposed replacements, and look at the evidence behind each one rather than only its rank.&lt;/p>
+&lt;h2 id="a-practical-workflow">A practical workflow&lt;/h2>
+&lt;p>The computational step is an idea list. The decision is still which idea is worth making for this liability.&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>State the problem precisely.&lt;/strong> &amp;ldquo;Improve the compound&amp;rdquo; is not a design objective. &amp;ldquo;Reduce clearance driven by oxidation at this position&amp;rdquo; or &amp;ldquo;lower logD without losing the hydrogen bond to this residue&amp;rdquo; is.&lt;/li>
+&lt;li>&lt;strong>Decide what must be preserved.&lt;/strong> If a structure is available, identify which interactions the fragment makes. A replacement that removes a key hydrogen bond is not a bioisostere for this target, whatever the database says.&lt;/li>
+&lt;li>&lt;strong>Generate candidates from more than one source.&lt;/strong> Property-space neighbours, MMP transformations and SwissBioisostere answer different questions, and their overlap is often the most interesting list.&lt;/li>
+&lt;li>&lt;strong>Filter early.&lt;/strong> Remove candidates that are hard to synthesise, introduce structural alerts, or push calculated properties outside the range you care about.&lt;/li>
+&lt;li>&lt;strong>Check the binding hypothesis.&lt;/strong> Docking or careful visual inspection in the binding site can discard replacements that clash or change the preferred conformation. Treat scores as a filter, not a ranking of potency.&lt;/li>
+&lt;li>&lt;strong>Let a chemist choose.&lt;/strong> The computational output is an idea list. Synthetic feasibility, programme history and intuition about the series still decide what gets made.&lt;/li>
+&lt;/ol>
+&lt;h2 id="caveats">Caveats&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Context dominates.&lt;/strong> The same replacement can behave very differently in different series and targets.&lt;/li>
+&lt;li>&lt;strong>Properties move together.&lt;/strong> Changing a group to fix one property usually shifts others, such as pKa, lipophilicity, conformation or metabolic stability.&lt;/li>
+&lt;li>&lt;strong>Data bias.&lt;/strong> Mined replacements reflect what chemists have tended to make, not necessarily what would work best. Rare but valuable ideas may be under-represented.&lt;/li>
+&lt;li>&lt;strong>Conformational effects are easy to miss.&lt;/strong> A replacement can look equivalent in 2D and still change the preferred geometry of the molecule.&lt;/li>
+&lt;/ul>
+&lt;h2 id="the-question-worth-asking">The question worth asking&lt;/h2>
+&lt;p>Data-driven bioisostere tools widen the list of reasonable ideas and make the reasoning behind each idea visible. They do not remove the need to understand why the original group matters. The useful question is not &amp;ldquo;what is similar to this group?&amp;rdquo; but &amp;ldquo;what is similar to this group in the way that matters for this target and this liability?&amp;rdquo;&lt;/p>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ol>
+&lt;li>Patani GA, LaVoie EJ. Bioisosterism: a rational approach in drug design. &lt;em>Chem Rev&lt;/em> 1996;96:3147–3176. doi:
+&lt;/li>
+&lt;li>Meanwell NA. Synopsis of some recent tactical application of bioisosteres in drug design. &lt;em>J Med Chem&lt;/em> 2011;54:2529–2591. doi:
+&lt;/li>
+&lt;li>Ertl P. Cheminformatics analysis of organic substituents: identification of the most common substituents, calculation of substituent properties, and automatic identification of drug-like bioisosteric groups. &lt;em>J Chem Inf Comput Sci&lt;/em> 2003;43:374–380. doi:
+&lt;/li>
+&lt;li>Hussain J, Rea C. Computationally efficient algorithm to identify matched molecular pairs (MMPs) in large data sets. &lt;em>J Chem Inf Model&lt;/em> 2010;50:339–348. doi:
+&lt;/li>
+&lt;li>Dalke A, Hert J, Kramer C. mmpdb: an open-source matched molecular pair platform for large multiproperty data sets. &lt;em>J Chem Inf Model&lt;/em> 2018;58:902–910. doi:
+&lt;/li>
+&lt;li>Wirth M, Zoete V, Michielin O, Sauer WHB. SwissBioisostere: a database of molecular replacements for ligand design. &lt;em>Nucleic Acids Res&lt;/em> 2013;41:D1137–D1143. doi:
+&lt;/li>
+&lt;/ol></description></item></channel></rss>

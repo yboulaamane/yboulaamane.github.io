@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Patents | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/patents/</link><atom:link href="https://yboulaamane.github.io/tags/patents/index.xml" rel="self" type="application/rss+xml"/><description>Patents</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 19 Oct 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Patents</title><link>https://yboulaamane.github.io/tags/patents/</link></image><item><title>BindingDB Meets PubChem: A Practical Workflow for Mining Bioactivity and Patent Chemistry</title><link>https://yboulaamane.github.io/blog/bindingdb-meets-pubchem-bioactivity-and-patent-chemistry/</link><pubDate>Mon, 19 Oct 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/bindingdb-meets-pubchem-bioactivity-and-patent-chemistry/</guid><description>&lt;p>A measured affinity and a chemical identifier answer different questions. BindingDB is built around the measurement. PubChem is built around the identity, and around every other database that has deposited that identity. The useful step is the crosswalk between them.&lt;/p>
+&lt;p>That is the practical point of Christopher Southan&amp;rsquo;s BindingDB webinar, &lt;em>Synergies between BindingDB and PubChem&lt;/em> (17 September 2025). The recording walks a patent series from a curated affinity table into PubChem, then out again to other sources, a crystal structure, and the patent itself [1]. The two databases are not substitutes. An earlier note on
+is the map. This one is the route across it.&lt;/p>
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/6zW8N2eAKHw?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
+&lt;/div>
+&lt;h2 id="what-each-database-is-for">What each database is for&lt;/h2>
+&lt;p>BindingDB curates experimental protein–ligand affinities: K&lt;sub>d&lt;/sub>, K&lt;sub>i&lt;/sub>, IC&lt;sub>50&lt;/sub>, and EC&lt;sub>50&lt;/sub>, with the compound, the target, the assay, the paper, and, often, the patent [2]. Patent curation is a large part of that table. Structures taken from patents are stored next to a biological measurement and a named target, which is the piece an automated structure dump does not guarantee.&lt;/p>
+&lt;p>PubChem is the integration layer. A Substance record (SID) is one depositor&amp;rsquo;s submission. PubChem standardizes those submissions and groups the same structure under one Compound record (CID). Many SIDs can collapse to one CID. The same molecule may have arrived from a vendor, a paper, ChEMBL, BindingDB, or a patent-extraction pipeline. The CID is the place where those arrivals can be compared. PubChem&amp;rsquo;s own 2025 update describes the scale of that layer: more than 1,000 sources, on the order of 119 million compounds and 322 million substances [3].&lt;/p>
+&lt;p>BindingDB deposits into PubChem, so a curated BindingDB compound can usually be opened as a CID and asked a provenance question:&lt;/p>
+&lt;ul>
+&lt;li>Is it also in ChEMBL?&lt;/li>
+&lt;li>Is it in the Guide to Pharmacology?&lt;/li>
+&lt;li>Did an automated patent pipeline extract it?&lt;/li>
+&lt;li>Is there a PDB structure?&lt;/li>
+&lt;li>Is it sold?&lt;/li>
+&lt;li>Did anyone else submit an assay?&lt;/li>
+&lt;li>Was the same structure deposited more than once?&lt;/li>
+&lt;/ul>
+&lt;p>Southan put a number on the gap this creates. BindingDB then held just over half a million compounds that were not in ChEMBL, and over 80% of that set came from BindingDB&amp;rsquo;s own patent curation [1]. Patent chemistry is not a side file. For a new target it can be most of the ligand set.&lt;/p>
+&lt;h2 id="curated-patents-and-extracted-patents-are-not-the-same-set">Curated patents and extracted patents are not the same set&lt;/h2>
+&lt;p>PubChem also takes structures from large automated patent pipelines, including SureChEMBL, PATENTSCOPE, and Google Patents. Those pipelines contribute millions of structures. They miss chemistry that a person can still read: stereochemistry, Markush claims, mixtures, drawings, and names that do not resolve to one structure.&lt;/p>
+&lt;p>Southan&amp;rsquo;s point in the webinar was sharper than &amp;ldquo;curation is nicer.&amp;rdquo; Some compounds BindingDB had taken from a patent by hand were not recovered by the automated pipelines [1]. The overlap is large. It is not complete. A search that uses only one patent-derived set can miss the series you wanted.&lt;/p>
+&lt;h2 id="fourteen-mpro-inhibitors-then-the-identifier-exchange">Fourteen Mpro inhibitors, then the identifier exchange&lt;/h2>
+&lt;p>The worked example is the SARS-CoV-2 main protease. Southan opened a University of Texas patent entry in BindingDB with 14 compounds, small enough to follow one by one. The most potent of them was reported at 14.5 nM [1].&lt;/p>
+&lt;p>BindingDB exposes the handles that make the next hop possible: PubChem CIDs, InChI and InChIKey, SMILES, and the BindingDB registry identifier. PubChem&amp;rsquo;s
+takes a list of CIDs, InChIs, InChIKeys, or SMILES and returns another identifier type. The 14 CIDs went straight across. In that example every one of them had also been caught by automated patent extraction, and none of them was in ChEMBL yet, because the series had not appeared in a journal paper [1]. That is the usual reason to read the patent: the chemistry can be public there before it is public in the literature.&lt;/p>
+&lt;h2 id="one-cid-is-not-one-experiment">One CID is not one experiment&lt;/h2>
+&lt;p>Once the compound is a CID, the source list is the record of who submitted it. BindingDB, ChEMBL, a patent pipeline, and a vendor can all point at the same structure. Several rows do not mean several measurements. They often mean one measurement copied forward.&lt;/p>
+&lt;p>That matters as soon as the table is used for machine learning or for a virtual-screening set. Count experiments, not deposits. The questions worth writing down next to any field are: who submitted it, whether a person curated it or a parser extracted it, whether the number was measured here or copied from somewhere else, and whether two database rows are the same assay. Provenance is part of the descriptor, not a footnote.&lt;/p>
+&lt;p>PubChem errors are often upstream. PubChem is aggregating a depositor&amp;rsquo;s record. When a name or a structure is wrong, the fix usually belongs with the source that submitted it, which is also what the webinar&amp;rsquo;s discussion recommended [1].&lt;/p>
+&lt;h2 id="a-saved-set-with-a-ceiling">A saved set, with a ceiling&lt;/h2>
+&lt;p>My NCBI can store a PubChem result as a collection and share it by URL. The 14 Mpro compounds can sit there and be filtered again: in BindingDB, in ChEMBL, from a patent, with a structure, in the Guide to Pharmacology, or sold by a vendor. Southan noted the cap. A saved set holds on the order of 1,000 records [1]. Past that, the same filters belong in a script.&lt;/p>
+&lt;h2 id="from-a-crystal-structure-back-to-the-patent">From a crystal structure back to the patent&lt;/h2>
+&lt;p>The webinar also ran the route backwards, starting from a new PDB structure of Mpro with a non-covalent inhibitor. The ligand was searched in PubChem. An exact match was missing. A similarity search found the same connectivity with different stereochemical labels [1].&lt;/p>
+&lt;p>Same connectivity is not the same stereoisomer. PubChem can list the structures that share a connectivity and differ in stereo, which is the check to run when a PDB ligand, a patent drawing, and a bioactivity row disagree about a wedge bond.&lt;/p>
+&lt;p>That ligand belonged to an Insilico Medicine patent BindingDB had curated. Southan reported 143 active compounds in the entry, with both biochemical and cell-based assays [1]. One solved complex can therefore open onto the series around it:&lt;/p>
+&lt;ol>
+&lt;li>PDB ligand.&lt;/li>
+&lt;li>PubChem, including same-connectivity neighbours when stereo does not match.&lt;/li>
+&lt;li>BindingDB affinity rows.&lt;/li>
+&lt;li>The patent, and the assays in it.&lt;/li>
+&lt;/ol>
+&lt;p>The series is then a real set for docking checks, a pharmacophore, a short QSAR, a dynamics study, or a similarity search. It is still one series from one patent, not a general model of the target.&lt;/p>
+&lt;h2 id="filters-are-intersections">Filters are intersections&lt;/h2>
+&lt;p>PubChem filters can be stacked: present in BindingDB, present in PDBe, sold, present in the Guide to Pharmacology, and carrying an unspecified stereocenter. In the demonstration that intersection collapsed a very large set to a handful of compounds [1]. The exact query is not the lesson. A database becomes useful when biological, structural, commercial, and provenance constraints can be applied together.&lt;/p>
+&lt;h2 id="scaffolds-after-the-compounds">Scaffolds, after the compounds&lt;/h2>
+&lt;p>A question in the webinar asked for scaffolds, building blocks, and the spread of affinity inside a scaffold family. One route discussed there is a Python script that takes a BindingDB target table, groups compounds by scaffold, and keeps the affinities with the group [1]. The question changes from &amp;ldquo;which compounds bind?&amp;rdquo; to &amp;ldquo;which chemotypes are already crowded, and how does potency move inside them?&amp;rdquo;&lt;/p>
+&lt;p>That view is what flags an over-explored series, a thin region of the set, a scaffold-level potency trend, an activity cliff, or a train/test split that has put the same chemotype on both sides.&lt;/p>
+&lt;h2 id="connect-the-tables">Connect the tables&lt;/h2>
+&lt;p>BindingDB, PubChem, ChEMBL, the PDB, the Guide to Pharmacology, patents, and vendor catalogues are overlapping views, not a menu you pick one item from. For one target the route is short: BindingDB for the measurements, PubChem for the mapping and the source list, the patent for what has not reached a paper, the PDB for a complex, then a scaffold pass before anyone trains a model.&lt;/p>
+&lt;p>The size of PubChem is not the asset. The asset is that a CID can be followed back to the measurement and sideways to every other depositor.&lt;/p>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ol>
+&lt;li>Southan C. Synergies between BindingDB and PubChem. BindingDB webinar, 17 September 2025. Recording:
+.&lt;/li>
+&lt;li>Liu T, et al. BindingDB in 2024: a FAIR knowledgebase of protein-small molecule binding data. &lt;em>Nucleic Acids Res&lt;/em> 2025;53:D1633–D1644. doi:
+&lt;/li>
+&lt;li>Kim S, et al. PubChem 2025 update. &lt;em>Nucleic Acids Res&lt;/em> 2025;53:D1516–D1525. doi:
+&lt;/li>
+&lt;/ol></description></item></channel></rss>
