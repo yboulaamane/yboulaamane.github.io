@@ -1,0 +1,1335 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Computational Chemistry | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/computational-chemistry/</link><atom:link href="https://yboulaamane.github.io/tags/computational-chemistry/index.xml" rel="self" type="application/rss+xml"/><description>Computational Chemistry</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sun, 13 Sep 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Computational Chemistry</title><link>https://yboulaamane.github.io/tags/computational-chemistry/</link></image><item><title>Assayer</title><link>https://yboulaamane.github.io/project/assayer/</link><pubDate>Sun, 13 Sep 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/project/assayer/</guid><description>&lt;p>A curated catalogue of 3,973 tools for medicinal and computational chemistry, paired with 27 actionable protocols guiding step-by-step drug discovery workflows, target validation against UniProt, and real-time PDB structure prioritization.&lt;/p></description></item><item><title>Choosing the Right Partial Charges for Molecular Docking: AM1-BCC, PM6 and Beyond</title><link>https://yboulaamane.github.io/blog/most-accurate-semi-empirical-partial-charges-for-molecular-docking/</link><pubDate>Tue, 04 Feb 2025 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/most-accurate-semi-empirical-partial-charges-for-molecular-docking/</guid><description>&lt;p>Use &lt;strong>AM1-BCC&lt;/strong> for the docking run. Keep &lt;strong>Gasteiger&lt;/strong> for a first cut of a large library, then re-charge anything you will rank. Step up to &lt;strong>PM6&lt;/strong> or &lt;strong>RESP&lt;/strong> when hydrogen bonds or dipoles are the question.&lt;/p>
+&lt;p>&lt;strong>RESP&lt;/strong>, fit to HF/6-31G* electrostatic potentials, is the reference and too slow for every molecule in a screen. &lt;strong>AM1-BCC&lt;/strong> and &lt;strong>PM6&lt;/strong> are the semi-empirical stand-ins this note actually recommends. The choice lands in every pose and every score.&lt;/p>
+&lt;p>
+&lt;figure >
+&lt;div class="flex justify-center ">
+&lt;div class="w-100" >&lt;img src="https://yboulaamane.github.io/uploads/partial-charges-docking/accuracy-vs-speed.svg" alt="Accuracy vs speed" loading="lazy" data-zoomable />&lt;/div>
+&lt;/div>&lt;/figure>
+&lt;em>Where the common charge models land. AM1-BCC gets close to RESP-quality electrostatics while staying fast enough for high-throughput docking; Gasteiger is cheap but too crude for final scoring.&lt;/em>&lt;/p>
+&lt;hr>
+&lt;h2 id="the-recommended-methods">The recommended methods&lt;/h2>
+&lt;h3 id="1-am1-bcc---the-workhorse">1. AM1-BCC - the workhorse&lt;/h3>
+&lt;p>&lt;strong>AM1-BCC&lt;/strong> (Austin Model 1 with Bond Charge Corrections) was designed for exactly this job: reproducing the &lt;strong>RESP / HF/6-31G*&lt;/strong> electrostatic potential without the quantum-mechanical price tag. It runs a fast AM1 calculation, then applies empirical bond charge corrections that pull the charges toward what an expensive RESP fit would have given.&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Accuracy:&lt;/strong> High - comparable to RESP in many cases, with per-atom errors typically &lt;strong>&amp;lt; 0.1 e&lt;/strong>.&lt;/li>
+&lt;li>&lt;strong>Designed for:&lt;/strong> Reproducing RESP (HF/6-31G*) electrostatic potentials.&lt;/li>
+&lt;li>&lt;strong>Speed:&lt;/strong> Fast; suitable for high-throughput docking.&lt;/li>
+&lt;li>&lt;strong>Best use case:&lt;/strong> Ligands in protein–ligand docking.&lt;/li>
+&lt;li>&lt;strong>Tools:&lt;/strong> &lt;code>Antechamber&lt;/code> (AmberTools), OpenEye &lt;code>QUACPAC&lt;/code>, and RDKit via wrappers.&lt;/li>
+&lt;/ul>
+&lt;p>This is the default I&amp;rsquo;d reach for in any docking pipeline where electrostatic accuracy matters but full QM charges are out of budget.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># AM1-BCC charges with Antechamber (AmberTools)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">antechamber -i ligand.mol2 -fi mol2 &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -o ligand_bcc.mol2 -fo mol2 &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -c bcc -nc &lt;span class="m">0&lt;/span> &lt;span class="c1"># -nc = net charge&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="2-pm6---when-polarization-matters">2. PM6 - when polarization matters&lt;/h3>
+&lt;p>&lt;strong>PM6&lt;/strong> (Parametric Method 6) is a more modern semi-empirical Hamiltonian that improves on older AM1/PM3 parameterizations, especially for &lt;strong>polar interactions and hydrogen bonding&lt;/strong>.&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Accuracy:&lt;/strong> Higher than AM1 and PM3, particularly for polar and H-bonding systems.&lt;/li>
+&lt;li>&lt;strong>Speed:&lt;/strong> Slower than AM1-BCC, but still far faster than full ab initio methods.&lt;/li>
+&lt;li>&lt;strong>Tools:&lt;/strong> &lt;code>MOPAC&lt;/code>, Gaussian, and other quantum packages.&lt;/li>
+&lt;li>&lt;strong>Best use case:&lt;/strong> Challenging systems where a better description of polarization or hydrogen bonding is needed.&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl"># MOPAC input for PM6 charges
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PM6 CHARGE=0 MULLIK PRECISE
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ligand
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;h2 id="the-methods-to-avoid-or-use-only-as-fallbacks">The methods to avoid (or use only as fallbacks)&lt;/h2>
+&lt;h3 id="am1-or-pm3---legacy">AM1 or PM3 - legacy&lt;/h3>
+&lt;p>On their own, &lt;strong>AM1&lt;/strong> and &lt;strong>PM3&lt;/strong> offer only moderate-to-low accuracy: their electrostatic potential reproduction is weaker and the parameterizations are dated. They&amp;rsquo;ve largely been &lt;strong>superseded by AM1-BCC&lt;/strong> (which builds on AM1 but corrects it) and &lt;strong>PM6&lt;/strong>. Treat them as historical, or as a fallback when neither BCC nor PM6 is available in your toolchain.&lt;/p>
+&lt;h3 id="gasteiger---screening-only">Gasteiger - screening only&lt;/h3>
+&lt;p>&lt;strong>Gasteiger&lt;/strong> charges are very fast and convenient - which is why they&amp;rsquo;re the default in many docking tools - but their accuracy is &lt;strong>poor&lt;/strong>. They&amp;rsquo;re fine for a quick pre-filter or preliminary triage of a large library, but &lt;strong>don&amp;rsquo;t use them for final pose prediction or affinity ranking&lt;/strong>.&lt;/p>
+&lt;hr>
+&lt;h2 id="benchmarking-takeaways">Benchmarking takeaways&lt;/h2>
+&lt;p>The comparisons that keep showing up:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>AM1-BCC approximates RESP well.&lt;/strong> Across diverse ligand sets, AM1-BCC reproduces RESP charges with errors &lt;strong>below ~0.1 e for most atoms&lt;/strong> - close enough that the two often give comparable docking behavior.&lt;/li>
+&lt;li>&lt;strong>Better charges, better docking.&lt;/strong> Ligands parameterized with AM1-BCC or RESP charges tend to yield improved &lt;strong>enrichment factors&lt;/strong>, more accurate &lt;strong>pose prediction&lt;/strong>, and stronger &lt;strong>correlation with experimental binding energies&lt;/strong> than crude alternatives.&lt;/li>
+&lt;li>&lt;strong>Gasteiger lags.&lt;/strong> The speed advantage doesn&amp;rsquo;t survive contact with the accuracy requirements of final scoring.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="a-practical-decision-guide">A practical decision guide&lt;/h2>
+&lt;p>The method follows the stage of the campaign, and how much of the question is electrostatic.&lt;/p>
+&lt;p>
+&lt;figure >
+&lt;div class="flex justify-center ">
+&lt;div class="w-100" >&lt;img src="https://yboulaamane.github.io/uploads/partial-charges-docking/charge-decision.svg" alt="Charge method decision guide" loading="lazy" data-zoomable />&lt;/div>
+&lt;/div>&lt;/figure>
+&lt;em>A quick rule of thumb: Gasteiger to triage, AM1-BCC to dock, PM6 or RESP when the chemistry is delicate.&lt;/em>&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>General docking pipelines&lt;/strong> (AutoDock, GOLD, Glide): use &lt;strong>AM1-BCC&lt;/strong>. It&amp;rsquo;s the dependable default.&lt;/li>
+&lt;li>&lt;strong>Lead optimization&lt;/strong>, or any case where accurate &lt;strong>hydrogen bonding or dipole modeling&lt;/strong> is critical: step up to &lt;strong>PM6&lt;/strong> or DFT-based &lt;strong>RESP&lt;/strong> charges.&lt;/li>
+&lt;li>&lt;strong>Preliminary screening / huge library triage&lt;/strong>: &lt;strong>Gasteiger&lt;/strong> is acceptable for the first cut - but re-charge survivors with AM1-BCC before you trust any score.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="summary">Summary&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Method&lt;/th>
+&lt;th>Accuracy&lt;/th>
+&lt;th>Speed&lt;/th>
+&lt;th>Electrostatic quality&lt;/th>
+&lt;th>Recommended for docking&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;strong>AM1-BCC&lt;/strong>&lt;/td>
+&lt;td>High&lt;/td>
+&lt;td>Fast&lt;/td>
+&lt;td>Very good&lt;/td>
+&lt;td>✅ Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>PM6&lt;/strong>&lt;/td>
+&lt;td>High&lt;/td>
+&lt;td>Medium&lt;/td>
+&lt;td>Good (better than AM1)&lt;/td>
+&lt;td>✅ Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>AM1 / PM3&lt;/td>
+&lt;td>Moderate&lt;/td>
+&lt;td>Fast&lt;/td>
+&lt;td>Moderate to poor&lt;/td>
+&lt;td>⚠️ Sometimes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Gasteiger&lt;/td>
+&lt;td>Low&lt;/td>
+&lt;td>Very fast&lt;/td>
+&lt;td>Poor&lt;/td>
+&lt;td>❌ No&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>RESP&lt;/td>
+&lt;td>Very high&lt;/td>
+&lt;td>Slow&lt;/td>
+&lt;td>Excellent&lt;/td>
+&lt;td>★ Best, but expensive&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>The short version: &lt;strong>default to AM1-BCC&lt;/strong> for the bulk of your docking, &lt;strong>reserve PM6 or RESP&lt;/strong> for the moments that demand it, and &lt;strong>keep Gasteiger to the screening stage only&lt;/strong>. Getting the charges right is one of the cheapest ways to make a docking pipeline more trustworthy.&lt;/p></description></item><item><title>Understanding Binding Energetics in Molecular Docking</title><link>https://yboulaamane.github.io/blog/understanding-binding-energetics-in-molecular-docking/</link><pubDate>Sun, 16 Jun 2024 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/understanding-binding-energetics-in-molecular-docking/</guid><description>&lt;p>A docking score is a balance sheet, not a binding free energy. Polar contacts have to pay back the water they displaced. A flexible ligand pays an entropy cost. A larger ligand often scores better because it makes more contacts. Read the score only after you know which of those terms the function even has.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 420" role="img" aria-labelledby="bind-en-title bind-en-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="bind-en-title">What helps binding and what the score can hide&lt;/title>
+&lt;desc id="bind-en-desc">Favorable terms are electrostatics and hydrogen bonds, hydrophobic contact, and release of a poorly held water. Unfavorable terms are desolvation, lost conformational freedom, and a score that grows with molecular size.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="64" width="284" height="72" rx="12" fill="#27ae60" fill-opacity="0.12" stroke="#27ae60"/>
+&lt;rect x="328" y="64" width="284" height="72" rx="12" fill="#f2994a" fill-opacity="0.12" stroke="#f2994a"/>
+&lt;rect x="28" y="152" width="284" height="72" rx="12" fill="#27ae60" fill-opacity="0.12" stroke="#27ae60"/>
+&lt;rect x="328" y="152" width="284" height="72" rx="12" fill="#f2994a" fill-opacity="0.12" stroke="#f2994a"/>
+&lt;rect x="28" y="240" width="284" height="72" rx="12" fill="#27ae60" fill-opacity="0.12" stroke="#27ae60"/>
+&lt;rect x="328" y="240" width="284" height="72" rx="12" fill="#f2994a" fill-opacity="0.12" stroke="#f2994a"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="36" font-size="22" font-weight="700" text-anchor="middle">The score is a trade&lt;/text>
+&lt;text x="44" y="96" font-size="16" font-weight="700">Contacts that pay&lt;/text>
+&lt;text x="44" y="120" font-size="15">H-bonds, salt bridges, dipoles&lt;/text>
+&lt;text x="344" y="96" font-size="16" font-weight="700">Desolvation&lt;/text>
+&lt;text x="344" y="120" font-size="15">Buried charge with no partner&lt;/text>
+&lt;text x="44" y="184" font-size="16" font-weight="700">Hydrophobic contact&lt;/text>
+&lt;text x="44" y="208" font-size="15">Shape that fits the pocket&lt;/text>
+&lt;text x="344" y="184" font-size="16" font-weight="700">Entropy&lt;/text>
+&lt;text x="344" y="208" font-size="15">A flexible ligand freezes&lt;/text>
+&lt;text x="44" y="272" font-size="16" font-weight="700">An unhappy water leaves&lt;/text>
+&lt;text x="44" y="296" font-size="15">Bulk solvent gains disorder&lt;/text>
+&lt;text x="344" y="272" font-size="16" font-weight="700">Size bias&lt;/text>
+&lt;text x="344" y="296" font-size="15">More atoms, more contacts&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Releasing a poorly held water can favor binding. Stripping a water that had good hydrogen bonds does the opposite, unless the ligand replaces those bonds. Ligand efficiency and fit quality are the size corrections named in this note. They are not new terms inside the docking function.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="desolvation">Desolvation&lt;/h2>
+&lt;p>Before the ligand binds, water stabilizes its polar groups and the protein surface. Binding strips some of that water. If the protein does not replace those interactions, the cost stands.&lt;/p>
+&lt;p>A charged amine is the example. In water it is well solvated. Buried in a hydrophobic pocket with no partner, the lost hydration shell is unfavorable even if the shape fit looks clean.&lt;/p>
+&lt;h2 id="entropy">Entropy&lt;/h2>
+&lt;p>Binding removes motion. The ligand loses translation and rotation. A flexible ligand loses conformations. Side chains at the site often order. That entropy opposes binding.&lt;/p>
+&lt;p>Entropy can also help. Ordered waters released into bulk solvent are more disordered than they were in the pocket. A rigid ligand pays a smaller conformational penalty than a flexible one, which is why rigidity can improve binding efficiency.&lt;/p>
+&lt;h2 id="water-that-was-already-in-the-pocket">Water that was already in the pocket&lt;/h2>
+&lt;p>Two cases:&lt;/p>
+&lt;ul>
+&lt;li>A high-energy, poorly stabilized water is a good thing to displace. It gains freedom in bulk solvent.&lt;/li>
+&lt;li>A water with strong hydrogen bonds is a bad thing to displace unless the ligand restores those bonds.&lt;/li>
+&lt;/ul>
+&lt;p>Hydration analysis is how this note suggests finding the “unhappy” waters worth targeting.&lt;/p>
+&lt;h2 id="electrostatics-and-the-solvent-around-them">Electrostatics, and the solvent around them&lt;/h2>
+&lt;p>Salt bridges, hydrogen bonds, and dipoles are the favorable electrostatic terms. A carboxylate next to a lysine or an arginine is the example.&lt;/p>
+&lt;p>The same charge is stabilized by water. Bury it without a partner and the desolvation cost can exceed the interaction you gained. The electrostatic term and the desolvation term are one argument.&lt;/p>
+&lt;h2 id="larger-ligands-score-better">Larger ligands score better&lt;/h2>
+&lt;p>More atoms make more contacts, so many scoring functions drift toward larger molecules. Ligand efficiency (LE) divides the binding energy by the number of heavy atoms. Fit quality (FQ) is the size-adjusted efficiency named alongside it. A smaller ligand with efficient contacts can be the better lead.&lt;/p>
+&lt;h2 id="what-each-scorer-actually-computes">What each scorer actually computes&lt;/h2>
+&lt;p>AutoDock4 is a physics-based force field. Partial charges are explicit, commonly Gasteiger-PEOE. Electrostatics are a screened Coulomb term. Hydrogen bonding and desolvation are separate terms, calibrated on experimental binding data.&lt;/p>
+&lt;p>Vina is an empirical function trained on experimental complexes. It does not compute partial charges and it has no classical Coulomb term. Steric fit, hydrophobic contact, and hydrogen bonds are empirical potentials. It is faster, and the electrostatics are less visible.&lt;/p>
+&lt;p>Smina is a Vina fork with refined empirical potentials, a torsional penalty, and a stronger hydrophobic term. It is still empirical and still does not compute partial charges.&lt;/p>
+&lt;p>GNINA adds a convolutional network trained on protein–ligand complexes. The network reads the 3D pattern and does not model electrostatics as a physics term. Pose prediction is the strength named here. Detailed charge effects are the gap.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Function&lt;/th>
+&lt;th>Electrostatics&lt;/th>
+&lt;th>Partial charges&lt;/th>
+&lt;th>Speed&lt;/th>
+&lt;th>Strength named here&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>AutoDock4&lt;/td>
+&lt;td>Physics-based&lt;/td>
+&lt;td>Explicit&lt;/td>
+&lt;td>Slower&lt;/td>
+&lt;td>Charged systems&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Vina / Smina&lt;/td>
+&lt;td>Empirical, implicit&lt;/td>
+&lt;td>None&lt;/td>
+&lt;td>Fast&lt;/td>
+&lt;td>Large screens&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>GNINA&lt;/td>
+&lt;td>Neural network&lt;/td>
+&lt;td>None&lt;/td>
+&lt;td>Fast&lt;/td>
+&lt;td>Pose prediction&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="how-to-read-the-number">How to read the number&lt;/h2>
+&lt;p>The score mixes van der Waals, electrostatics, hydrogen bonds, desolvation, and some entropy-like penalties, and several of those pieces are empirical. Use it to rank compounds in one dataset. Do not read it as an absolute affinity.&lt;/p>
+&lt;p>Binding is the case where the contacts, the hydrophobic fit, and the release of a bad water outweigh desolvation, the frozen ligand, and the size bias in the function you chose.&lt;/p></description></item><item><title>Practical System Preparation Tips for Molecular Dynamics Simulations</title><link>https://yboulaamane.github.io/blog/practical-system-preparation-tips-for-molecular-dynamics-simulations/</link><pubDate>Tue, 21 May 2024 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/practical-system-preparation-tips-for-molecular-dynamics-simulations/</guid><description>&lt;p>The trajectory is already biased before the first step. The box decides how much water you pay for. The termini decide whether a fragment carries charges it never had. The frame you pick afterwards decides whether you publish an outlier.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 300" role="img" aria-labelledby="prep-box-title prep-box-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="prep-box-title">Three periodic boxes for the same solute&lt;/title>
+&lt;desc id="prep-box-desc">A cube is the simplest box and the least efficient for a globular protein. A truncated octahedron uses roughly 30 to 40 percent less solvent. A rhombic dodecahedron uses the smallest solvent volume. No percent is stated for the rhombic box.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="72" width="184" height="150" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="228" y="72" width="184" height="150" rx="14" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="428" y="72" width="184" height="150" rx="14" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="40" font-size="22" font-weight="700">Same buffer, different water bill&lt;/text>
+&lt;text x="120" y="118" font-size="18" font-weight="700">Cube&lt;/text>
+&lt;text x="120" y="150" font-size="16">Simplest&lt;/text>
+&lt;text x="120" y="176" font-size="16">Most solvent&lt;/text>
+&lt;text x="320" y="110" font-size="16" font-weight="700">Truncated&lt;/text>
+&lt;text x="320" y="134" font-size="16" font-weight="700">octahedron&lt;/text>
+&lt;text x="320" y="166" font-size="16">About 30–40%&lt;/text>
+&lt;text x="320" y="190" font-size="16">less solvent&lt;/text>
+&lt;text x="520" y="110" font-size="16" font-weight="700">Rhombic&lt;/text>
+&lt;text x="520" y="134" font-size="16" font-weight="700">dodecahedron&lt;/text>
+&lt;text x="520" y="166" font-size="16">Smallest&lt;/text>
+&lt;text x="520" y="190" font-size="16">volume&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The 30 to 40 percent saving is the one this note gives, and it is for a truncated octahedron around a roughly spherical solute, relative to a cube with the same minimum distance to the edge. The rhombic dodecahedron is described only as the most compact. A cube is still the right box when the solute is long along the Cartesian axes.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="which-box">Which box&lt;/h2>
+&lt;p>A cubic box is orthogonal, easy to look at, and easy to debug. For a globular protein it also packs badly: the corners fill with water that the solute never touches. That is a larger system and a higher cost for the same buffer.&lt;/p>
+&lt;p>A truncated octahedron is closer to a sphere. For spherical solutes it cuts the solvent count by roughly 30 to 40 percent and still wraps the solute in an even shell. It is the usual compromise.&lt;/p>
+&lt;p>A rhombic dodecahedron leaves the least empty solvent for a given buffer. The shape is less obvious. Current MD codes handle it. The saving matters once the solute is large. This note does not give a percent for that saving.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Box&lt;/th>
+&lt;th>Advantage&lt;/th>
+&lt;th>Limit&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Cube&lt;/td>
+&lt;td>Simple, and natural for an elongated solute&lt;/td>
+&lt;td>Least efficient for a globular protein&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Truncated octahedron&lt;/td>
+&lt;td>Balance of simplicity and solvent count&lt;/td>
+&lt;td>A less obvious geometry&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Rhombic dodecahedron&lt;/td>
+&lt;td>Smallest solvent volume&lt;/td>
+&lt;td>Least intuitive shape&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="when-to-cap-the-termini">When to cap the termini&lt;/h2>
+&lt;p>A full-length chain has a real N terminus and a real C terminus. A fragment cut out of a domain does not. The cut ends are charged as if they were the ends of the protein, and they are often buried in the parent structure. That charge invents salt bridges, pulls on the fold, and shows up later as “dynamics.”&lt;/p>
+&lt;p>The usual caps close the backbone. ACE is the acetyl cap on the N terminus. NME is the N-methylamide cap on the C terminus.&lt;/p>
+&lt;p>Cap a peptide, an isolated domain, or a stretch you extracted from a larger chain. Leave the termini alone on a full-length protein whose natural ends are solvent-exposed and part of the biology.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 280" role="img" aria-labelledby="prep-pick-title prep-pick-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="prep-pick-title">Pick a cluster centroid, not the farthest frame&lt;/title>
+&lt;desc id="prep-pick-desc">Several trajectories are aligned, clustered, and represented by centroids. The frame farthest from the start is an outlier, not the representative structure.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-prep-pick" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="72" width="160" height="88" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="220" y="72" width="180" height="88" rx="12" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="432" y="72" width="180" height="88" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M188 116 L212 116" marker-end="url(#arrow-prep-pick)" stroke="currentColor"/>
+&lt;path d="M400 116 L424 116" marker-end="url(#arrow-prep-pick)" stroke="currentColor"/>
+&lt;rect x="28" y="190" width="584" height="64" rx="12" fill="#f2994a" fill-opacity="0.12" stroke="#f2994a"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="40" font-size="22" font-weight="700">The interesting frame is often the wrong one&lt;/text>
+&lt;text x="108" y="108" font-size="16" font-weight="700">Pool runs&lt;/text>
+&lt;text x="108" y="134" font-size="15">Align a stable core&lt;/text>
+&lt;text x="310" y="108" font-size="16" font-weight="700">Cluster&lt;/text>
+&lt;text x="310" y="134" font-size="15">RMSD, distances, pocket&lt;/text>
+&lt;text x="522" y="108" font-size="16" font-weight="700">Centroid&lt;/text>
+&lt;text x="522" y="134" font-size="15">One frame per state&lt;/text>
+&lt;text x="320" y="228" font-size="16" font-weight="700">Farthest from the start is an outlier&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> Pool the trajectories, align on a region that should not move, then cluster on RMSD, a few distances, or the pocket. The structure you keep is a centroid of a populated cluster. Distance from the first frame is not a population.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="which-frame-represents-the-ensemble">Which frame represents the ensemble&lt;/h2>
+&lt;p>The frame that has wandered farthest from the start is easy to notice and a poor representative. It can be one excursion.&lt;/p>
+&lt;p>Pool the runs. Align on a stable reference region. Measure the variation you care about: RMSD, distances between key residues, or the pocket. Cluster. Take the centroids. Those are the conformations the ensemble actually spent time in.&lt;/p></description></item><item><title>Awesome Drug Discovery</title><link>https://yboulaamane.github.io/project/awesomedrugdiscovery/</link><pubDate>Tue, 16 Jan 2024 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/project/awesomedrugdiscovery/</guid><description>&lt;p>A curated resource list of computational methods for drug discovery, covering molecular modeling tools, machine learning frameworks, databases, and open-source pipelines organized by application area.&lt;/p></description></item><item><title>Energy Minimization with Open Babel: Practical Guide for Ligand Preparation</title><link>https://yboulaamane.github.io/blog/energy-minimization-with-open-babel-practical-guide-for-ligand-preparation/</link><pubDate>Fri, 12 Jan 2024 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/energy-minimization-with-open-babel-practical-guide-for-ligand-preparation/</guid><description>&lt;p>A ligand drawn by hand, or pulled from a 2D table, is often a bad start for docking. &lt;code>obminimize&lt;/code> relaxes it with a small-molecule force field. It does not produce a protein-bound pose.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 300" role="img" aria-labelledby="obmin-title obmin-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="obmin-title">Steepest descent first, then conjugate gradient&lt;/title>
+&lt;desc id="obmin-desc">A strained ligand goes through steepest descent to clear clashes, then conjugate gradient to finish near the minimum. MMFF94 is the drug-like choice in this note. UFF is the choice when the element coverage has to be broader.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-obmin" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="78" width="160" height="120" rx="14" fill="#f2994a" fill-opacity="0.12" stroke="#f2994a"/>
+&lt;rect x="240" y="78" width="160" height="120" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="452" y="78" width="160" height="120" rx="14" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M188 138 L232 138" marker-end="url(#arrow-obmin)" stroke="currentColor"/>
+&lt;path d="M400 138 L444 138" marker-end="url(#arrow-obmin)" stroke="currentColor"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="40" font-size="22" font-weight="700">Clear the clash, then converge&lt;/text>
+&lt;text x="108" y="122" font-size="18" font-weight="700">Start&lt;/text>
+&lt;text x="108" y="150" font-size="15">Bad geometry&lt;/text>
+&lt;text x="320" y="122" font-size="18" font-weight="700">SD&lt;/text>
+&lt;text x="320" y="150" font-size="15">-sd, robust&lt;/text>
+&lt;text x="532" y="122" font-size="18" font-weight="700">CG&lt;/text>
+&lt;text x="532" y="150" font-size="15">-cg, default&lt;/text>
+&lt;text x="320" y="250" font-size="16" font-weight="700">MMFF94 for drug-like ligands&lt;/text>
+&lt;text x="320" y="276" font-size="15">UFF when metals or odd elements are in the file&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Steepest descent is the first pass because it tolerates a bad start. Conjugate gradient is the default and is the right second pass once the worst clashes are gone. The force-field switch is separate: MMFF94, or MMFF94s, for ordinary organic ligands; UFF when the element set is the problem.&lt;/figcaption>
+&lt;/figure>
+&lt;p>Downloaded or sketched ligands carry unrealistic bonds, angles, and overlaps. Docking those coordinates can bias the score or fail to converge. Minimization is the preprocessing step that makes the geometry a plausible gas-phase start. Commercial tools such as Chem3D do this too. Open Babel is the free command-line route.&lt;/p>
+&lt;h2 id="the-command">The command&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">obminimize [options] input_file
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>-ff&lt;/code> chooses the force field.&lt;/li>
+&lt;li>&lt;code>-sd&lt;/code> is steepest descent.&lt;/li>
+&lt;li>&lt;code>-cg&lt;/code> is conjugate gradient, and it is the default.&lt;/li>
+&lt;li>&lt;code>-h&lt;/code> adds hydrogens.&lt;/li>
+&lt;li>&lt;code>-n&lt;/code> sets the maximum number of steps. The default is 2500.&lt;/li>
+&lt;li>&lt;code>-o&lt;/code> sets the output format, such as PDB, MOL2, or SDF.&lt;/li>
+&lt;/ul>
+&lt;h2 id="which-force-field">Which force field&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Force field&lt;/th>
+&lt;th>Typical use&lt;/th>
+&lt;th>Strength&lt;/th>
+&lt;th>Weakness&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>GAFF&lt;/td>
+&lt;td>General drug-like molecules&lt;/td>
+&lt;td>AMBER-compatible&lt;/td>
+&lt;td>Less aimed at a small ligand on its own&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Ghemical&lt;/td>
+&lt;td>Teaching, small molecules&lt;/td>
+&lt;td>Light&lt;/td>
+&lt;td>Limited accuracy&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>MMFF94&lt;/td>
+&lt;td>Small organic ligands&lt;/td>
+&lt;td>Well validated&lt;/td>
+&lt;td>A bit heavier&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>MMFF94s&lt;/td>
+&lt;td>MMFF94 variant&lt;/td>
+&lt;td>Better torsions&lt;/td>
+&lt;td>Similar cost to MMFF94&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>UFF&lt;/td>
+&lt;td>Organics, inorganics, metals&lt;/td>
+&lt;td>Wide element coverage&lt;/td>
+&lt;td>Weaker on ordinary organics&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>For a drug-like ligand, use MMFF94 or MMFF94s.&lt;/p>
+&lt;h2 id="sd-then-cg">SD, then CG&lt;/h2>
+&lt;p>Steepest descent walks the gradient. It is robust and it removes high-energy clashes. It is slow once the molecule is close to a minimum.&lt;/p>
+&lt;p>Conjugate gradient uses the gradient and the previous search direction. It takes fewer steps near the minimum. It can fail if the start is still far away.&lt;/p>
+&lt;p>So the order is SD first, CG second.&lt;/p>
+&lt;h2 id="two-recorded-commands">Two recorded commands&lt;/h2>
+&lt;p>MMFF94 with steepest descent, hydrogens added, PDB out:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">obminimize -sd -ff MMFF94 -h ligand.mol2 -o pdb ligand_min.pdb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>UFF with conjugate gradient, for a metal complex, SDF out:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">obminimize -cg -ff UFF metal_complex.mol2 -o sdf metal_min.sdf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>A longer run is the same command with &lt;code>-n&lt;/code> set above the default of 2500. This note does not record a specific step count, so there is no third command to copy.&lt;/p>
+&lt;p>The output is a ligand that is less likely to explode in docking or in the first steps of MD. It is still a force-field minimum of the free ligand, not a bound conformation and not a quantum geometry.&lt;/p></description></item><item><title>Principal Component Analysis and Free Energy Landscape Mapping Using GROMACS</title><link>https://yboulaamane.github.io/blog/principal-component-analysis-and-free-energy-landscape-mapping-using-gromacs/</link><pubDate>Wed, 22 Nov 2023 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/principal-component-analysis-and-free-energy-landscape-mapping-using-gromacs/</guid><description>&lt;p>A free-energy landscape in this workflow is a histogram of the trajectory in the plane of the first two principal components. PCA finds those axes. SHAM turns the occupancy into a free energy. The frame you extract is only as meaningful as the components you kept.&lt;/p>
+&lt;p>The trajectory names come from the 100 ns run &lt;code>md_0_100&lt;/code>. One projection file is labeled lovastatin (&lt;code>pc15_lovastatina.xvg&lt;/code>). That is the example name, not a requirement.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 300" role="img" aria-labelledby="pca-fel-title pca-fel-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="pca-fel-title">From a covariance matrix to one low-energy frame&lt;/title>
+&lt;desc id="pca-fel-desc">Five steps: gmx covar, keep components past 50 percent of the variance, project PC1 and PC2, run gmx sham, then trjconv at the time of the minimum. The example time is 520 ps.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-pca-fel" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="20" y="78" width="104" height="120" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="144" y="78" width="104" height="120" rx="12" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="268" y="78" width="104" height="120" rx="12" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="392" y="78" width="104" height="120" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="516" y="78" width="104" height="120" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;path d="M124 138 L136 138" marker-end="url(#arrow-pca-fel)" stroke="currentColor"/>
+&lt;path d="M248 138 L260 138" marker-end="url(#arrow-pca-fel)" stroke="currentColor"/>
+&lt;path d="M372 138 L384 138" marker-end="url(#arrow-pca-fel)" stroke="currentColor"/>
+&lt;path d="M496 138 L508 138" marker-end="url(#arrow-pca-fel)" stroke="currentColor"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="40" font-size="22" font-weight="700">Histogram the motion you kept&lt;/text>
+&lt;text x="72" y="118" font-size="16" font-weight="700">covar&lt;/text>
+&lt;text x="72" y="146" font-size="14">Eigenvalues&lt;/text>
+&lt;text x="196" y="118" font-size="16" font-weight="700">Keep&lt;/text>
+&lt;text x="196" y="146" font-size="14">Past 50%&lt;/text>
+&lt;text x="320" y="118" font-size="16" font-weight="700">Project&lt;/text>
+&lt;text x="320" y="146" font-size="14">PC1, PC2&lt;/text>
+&lt;text x="444" y="118" font-size="16" font-weight="700">sham&lt;/text>
+&lt;text x="444" y="146" font-size="14">FES.xpm&lt;/text>
+&lt;text x="568" y="118" font-size="16" font-weight="700">trjconv&lt;/text>
+&lt;text x="568" y="146" font-size="14">dump 520&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The 50% rule decides how many components are worth projecting. The landscape in this note uses only PC1 and PC2. &lt;code>520&lt;/code> is the dump time, in picoseconds, from the example minimum. Replace it after you read &lt;code>fel.dat&lt;/code>.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="covariance">Covariance&lt;/h2>
+&lt;p>&lt;code>gmx covar&lt;/code> wants a &lt;code>.tpr&lt;/code>. If a run was pointed at &lt;code>md_0_100.gro&lt;/code> and failed, use the &lt;code>.tpr&lt;/code>. When prompted, select protein and ligand.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx covar -s md_0_100.tpr -f md_0_100.xtc -o eigenvalues.xvg -v eigenvectors.trr -xpma covar.xpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="how-many-components">How many components&lt;/h2>
+&lt;p>From &lt;code>eigenvalues.xvg&lt;/code>:&lt;/p>
+&lt;ul>
+&lt;li>Total variance is the sum of the eigenvalues.&lt;/li>
+&lt;li>Explained variance of one component is that eigenvalue divided by the total, times 100.&lt;/li>
+&lt;li>Cumulative variance adds those fractions until you pass the cutoff.&lt;/li>
+&lt;/ul>
+&lt;p>Keep the smallest set of components whose cumulative variance is more than 50%.&lt;/p>
+&lt;h2 id="project-pc1-through-pc5">Project PC1 through PC5&lt;/h2>
+&lt;p>&lt;code>-proj&lt;/code> writes a 1D time series for each selected eigenvector. &lt;code>-2d&lt;/code> writes a combined projection of the first five. &lt;code>-tu ns&lt;/code> puts the time axis in nanoseconds. The lovastatin filenames are the example.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx anaeig -f md_0_100.xtc -s md_0_100.tpr -v eigenvectors.trr -first &lt;span class="m">1&lt;/span> -last &lt;span class="m">5&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-proj pc15_lovastatina.xvg -2d project2d_s100_lovastatina.xvg -tu ns
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="the-pc1pc2-plane">The PC1–PC2 plane&lt;/h2>
+&lt;p>Project the first component, then the second, and paste them into one three-column file. The &lt;code>awk&lt;/code> fields assume the usual &lt;code>.xvg&lt;/code> layout of this paste: time and value from PC1, then the value from PC2.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx anaeig -f md_0_100.xtc -s md_0_100.tpr -v eigenvectors.trr -last &lt;span class="m">1&lt;/span> -proj pc1.xvg
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx anaeig -f md_0_100.xtc -s md_0_100.tpr -v eigenvectors.trr -first &lt;span class="m">2&lt;/span> -last &lt;span class="m">2&lt;/span> -proj pc2.xvg
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">paste pc1.xvg pc2.xvg &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;{print $1, $2, $4}&amp;#39;&lt;/span> &amp;gt; PC1PC2.xvg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="free-energy-with-sham">Free energy with SHAM&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx sham -f PC1PC2.xvg -ls FES.xpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>xpm2txt.py&lt;/code> turns the XPM matrix into three columns: X, Y, and energy. The invocation recorded here is Python 2.7.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">python2.7 xpm2txt.py -f FES.xpm -o fel.dat
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="the-minimum">The minimum&lt;/h2>
+&lt;p>Plot &lt;code>fel.dat&lt;/code>, read the time of the lowest point, and dump that frame. The example time is 520 ps. It is not a universal minimum.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx trjconv -s md_0_100.tpr -f md_0_100.xtc -o min_energy.pdb -dump &lt;span class="m">520&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>That PDB is the conformation that occupied the bottom of this PC1–PC2 histogram. It is not, by itself, proof that the simulation visited every basin that matters. The 50% cutoff and the choice to stop at two components are the assumptions sitting under the picture.&lt;/p></description></item><item><title>Validating Molecular Docking Poses with DFT: A Quick Guide</title><link>https://yboulaamane.github.io/blog/validating-molecular-docking-poses-with-dft-a-quick-guide/</link><pubDate>Fri, 27 Oct 2023 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/validating-molecular-docking-poses-with-dft-a-quick-guide/</guid><description>&lt;p>A docking score does not measure ligand strain. Docking is still the right first pass for a binding hypothesis. The check in this note is narrower: relax the docked ligand with DFT and see how far the energy drops.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 480" role="img" aria-labelledby="dftpose-title dftpose-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="dftpose-title">DFT strain check for a docked pose&lt;/title>
+&lt;desc id="dftpose-desc">Workflow from a docked pose to an optional single-point energy, then a geometry optimization, then the energy difference. Bands used in this guide: 0 to 3 kcal/mol tolerable, about 5 often seen in crystal ligands, 5 to 7 borderline, about 8 to 10 a red flag.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-dftpose" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="36" y="68" width="120" height="88" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="186" y="68" width="120" height="88" rx="12" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="336" y="68" width="120" height="88" rx="12" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="486" y="68" width="120" height="88" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M156 112 L178 112" marker-end="url(#arrow-dftpose)" stroke="currentColor"/>
+&lt;path d="M306 112 L328 112" marker-end="url(#arrow-dftpose)" stroke="currentColor"/>
+&lt;path d="M456 112 L478 112" marker-end="url(#arrow-dftpose)" stroke="currentColor"/>
+&lt;rect x="36" y="210" width="568" height="56" rx="12" fill="#27ae60" fill-opacity="0.12" stroke="#27ae60"/>
+&lt;rect x="36" y="278" width="568" height="56" rx="12" fill="#f2994a" fill-opacity="0.14" stroke="#f2994a"/>
+&lt;rect x="36" y="346" width="568" height="56" rx="12" fill="#9b51e0" fill-opacity="0.12" stroke="#9b51e0"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="40" font-size="22" font-weight="700">Strain is the drop on relaxation&lt;/text>
+&lt;text x="96" y="102" font-size="16" font-weight="700">Docked pose&lt;/text>
+&lt;text x="96" y="126" font-size="14">Extract it&lt;/text>
+&lt;text x="246" y="102" font-size="16" font-weight="700">Single point&lt;/text>
+&lt;text x="246" y="126" font-size="14">Optional&lt;/text>
+&lt;text x="396" y="102" font-size="16" font-weight="700">Optimize&lt;/text>
+&lt;text x="396" y="126" font-size="14">DFT minimum&lt;/text>
+&lt;text x="546" y="102" font-size="16" font-weight="700">Delta E&lt;/text>
+&lt;text x="546" y="126" font-size="14">Initial minus opt&lt;/text>
+&lt;text x="320" y="244" font-size="16" font-weight="700">0–3 kcal/mol: tolerable&lt;/text>
+&lt;text x="320" y="312" font-size="16" font-weight="700">5–7 kcal/mol: gray area&lt;/text>
+&lt;text x="320" y="380" font-size="16" font-weight="700">About 8–10 kcal/mol: red flag&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Delta E is E of the docked geometry minus E of the optimized ligand. This guide treats about 8–10 kcal/mol as the usual false-positive line, 0–3 as tolerable, and 5–7 as borderline. Most crystal ligands it cites sit at no more than about 5 kcal/mol. Convert a Hartree difference with the factor 627.5 used below.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="molecular-docking-in-drug-discovery-power-and-pitfalls">Molecular Docking in Drug Discovery: Power and Pitfalls&lt;/h2>
+&lt;p>Molecular docking is not foolproof. The scoring functions used in most docking programs are simplifications: they account for basic interactions like van der Waals forces and electrostatics, but often ignore ligand strain and detailed quantum effects. Docking assumes a mostly rigid receptor and sometimes forces the ligand into conformations that real molecules might not adopt easily. As a result, the &lt;strong>top-ranked pose cannot always be trusted&lt;/strong>: a high docking score doesn’t guarantee the pose is physically realistic. In practice, docking can produce &lt;strong>false positives&lt;/strong>: poses that look good in silico but are unstable or energetically unfavorable in reality. This limitation creates a need for validation steps after docking, to filter out poses that are likely artifacts of the scoring function.&lt;/p>
+&lt;h2 id="validating-docking-poses-with-dft-energy-calculations">Validating Docking Poses with DFT Energy Calculations&lt;/h2>
+&lt;p>This is where &lt;strong>Density Functional Theory (DFT)&lt;/strong> comes into play as a powerful validation tool. DFT is a quantum mechanical method that can provide a more accurate calculation of a molecule’s energy and properties by explicitly considering its electron distribution. Unlike docking’s empirical scoring, DFT is physics-based and can evaluate how “comfortable” a ligand is in a given conformation by computing its electronic energy.&lt;/p>
+&lt;p>&lt;strong>The core idea for pose validation&lt;/strong> is simple: use DFT to optimize the ligand’s geometry starting from the docked pose, and compare the energies of the two structures (docked vs. DFT-relaxed). If the docked pose was realistic, the DFT geometry optimization should not drastically alter the ligand’s structure or energy. But if the docking pose was strained or artificially stabilized by the scoring function, the ligand will likely relax to a very different geometry and &lt;strong>release a lot of energy&lt;/strong> in the process. The energy difference between the initial docked structure and the optimized structure is essentially the &lt;strong>strain energy&lt;/strong> that was needed to force the ligand into the docked pose.&lt;/p>
+&lt;p>In practice, the validation workflow might look like this:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Take the Docked Pose:&lt;/strong> After docking, extract the coordinates of the top-ranked ligand pose.&lt;/li>
+&lt;li>&lt;strong>Single-Point Energy (Optional):&lt;/strong> Compute the DFT energy of the ligand &lt;em>in the docked conformation&lt;/em> (without relaxing it) to have a reference energy.&lt;/li>
+&lt;li>&lt;strong>Geometry Optimization:&lt;/strong> Perform a DFT geometry optimization of the ligand (in isolation or in the binding pocket, see below). This yields a relaxed structure and its energy, representing a more &lt;em>unstrained&lt;/em> conformation.&lt;/li>
+&lt;li>&lt;strong>Compare Energies:&lt;/strong> Calculate the difference in energy between the docked pose and the DFT-optimized pose. A small difference (e.g. a few kcal/mol) suggests the docking pose was already near an energy minimum (plausible). A large difference means the docked pose was high-energy and thus likely unstable.&lt;/li>
+&lt;/ol>
+&lt;p>Why does this help? Imagine a ligand that the docking algorithm contorted to fit the protein. If that contorted shape lies, say, &lt;strong>10 kcal/mol&lt;/strong> higher in energy than the ligand’s preferred shape, it’s improbable that the ligand would actually bind that way; the protein would have to compensate by providing at least 10 kcal/mol of extra favorable interactions, which is quite significant. Empirical evidence and advanced workflows reflect this: if the energy gap is above a certain threshold (commonly cited around 8–10 kcal/mol), the pose is likely a false positive. In other words, a &lt;strong>&amp;gt;8 kcal/mol strain&lt;/strong> in the ligand often indicates an unrealistic binding mode.&lt;/p>
+&lt;p>It’s important to note that this validation via DFT focuses on the ligand’s &lt;strong>internal energy&lt;/strong>. Docking scores try to estimate binding free energy (which is ligand–protein interactions minus strain and entropy costs). By using DFT, we isolate one component of that: how much strain energy the ligand must bear in that pose. An ideal binder has a low strain energy (the ligand can adopt its binding conformation easily) and strong intermolecular interactions. If strain energy is high, the binding affinity prediction from docking is overly optimistic because in reality the ligand would prefer to change shape (or not bind at all).&lt;/p>
+&lt;h2 id="key-dft-concepts-homo-lumo-and-energy-gaps-in-ligand-binding">Key DFT Concepts: HOMO, LUMO, and Energy Gaps in Ligand Binding&lt;/h2>
+&lt;p>When you perform DFT calculations, you gain insights beyond just geometry and total energy. DFT will provide information on the molecule’s molecular orbitals, including the &lt;strong>HOMO&lt;/strong> (Highest Occupied Molecular Orbital) and &lt;strong>LUMO&lt;/strong> (Lowest Unoccupied Molecular Orbital). These are often called the &lt;em>frontier molecular orbitals&lt;/em> because they represent the frontier between filled and empty electron states. The HOMO is the highest-energy orbital that contains electrons, and the LUMO is the lowest-energy orbital that is empty.&lt;/p>
+&lt;p>Why do these matter in the context of ligand binding? The characteristics of the HOMO and LUMO can hint at how the ligand might interact electronically with the protein:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>HOMO&lt;/strong>: The HOMO can be thought of as the electron-donating ability of the ligand. A high-energy (less negative) HOMO means the ligand’s outermost electrons are relatively easy to donate. For example, if a ligand has a high HOMO and the protein has a region of low electron density (or a metal ion), the ligand could donate electron density into the protein’s LUMO or metal orbitals, facilitating binding. In frontier orbital theory terms, often a ligand’s HOMO will interact with the protein’s LUMO (for instance, π electrons of a ligand interacting with empty orbitals of a metal center in an enzyme).&lt;/li>
+&lt;li>&lt;strong>LUMO&lt;/strong>: The LUMO represents the ligand’s capacity to accept electrons. A low-energy (more negative) LUMO indicates the ligand is easily reduced or can accept electron density. If the protein has electron-rich sites (like an electron-donating amino acid side chain), a ligand with a low LUMO might accept electron density from the protein’s HOMO. One theoretical model even posits that effective binding involves the protein’s HOMO interacting with the ligand’s LUMO and &lt;em>vice versa&lt;/em>, aligning with classical donor–acceptor concepts in chemistry.&lt;/li>
+&lt;li>&lt;strong>HOMO–LUMO Gap&lt;/strong>: The difference in energy between the HOMO and LUMO (the band gap for the molecule) is a measure of the molecule’s electronic stability and reactivity. Generally, a &lt;strong>small HOMO-LUMO gap&lt;/strong> means the molecule is more polarizable and reactive (lower “hardness”), whereas a &lt;strong>large gap&lt;/strong> implies a more inert, stable molecule &lt;a href="https://www.researchgate.net/figure/HOMO-LUMO-gap-hardness-and-softness-of-all-compounds_tbl2_337289741">[1]&lt;/a>. In binding terms, a highly reactive ligand (small gap) might form covalent bonds or undergo chemical reactions in the binding site, whereas a large-gap ligand is more chemically stable (it will bind through non-covalent interactions without undergoing changes). For most non-covalent docking scenarios, the HOMO-LUMO gap won’t change dramatically upon binding, but it’s a useful concept for understanding if a ligand is prone to electronic interactions. A ligand with a very small gap might require special consideration (for example, it could auto-ionize or be reactive). Conversely, if docking a very stable molecule (large gap), one might expect purely shape/steric-driven binding.&lt;/li>
+&lt;/ul>
+&lt;p>For early-career researchers, it’s not critical to master frontier orbital theory immediately, but being aware of these concepts adds depth to your analysis. For instance, if your DFT results show the ligand has a HOMO centered on a particular functional group, that group might be the one donating electron density to form a hydrogen bond or coordinate a metal in the protein. Likewise, the magnitude of the HOMO-LUMO gap can qualitatively indicate if the ligand is likely to be chemically flexible or if it might require a lot of energy to excite or change, which plays into how it might behave in a binding site.&lt;/p>
+&lt;h2 id="geometry-optimization-vs-docked-pose-an-orca-example">Geometry Optimization vs. Docked Pose: An ORCA Example&lt;/h2>
+&lt;p>Let’s walk through how you would actually perform a DFT geometry optimization on a docked pose, using the &lt;strong>ORCA&lt;/strong> quantum chemistry software as a tool of choice. ORCA is a powerful and user-friendly quantum chemistry package that is free for academic use. It can perform DFT calculations (among many other methods) and is well-suited for geometry optimizations of small molecules.&lt;/p>
+&lt;p>&lt;strong>Step 1: Preparing the Structure.&lt;/strong> After docking (using AutoDock, Glide, or any other docking software), you will have a ligand pose, often saved in a file format like PDB or MOL2. The first task is to extract that ligand’s coordinates for a DFT program. You can use a molecule editor or converter (like OpenBabel or Avogadro) to get the coordinates in XYZ format or directly paste them into an ORCA input file. Ensure you have the correct atom types and that the geometry corresponds to the docked conformation you want to test.&lt;/p>
+&lt;p>&lt;strong>Step 2: Creating the ORCA Input File.&lt;/strong> ORCA input files are simple text files. Below is an example of what an ORCA input might look like for optimizing a ligand geometry:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">! B3LYP-D3 def2-SVP Opt TightSCF
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">%pal nprocs 4 end
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">* xyz 0 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">C 0.127 1.265 0.000
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">N -0.769 0.352 0.000
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">C 0.127 -0.961 0.000
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">O 1.288 -1.414 0.000
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">*
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>%pal nprocs 4 end&lt;/code> asks for 4 cores. &lt;code>* xyz 0 1&lt;/code> is charge 0 and multiplicity 1. The four atoms are placeholders. Replace them with the docked ligand.&lt;/p>
+&lt;p>Let’s break down this input:&lt;/p>
+&lt;ul>
+&lt;li>The first line beginning with ! lists the &lt;strong>method and options&lt;/strong>. In this example, we use B3LYP-D3 def2-SVP Opt TightSCF. This specifies the DFT functional B3LYP with D3 dispersion correction, a moderate basis set (def2-SVP), and requests a geometry optimization (Opt). TightSCF is a keyword to tighten the convergence criteria of the self-consistent field (which leads to more accurate energy determination, albeit slightly longer computation). These settings are a reasonable starting point for an organic molecule optimization.&lt;/li>
+&lt;li>The %pal section is optional; it requests parallel processing (here 4 cores). If you have access to multiple CPUs, ORCA can parallelize many tasks, speeding up the calculation.&lt;/li>
+&lt;li>The &lt;code>* xyz 0 1&lt;/code> line begins the coordinate block: charge, then multiplicity. Here that is a neutral singlet. An anion would be &lt;code>* xyz -1 1&lt;/code>. A neutral doublet radical would be &lt;code>* xyz 0 2&lt;/code>.&lt;/li>
+&lt;li>The subsequent lines list each atom: atomic symbol and its X, Y, Z coordinates (in Angstroms). You would insert the coordinates of your ligand as obtained from the docking output.&lt;/li>
+&lt;li>The coordinate block is closed by a line with just *.&lt;/li>
+&lt;/ul>
+&lt;p>Save this text as &lt;code>ligand_opt.inp&lt;/code>. Run it with:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">orca ligand_opt.inp &amp;gt; ligand_opt.out
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ORCA then adjusts the geometry toward a minimum. A finished optimization reports &lt;code>OPTIMIZATION RUN DONE&lt;/code> and writes the final coordinates and energies.&lt;/p>
+&lt;p>&lt;strong>Step 3: Analyzing the Optimized Geometry and Energy.&lt;/strong> Compare the final coordinates from ORCA’s output (ligand_opt.out) to the initial docked coordinates. Did the ligand change shape significantly? Often, you can visualize both the docked pose and the DFT-optimized pose in a molecular viewer (PyMOL, Chimera, or even Avogadro) to see any structural shifts. If the ligand only moved slightly, that suggests the docked pose was close to a true minimum. But if the ligand rearranged notably (e.g., flipping a ring, straightening a torsion, etc.), that indicates the docking pose might have been a high-energy conformation that the DFT relaxation corrected.&lt;/p>
+&lt;p>From the output, note the final single-point energy of the optimized structure. Let’s say ORCA reports the optimized energy as &lt;strong>E_opt&lt;/strong> (in atomic units, Hartrees, which you can convert to kcal/mol if needed by multiplying the difference by 627.5). If you also computed the single-point energy of the initial structure (call it &lt;strong>E_initial&lt;/strong>), you can quantify the energy difference: &lt;strong>ΔE = E_initial – E_opt&lt;/strong>. A positive ΔE (when converted to kcal/mol) means the initial structure was that many kcal/mol higher in energy than the optimized structure.&lt;/p>
+&lt;p>For example, if ΔE comes out to be +10.5 kcal/mol, it means the docked pose had ~10.5 kcal/mol of strain relative to the relaxed state. Such a large strain is a red flag. In contrast, if ΔE is only +2 kcal/mol, the pose is probably fine (a 2 kcal strain is quite tolerable and could easily be offset by protein–ligand interactions).&lt;/p>
+&lt;h2 id="transition-state-search-for-pose-validation-advanced">Transition State Search for Pose Validation (Advanced)&lt;/h2>
+&lt;p>In some cases, researchers may go a step further and perform a &lt;strong>transition state (TS) search&lt;/strong> related to the conformational change between the docked pose and the optimized geometry. This is a more advanced technique and not always necessary for routine docking validation, but it’s conceptually interesting. The idea is to identify the &lt;em>energy barrier&lt;/em> that separates the docked conformation from the optimized conformation on the potential energy surface. In other words, if the ligand must distort from shape A (optimized) to shape B (docked), what is the highest-energy point (transition state) along that path?&lt;/p>
+&lt;p>Finding a transition state for a conformational change can be tricky, but ORCA does offer tools for this. One approach is to perform a constrained scan or use the &lt;strong>eigenvector-following TS search&lt;/strong> algorithm. For example, ORCA’s keyword OptTS turns on a transition state optimization using a variant of the geometry optimizer that searches for a saddle point (a maximum along one coordinate, minimum along others). To use it, you typically need a decent initial guess geometry that is partway between the two conformations or an initial guess of the normal mode that leads to the distortion.&lt;/p>
+&lt;p>An ORCA input snippet for a transition state search might look like:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">! B3LYP-D3 def2-SVP OptTS TightSCF
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">%geom
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">TS_Mode {M 0}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">end
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">* xyz 0 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">... coordinates of a guess near the anticipated transition state ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">*
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>OptTS&lt;/code> requests a saddle-point search. &lt;code>TS_Mode {M 0}&lt;/code> follows the lowest-frequency mode uphill. The coordinate block is a guess between the two conformers, not the docked pose itself.&lt;/p>
+&lt;p>In this input, we replaced Opt with OptTS to request a transition state optimization. We also included a %geom block to specify the TS search mode. {M 0} tells ORCA to follow the eigenvector with the lowest eigenvalue (the softest vibrational mode) uphill, assuming that mode corresponds to the distortion between the two conformers. In practice, you might first do a relaxed scan of a dihedral angle or some coordinate from the docked to the optimized structure to generate an intermediate geometry, then use that as a starting point for OptTS. If ORCA succeeds, it will locate a saddle point, evidenced by one imaginary frequency in the vibrational analysis (if you request a frequency calculation).&lt;/p>
+&lt;p>For validating docking poses, a full TS search is usually &lt;strong>optional&lt;/strong>. Most of the time, simply comparing energies ΔE is enough to flag problematic poses. But the concept of an “energy barrier” is useful: if the pose is &lt;strong>so&lt;/strong> strained that the ligand would need to overcome, say, an 8+ kcal/mol barrier to reach a stable conformation, it’s unlikely that binding is real; the protein can’t freeze the ligand in a high-energy shape without paying the price in binding affinity.&lt;/p>
+&lt;h2 id="interpreting-the-dft-results-when-is-a-pose-unreasonable">Interpreting the DFT Results: When is a Pose Unreasonable?&lt;/h2>
+&lt;p>After running the DFT calculations, you will have quantitative data to make a call on your docking poses. The rule of thumb mentioned earlier bears repeating: &lt;strong>if the energy difference between the docked pose and the optimized geometry exceeds about 8 kcal/mol, be very skeptical of that docking pose&lt;/strong>. This threshold isn’t absolute, but it comes from studies and expert recommendations that examine how much strain real protein-bound ligands typically have. Most experimentally observed ligand conformations in crystal structures don’t carry more than ~5 kcal/mol of strain energy. Thus, if your pose is demanding 10+ kcal/mol just to hold that conformation, it likely wouldn’t survive in a real biological system; the ligand would either bind in a different conformation or not bind at all.&lt;/p>
+&lt;p>On the other hand, if ΔE is small (for example, 0–3 kcal/mol), the pose is probably physically plausible. The ligand doesn’t mind being in that conformation, and any small strain could potentially be offset by binding interactions. Gray areas are in between, e.g., a 5–7 kcal/mol strain might be borderline. In those cases, consider the context: does the protein provide exceptionally strong interactions (like multiple salt bridges or a covalent bond) that could compensate? If not, you might still doubt a 6 kcal/mol-strained pose, but it’s not as clear-cut as a 12 kcal/mol strain which is almost certainly artifactual.&lt;/p>
+&lt;p>It’s also enlightening to look at &lt;em>what parts&lt;/em> of the ligand changed upon optimization. Perhaps a particular ring system flipped, indicating that in the docked pose that ring was forced into an awkward orientation to make a protein contact. If the DFT opt shows it flipping 180°, it means the docking algorithm’s scoring perhaps overestimated the benefit of that contact or ignored a torsional penalty. This gives you insight into how to refine your docking: you might impose a torsion constraint in docking next time, or simply be aware that pose might need re-evaluation with induced fit or molecular dynamics.&lt;/p>
+&lt;p>Another thing to glean from DFT output: the &lt;strong>HOMO/LUMO energies&lt;/strong> of the optimized ligand. While not directly telling you about the pose stability, they can hint if the ligand gained or lost any conjugation or planarity. For example, if the docked pose had a certain π–π stacking and the ligand optimized away from that planarity, its HOMO-LUMO gap might increase (less conjugation). This is more of a niche consideration, but as you grow more comfortable with DFT data, you’ll start to connect these dots.&lt;/p>
+&lt;h2 id="practical-advice-for-integrating-dft-into-docking-workflows">Practical Advice for Integrating DFT into Docking Workflows&lt;/h2>
+&lt;p>For early-career researchers with limited computational chemistry experience, integrating DFT checks into your docking workflow might seem daunting at first. Here are some practical tips to help you get started:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Use DFT selectively:&lt;/strong> You don’t need to DFT-optimize every single docking result (that could be thousands of compounds!). Prioritize a small set of top-scoring poses or any pose that looks chemically suspicious. For instance, if a docking pose shows a ligand in an unusual contortion or with strained bond angles just to fit the pocket, that’s a prime candidate for DFT validation.&lt;/li>
+&lt;li>&lt;strong>Choose the right level of theory:&lt;/strong> Aim for a balance between accuracy and speed. Methods like B3LYP with at least a double-zeta basis set (for example def2-SVP or &lt;code>6-31G**&lt;/code>) are a common starting point for organic molecules. Include dispersion corrections (e.g., the D3 or D4 dispersion in ORCA, invoked by adding -D3 or similar in the functional line) because dispersion can affect conformational energies. You can often get good results with these settings without the calculation taking too long. If your ligand contains metal atoms or is very large, you may need to use effective core potentials or a smaller basis set respectively, or consider semi-empirical methods as a preliminary filter.&lt;/li>
+&lt;li>&lt;strong>Leverage faster methods for initial screening:&lt;/strong> If full DFT is too slow for the number of poses you want to check, consider using a semi-empirical QM method or a fast approximate DFT like &lt;strong>GFN2-xTB&lt;/strong> or &lt;strong>PM6&lt;/strong> just to weed out obviously high-strain poses. ORCA can run semi-empirical calculations as well (e.g., using the GFN2-xTB keyword). These methods are less accurate than DFT but much faster: a reasonable compromise for initial strain assessment.&lt;/li>
+&lt;li>&lt;strong>Optimize in context if possible:&lt;/strong> The simplest DFT check is to optimize the ligand in vacuum (or implicit solvent) as we described. This tells you the ligand’s intrinsic strain. In reality, the protein might stabilize some strained conformations. For a more nuanced check, you can do a &lt;strong>QM/MM optimization&lt;/strong>, where the ligand is treated with DFT and the protein with a molecular mechanics force field. ORCA supports QM/MM calculations, though setting them up is more complex. Alternatively, you could constrain key interaction distances during the ligand optimization to mimic the protein’s hold. These advanced approaches can be considered if a vacuum-phase optimization suggests strain, but you suspect the protein’s environment might significantly alter the picture.&lt;/li>
+&lt;li>&lt;strong>Check for convergence and errors:&lt;/strong> When running ORCA (or any QM software), always verify that the calculation converged properly. In ORCA, if the geometry optimizer failed (e.g., due to a bad initial geometry or insufficient iterations), the results won’t be reliable. You might need to increase MaxIter in the %geom settings or tweak the initial structure. Similarly, watch out for any error messages in the output (like SCF not converged, which you can address by adding SlowConv or other SCF convergence aids).&lt;/li>
+&lt;li>&lt;strong>Interpret results conservatively:&lt;/strong> Remember that computed energies have some error bars. A ~2 kcal/mol difference is probably within the “noise” of method accuracy: it means essentially no significant strain. A &amp;gt;10 kcal/mol difference is huge and almost certainly meaningful. Middle values (e.g., 4–7 kcal/mol) might depend on method, so consider doing a sanity check: perhaps re-optimize using a different functional (like M06-2X or PBE0) or a higher basis set for a single-point energy on the optimized geometry to see if the gap persists. If all methods agree that a pose is high-strain, you can be confident in flagging it.&lt;/li>
+&lt;li>&lt;strong>Use visualization and intuition:&lt;/strong> DFT numbers are great, but always circle back to the chemistry. Visualize the DFT-relaxed pose overlaid with the docked pose. Which bonds rotated? Which angles opened up? Does that make chemical sense (e.g., a steric clash was resolved, an eclipsed conformation went to staggered)? This can teach you &lt;em>why&lt;/em> a pose was unstable and improve your docking criteria next time (for example, you might realize a particular functional group prefers to be planar but the docking forced it non-planar).&lt;/li>
+&lt;li>&lt;strong>Time and resource management:&lt;/strong> DFT calculations can be time-consuming, especially for larger molecules. If you’re working on a laptop, start with very small tests. Perhaps try optimizing just a piece of the ligand or a single pose and see how long it takes. Make use of any high-performance computing resources your institution provides for larger jobs. And be mindful of ORCA’s memory and disk usage settings if your system is large (these can be controlled via %maxcore and other inputs).&lt;/li>
+&lt;li>&lt;strong>Learn from community examples:&lt;/strong> Many researchers have shared tutorials and benchmarks on docking and QM. Don’t hesitate to look up examples (including the ORCA forum and manual) for similar use-cases. For instance, searching for “ligand strain DFT docking” might lead you to studies where they did exactly this kind of validation, giving you a sense of typical values and pitfalls to watch out for.&lt;/li>
+&lt;/ul>
+&lt;p>By incorporating DFT into your workflow, you add a layer of rigor that can save you from chasing false leads. It trains your chemical intuition as well; after a few such exercises, you’ll start to anticipate which poses are likely strained without even computing them, simply by recognizing telltale geometrical quirks.&lt;/p>
+&lt;h2 id="conclusion">Conclusion&lt;/h2>
+&lt;p>Docking scoring functions are fast but approximate. DFT validation addresses one specific failure mode: ligand strain. By optimizing a docked pose at the quantum level and computing the energy difference, you can identify poses that require unrealistically high internal strain to fit the binding site.&lt;/p>
+&lt;p>The practical rule is simple: a strain energy above roughly 8–10 kcal/mol is a strong signal that the pose is a docking artifact. Below 3 kcal/mol, the conformation is likely physically reasonable. Values in between warrant further scrutiny.&lt;/p>
+&lt;p>This check does not replace experimental validation, but it provides a fast, quantitative filter before committing resources to synthesis or assay. Using ORCA with a moderate level of theory (B3LYP-D3/def2-SVP) is a practical starting point for most drug-like molecules.&lt;/p>
+&lt;p>&lt;strong>References:&lt;/strong> The concepts and strategies discussed here are informed by both practical computational experience and literature. The idea of using DFT to optimize ligand geometries and flag strained poses is highlighted in advanced docking validation workflows. The limitations of docking scoring functions in accounting for ligand strain have been noted in the literature, leading to recommendations for post-docking refinement. Definitions of HOMO/LUMO and their relevance to chemical reactivity are well-established in molecular orbital theory &lt;a href="https://www.researchgate.net/figure/HOMO-LUMO-gap-hardness-and-softness-of-all-compounds_tbl2_337289741">[1]&lt;/a>, and even in the context of protein–ligand interactions the frontier orbital alignment can play a role. ORCA, as a chosen tool in our examples, is a widely used quantum chemistry package available to academics, and its manual provides details on techniques like transition state searches. These sources and the accumulated knowledge from them reinforce the practices recommended in this guide.&lt;/p>
+&lt;p>&lt;a href="https://www.researchgate.net/figure/HOMO-LUMO-gap-hardness-and-softness-of-all-compounds_tbl2_337289741">[1]&lt;/a> HOMO, LUMO, gap, hardness, and softness of all compounds.&lt;/p>
+&lt;p>
+&lt;/p></description></item><item><title>Step-by-Step MD Simulation of a Protein–Ligand Complex with GROMACS</title><link>https://yboulaamane.github.io/blog/an-in-depth-guide-to-md-simulation-and-analysis-of-a-protein-ligand-complex/</link><pubDate>Tue, 05 Sep 2023 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/an-in-depth-guide-to-md-simulation-and-analysis-of-a-protein-ligand-complex/</guid><description>&lt;p>This is a recorded CHARMM36 recipe, not a universal GROMACS map. The protein uses CHARMM36, the ligand uses CGenFF, and the write-up calls the solvent TIP3P. The commands below are the ones to copy. Menu numbers and index groups belong to the system they were answered on.&lt;/p>
+&lt;p>&lt;code>em.mdp&lt;/code>, &lt;code>nvt.mdp&lt;/code>, &lt;code>npt.mdp&lt;/code>, and &lt;code>md.mdp&lt;/code> are not in this note. The production run is the 100 ns job written as &lt;code>md_0_100&lt;/code>. Ions use the short &lt;code>ions.mdp&lt;/code> that is included.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 520" role="img" aria-labelledby="gmx-pipe-title gmx-pipe-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="gmx-pipe-title">CHARMM36 protein-ligand setup through production&lt;/title>
+&lt;desc id="gmx-pipe-desc">Nine stages: fix the PDB, build the protein topology, parameterize the ligand with CGenFF, merge, solvate and add ions, minimize, NVT, NPT, then a 100 ns production run named md_0_100.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-gmx-pipe" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="64" width="180" height="64" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="230" y="64" width="180" height="64" rx="12" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="432" y="64" width="180" height="64" rx="12" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="28" y="168" width="180" height="64" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="230" y="168" width="180" height="64" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="432" y="168" width="180" height="64" rx="12" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="28" y="292" width="180" height="64" rx="12" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="230" y="292" width="180" height="64" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="432" y="292" width="180" height="64" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;path d="M208 96 L222 96" marker-end="url(#arrow-gmx-pipe)" stroke="currentColor"/>
+&lt;path d="M410 96 L424 96" marker-end="url(#arrow-gmx-pipe)" stroke="currentColor"/>
+&lt;path d="M522 128 L522 148 L118 148 L118 160" marker-end="url(#arrow-gmx-pipe)" stroke="currentColor"/>
+&lt;path d="M208 200 L222 200" marker-end="url(#arrow-gmx-pipe)" stroke="currentColor"/>
+&lt;path d="M410 200 L424 200" marker-end="url(#arrow-gmx-pipe)" stroke="currentColor"/>
+&lt;path d="M522 232 L522 256 L118 256 L118 284" marker-end="url(#arrow-gmx-pipe)" stroke="currentColor"/>
+&lt;path d="M208 324 L222 324" marker-end="url(#arrow-gmx-pipe)" stroke="currentColor"/>
+&lt;path d="M410 324 L424 324" marker-end="url(#arrow-gmx-pipe)" stroke="currentColor"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="36" font-size="22" font-weight="700">One system, nine stages&lt;/text>
+&lt;text x="118" y="92" font-size="16" font-weight="700">Fix the PDB&lt;/text>
+&lt;text x="118" y="114" font-size="14">pdbfixer&lt;/text>
+&lt;text x="320" y="92" font-size="16" font-weight="700">Protein topology&lt;/text>
+&lt;text x="320" y="114" font-size="14">pdb2gmx&lt;/text>
+&lt;text x="522" y="92" font-size="16" font-weight="700">Ligand&lt;/text>
+&lt;text x="522" y="114" font-size="14">CGenFF&lt;/text>
+&lt;text x="118" y="196" font-size="16" font-weight="700">Merge&lt;/text>
+&lt;text x="118" y="218" font-size="14">complex.gro&lt;/text>
+&lt;text x="320" y="196" font-size="16" font-weight="700">Solvate, ions&lt;/text>
+&lt;text x="320" y="218" font-size="14">1.4 nm, 0.15 M&lt;/text>
+&lt;text x="522" y="196" font-size="16" font-weight="700">Minimize&lt;/text>
+&lt;text x="522" y="218" font-size="14">em.mdp&lt;/text>
+&lt;text x="118" y="320" font-size="16" font-weight="700">NVT&lt;/text>
+&lt;text x="118" y="342" font-size="14">300 K&lt;/text>
+&lt;text x="320" y="320" font-size="16" font-weight="700">NPT&lt;/text>
+&lt;text x="320" y="342" font-size="14">Parrinello–Rahman&lt;/text>
+&lt;text x="522" y="320" font-size="16" font-weight="700">100 ns&lt;/text>
+&lt;text x="522" y="342" font-size="14">md_0_100&lt;/text>
+&lt;text x="320" y="420" font-size="16" font-weight="700">Index groups are local&lt;/text>
+&lt;text x="320" y="448" font-size="15">genion answered 15. The complex group was 1 | 13.&lt;/text>
+&lt;text x="320" y="476" font-size="15">Read the menu on your build before reusing either.&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The box is cubic with a 1.4 nm buffer, and the salt command is 0.15 M NaCl. Group 15 at the ion step and &lt;code>1 | 13&lt;/code> in &lt;code>make_ndx&lt;/code> are the answers printed for this system. Solvation uses &lt;code>spc216.gro&lt;/code> even though the force field named here is CHARMM36 with TIP3P. That coordinate file is left as written.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="0-repair-the-pdb">0. Repair the PDB&lt;/h2>
+&lt;p>Missing atoms get filled before the force field sees the file.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">conda activate pdbfixer
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pdbfixer protein.pdb --output&lt;span class="o">=&lt;/span>protein_fixed.pdb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="1-separate-the-ligand">1. Separate the ligand&lt;/h2>
+&lt;p>Unknown residues and cofactors should not go through &lt;code>pdb2gmx&lt;/code> as part of the protein. Two variants are recorded. One pulls &lt;code>UNK&lt;/code> only. The other also drops &lt;code>FAD&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">grep UNK protein.pdb &amp;gt; unk.pdb
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">grep -v &lt;span class="s2">&amp;#34;UNK&amp;#34;&lt;/span> protein.pdb &amp;gt; clean.pdb
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">grep -v -e &lt;span class="s2">&amp;#34;UNK&amp;#34;&lt;/span> -e &lt;span class="s2">&amp;#34;FAD&amp;#34;&lt;/span> protein_fixed.pdb &amp;gt; clean.pdb
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">conda activate pdbfixer
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pdbfixer clean.pdb --output&lt;span class="o">=&lt;/span>clean.pdb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="2-protein-topology">2. Protein topology&lt;/h2>
+&lt;p>&lt;code>pdb2gmx&lt;/code> is run with &lt;code>-ter&lt;/code> and &lt;code>-ignh&lt;/code>. The six lines are the menu answers recorded for this CHARMM36 setup. On another GROMACS build the same digit can be a different force field or a different terminus. Read the menu.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx pdb2gmx -f clean.pdb -o processed.gro -ter -ignh &lt;span class="s">&amp;lt;&amp;lt; EOF
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="3-ligand-mol2">3. Ligand MOL2&lt;/h2>
+&lt;p>Hydrogens are added and a 3D guess is generated. The &lt;code>sed&lt;/code> line sets the residue name to &lt;code>UNK&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">obabel unk.pdb -O unk.mol2 --addh --gen3d
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s1">&amp;#39;2s/.*/UNK/; s/UNK1/UNK/g&amp;#39;&lt;/span> unk.mol2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="4-bond-order-in-the-mol2">4. Bond order in the MOL2&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">perl sort_mol2_bonds.pl unk.mol2 unk_fix.mol2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="5-cgenff">5. CGenFF&lt;/h2>
+&lt;p>The binary path is the one used on this machine. The conversion script targets &lt;code>charmm36-jul2022.ff&lt;/code>. Penalty scores in the CGenFF log are a reason to stop. This recipe does not inspect them for you.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">~/mdrun/silcsbio.2024.1/cgenff/cgenff unk_fix.mol2 -f unk.str
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod +x cgenff_charmm2gmx.py
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">conda activate cgenff
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">python cgenff_charmm2gmx.py UNK unk_fix.mol2 unk.str charmm36-jul2022.ff
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm cgenff_charmm2gmx.py
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="6-ligand-coordinates-as-gro">6. Ligand coordinates as GRO&lt;/h2>
+&lt;p>The next step expects &lt;code>unk_ini.pdb&lt;/code> and, when a cofactor is present, &lt;code>fad_ini.pdb&lt;/code>. The command that writes those two names is not in this note. The MOL2 above is the file that went to CGenFF.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx editconf -f unk_ini.pdb -o unk.gro
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx editconf -f fad_ini.pdb -o fad.gro
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="7-merge-into-one-gro">7. Merge into one GRO&lt;/h2>
+&lt;p>Protein plus ligand. The second line of a GRO file is the atom count, so it is rewritten after the append. The box line is dropped from the protein file and a blank box line is added back at the end.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">cp processed.gro complex.gro &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> sed -i &lt;span class="s1">&amp;#39;$d&amp;#39;&lt;/span> complex.gro &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> tail -n +3 unk.gro &amp;gt;&amp;gt; complex.gro &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34; &amp;#34;&lt;/span> &amp;gt;&amp;gt; complex.gro
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">num1&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>sed -n &lt;span class="s1">&amp;#39;2p&amp;#39;&lt;/span> complex.gro&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">num2&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>sed -n &lt;span class="s1">&amp;#39;2p&amp;#39;&lt;/span> unk.gro&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">sum&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$((&lt;/span>num1 &lt;span class="o">+&lt;/span> num2&lt;span class="k">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s2">&amp;#34;2s/.*/ &lt;/span>&lt;span class="nv">$sum&lt;/span>&lt;span class="s2">/&amp;#34;&lt;/span> complex.gro
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Protein plus FAD plus UNK:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">cp processed.gro complex.gro &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>sed -i &lt;span class="s1">&amp;#39;$d&amp;#39;&lt;/span> complex.gro &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>tail -n +3 fad.gro &amp;gt;&amp;gt; complex.gro &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>tail -n +3 unk.gro &amp;gt;&amp;gt; complex.gro &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34; &amp;#34;&lt;/span> &amp;gt;&amp;gt; complex.gro
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">num1&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>sed -n &lt;span class="s1">&amp;#39;2p&amp;#39;&lt;/span> processed.gro&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">num2&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>sed -n &lt;span class="s1">&amp;#39;2p&amp;#39;&lt;/span> fad.gro&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">num3&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>sed -n &lt;span class="s1">&amp;#39;2p&amp;#39;&lt;/span> unk.gro&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">sum&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$((&lt;/span>num1 &lt;span class="o">+&lt;/span> num2 &lt;span class="o">+&lt;/span> num3&lt;span class="k">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s2">&amp;#34;2s/.*/ &lt;/span>&lt;span class="nv">$sum&lt;/span>&lt;span class="s2">/&amp;#34;&lt;/span> complex.gro
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="8-topology-includes">8. Topology includes&lt;/h2>
+&lt;p>These &lt;code>sed&lt;/code> edits are brittle. They assume the CHARMM36 comments and the molecule name &lt;code>Protein_chain_A&lt;/code> are still in &lt;code>topol.top&lt;/code>. Open the topology after they run.&lt;/p>
+&lt;p>Ligand only:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s1">&amp;#39;/; Include Position restraint file/{:a;N;/#endif/!ba;s/\n#endif\n/\n#endif/;s/#endif/#endif\n\n; Include ligand topology\n#include &amp;#34;unk.itp&amp;#34;/}&amp;#39;&lt;/span> topol.top
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s1">&amp;#39;/; Include forcefield parameters/{:a;N;/#include &amp;#34;.\/charmm36-jul2022.ff\/forcefield.itp&amp;#34;/!ba;s/#include &amp;#34;.\/charmm36-jul2022.ff\/forcefield.itp&amp;#34;/&amp;amp;\n\n; Include ligand parameters\n#include &amp;#34;unk.prm&amp;#34;/}&amp;#39;&lt;/span> topol.top
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s1">&amp;#39;/\[ molecules \]/,/Protein_chain_A/ {/Protein_chain_A/ a\\nUNK 1\n}&amp;#39;&lt;/span> topol.top
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>FAD and UNK:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s1">&amp;#39;/; Include Position restraint file/{:a;N;/#endif/!ba;s/#endif/#endif\n\n; Include ligand topologies\n#include &amp;#34;fad.itp&amp;#34;\n#include &amp;#34;unk.itp&amp;#34;/}&amp;#39;&lt;/span> topol.top
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s1">&amp;#39;/; Include forcefield parameters/{:a;N;/#include &amp;#34;.\/charmm36-jul2022.ff\/forcefield.itp&amp;#34;/!ba;s|#include &amp;#34;.\/charmm36-jul2022.ff\/forcefield.itp&amp;#34;|&amp;amp;\n\n; Include ligand parameters\n#include &amp;#34;fad.prm&amp;#34;\n#include &amp;#34;unk.prm&amp;#34;|}&amp;#39;&lt;/span> topol.top
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s1">&amp;#39;/\[ molecules \]/,/Protein_chain_A/ {/Protein_chain_A/ a\\nFAD 1\\nUNK 1\n}&amp;#39;&lt;/span> topol.top
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="9-box-and-solvent">9. Box and solvent&lt;/h2>
+&lt;p>The buffer is 1.4 nm and the box is cubic. Solvation is &lt;code>spc216.gro&lt;/code>. That is the SPC216 coordinate file, used here with the CHARMM36 topology. It is not rewritten as &lt;code>tip3p.gro&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx editconf -f complex.gro -o newbox.gro -bt cubic -c -d 1.4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx solvate -cp newbox.gro -cs spc216.gro -p topol.top -o solv.gro
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="10-ions">10. Ions&lt;/h2>
+&lt;p>The ion &lt;code>.mdp&lt;/code> is only a steep minimizer so &lt;code>genion&lt;/code> has a &lt;code>.tpr&lt;/code>. Neutralize, then add 0.15 M NaCl. The heredoc answers group &lt;code>15&lt;/code>. On this system that was solvent. &lt;code>genion&lt;/code> prints the group list. Choose solvent, whatever number it has.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">cat &lt;span class="s">&amp;lt;&amp;lt;EOF &amp;gt; ions.mdp
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">integrator = steep
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">emtol = 1000.0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">nsteps = 50000
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">cutoff-scheme = Verlet
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">coulombtype = PME
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">rcoulomb = 1.0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">rvdw = 1.0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">constraints = none
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx grompp -f ions.mdp -c solv.gro -p topol.top -o ions.tpr -maxwarn &lt;span class="m">3&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx genion -s ions.tpr -o solv_ions.gro -p topol.top -pname NA -nname CL -neutral -conc 0.15 &lt;span class="s">&amp;lt;&amp;lt;EOF
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">15
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="11-energy-minimization">11. Energy minimization&lt;/h2>
+&lt;p>&lt;code>em.mdp&lt;/code> itself is not listed.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx grompp -f em.mdp -c solv_ions.gro -p topol.top -o em.tpr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx mdrun -v -deffnm em
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="12-ligand-position-restraints">12. Ligand position restraints&lt;/h2>
+&lt;p>Non-hydrogen atoms of the ligand are restrained with &lt;code>-fc 1000 1000 1000&lt;/code>. Group &lt;code>3&lt;/code> is the selection recorded after &lt;code>0 &amp;amp; ! a H*&lt;/code>. Check the index &lt;code>make_ndx&lt;/code> prints.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx make_ndx -f unk.gro -o index_unk.ndx &lt;span class="s">&amp;lt;&amp;lt; EOF
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">0 &amp;amp; ! a H*
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">q
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx genrestr -f unk.gro -n index_unk.ndx -o posre_unk.itp -fc &lt;span class="m">1000&lt;/span> &lt;span class="m">1000&lt;/span> &lt;span class="m">1000&lt;/span> &lt;span class="s">&amp;lt;&amp;lt;EOF
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">3
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i &lt;span class="s1">&amp;#39;/; Include water topology/{x;s/.*/\n; Ligand position restraints\n#ifdef POSRES\n#include &amp;#34;posre_unk.itp&amp;#34;\n#endif\n/;G}&amp;#39;&lt;/span> topol.top
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="13-complex-index">13. Complex index&lt;/h2>
+&lt;p>&lt;code>1 | 13&lt;/code> unions two groups that were protein and ligand on this system. Use the numbers your own index file prints.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx make_ndx -f solv_ions.gro -o index.ndx &lt;span class="s">&amp;lt;&amp;lt; EOF
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">1 | 13
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">q
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="14-nvt">14. NVT&lt;/h2>
+&lt;p>Temperature equilibration at 300 K, with position restraints. The thermostat settings live in &lt;code>nvt.mdp&lt;/code>, which is not pasted here.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx grompp -f nvt.mdp -c solv_ions.gro -r solv_ions.gro -p topol.top -n index.ndx -o nvt.tpr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx mdrun -deffnm nvt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="15-npt">15. NPT&lt;/h2>
+&lt;p>Pressure equilibration at 1 bar with the Parrinello–Rahman barostat.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx grompp -f npt.mdp -c nvt.gro -t nvt.cpt -r nvt.gro -p topol.top -n index.ndx -o npt.tpr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx mdrun -deffnm npt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="16-production">16. Production&lt;/h2>
+&lt;p>The file names are the 100 ns run.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -n index.ndx -o md_0_100.tpr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gmx mdrun -deffnm md_0_100
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="before-you-plot-anything">Before you plot anything&lt;/h2>
+&lt;p>Fix periodic boundary crossings before RMSD, radius of gyration, or SASA. Drop the first 5–10 ns. A flat RMSD, radius of gyration, and SASA is the stability check this note uses. PCA and a free-energy landscape are the next look at slow motions. Those analysis commands are a separate post.&lt;/p></description></item><item><title>Molecular Simulation in Drug Discovery: A Strategic Guide to Core Methods</title><link>https://yboulaamane.github.io/blog/molecular-simulation-in-drug-discovery-a-strategic-guide-to-core-methods/</link><pubDate>Thu, 10 Aug 2023 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/molecular-simulation-in-drug-discovery-a-strategic-guide-to-core-methods/</guid><description>&lt;p>The method has to match the question. Quantum mechanics can describe a bond breaking in an active site. It cannot watch a vesicle form. Dissipative particle dynamics can. This note places the usual drug-discovery methods on that scale and says what each one is for.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 460" role="img" aria-labelledby="sim-scale-title sim-scale-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="sim-scale-title">Simulation methods by what they resolve&lt;/title>
+&lt;desc id="sim-scale-desc">Atomistic methods are QM, QM/MM, MD, and Langevin dynamics. Larger-scale methods are coarse-grained MD, Monte Carlo, Brownian dynamics, and dissipative particle dynamics. A hybrid path runs Brownian dynamics, then MD, then QM.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-sim-scale" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="68" width="140" height="78" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="180" y="68" width="140" height="78" rx="12" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="332" y="68" width="140" height="78" rx="12" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="484" y="68" width="128" height="78" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="28" y="220" width="140" height="78" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="180" y="220" width="140" height="78" rx="12" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="332" y="220" width="140" height="78" rx="12" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="484" y="220" width="128" height="78" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M92 298 L92 360" stroke="currentColor"/>
+&lt;path d="M92 360 L548 360" stroke="currentColor"/>
+&lt;path d="M548 360 L548 308" marker-end="url(#arrow-sim-scale)" stroke="currentColor"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="36" font-size="22" font-weight="700">Match the method to the scale&lt;/text>
+&lt;text x="320" y="58" font-size="14">Atomistic&lt;/text>
+&lt;text x="98" y="100" font-size="18" font-weight="700">QM&lt;/text>
+&lt;text x="98" y="124" font-size="14">Electrons&lt;/text>
+&lt;text x="250" y="100" font-size="18" font-weight="700">QM/MM&lt;/text>
+&lt;text x="250" y="124" font-size="14">Active site&lt;/text>
+&lt;text x="402" y="100" font-size="18" font-weight="700">MD&lt;/text>
+&lt;text x="402" y="124" font-size="14">Newton, time&lt;/text>
+&lt;text x="548" y="100" font-size="18" font-weight="700">Langevin&lt;/text>
+&lt;text x="548" y="124" font-size="14">Friction, heat&lt;/text>
+&lt;text x="98" y="252" font-size="18" font-weight="700">CGMD&lt;/text>
+&lt;text x="98" y="276" font-size="14">Beads&lt;/text>
+&lt;text x="250" y="252" font-size="18" font-weight="700">MC, GCMC&lt;/text>
+&lt;text x="250" y="276" font-size="14">Configurations&lt;/text>
+&lt;text x="402" y="252" font-size="18" font-weight="700">BD&lt;/text>
+&lt;text x="402" y="276" font-size="14">Diffusion, kon&lt;/text>
+&lt;text x="548" y="252" font-size="18" font-weight="700">DPD&lt;/text>
+&lt;text x="548" y="276" font-size="14">Soft matter&lt;/text>
+&lt;text x="320" y="400" font-size="16" font-weight="700">One hybrid path: BD, then MD, then QM&lt;/text>
+&lt;text x="320" y="426" font-size="14">Encounter, pose, then the electronic energy&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Langevin dynamics stays atomistic. It adds friction and a random force. Brownian dynamics and dissipative particle dynamics drop detail on purpose so the question can be an encounter or a formulation. The bottom path is the multiscale order in this note, not a single software pipeline.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="quantum-mechanics">Quantum mechanics&lt;/h2>
+&lt;p>QM solves the electronic problem. In a discovery project that means reactivity, an enzymatic mechanism, a transition state, partial charges for a force field, or a metal and a covalent ligand. The cost confines it to a small region. QM/MM keeps that region quantum and treats the rest of the protein classically.&lt;/p>
+&lt;h2 id="molecular-dynamics">Molecular dynamics&lt;/h2>
+&lt;p>MD integrates Newton’s equations and returns a trajectory: protein motion, ligand binding, solvent, and stability. That is the usual check on a docked pose, an induced-fit hypothesis, or a binding free energy.&lt;/p>
+&lt;p>Sampling is the limit. A trajectory sits in the basin where it started. Metadynamics, accelerated MD, and replica-exchange MD are the enhanced-sampling routes named here. They still need a force field and, for most binding questions, an explicit solvent.&lt;/p>
+&lt;h2 id="coarse-grained-md">Coarse-grained MD&lt;/h2>
+&lt;p>CGMD groups atoms into beads. The energy surface gets smoother and the system can be a membrane, a vesicle, or a nanoparticle. Drug-delivery formulations and lipid rafts sit at this scale. The result is qualitative or semi-quantitative. It is not an atomistic binding pose.&lt;/p>
+&lt;h2 id="monte-carlo">Monte Carlo&lt;/h2>
+&lt;p>Monte Carlo samples configurations by probability instead of integrating time. Use it for conformers, side chains, and free-energy estimates inside docking workflows.&lt;/p>
+&lt;p>Grand canonical Monte Carlo also inserts and deletes molecules, including water. That is a way to find hydration sites and binding hotspots during lead optimization.&lt;/p>
+&lt;h2 id="brownian-dynamics">Brownian dynamics&lt;/h2>
+&lt;p>BD drops inertia and keeps diffusion under thermal noise. The timescale is longer than MD, and the structural detail is thinner. The drug-discovery use is the encounter: an association rate constant, kon, or diffusion in a crowded compartment. It complements atomistic MD. It does not replace it.&lt;/p>
+&lt;h2 id="langevin-dynamics">Langevin dynamics&lt;/h2>
+&lt;p>Langevin dynamics is MD plus friction and a random force. That combination holds the temperature and stands in for solvent damping, which is why it shows up with implicit solvent and as a simple thermostat. It can speed equilibration of a ligand or a conformational change. It is still a particle simulation, not a mesoscale one.&lt;/p>
+&lt;h2 id="dissipative-particle-dynamics">Dissipative particle dynamics&lt;/h2>
+&lt;p>DPD is built for soft matter: polymers, lipids, surfactants. Particles are coarse-grained, and the dissipative and random forces are chosen so that momentum is conserved. That keeps hydrodynamics, so the method can show flow, self-assembly, encapsulation, and release. Formulation and nanomedicine are the applications in this note.&lt;/p>
+&lt;h2 id="hybrids">Hybrids&lt;/h2>
+&lt;p>QM/MM is the hybrid already named above. Across scales, the same project can hand a ligand from BD to MD, or rebuild a coarse-grained configuration in atomistic detail. The sequence in the figure is one reading of that idea: BD for the encounter, MD for the pose, QM for the interaction energy. Each step answers a different question. None of them inherits the error bars of the previous one.&lt;/p>
+&lt;h2 id="what-to-take-from-the-list">What to take from the list&lt;/h2>
+&lt;p>Pick the coarsest method that still contains the physics you will claim. Electrons, a trajectory, a membrane, a water site, an on-rate, and a formulation are six different claims. The hardware is improving. The matching problem stays.&lt;/p></description></item><item><title>How to Validate AlphaFold Structures</title><link>https://yboulaamane.github.io/blog/how-to-validate-alphafold-structures/</link><pubDate>Mon, 19 Jun 2023 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/how-to-validate-alphafold-structures/</guid><description>&lt;p>A high pLDDT is not a finished structure. AlphaFold is accurate on many folds (1), and a predicted model still needs the same kinds of checks as an experimental one: confidence, geometry, a comparison when a structure exists, and a functional test.&lt;/p>
+&lt;p>Read pLDDT and PAE first. Then stereochemistry and residue environment. Then TM-align, if you have a reference. Only then ask whether a pocket, a docked ligand, or a short simulation is usable. Low-confidence regions are the ones to exclude or to treat as a hypothesis.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 460" role="img" aria-labelledby="af-flow-title af-flow-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="af-flow-title">Order of checks for an AlphaFold model&lt;/title>
+&lt;desc id="af-flow-desc">Four checks in order. pLDDT and PAE, then geometry tools, then a comparison to a known structure, then a functional test by pocket, docking, or a short simulation.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-af-flow" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="48" y="64" width="544" height="72" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="48" y="160" width="544" height="72" rx="14" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="48" y="256" width="544" height="72" rx="14" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="48" y="352" width="544" height="72" rx="14" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M320 136 L320 152" marker-end="url(#arrow-af-flow)" stroke="currentColor"/>
+&lt;path d="M320 232 L320 248" marker-end="url(#arrow-af-flow)" stroke="currentColor"/>
+&lt;path d="M320 328 L320 344" marker-end="url(#arrow-af-flow)" stroke="currentColor"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="40" font-size="22" font-weight="700" text-anchor="middle">Validate in this order&lt;/text>
+&lt;text x="72" y="96" font-size="18" font-weight="700">1. pLDDT and PAE&lt;/text>
+&lt;text x="72" y="120" font-size="15">Local confidence, and whether domains are packed&lt;/text>
+&lt;text x="72" y="192" font-size="18" font-weight="700">2. Geometry and environment&lt;/text>
+&lt;text x="72" y="216" font-size="15">MolProbity, PROCHECK, Verify3D, ERRAT, QMEAN&lt;/text>
+&lt;text x="72" y="288" font-size="18" font-weight="700">3. A known structure, if you have one&lt;/text>
+&lt;text x="72" y="312" font-size="15">TM-score and RMSD against that reference&lt;/text>
+&lt;text x="72" y="384" font-size="18" font-weight="700">4. Function&lt;/text>
+&lt;text x="72" y="408" font-size="15">Pocket, docking, or a short MD&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The four checks answer different questions. A low-pLDDT loop can sit inside a model whose TM-score against experiment is still high. Skipping the confidence step and docking the whole chain treats the uncertain parts as coordinates.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="alphafold-confidence-metrics-plddt-and-pae">AlphaFold Confidence Metrics: pLDDT and PAE&lt;/h2>
+&lt;p>AlphaFold provides intrinsic confidence measures that are the first step in validation. &lt;strong>pLDDT (predicted Local Distance Difference Test)&lt;/strong> is a per-residue confidence score ranging from 0 to 100. Higher pLDDT means the model is more confident that the local structure around that residue is accurate​ (2). This metric is based on the lDDT-Cα score, which assesses local structural accuracy without requiring a global superposition​ (3). In practice, AlphaFold classifies residues into confidence bands:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>pLDDT ≥ 90&lt;/strong>: Very high confidence (high accuracy for backbone and side chains)​.&lt;/li>
+&lt;li>&lt;strong>70 ≤ pLDDT &amp;lt; 90&lt;/strong>: Confident; backbone likely correct, though side chains may have some error​.&lt;/li>
+&lt;li>&lt;strong>50 ≤ pLDDT &amp;lt; 70&lt;/strong>: Low confidence; the region is less reliable, possibly mis-modeled.&lt;/li>
+&lt;li>&lt;strong>pLDDT &amp;lt; 50&lt;/strong>: Very low confidence; often indicates disordered or flexible regions​, which AlphaFold expects might not adopt a single stable structure in reality.&lt;/li>
+&lt;/ul>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 440" role="img" aria-labelledby="af-band-title af-band-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="af-band-title">pLDDT bands and a two-domain PAE pattern&lt;/title>
+&lt;desc id="af-band-desc">Four pLDDT bands: 90 and above, 70 to 90, 50 to 70, and below 50. Beside them, a PAE matrix with two dark diagonal blocks and light off-diagonal blocks.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="68" width="280" height="64" rx="12" fill="#2f80ed" fill-opacity="0.18" stroke="#2f80ed"/>
+&lt;rect x="28" y="144" width="280" height="64" rx="12" fill="#27ae60" fill-opacity="0.16" stroke="#27ae60"/>
+&lt;rect x="28" y="220" width="280" height="64" rx="12" fill="#f2994a" fill-opacity="0.18" stroke="#f2994a"/>
+&lt;rect x="28" y="296" width="280" height="64" rx="12" fill="#9b51e0" fill-opacity="0.16" stroke="#9b51e0"/>
+&lt;rect x="360" y="88" width="112" height="112" fill="#2f80ed" fill-opacity="0.45" stroke="currentColor"/>
+&lt;rect x="472" y="88" width="112" height="112" fill="#f2994a" fill-opacity="0.16" stroke="currentColor"/>
+&lt;rect x="360" y="200" width="112" height="112" fill="#f2994a" fill-opacity="0.16" stroke="currentColor"/>
+&lt;rect x="472" y="200" width="112" height="112" fill="#2f80ed" fill-opacity="0.45" stroke="currentColor"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="36" font-size="22" font-weight="700" text-anchor="middle">pLDDT is local. PAE is relative.&lt;/text>
+&lt;text x="44" y="96" font-size="18" font-weight="700">pLDDT ≥ 90&lt;/text>
+&lt;text x="44" y="118" font-size="15">Very high&lt;/text>
+&lt;text x="44" y="172" font-size="18" font-weight="700">70 to 90&lt;/text>
+&lt;text x="44" y="194" font-size="15">Confident backbone&lt;/text>
+&lt;text x="44" y="248" font-size="18" font-weight="700">50 to 70&lt;/text>
+&lt;text x="44" y="270" font-size="15">Low&lt;/text>
+&lt;text x="44" y="324" font-size="18" font-weight="700">pLDDT below 50&lt;/text>
+&lt;text x="44" y="346" font-size="15">Very low, often flexible&lt;/text>
+&lt;text x="416" y="150" font-size="16" font-weight="700" text-anchor="middle">Domain A&lt;/text>
+&lt;text x="528" y="262" font-size="16" font-weight="700" text-anchor="middle">Domain B&lt;/text>
+&lt;text x="472" y="352" font-size="16" text-anchor="middle">Off-diagonal: high PAE&lt;/text>
+&lt;text x="472" y="376" font-size="15" text-anchor="middle">Packing is not settled&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> The bands are AlphaFold’s: 90, 70, and 50. Colors in this drawing are labels, not the database palette. The matrix is the usual two-domain pattern: each domain is internally confident, and the relative orientation is not. pLDDT is stored in the B-factor column, so the PyMOL spectrum below paints that field.&lt;/figcaption>
+&lt;/figure>
+&lt;p>AlphaFold typically &lt;strong>encodes pLDDT in the B-factor field&lt;/strong> of the output PDB/mmCIF file​ (4). This means visualization programs can color the structure by B-factor to see confidence per residue. For example, in PyMOL you can load the model and run a command to color by B-factor (pLDDT):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl"># In PyMOL, after loading the AlphaFold model:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">spectrum b, red_white_blue, minimum=0, maximum=100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># This colors residues from red (low pLDDT) to blue (high pLDDT).
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>AlphaFold’s second key metric is the &lt;strong>PAE (Predicted Aligned Error)&lt;/strong>. PAE is a measure of the model’s confidence in the relative positions of two residues​ (5). More formally, &lt;em>PAE(x, y)&lt;/em> is the expected error (in Å) at residue &lt;em>x&lt;/em>’s position &lt;strong>if&lt;/strong> the predicted structure were aligned to the (unknown) true structure on residue _y_​ (6). In simpler terms, &lt;strong>PAE tells us how well the model thinks region &lt;em>x&lt;/em> and region &lt;em>y&lt;/em> are positioned relative to each other&lt;/strong>. A low PAE between two residues (or domains) implies the model is confident about their relative arrangement, whereas a high PAE means the relative placement is uncertain​ (7). For example, if two domains have consistently high PAE with each other, the model is essentially saying &lt;em>“these domains might move relative to each other, so don’t trust the exact orientation.”&lt;/em> By contrast, low PAE between two domains suggests a well-defined domain packing​ (8).&lt;/p>
+&lt;p>PAE is often visualized as a heatmap (matrix) where each axis is residue index. AlphaFold’s structure database provides an interactive PAE plot alongside each model​ (9,10). In a PAE heatmap, the diagonal is always dark (zero error when a residue is aligned on itself) and can be ignored​ (10). Off-diagonal blocks indicate inter-residue or inter-domain confidence: &lt;strong>dark green/blue regions = low error (high confidence)&lt;/strong>, and **light colors = high error (low confidence)**​. For instance, a multi-domain protein often shows clear dark blocks along the diagonal (each domain internally high confidence) separated by lighter regions (uncertain relative domain orientation). &lt;strong>Interpreting PAE&lt;/strong> in validation is crucial: even if each domain has high pLDDT, a high PAE between domains means you should not assume the domain arrangement is correct​ (10). In such cases, additional validation (or experimental data) is needed to confirm domain orientations.&lt;/p>
+&lt;p>&lt;strong>Check pLDDT and PAE first.&lt;/strong> These metrics identify which parts of the model are reliably predicted and whether the overall fold, especially multi-domain architecture, is predicted with confidence. Regions with low pLDDT or high PAE may be disordered in reality or modeled inaccurately. These regions require further analysis or may be excluded if only the stable core is needed.&lt;/p>
+&lt;h2 id="visual-inspection-of-the-model">Visual Inspection of the Model&lt;/h2>
+&lt;p>After reviewing AlphaFold’s confidence metrics, the next validation step is a &lt;strong>careful visual inspection&lt;/strong> of the model. This is a straightforward but powerful way to catch obvious issues. Tools such as &lt;strong>PyMOL&lt;/strong>, &lt;strong>UCSF ChimeraX&lt;/strong>, and &lt;strong>Mol*&lt;/strong> (MolStar) are invaluable for this task:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>PyMOL&lt;/strong> – A widely-used molecular graphics tool. Load the AlphaFold PDB, and visualize secondary structure (cartoon view) to see if helices and strands look well-formed. Color the model by pLDDT (as described above) to highlight low-confidence segments. Pay attention to any steric clashes or oddly twisted geometries. For example, check if any side chains deeply penetrate other parts of the protein (which might indicate a clash or error). PyMOL’s distance measurement can help verify if supposed disulfide bonds or salt bridges are geometrically plausible. If you have a known motif (e.g., a catalytic triad), inspect whether those residues align in the expected geometry.&lt;/li>
+&lt;li>&lt;strong>UCSF ChimeraX&lt;/strong> – A modern visualization tool that can directly fetch AlphaFold models from the AlphaFold DB by UniProt ID, and it has built-in presets for AlphaFold confidence coloring. In ChimeraX, the command &lt;code>color bfactor palette alphafold&lt;/code> applies the standard pLDDT color scheme (blue = high confidence, orange/red = low). Use ChimeraX’s structure analysis features to examine hydrogen bonds, contacts, and clashes. Chimera(X) also allows viewing the PAE map if you have it, or you can segment the model by domains to see how they interact. If the model has flexible termini (often glowing red/orange from low pLDDT), you might visualize those separately – they could be flopping around and not relevant to the stable core.&lt;/li>
+&lt;li>&lt;strong>Mol&lt;/strong>* – This is the web-based 3D viewer used by the AlphaFold Protein Structure Database​ (11). If you obtained your model from AlphaFold DB, you can use the online Mol* viewer to instantly see the structure colored by confidence and the PAE plot side-by-side. Mol* is great for a quick look without installing software. Through Mol*, you can rotate the model, identify secondary structure elements, and even select a region on the PAE plot to highlight which parts of the 3D structure are uncertain​ (12). While not as feature-rich as desktop tools, it’s convenient for an initial overview.&lt;/li>
+&lt;/ul>
+&lt;p>During visual inspection, &lt;strong>look for red flags&lt;/strong> such as:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Unphysical bond lengths or angles&lt;/strong>: AlphaFold generally produces chemically sensible structures, but extremely distorted geometries (e.g., a peptide bond angle that looks abnormal) could appear in low-confidence regions. These are rare, but if present, they’ll likely be flagged by subsequent validation tools as well.&lt;/li>
+&lt;li>&lt;strong>Clashes&lt;/strong>: Overlapping atoms or very tightly packed regions. Our eyes might miss slight clashes, so after visual review you’ll use tools like MolProbity to quantify this. But obvious clashes (like two side chains on top of each other) can sometimes be spotted visually.&lt;/li>
+&lt;li>&lt;strong>Chain breaks or gaps&lt;/strong>: Check if the protein backbone is continuous. If AlphaFold was unsure in a region, it might produce an unphysical loop. Usually AlphaFold does not literally break the chain (except maybe at extreme low confidence segments, it still gives a continuous but perhaps highly extended or tangled loop). If you do see a gap (missing residues), it could be because the input sequence had a region AlphaFold couldn’t model confidently or was omitted, though in normal operation AlphaFold predicts all residues provided.&lt;/li>
+&lt;li>&lt;strong>Secondary structure mismatches&lt;/strong>: Does the model’s secondary structure make sense given the sequence? If you have prior knowledge (say from sequence analysis, you expect three transmembrane helices or a beta-sheet in a certain region), see if the model matches that. If AlphaFold predicts a region to be helical (and with high confidence), it likely is. But if you see something like a beta-strand contorted oddly, or a helix with a kink, note those for further scrutiny.&lt;/li>
+&lt;li>&lt;strong>Active site or binding site conformation&lt;/strong>: If the protein’s function is known and certain residues are critical (e.g., enzyme active site), inspect that region. Are the catalytic residues oriented in a plausible way? Is there a cavity where a substrate could bind? Sometimes AlphaFold might predict a side chain orientation that blocks a known binding cleft (especially if no ligand was present during prediction). Visualizing this early can hint if the model is consistent with function or if something might be off.&lt;/li>
+&lt;/ul>
+&lt;p>Visual inspection is qualitative, but it directs later steps. An unexpected cavity or unusual domain orientation identified here should prompt targeted follow-up: ligand docking into the cavity, or checking domain orientation against experimental data. It is also the point to decide whether low-confidence segments should be excluded from downstream analysis.&lt;/p>
+&lt;h2 id="using-structural-validation-tools">Using Structural Validation Tools&lt;/h2>
+&lt;p>Automated structure-validation tools provide quantitative checks on your model’s stereochemistry and overall quality. Many of these tools were originally developed for validating experimentally determined structures, but they are equally applicable to predicted models. Here are some key validation tools and what they offer:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>MolProbity&lt;/strong> – A comprehensive &lt;strong>all-atom structure validation&lt;/strong> server (13).
+checks for steric clashes by adding hydrogens to the structure and finding all-atom overlaps. It also evaluates bond angles and dihedrals, highlighting &lt;strong>Ramachandran outliers&lt;/strong> (phi/psi angles that fall in disallowed regions of the Ramachandran plot) and &lt;strong>rotamer outliers&lt;/strong> (unusual side chain conformations). MolProbity provides an overall score (the “MolProbity score”) and specific metrics like &lt;strong>clashscore&lt;/strong> (number of serious clashes per 1000 atoms), percentage of Ramachandran favored/allowed/outlier residues, and more ​(14,15). A good AlphaFold model should have low clashscore and few (if any) Ramachandran outliers. However, it’s not uncommon for some &lt;strong>low-pLDDT loops&lt;/strong> in AlphaFold models to show outliers or clashes, since the model wasn’t physics-refined. MolProbity can guide you to those problematic spots; you can then consider refining them (e.g., via energy minimization or rebuilding). &lt;strong>Tip:&lt;/strong> If MolProbity reports many clashes or poor geometry in a high-pLDDT region, that’s a red flag – the model might be locally strained, and further investigation is needed.&lt;/li>
+&lt;li>&lt;strong>PROCHECK&lt;/strong> – A classic tool (from 1993) that checks the &lt;strong>stereochemical quality&lt;/strong> of a protein structure​ (16).
+generates a number of outputs, the most famous being the Ramachandran plot. It will tell you what fraction of residues lie in favored, allowed, and disallowed regions of Ramachandran space. It also checks other parameters: peptide bond planarity, bond length deviations, Cβ deviations, and backbone torsion angle quality. In essence, PROCHECK ensures your model’s geometry is within typical bounds seen in crystallographic structures. For an AlphaFold model, you’d like to see the vast majority of residues in the favored regions of the Ramachandran plot (ideally &amp;gt;90% favored, &amp;lt;1% outliers, similar to high-resolution crystal structures). AlphaFold models generally fare well here, especially in well-defined regions, but if you have an outlier, PROCHECK will pinpoint it. You can run PROCHECK via the command-line (it’s part of the CCP4 suite) or conveniently through web servers like PDBsum (which can generate PROCHECK analysis for any uploaded structure)​.&lt;/li>
+&lt;li>&lt;strong>WHAT_CHECK&lt;/strong> – Part of the &lt;strong>WHAT IF&lt;/strong> software suite,
+is an extensive consistency check for protein structures. It examines a wide range of criteria: geometry, van der Waals contacts, environment of residues, and more. For example, it will check if buried polar groups have hydrogen-bonding partners, if side chain torsions are consistent with electron density (for experimental structures), etc. With a predicted model, some checks (like comparison to electron density) don’t apply, but WHAT_CHECK’s geometrical and empirical rules can still flag issues. It’s quite thorough – sometimes producing a long report. If you have access to the WHAT IF web interface or servers, running WHAT_CHECK can complement PROCHECK/MolProbity by catching subtle issues. However, if you’re already using MolProbity and PROCHECK, you may get sufficient info; use WHAT_CHECK if you want an extra layer of scrutiny.&lt;/li>
+&lt;li>&lt;strong>Verify3D&lt;/strong> – A &lt;strong>3D-1D profile&lt;/strong> method that checks &lt;strong>residue environment compatibility&lt;/strong>​ (17). Essentially,
+evaluates each residue in the model to see if its environment (surface vs buried, secondary structure context, etc.) is consistent with what one would expect for that amino acid. It returns a score for each residue and an overall percentage of residues that pass a threshold. Typically, you want a Verify3D result where &amp;gt;80% of residues have a score above the cutoff (0.2 in the original scoring scheme)​ (18). If Verify3D flags certain residues, it means those amino acids are in an environment that is unusual (e.g., a polar residue buried without contacts, or a hydrophobic residue exposed to solvent) – potentially indicating a modeling error or an unusual but real feature. When validating an AlphaFold model, a &lt;strong>low Verify3D percentage (significantly below 80%) is a warning&lt;/strong>. It could be due to a genuine peculiarity of the protein, but often it suggests some regions of the model are not structurally sound. Verify3D is available via the
+server (which bundles several validation tools).&lt;/li>
+&lt;li>&lt;strong>ERRAT&lt;/strong> – A program that analyzes &lt;strong>non-bonded atom-atom interactions&lt;/strong> in the model and identifies regions that deviate from expected patterns​ (19).
+essentially plots a quality score across the protein and gives an overall quality factor (as a percentage). High-quality structures tend to have an ERRAT overall quality score in the high 80s or 90s (out of 100), whereas a significantly lower score might indicate problems. For example, an ERRAT score of ~79% (as seen in some homology models) is marginal, and one would try to improve the model (20). ERRAT is also available via the UCLA SAVES server. If ERRAT flags a specific region (say residues 50–60) as problematic, that region likely has odd interatomic distances (perhaps a mis-packed helix or something). Cross-check such regions with what pLDDT said – often they coincide with low pLDDT stretches.&lt;/li>
+&lt;li>&lt;strong>SwissModel Structure Assessment (QMEAN)&lt;/strong> – The
+server provides a &lt;strong>model quality assessment&lt;/strong> tool that includes the QMEAN scoring function. &lt;strong>QMEAN&lt;/strong> (Qualitative Model Energy ANalysis) is a composite score evaluating various geometrical aspects (e.g., torsion angles, solvation, secondary structure packing) to estimate how “protein-like” a model is​ (21). When you submit a model to SwissModel’s Assessment, you receive a QMEAN score and a &lt;strong>QMEAN Z-score&lt;/strong> which compares your model to a baseline of experimental structures of similar size. A QMEAN Z-score around 0 is good (meaning your model is in the range of normal structures); a score significantly below -4.0 indicates a model of low quality (likely incorrect)​ (22). QMEAN also provides per-residue scores, so you can see which regions contribute to lowering the score. For AlphaFold models, QMEAN often yields scores consistent with high accuracy for high-pLDDT regions, but may penalize the low-confidence regions. Use this as an overall “sanity check” – if even QMEAN (which is trained on typical protein statistics) finds your entire model to be an outlier, you should be cautious. SwissModel will also report other descriptors like predicted secondary structure vs model secondary structure agreement, and possible buriedness mismatches.&lt;/li>
+&lt;/ul>
+&lt;p>All these tools provide &lt;strong>complementary views of model quality&lt;/strong>. In practice, you don’t have to use every single one for every model; but it’s wise to use at least one geometry-focused tool (MolProbity/PROCHECK) and one environment-focused tool (Verify3D/ERRAT/QMEAN). Many of these can be run easily via web servers. For instance, the &lt;strong>UCLA SAVES&lt;/strong> web server allows you to upload a PDB and get results from PROCHECK, Verify3D, and ERRAT together. MolProbity has its own web server (as part of Phenix or standalone). SwissModel’s assessment is another one-stop option for QMEAN and additional analyses.&lt;/p>
+&lt;p>When you get the results, pay attention to consistent signals: e.g., if &lt;strong>MolProbity and PROCHECK both say the same residue is an outlier&lt;/strong> (bad geometry) and &lt;strong>Verify3D also flags that region&lt;/strong>, that part of the model is definitely suspect. You might then decide to remodel that segment or simply note that it’s unreliable. On the other hand, if all tools give you largely clean reports (few clashes, good Ramachandran stats, high Verify3D percentage, high ERRAT score), you can be more confident the model is reasonable.&lt;/p>
+&lt;h2 id="comparison-with-experimental-structures">Comparison with Experimental Structures&lt;/h2>
+&lt;p>If a related experimental structure is available, comparing your AlphaFold model to it is one of the most telling validations. Such comparisons can &lt;strong>quantify the accuracy&lt;/strong> of the prediction and highlight any differences that might be important.&lt;/p>
+&lt;p>&lt;strong>Finding a reference structure:&lt;/strong> First, determine if the same protein (or a homolog with significant sequence identity) has a known structure in the Protein Data Bank (PDB). You might have done this prior to running AlphaFold, but it’s worth doing a BLAST or HHPred search of your sequence against PDB. Even if an exact match isn’t found, perhaps a homologous domain or a partial structure exists. Any high-resolution structure (X-ray, cryo-EM, NMR) of a similar sequence can serve as a reference to validate fold correctness.&lt;/p>
+&lt;p>&lt;strong>Structural alignment tools:&lt;/strong> To compare the 3D structures, you can use alignment programs like &lt;strong>TM-align&lt;/strong> or built-in tools in PyMOL/Chimera.&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>TM-align&lt;/strong> – A command-line tool that superimposes two protein structures and calculates the TM-score and RMSD. The &lt;strong>TM-score&lt;/strong> is particularly useful; it ranges from 0 to 1, where 1 indicates an identical structure. Importantly, TM-score is designed to be length-independent and sensitive to overall fold​ (23,24). A TM-score &amp;gt; 0.5 generally indicates the two structures share the same fold​ (25) (and &amp;gt;0.9 would mean almost identical). Scores &amp;lt; 0.2 indicate essentially unrelated structures (random similarity) (26). RMSD (root-mean-square deviation) in Å is also output, but RMSD can be misleading for large proteins or ones with flexible termini, so TM-score is the better metric for global accuracy. To use TM-align, download it from the Zhang Lab website and run it on your model and the reference PDB:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl"># Example usage of TM-align
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">TMalign model.pdb reference.pdb &amp;gt; tmalign_output.txt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The output will list aligned length, RMSD, and TM-scores. Check the TM-score first. For instance, if you get TM-score = 0.65, that’s a strong confirmation the fold is correct (assuming the reference covers the full length). You might also get a per-residue alignment which can identify where differences occur (e.g., a loop in the model that deviates from the crystal structure).&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>PyMOL or Chimera(X) alignment&lt;/strong> – In PyMOL, you can use the align or cealign commands to superimpose two structures (if sequences are identical or very similar, a straightforward align model, reference works; for more distantly related, PyMOL’s built-in alignment might struggle, so TM-align is better). UCSF Chimera has a tool called MatchMaker which can align structures based on sequences and secondary structure. After superposition, you can visually inspect differences and also measure RMSD over aligned regions. Look at the &lt;strong>alpha carbon trace&lt;/strong>: do the helices and strands overlap well? Are there specific regions where the model deviates? Often, you’ll find that high-pLDDT regions of the AlphaFold model align closely with the experimental structure (perhaps within 1–2 Å RMSD), whereas low-confidence loops might be displaced or completely different (AlphaFold might have modeled a loop arbitrarily if there was no template or signal for it).&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Interpreting differences:&lt;/strong> If your model aligns well (high TM-score, low RMSD) with an experimental structure, that’s great validation. Minor differences in side chain conformations are expected and not usually concerning, especially if the experimental structure was determined at moderate resolution or is in a different environment (AlphaFold predictions are effectively in isolation, whereas a crystal structure might have bound ligands or lattice contacts that shift things). Focus on larger deviations:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Domain shifts:&lt;/strong> Perhaps the model predicted a closed conformation whereas the crystal is open (or vice versa). Check the PAE from AlphaFold; it might have indicated uncertainty between domains, and indeed the experimental structure shows a different orientation. This doesn’t mean the model is “wrong” per se, but that the protein might be dynamic or the model chose one plausible state. You might then need to verify which state is relevant biologically (through experiments or further modeling).&lt;/li>
+&lt;li>&lt;strong>Loop conformations:&lt;/strong> A common scenario is that AlphaFold modeled a loop one way (especially if low confidence, it might even be a nonsense loop), and the crystal structure shows a different loop conformation. If the loop is functionally important (e.g., part of an active site), you’d want to trust the experimental structure more. If it’s surface-exposed, it might be flexible in reality; AlphaFold’s guess is just one of many conformations it could take. In such cases, don’t over-interpret that part of the model.&lt;/li>
+&lt;li>&lt;strong>Secondary structure errors:&lt;/strong> Rarely, AlphaFold might predict a helix where the actual structure has a strand, or vice versa. This usually happens in lower confidence regions or if the sequence had an unusual pattern. If you find such a discrepancy, that region of the model is likely incorrect. Use the experimental structure’s assignment as the truth. It’s worth noting if the pLDDT was low there (likely yes); AlphaFold was unsure and picked one possibility. Knowing the correct secondary structure, you might rebuild that segment or simply note the model’s limitation.&lt;/li>
+&lt;/ul>
+&lt;p>If no experimental structure is available for the exact protein, you can still do &lt;strong>remote validations&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Align the model to the closest known structure (even if only part of it aligns). For example, maybe one domain matches a known protein family structure. Validate that portion: a good alignment (say TM-score &amp;gt;0.5 for that domain) gives confidence that domain is correct. The other parts of your model that have no benchmark will rely on the internal metrics and other validations we discuss.&lt;/li>
+&lt;li>Use multiple structure prediction approaches and compare (e.g., if there’s an older homology model or a Rosetta model for the protein). Consistency between different models can be somewhat validating, though remember they might all be wrong in the same way if based on the same inputs. Still, if AlphaFold and, say, Rosetta both produce a similar fold for a novel protein, that convergence is encouraging.&lt;/li>
+&lt;/ul>
+&lt;p>Overall, &lt;strong>structural comparison is the gold standard&lt;/strong> when you have an experimental reference. It can confirm that AlphaFold got it right, or pinpoint exactly where it differs. In favorable cases (AlphaFold’s high-accuracy predictions), you might find your model is virtually identical to the crystal structure of a homolog, with perhaps a TM-score ~0.9 and main-chain RMSD ~1 Å​. That level of agreement would give you great confidence moving forward. On the other hand, if the model and experiment differ significantly (low TM-score), you should trust the experiment more and treat the model with skepticism, using it only for qualitative insights in regions that do align well.&lt;/p>
+&lt;h2 id="functional-validation-ligand-binding-and-dynamics">Functional Validation: Ligand Binding and Dynamics&lt;/h2>
+&lt;p>The ultimate purpose of a protein structure is often to investigate function: how it binds to a ligand, catalyzes a reaction, or interacts with other molecules. Thus, validating an AlphaFold model also involves asking: &lt;em>Does this structure make sense functionally?&lt;/em> There are a few approaches to explore this:&lt;/p>
+&lt;p>&lt;strong>1. Checking Binding Sites and Docking Ligands:&lt;/strong> If your protein is known (or suspected) to bind a small-molecule ligand, cofactor, or substrate, examine the predicted structure for the binding site. AlphaFold might not explicitly indicate pockets, but you can use tools or visual cues:&lt;/p>
+&lt;ul>
+&lt;li>Use a pocket detection tool like &lt;strong>CASTp&lt;/strong> or &lt;strong>Fpocket&lt;/strong> to identify cavities on the model. These tools will list pockets by volume and residues lining them. Check if a known active site corresponds to one of the top pockets.&lt;/li>
+&lt;li>If you have a known ligand (say, the substrate of an enzyme or a cofactor like NADH), try &lt;strong>docking&lt;/strong> it into the model. Software like &lt;strong>AutoDock Vina&lt;/strong> (open source) or &lt;strong>SwissDock&lt;/strong>, &lt;strong>Glide&lt;/strong> (commercial) can take your model (treated as the receptor) and the ligand structure and attempt to find plausible binding poses. Before docking, prepare the protein: add hydrogens (especially if using AutoDock, you’d prepare a PDBQT file with charges), and consider making the protein rigid for the initial docking. A successful dock would show the ligand fitting well into a pocket, with key interactions (hydrogen bonds to the right residues, hydrophobics nestled in hydrophobic patches, etc.) similar to what you’d expect. If docking suggests a reasonable pose and binding energy, it &lt;strong>supports the validity of the binding site conformation&lt;/strong> in the model. If the ligand cannot dock or only docks in a bizarre way (or with a very poor score), that might indicate the binding site in the model is not accurately formed. Perhaps a side chain that should move is blocking the pocket, or a loop is mis-modeled.&lt;/li>
+&lt;li>For enzymes, check the geometry of catalytic residues. Do they form the correct arrangement? For example, a catalytic triad (Ser-His-Asp) should be in the right orientation to form hydrogen bonds. If the model’s active site residues are far apart or oriented incorrectly, the model might represent an inactive conformation, or it might be wrong in that region. Sometimes, energy-minimizing that region or running a short MD (see below) can relax the structure into a more favorable active-site geometry.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>2. Protein-Protein Interactions:&lt;/strong> If your protein’s function involves other macromolecules (another protein, DNA/RNA, etc.), consider validating those interfaces. AlphaFold-Multimer (a version of AlphaFold for complexes) might predict complexes, but if you only have a monomeric model, you can still simulate docking:&lt;/p>
+&lt;ul>
+&lt;li>Use a protein-protein docking server (e.g., &lt;strong>HADDOCK&lt;/strong> or &lt;strong>ClusPro&lt;/strong>) to see if your model can interact with its partner in a way that’s consistent with known data. This is more advanced, but if an interface is known experimentally (like mutagenesis showed certain residues are important), check if those residues are surface-exposed and clustered, as they should be if an interface is there.&lt;/li>
+&lt;li>If the model is of a single chain that normally oligomerizes (dimer, etc.), you might superpose multiple copies or use symmetry to see if a plausible dimer can form. Again, low PAE between chains in an AlphaFold-Multimer prediction would signal a confident multimer interface​ (27), but for a single-chain prediction you have to manually inspect.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>3. Molecular Dynamics (MD) Simulations:&lt;/strong> This is a powerful way to &lt;strong>test the stability&lt;/strong> of the predicted structure and to possibly refine it. In MD, you treat the model with physical force fields and see if it holds up under simulation (e.g., in water at 300 K). MD can reveal if the structure wants to &lt;strong>unfold or change&lt;/strong> and can also relieve any residual strain by nudging the model into a more favorable state.&lt;/p>
+&lt;p>Common MD packages include &lt;strong>GROMACS&lt;/strong> (free, open-source), &lt;strong>AMBER&lt;/strong> (academic, partly free tools), and &lt;strong>NAMD&lt;/strong> (free, optimized for large systems). An example workflow using GROMACS will be covered in another blog post.&lt;/p>
+&lt;p>During the simulation, monitor:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>RMSD over time:&lt;/strong> Does the protein rapidly drift away from the starting structure, or does it stabilize? A stable RMSD (plateauing after some fluctuation) suggests the structure is in a favourable energy well (likely a correct fold). If RMSD keeps increasing or the protein partially unfolds, that indicates the model had instabilities (perhaps that region was incorrect or inherently flexible).&lt;/li>
+&lt;li>&lt;strong>Secondary structure retention:&lt;/strong> You can use tools (like DSSP on each frame) to see if helices and strands remain intact. If a predicted helix quickly unravels in MD, maybe that segment wasn’t truly helical.&lt;/li>
+&lt;li>&lt;strong>Key interactions:&lt;/strong> Check if critical hydrogen bonds or salt bridges persist. For example, if the model suggested a salt bridge that’s important for stability, does MD maintain it or does it break?&lt;/li>
+&lt;li>&lt;strong>Refinement:&lt;/strong> MD often causes side chains to adjust, sometimes resolving minor clashes automatically. You might take an &lt;strong>average or low-energy structure from the simulation&lt;/strong> as a refined model. Many researchers use short MD refinement to improve homology models​ (28); the same can be done for AlphaFold models, especially to relax strained loops. As one approach, you could restrain the well-defined parts of the structure (to prevent them from moving too much) and let a loop of interest move freely; this can relieve local strain​ (28).&lt;/li>
+&lt;/ul>
+&lt;p>MD simulation essentially serves as a &lt;strong>reality check&lt;/strong>: AlphaFold’s neural network prediction isn’t guaranteed to be at an energy minimum. If the model is good, it should withstand simulation in a realistic environment. If it’s not, you might see it start to collapse or drift, which tells you that at least some interactions in the model were not favorable. Of course, MD itself is an approximation (dependent on the force field, etc.), but it’s a well-established method to refine and validate structures.&lt;/p>
+&lt;p>&lt;strong>After MD analysis:&lt;/strong> If the structure proved stable, you gain confidence. You might also use the MD trajectory to estimate the flexibility of different regions (e.g., high B-factor regions in a crystal often correspond to mobile loops in MD). If the structure was unstable, identify what broke down: was it the interface between two domains? Was it a particular loop that kept swinging out? This can pinpoint the weak spots of the model that might need revision or cautious interpretation.&lt;/p>
+&lt;p>Lastly, &lt;strong>tie back to experiments whenever possible&lt;/strong>. If you have biochemical data (e.g., mutation effects, binding assays), see if the model’s features align with them. For example, if a mutation is known to disrupt function and your model places that residue in the core of the active site, that’s consistent and supports the model. If instead the model has that residue on the surface away from any obvious functional site, maybe the model is missing something (like maybe it’s actually part of a protein-protein interface that wasn’t modeled).&lt;/p>
+&lt;p>By this point, you have examined the model from every angle: intrinsic confidence (AlphaFold metrics), overall geometry and quality (validation tools), comparison to known structures, and functional plausibility (docking, pockets, MD). Based on all these, you can form a judgment on how &lt;strong>reliable each part of the model is&lt;/strong>. It’s often useful to summarize this in a &lt;strong>table or checklist&lt;/strong>, as we do below.&lt;/p>
+&lt;h2 id="summary-of-validation-steps">Summary of Validation Steps&lt;/h2>
+&lt;p>The following table summarizes key validation steps for an AlphaFold model and why each step is important:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;strong>Validation Step&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Purpose and Importance&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;strong>AlphaFold Confidence (pLDDT &amp;amp; PAE)&lt;/strong>&lt;/td>
+&lt;td>Identify which regions of the model are predicted with high confidence and which are uncertain. pLDDT highlights local reliability (e.g., core vs. floppy tail) and PAE indicates confidence in domain orientation​ (29). This guides where to focus further validation: low pLDDT or high PAE regions are likely error-prone or flexible.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Visual Inspection (PyMOL/ChimeraX/Mol)&lt;/strong>&lt;/td>
+&lt;td>Catch obvious structural anomalies and get an intuitive feel for the model. By coloring the structure by confidence and examining secondary structure, one can see if the fold makes sense. Visual checks can reveal steric clashes, weird loops, or missing pockets early on. It’s a simple sanity check before delving into metrics.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Geometric Validation (MolProbity, PROCHECK, WHAT_CHECK)&lt;/strong>&lt;/td>
+&lt;td>Ensure the model’s geometry is physically plausible. These tools check bond lengths, angles, dihedral angles (Ramachandran plot) and detect atomic clashes​ (29). Good geometry (few outliers, low clashscore) means the model is stereochemically sound, while many violations indicate errors or regions that may need refinement.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Residue Environment Validation (Verify3D, ERRAT, QMEAN)&lt;/strong>&lt;/td>
+&lt;td>Assess whether each residue is in a realistic environment and the model has protein-like statistical features. Verify3D and ERRAT compare the structure to empirical rules derived from real proteins​ (19). A high Verify3D score or ERRAT quality factor, and a QMEAN Z-score near 0, suggest the model is globally consistent with known protein structures. Poor scores flag unlikely regions (e.g., a hydrophobic residue exposed, or an odd packing) for further scrutiny.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Comparison to Known Structures (TM-align, structural superposition)&lt;/strong>&lt;/td>
+&lt;td>Quantify accuracy by comparing to experimental data. If a PDB structure exists, a high TM-score (≈0.5–1.0) and low RMSD confirm the model’s correctness​. Even partial matches validate domains or motifs. Discrepancies pinpoint specific errors or alternative conformations. This step effectively benchmarks the model against reality.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Functional Site Check (Docking &amp;amp; Pockets)&lt;/strong>&lt;/td>
+&lt;td>Verify that the model supports the protein’s known function. Checking for expected pockets and docking ligands tests if the active or binding site is correctly formed. Successful docking (reasonable poses &amp;amp; scores) means the geometry allows the interaction, while failures could mean the site is modeled incorrectly. This links structure to biochemical function, an essential validation for usability in studies (e.g., drug design).&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Molecular Dynamics Simulation (GROMACS/AMBER/NAMD)&lt;/strong>&lt;/td>
+&lt;td>Test the model’s stability and refine it in a physics-based environment. A stable trajectory (little deviation) indicates the model sits in an energy minimum (likely correct fold), whereas structural unraveling signals problems. MD can also relieve minor clashes and adjust the model to be more realistic. In sum, MD validation ensures the model’s behavior is consistent with a real protein in solvent over time.&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>Each step adds evidence for or against specific parts of the model. After working through the checklist, you should have a clear view of which regions can be trusted, which should be treated as hypotheses, and where experimental data or further modeling is needed. Not every step is required for every use case, but skipping validation entirely risks drawing conclusions from regions that AlphaFold got wrong.&lt;/p>
+&lt;h2 id="references">References&lt;/h2>
+&lt;p>1- Jumper, J., Evans, R., Pritzel, A., et al. (2021). Highly accurate protein structure prediction with AlphaFold. &lt;em>Nature&lt;/em>, 596(7873), 583–589.
+&lt;/p>
+&lt;p>2- European Bioinformatics Institute. (n.d.). &lt;em>pLDDT: Understanding local confidence&lt;/em>.
+&lt;/p>
+&lt;p>3- European Bioinformatics Institute. (n.d.). &lt;em>pLDDT measures confidence in the predicted position of residues&lt;/em>.
+&lt;/p>
+&lt;p>4- Jumper et al., 2021 – (lDDT, pLDDT also reflects local geometry)
+&lt;/p>
+&lt;p>5- European Bioinformatics Institute. (n.d.). &lt;em>Predicted aligned error (PAE) – Explanation&lt;/em>.
+&lt;/p>
+&lt;p>6- European Bioinformatics Institute. (n.d.). &lt;em>Low PAE score implies confident relative positions&lt;/em>.
+&lt;/p>
+&lt;p>7- European Bioinformatics Institute. (n.d.). &lt;em>PAE visualisation explanation&lt;/em>.
+&lt;/p>
+&lt;p>8- EBI (n.d.). &lt;em>Image: Figure 18 – PAE plot&lt;/em>.
+&lt;/p>
+&lt;p>9- EBI (n.d.). &lt;em>Explanation of diagonal PAE plot&lt;/em>.
+&lt;/p>
+&lt;p>10- EBI (n.d.). &lt;em>Comparison of pLDDT and PAE&lt;/em>.
+&lt;/p>
+&lt;p>11- Jumper et al., 2021 – (residue confidence metric pLDDT)
+&lt;/p>
+&lt;p>12- EBI (n.d.). &lt;em>How to view PAE plots in structure viewer&lt;/em>.
+&lt;/p>
+&lt;p>13- Chen, V. B., Arendall, W. B., Headd, J. J., et al. (2010). MolProbity: All-atom structure validation for macromolecular crystallography. &lt;em>Acta Crystallographica Section D: Biological Crystallography&lt;/em>, 66(1), 12–21.
+&lt;/p>
+&lt;p>14- Chen et al., 2010 – (integration with other resources)
+&lt;/p>
+&lt;p>15- Laskowski, R. A., MacArthur, M. W., Moss, D. S., &amp;amp; Thornton, J. M. (1993). PROCHECK: A program to check the stereochemical quality of protein structures. &lt;em>Journal of Applied Crystallography&lt;/em>, 26(2), 283–291.
+&lt;/p>
+&lt;p>16- EBI (n.d.). &lt;em>PROCHECK hand menu image&lt;/em>.
+&lt;/p>
+&lt;p>17- SAVES. (n.d.). &lt;em>VERIFY 3D&lt;/em>.
+&lt;/p>
+&lt;p>18- ResearchGate. (n.d.). &lt;em>Interpreting ERRAT, Verify3D and PROCHECK scores&lt;/em>.
+&lt;/p>
+&lt;p>19- SAVES. (n.d.). &lt;em>ERRAT&lt;/em>.
+&lt;/p>
+&lt;p>20- BioStars. (n.d.). &lt;em>Verify3D result discussion&lt;/em>.
+&lt;/p>
+&lt;p>21- Benkert, P., Tosatto, S. C., &amp;amp; Schwede, T. (2009). QMEAN: A comprehensive scoring function for model quality assessment. &lt;em>Proteins: Structure, Function, and Bioinformatics&lt;/em>, 71(1), 261–277.
+&lt;/p>
+&lt;p>22- Bonvin Lab. (n.d.). &lt;em>QMEAN Z-score&lt;/em>.
+&lt;/p>
+&lt;p>23- Zhang, Y., &amp;amp; Skolnick, J. (2005). TM-align: A protein structure alignment algorithm based on the TM-score. &lt;em>Nucleic Acids Research&lt;/em>, 33(7), 2302–2309.
+&lt;/p>
+&lt;p>24- ZhangGroup. (n.d.). &lt;em>TM-score info&lt;/em>.
+&lt;/p>
+&lt;p>25- Varadi, M., Anyango, S., Deshpande, M., et al. (2022). AlphaFold Protein Structure Database: Massively expanding the structural coverage of protein-sequence space with high-accuracy models. &lt;em>Nucleic Acids Research&lt;/em>, 50(D1), D439–D444.
+&lt;/p>
+&lt;p>26- EBI (n.d.). &lt;em>Residue confidence within structure prediction&lt;/em>.
+&lt;/p>
+&lt;p>27- EBI (n.d.). &lt;em>pLDDT: More accurate structures&lt;/em>.
+&lt;/p>
+&lt;p>28- BioStars. (n.d.). &lt;em>Simulations and MD prep&lt;/em>.
+&lt;/p>
+&lt;p>29- Jumper et al., 2021 – (Predicted Aligned Error detail)
+&lt;/p>
+&lt;p>30- EBI (n.d.). &lt;em>PAE score importance for AlphaFold ID&lt;/em>.
+&lt;/p></description></item><item><title>How to build and validate 3D-QSAR models - Insights from Xu et al., 2020</title><link>https://yboulaamane.github.io/blog/3d-qsar-general-workflow-with-key-metrics-insights-from-xu-et-al-2020/</link><pubDate>Sun, 02 Apr 2023 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/3d-qsar-general-workflow-with-key-metrics-insights-from-xu-et-al-2020/</guid><description>&lt;p>A 3D-QSAR model is a map from aligned molecular fields to a potency. The fit tells you whether that map predicts compounds you held out. The contour map tells you where changing the molecule might help. Neither result survives an alignment that put the ligands on top of one another in the wrong frame.&lt;/p>
+&lt;p>The workflow here is the standard CoMFA and CoMSIA stack: dock or otherwise pose the ligands, calculate fields on a shared grid, fit them with partial least squares, and refuse the model if a scrambled label looks just as good. Xu and colleagues used that stack, together with docking and molecular dynamics, on thieno[3,2-b]pyrrole-5-carboxamide inhibitors of LSD1 [1]. The field settings below are the usual ones this kind of study is built from.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 700" role="img" aria-labelledby="qsar3d-title qsar3d-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="qsar3d-title">From a potency table to a contour map&lt;/title>
+&lt;desc id="qsar3d-desc">Convert IC50 to pIC50 and hold out a test set. Align the ligands. Calculate CoMFA or CoMSIA fields. Fit PLS and check it against the test set and against scrambled labels. Only then read the contours.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-3dqsar" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;rect x="70" y="20" width="500" height="80" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="70" y="132" width="500" height="80" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="70" y="244" width="500" height="80" rx="16" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="70" y="356" width="500" height="80" rx="16" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="70" y="468" width="500" height="80" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="70" y="580" width="500" height="80" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;path d="M320 100 L320 124" marker-end="url(#arrow-3dqsar)"/>
+&lt;path d="M320 212 L320 236" marker-end="url(#arrow-3dqsar)"/>
+&lt;path d="M320 324 L320 348" marker-end="url(#arrow-3dqsar)"/>
+&lt;path d="M320 436 L320 460" marker-end="url(#arrow-3dqsar)"/>
+&lt;path d="M320 548 L320 572" marker-end="url(#arrow-3dqsar)"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="50" font-size="20" font-weight="700">1. Potency on one scale&lt;/text>
+&lt;text x="320" y="76" font-size="16">pIC50, then a held-out test set&lt;/text>
+&lt;text x="320" y="162" font-size="20" font-weight="700">2. One spatial frame&lt;/text>
+&lt;text x="320" y="188" font-size="16">Dock, check the pose, align every ligand&lt;/text>
+&lt;text x="320" y="274" font-size="20" font-weight="700">3. Fields on a grid&lt;/text>
+&lt;text x="320" y="300" font-size="16">CoMFA or CoMSIA around the alignment&lt;/text>
+&lt;text x="320" y="386" font-size="20" font-weight="700">4. PLS&lt;/text>
+&lt;text x="320" y="412" font-size="16">Components chosen by leave-one-out&lt;/text>
+&lt;text x="320" y="498" font-size="20" font-weight="700">5. A test the model can fail&lt;/text>
+&lt;text x="320" y="524" font-size="16">External set, and labels scrambled on purpose&lt;/text>
+&lt;text x="320" y="610" font-size="20" font-weight="700">6. Contours&lt;/text>
+&lt;text x="320" y="636" font-size="16">Where a change might help, if steps 2 and 5 held&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The contour map is last because it is a picture of the fitted fields. If the alignment is arbitrary, or if a scrambled label fits as well, the colors are not a design rule.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="put-the-potency-on-one-scale">Put the potency on one scale&lt;/h2>
+&lt;p>Collect IC50 values from assays you are willing to treat as comparable. Then convert to pIC50 before any fitting:&lt;/p>
+$$
+\text{pIC}_{50} = -\log_{10}(\text{IC}_{50} \text{ in mol/L})
+$$&lt;p>The unit is the whole conversion. An IC50 of 1000 nM is \(10^{-6}\) mol/L, so the pIC50 is 6. The same number left in nanomolar and passed to a base-10 logarithm is a different, wrong, scale. Do this conversion once, and do not mix Ki or percent inhibition into the same column without saying so.&lt;/p>
+&lt;p>Hold out about 20 to 25 percent of the compounds as the external test set. The training set is the remaining 75 to 80 percent. The test compounds have to sit in the same chemical space as the training compounds. A test set that is a different series is an extrapolation, and a pretty \(r^2\) on it does not mean what it says.&lt;/p>
+&lt;h2 id="alignment-is-the-model">Alignment is the model&lt;/h2>
+&lt;p>CoMFA and CoMSIA descriptors exist on a grid in space. Two ligands contribute to the same grid point only if you have already decided how their atoms correspond. That decision is the alignment.&lt;/p>
+&lt;p>A common route is to take the protein structure from the Protein Data Bank, dock the series with a program such as SYBYL or AutoDock, and align every ligand to a reference pose. Redock a ligand whose experimental pose you know. An RMSD of 2.0 Å or less between the docked pose and that experimental pose is the usual acceptance check for this workflow. It is a check on the docking setup, not a guarantee that every other ligand found the right pose.&lt;/p>
+&lt;p>If the reference pose is wrong, every field shifts with it. The PLS model will still quote an \(r^2\). The contours will describe the error.&lt;/p>
+&lt;h2 id="fields">Fields&lt;/h2>
+&lt;h3 id="comfa">CoMFA&lt;/h3>
+&lt;p>Comparative molecular field analysis uses two fields, steric and electrostatic.&lt;/p>
+&lt;ul>
+&lt;li>Grid spacing: 2.0 Å.&lt;/li>
+&lt;li>Probe: an sp³ carbon with a charge of +1.&lt;/li>
+&lt;li>Energy cutoff: 30 kcal/mol, so a clash at one grid point cannot dominate the column.&lt;/li>
+&lt;/ul>
+&lt;h3 id="comsia">CoMSIA&lt;/h3>
+&lt;p>Comparative molecular similarity indices analysis adds hydrophobic, hydrogen-bond donor, and hydrogen-bond acceptor fields to the steric and electrostatic ones. The attenuation factor is 0.3. It sets how fast a field falls off with distance from the atoms. Changing it changes which grid points still see the ligand.&lt;/p>
+&lt;h2 id="pls-and-the-numbers-it-produces">PLS, and the numbers it produces&lt;/h2>
+&lt;p>Partial least squares is used because the grid columns are many, collinear, and noisy. Leave-one-out cross-validation on the training set chooses the optimal number of components (ONC) and produces \(q^2\), the cross-validated \(r^2\). That is an internal number. It is not the test set.&lt;/p>
+&lt;p>The model is then refit on the full training set with that component count. Report:&lt;/p>
+&lt;ul>
+&lt;li>\(r^2\), the fit to the training compounds.&lt;/li>
+&lt;li>SEE, the standard error of that fit.&lt;/li>
+&lt;li>The F statistic for the regression.&lt;/li>
+&lt;/ul>
+&lt;p>A training \(r^2\) far above \(q^2\) is a model that has used components the left-out compounds do not support.&lt;/p>
+&lt;h2 id="tests-the-model-is-allowed-to-fail">Tests the model is allowed to fail&lt;/h2>
+&lt;p>Predict pIC50 for the compounds that were held out, and compute the external predictive \(r^2\), written \(r^2_\text{pred}\).&lt;/p>
+&lt;p>Tropsha&amp;rsquo;s diagnostics look at that external prediction more closely than a single \(r^2\). The set includes \(r^2_0\), the slopes \(k\) and \(k'\), \(r_m^2\), and \(\Delta r_m^2\). In this workflow a model is treated as predictive when \(k\) is near 1 and \(r_m^2\) is above 0.5. Those two cuts do not replace looking at the plot of predicted against measured pIC50.&lt;/p>
+&lt;p>Then scramble the biological activities, rebuild, and repeat. A real relationship collapses: the randomized trials should show low \(q^2\) and low \(r^2\). If they do not, the original fit was willing to explain noise.&lt;/p>
+&lt;h2 id="reading-the-contours">Reading the contours&lt;/h2>
+&lt;p>Only after those checks do the colors become a design suggestion.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 300" role="img" aria-labelledby="contour-title contour-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="contour-title">CoMFA contour colors in this workflow&lt;/title>
+&lt;desc id="contour-desc">Green marks regions where steric bulk is associated with higher activity. Yellow marks regions where bulk is associated with lower activity. Blue marks regions that favor a more positive charge. Red marks regions that favor a more negative charge.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="70" width="286" height="90" rx="16" fill="#27ae60" fill-opacity="0.18" stroke="#27ae60"/>
+&lt;rect x="326" y="70" width="286" height="90" rx="16" fill="#f2994a" fill-opacity="0.18" stroke="#f2994a"/>
+&lt;rect x="28" y="176" width="286" height="90" rx="16" fill="#2f80ed" fill-opacity="0.18" stroke="#2f80ed"/>
+&lt;rect x="326" y="176" width="286" height="90" rx="16" fill="#9b51e0" fill-opacity="0.18" stroke="#9b51e0"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="40" font-size="22" font-weight="700" text-anchor="middle">What the CoMFA colors are claiming&lt;/text>
+&lt;text x="48" y="108" font-size="18" font-weight="700">Green, steric&lt;/text>
+&lt;text x="48" y="136" font-size="15">Bulk here tracked higher activity&lt;/text>
+&lt;text x="346" y="108" font-size="18" font-weight="700">Yellow, steric&lt;/text>
+&lt;text x="346" y="136" font-size="15">Bulk here tracked lower activity&lt;/text>
+&lt;text x="48" y="214" font-size="18" font-weight="700">Blue, charge&lt;/text>
+&lt;text x="48" y="242" font-size="15">A more positive probe was favored&lt;/text>
+&lt;text x="346" y="214" font-size="18" font-weight="700">Red, charge&lt;/text>
+&lt;text x="346" y="242" font-size="15">A more negative probe was favored&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> CoMFA steric and electrostatic colors as used in this note. CoMSIA adds hydrophobic and hydrogen-bond donor and acceptor maps on top of these. A contour is a correlation in the training alignment. It is not a measured interaction.&lt;/figcaption>
+&lt;/figure>
+&lt;p>Hydrophobic and hydrogen-bond contours, when you calculated CoMSIA fields, are read the same way: a color marks a region where that property, in this alignment, moved with potency.&lt;/p>
+&lt;h2 id="the-numbers-in-one-place">The numbers, in one place&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Metric&lt;/th>
+&lt;th>What it is answering&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>\(q^2\)&lt;/td>
+&lt;td>Did leave-one-out on the training set still predict?&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>\(r^2\)&lt;/td>
+&lt;td>How well does the final model fit the training compounds?&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>\(r^2_\text{pred}\)&lt;/td>
+&lt;td>How well does it predict the compounds you held out?&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>SEE&lt;/td>
+&lt;td>How large are the training residuals?&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>F&lt;/td>
+&lt;td>Is the regression distinguishable from no relationship?&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>\(r_m^2\), \(\Delta r_m^2\)&lt;/td>
+&lt;td>Tropsha&amp;rsquo;s closer look at the external predictions&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>RMSD&lt;/td>
+&lt;td>Did the docking setup reproduce a known pose?&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Y-randomization&lt;/td>
+&lt;td>Does the fit collapse when the labels are scrambled?&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="bottom-line">Bottom line&lt;/h2>
+&lt;p>A 3D-QSAR study is not a hunt for a large \(r^2\). It is an aligned field model that has to predict a held-out set, fail when the labels are scrambled, and only then offer a contour as a place to change the molecule. The LSD1 paper is one worked example of that order [1]. The order is the part worth copying.&lt;/p>
+&lt;h2 id="reference">Reference&lt;/h2>
+&lt;p>[1] Xu, Y., He, Z., Liu, H., Chen, Y., Gao, Y., Zhang, S., &amp;hellip; and Yang, M. 3D-QSAR, molecular docking, and molecular dynamics simulation study of thieno[3,2-b]pyrrole-5-carboxamide derivatives as LSD1 inhibitors. &lt;em>RSC Advances&lt;/em>, 2020, 10, 6927–6943.&lt;/p></description></item><item><title>How Long Should Molecular Dynamics Simulations Run? A Practical Guide</title><link>https://yboulaamane.github.io/blog/determining-the-appropriate-length-for-protein-ligand-md-simulations/</link><pubDate>Thu, 24 Nov 2022 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/determining-the-appropriate-length-for-protein-ligand-md-simulations/</guid><description>&lt;p>A protein–ligand simulation is long enough when the motion you care about has had time to happen, and the traces you are willing to trust have stopped drifting.&lt;/p>
+&lt;p>There is no single correct length. The ranges below are the ones that have proved useful for common questions. They are starting points. The trajectory, not the number you typed into the input file, tells you whether to stop.&lt;/p>
+&lt;h2 id="match-the-length-to-the-event">Match the length to the event&lt;/h2>
+&lt;p>Several windows have become usual for protein–ligand work, from published practice and from running these systems:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>50–100 nanoseconds.&lt;/strong> Often enough to judge initial binding stability, particularly with a small, rigid ligand and a relatively stable protein.&lt;/li>
+&lt;li>&lt;strong>100–200 nanoseconds.&lt;/strong> Room for ligand flexibility, side-chain reorganization, or early conformational change inside the pocket.&lt;/li>
+&lt;li>&lt;strong>200–500 nanoseconds.&lt;/strong> Slower events: partial unbinding, induced fit, or a shift at the domain level.&lt;/li>
+&lt;li>&lt;strong>500 nanoseconds to 1 microsecond, or longer.&lt;/strong> Long-timescale processes: allosteric communication, full ligand unbinding, or a global rearrangement of the protein.&lt;/li>
+&lt;/ul>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 460" role="img" aria-labelledby="md-time-title md-time-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="md-time-title">Simulation length matched to the event&lt;/title>
+&lt;desc id="md-time-desc">Four practical windows: 50 to 100 nanoseconds for pose stability, 100 to 200 for flexibility in the pocket, 200 to 500 for induced fit and partial unbinding, and 500 nanoseconds to 1 microsecond for allostery, full unbinding, and global rearrangement.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="70" width="286" height="160" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="326" y="70" width="286" height="160" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="28" y="250" width="286" height="160" rx="16" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="326" y="250" width="286" height="160" rx="16" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="40" font-size="22" font-weight="700" text-anchor="middle">Pick the window for the motion, not for the habit&lt;/text>
+&lt;text x="48" y="108" font-size="20" font-weight="700">50–100 ns&lt;/text>
+&lt;text x="48" y="142" font-size="16">Is the pose still there?&lt;/text>
+&lt;text x="48" y="170" font-size="15" opacity="0.75">Rigid ligand, stable pocket&lt;/text>
+&lt;text x="346" y="108" font-size="20" font-weight="700">100–200 ns&lt;/text>
+&lt;text x="346" y="142" font-size="16">Ligand flex, side chains&lt;/text>
+&lt;text x="346" y="170" font-size="15" opacity="0.75">Early change inside the pocket&lt;/text>
+&lt;text x="48" y="288" font-size="20" font-weight="700">200–500 ns&lt;/text>
+&lt;text x="48" y="322" font-size="16">Induced fit, domain shift&lt;/text>
+&lt;text x="48" y="350" font-size="15" opacity="0.75">Partial unbinding&lt;/text>
+&lt;text x="346" y="288" font-size="20" font-weight="700">500 ns–1 µs&lt;/text>
+&lt;text x="346" y="322" font-size="16">Allostery, full unbinding&lt;/text>
+&lt;text x="346" y="350" font-size="15" opacity="0.75">Global rearrangement. Or longer.&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The four windows used in this note. A rigid ligand in a quiet pocket can be readable in the first. Unbinding and allostery sit in the last, and sometimes beyond it. The cards are the same size so they can be compared. The times are not.&lt;/figcaption>
+&lt;/figure>
+&lt;p>These are guidelines. The required time moves with the system and with the question. A short run can be the right experiment when the question is whether a docked pose survives relaxation. It is the wrong experiment when the question is how the ligand leaves.&lt;/p>
+&lt;h2 id="convergence-is-the-stopping-rule">Convergence is the stopping rule&lt;/h2>
+&lt;p>Convergence here means that the structural and energetic quantities you intend to interpret have settled. A long simulation that is still drifting does not become trustworthy because it is long. A short one that has plateaued on the observables you care about can be enough for that question.&lt;/p>
+&lt;p>Five checks cover the usual protein–ligand case.&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Root-mean-square deviation (RMSD).&lt;/strong> Deviation of the chosen atoms, often the protein backbone, from a reference over time. A plateau suggests that this part of the structure has stopped walking away from the reference. An RMSD that is still climbing means the rearrangement is not finished.&lt;/li>
+&lt;li>&lt;strong>Root-mean-square fluctuation (RMSF).&lt;/strong> Flexibility per residue across the run. Once the trajectory is stable, RMSF profiles from successive windows look alike. A window that redraws the profile is a sign you have not settled.&lt;/li>
+&lt;li>&lt;strong>Energy.&lt;/strong> Total, potential, and kinetic energy. A system at equilibrium should not show a long drift. Sharp, persistent swings are a sign the equilibration was not long enough, or that something in the setup is wrong.&lt;/li>
+&lt;li>&lt;strong>Secondary structure.&lt;/strong> For a folded protein, helices and sheets that keep their assignment are a useful stability check. Assignments that keep flipping after the start of the production run are a reason to extend it.&lt;/li>
+&lt;li>&lt;strong>Interaction fingerprints.&lt;/strong> Hydrogen bonds, salt bridges, stacking, and the other contacts you claim as the binding pose. A pose is hard to defend when those contacts appear and vanish from one slice of the trajectory to the next.&lt;/li>
+&lt;/ol>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 250" role="img" aria-labelledby="md-check-title md-check-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="md-check-title">Five convergence checks&lt;/title>
+&lt;desc id="md-check-desc">Before stopping a protein-ligand simulation, look at RMSD, RMSF, energy, secondary structure, and the persistence of protein-ligand contacts.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="24" y="78" width="112" height="120" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="148" y="78" width="112" height="120" rx="14" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="272" y="78" width="112" height="120" rx="14" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="396" y="78" width="112" height="120" rx="14" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="520" y="78" width="100" height="120" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="40" font-size="22" font-weight="700">Stop when these settle, not when the clock does&lt;/text>
+&lt;text x="320" y="66" font-size="14" opacity="0.75">A climbing trace is a reason to continue&lt;/text>
+&lt;text x="80" y="132" font-size="16" font-weight="700">RMSD&lt;/text>
+&lt;text x="80" y="162" font-size="13">plateau&lt;/text>
+&lt;text x="204" y="132" font-size="16" font-weight="700">RMSF&lt;/text>
+&lt;text x="204" y="162" font-size="13">stable&lt;/text>
+&lt;text x="204" y="180" font-size="13">windows&lt;/text>
+&lt;text x="328" y="132" font-size="16" font-weight="700">Energy&lt;/text>
+&lt;text x="328" y="162" font-size="13">no long&lt;/text>
+&lt;text x="328" y="180" font-size="13">drift&lt;/text>
+&lt;text x="452" y="126" font-size="15" font-weight="700">Secondary&lt;/text>
+&lt;text x="452" y="148" font-size="15" font-weight="700">structure&lt;/text>
+&lt;text x="452" y="178" font-size="13">holds&lt;/text>
+&lt;text x="570" y="126" font-size="15" font-weight="700">Contacts&lt;/text>
+&lt;text x="570" y="162" font-size="13">persist&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> Five traces that have to be read together. A flat RMSD with contacts that keep rearranging is not a stable pose. A quiet energy with a protein that is still unfolding its secondary structure is not a finished run.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="an-illustrative-scenario">An illustrative scenario&lt;/h2>
+&lt;p>Imagine a complex whose RMSD rises over the first 50 nanoseconds while the pose settles, then levels off near 100 nanoseconds. Over that same later window the interaction fingerprint stops changing and the total energy no longer drifts. For a question about pose stability, extending the run may add little.&lt;/p>
+&lt;p>The opposite pattern is also common. The ligand keeps sliding in the pocket, or a domain keeps moving in one direction. That trajectory is asking for more time, or for an enhanced-sampling method aimed at the slow coordinate. Adding nanoseconds at random is a weaker response than naming the motion that has not converged.&lt;/p>
+&lt;h2 id="what-pushes-the-length-up-or-down">What pushes the length up or down&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Size and flexibility.&lt;/strong> A larger or more flexible protein has more conformational space to cross.&lt;/li>
+&lt;li>&lt;strong>The ligand.&lt;/strong> Many rotatable bonds mean many poses. The dominant one may not be the pose you started from, and it may take longer to identify.&lt;/li>
+&lt;li>&lt;strong>The question.&lt;/strong> Pose checking and a mechanism of unbinding are different experiments.&lt;/li>
+&lt;li>&lt;strong>Replicates.&lt;/strong> Several independent runs often say more than one very long trajectory. A single run can look converged and still be stuck in the basin where it started.&lt;/li>
+&lt;li>&lt;strong>The checks above.&lt;/strong> Decide in advance which observables would make you stop, and compute them before you interpret the pose.&lt;/li>
+&lt;/ul>
+&lt;h2 id="bottom-line">Bottom line&lt;/h2>
+&lt;p>For many protein–ligand questions about pose stability and interaction patterns, 50 to 200 nanoseconds is the window where those traces become readable. Unbinding, allosteric modulation, and large conformational change often need longer, sometimes past a microsecond.&lt;/p>
+&lt;p>Length is not a badge. A conclusion about a binding mode needs the traces that support it to have settled. If they have not, the honest result is that the simulation has not answered the question yet.&lt;/p></description></item></channel></rss>

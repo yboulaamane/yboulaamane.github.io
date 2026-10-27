@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Optibrium | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/optibrium/</link><atom:link href="https://yboulaamane.github.io/tags/optibrium/index.xml" rel="self" type="application/rss+xml"/><description>Optibrium</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sun, 25 Oct 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Optibrium</title><link>https://yboulaamane.github.io/tags/optibrium/</link></image><item><title>Honest QSAR Models Start With the Assay, Not the Algorithm</title><link>https://yboulaamane.github.io/blog/honest-qsar-models-start-with-the-assay-not-the-algorithm/</link><pubDate>Sun, 25 Oct 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/honest-qsar-models-start-with-the-assay-not-the-algorithm/</guid><description>&lt;p>A QSAR number is a decision about a compound that has not been made yet. The useful part of Optibrium&amp;rsquo;s webinar is the order that keeps that number honest: curate the assay, choose a regression or a class the noise can support, hold out a test set that is scored once, and look at the plot rather than at $R^2$. Clearance is the property where that order can still be the wrong model, because one measured number is several biological mechanisms.&lt;/p>
+&lt;p>Tamsin Mansley and Mario Öeren gave the webinar on 18 February 2025 [1]. Mansley is President of Optibrium Inc. and Global Head of Application Science. Öeren is a Principal Scientist there. The demonstration is StarDrop&amp;rsquo;s Auto-Modeller on a public ChEMBL set. The order does not belong to the software.&lt;/p>
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/TGXPwi-Z5sY?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
+&lt;/div>
+&lt;h2 id="what-is-worth-predicting">What is worth predicting&lt;/h2>
+&lt;p>In a multi-parameter optimization the potency model is one column. Solubility, $\log P$ or $\log D$, permeability, clearance, and an off-target liability are the others, and a compound fails the project by failing one of them. A model is there to remove compounds before they are made, not to replace the assay that will be run on the ones that remain.&lt;/p>
+&lt;p>Three situations are where Mansley says the model stops being the right tool [1].&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 250" role="img" aria-labelledby="qsarw-fail-title qsarw-fail-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="qsarw-fail-title">Three labels a structure-only model struggles to carry&lt;/title>
+&lt;desc id="qsarw-fail-desc">In vivo clearance mixes several mechanisms into one number. A promiscuous assay has almost no inactive class to learn. A model trained on one chemical series is being asked to predict a distant series, outside its applicability domain.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="16" y="48" width="220" height="170" rx="14" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="250" y="48" width="220" height="170" rx="14" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="484" y="48" width="220" height="170" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="126" y="78" font-size="15" font-weight="700">Many mechanisms&lt;/text>
+&lt;text x="126" y="108" font-size="13">Clearance&lt;/text>
+&lt;text x="126" y="130" font-size="12">enzymes, binding,&lt;/text>
+&lt;text x="126" y="148" font-size="12">flow, conjugation&lt;/text>
+&lt;text x="126" y="188" font-size="12">One number, several causes&lt;/text>
+&lt;text x="360" y="78" font-size="15" font-weight="700">No inactive class&lt;/text>
+&lt;text x="360" y="108" font-size="13">Promiscuous target&lt;/text>
+&lt;text x="360" y="130" font-size="12">almost every compound&lt;/text>
+&lt;text x="360" y="148" font-size="12">scores as active&lt;/text>
+&lt;text x="360" y="188" font-size="12">Accuracy learns nothing&lt;/text>
+&lt;text x="594" y="78" font-size="15" font-weight="700">Wrong chemistry&lt;/text>
+&lt;text x="594" y="108" font-size="13">Applicability domain&lt;/text>
+&lt;text x="594" y="130" font-size="12">trained on one series,&lt;/text>
+&lt;text x="594" y="148" font-size="12">used on another&lt;/text>
+&lt;text x="594" y="188" font-size="12">The fit does not travel&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Each box is a different failure. More descriptors do not fix a label that mixes mechanisms, a dataset with one class, or a question outside the chemistry the model saw.&lt;/figcaption>
+&lt;/figure>
+&lt;p>In vivo clearance is the first. The number can move because of hepatic blood flow, plasma protein binding, uptake, several cytochrome P450 isoforms, or a conjugation. A fingerprint model is being asked to learn all of those from the structure of the parent compound. A promiscuous target is the second: if nearly every tested compound is active, there is no inactive class, and a classifier that says &amp;ldquo;active&amp;rdquo; for everything looks accurate. The third is distance. A model fit on one series degrades on chemistry it has not seen. That limit is the applicability domain, and Optibrium treats it as one of the checks a model has to pass, not as a footnote [2].&lt;/p>
+&lt;p>For a cytochrome P450 project those three boxes are easy to confuse. An assay of one isoform, a $K_i$ or an $\mathrm{IC}_{50}$ against CYP3A4 or CYP2D6, is a single biochemical question. Human clearance, or even a microsomal clearance that several enzymes can produce, is not. The webinar&amp;rsquo;s advice is to notice which label is in the column before trusting the fit. StarDrop&amp;rsquo;s own ADME module keeps them separate: isoform affinities on one line, a human-liver-microsome clearance category on another [3].&lt;/p>
+&lt;h2 id="four-pillars">Four pillars&lt;/h2>
+&lt;p>Öeren&amp;rsquo;s half of the webinar is the build, in an order [1]. Optibrium has also written the same discipline as four pillars: clean data, an appropriate method, validation with the right metrics, and the domain of applicability [2]. The domain is the bar under the other three. A careful split of the wrong chemical space is still the wrong chemical space.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 230" role="img" aria-labelledby="qsarw-pillar-title qsarw-pillar-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="qsarw-pillar-title">Four modeling steps, and the domain under all of them&lt;/title>
+&lt;desc id="qsarw-pillar-desc">Curate the assay, choose regression or classification and a method the data can support, split so that validation tunes the model and the test set is scored once, then judge it with a metric and a plot. The applicability domain applies to every step.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="16" y="36" width="160" height="100" rx="12" fill="#2f80ed" fill-opacity="0.12" stroke="#2f80ed"/>
+&lt;rect x="192" y="36" width="160" height="100" rx="12" fill="#27ae60" fill-opacity="0.12" stroke="#27ae60"/>
+&lt;rect x="368" y="36" width="160" height="100" rx="12" fill="#f2994a" fill-opacity="0.12" stroke="#f2994a"/>
+&lt;rect x="544" y="36" width="160" height="100" rx="12" fill="#9b51e0" fill-opacity="0.12" stroke="#9b51e0"/>
+&lt;rect x="16" y="160" width="688" height="48" rx="12" fill="#2f80ed" fill-opacity="0.08" stroke="#2f80ed"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="96" y="78" font-size="15" font-weight="700">1. Curate&lt;/text>
+&lt;text x="96" y="102" font-size="12">conflicts out,&lt;/text>
+&lt;text x="96" y="118" font-size="12">units consistent&lt;/text>
+&lt;text x="272" y="78" font-size="15" font-weight="700">2. Method&lt;/text>
+&lt;text x="272" y="102" font-size="12">regression or a class,&lt;/text>
+&lt;text x="272" y="118" font-size="12">then the algorithm&lt;/text>
+&lt;text x="448" y="78" font-size="15" font-weight="700">3. Split&lt;/text>
+&lt;text x="448" y="102" font-size="12">tune on validation,&lt;/text>
+&lt;text x="448" y="118" font-size="12">test set once&lt;/text>
+&lt;text x="624" y="78" font-size="15" font-weight="700">4. Metric&lt;/text>
+&lt;text x="624" y="102" font-size="12">plot plus RMSE,&lt;/text>
+&lt;text x="624" y="118" font-size="12">not R² alone&lt;/text>
+&lt;text x="360" y="190" font-size="15" font-weight="700">Applicability domain: the chemistry this model is allowed to speak about&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> The algorithm is the second box. It cannot repair a dirty assay, a test set that was used to pick the model, or a compound outside the training chemistry.&lt;/figcaption>
+&lt;/figure>
+&lt;h3 id="curate-the-column">Curate the column&lt;/h3>
+&lt;p>A smaller clean set beats a larger noisy one. The work is resolving rows that disagree: different units, a $K_i$ and an $\mathrm{IC}_{50}$ in the same column, duplicates with different values, a qualifier (&lt;code>&amp;lt;&lt;/code>, &lt;code>&amp;gt;&lt;/code>) treated as a point. ChEMBL will hand you the rows. It will not decide which of two conflicting $K_i$ values is the one to fit. The
+is that sorting, for bioactivity tables in general.&lt;/p>
+&lt;p>Dataset size chooses the kind of model, not just the confidence interval. A large set can support a global model on fast 2D descriptors or fingerprints, meant to cover many series. A small set, one series, is a local model. If the local set is too small for a statistical fit, Öeren&amp;rsquo;s alternative is a physics-based descriptor, such as a docking score, rather than a fingerprint asked to invent a trend from twenty compounds [1]. No cutoff for &amp;ldquo;large&amp;rdquo; is a law. The question is whether the table contains enough distinct chemistry for the pattern you want to claim.&lt;/p>
+&lt;h3 id="match-the-method-to-the-noise">Match the method to the noise&lt;/h3>
+&lt;p>If the assay is too noisy for a continuous fit, binning into active and inactive can still produce a filter. The filter answers &amp;ldquo;worth making?&amp;rdquo;, not &amp;ldquo;what is the $K_i$?&amp;rdquo;. That is a different model, and it should be reported as one.&lt;/p>
+&lt;p>Auto-Modeller fits several methods and keeps the one that wins on the validation set. The webinar discusses decision trees, random forests, and Gaussian processes [1]. The module also offers partial least squares and radial basis functions [4]. The point of trying more than one is that the validation score, not habit, picks the method. A random forest is not the right answer because it was the right answer on the demonstration set.&lt;/p>
+&lt;h3 id="split-then-do-not-look">Split, then do not look&lt;/h3>
+&lt;p>The split they recommend is 70% training, 15% validation, 15% test [1]. Training fits the weights. Validation is where descriptors are dropped and the method is chosen. The test set is scored once, at the end. Using it to pick a model makes the test number another validation number, and the optimism is baked in. The
+calls that leakage. An 80/10/10 cut is a common default, not this webinar&amp;rsquo;s, and not a reason to skip the single look.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 210" role="img" aria-labelledby="qsarw-split-title qsarw-split-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="qsarw-split-title">Seventy percent to train, fifteen to tune, fifteen scored once&lt;/title>
+&lt;desc id="qsarw-split-desc">The training set fits the model. The validation set is allowed to change descriptors and the choice of method. The test set is evaluated once, after those choices are frozen.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-qsarw-split" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="16" y="56" width="300" height="88" rx="12" fill="#2f80ed" fill-opacity="0.14" stroke="#2f80ed"/>
+&lt;rect x="336" y="56" width="150" height="88" rx="12" fill="#f2994a" fill-opacity="0.14" stroke="#f2994a"/>
+&lt;rect x="506" y="56" width="198" height="88" rx="12" fill="#27ae60" fill-opacity="0.14" stroke="#27ae60"/>
+&lt;path d="M316 100 H328" marker-end="url(#arrow-qsarw-split)" stroke="currentColor"/>
+&lt;path d="M486 100 H498" marker-end="url(#arrow-qsarw-split)" stroke="currentColor"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="166" y="96" font-size="16" font-weight="700">Train, 70%&lt;/text>
+&lt;text x="166" y="118" font-size="13">fit the model&lt;/text>
+&lt;text x="411" y="90" font-size="15" font-weight="700">Validation&lt;/text>
+&lt;text x="411" y="110" font-size="13">15%, tune here&lt;/text>
+&lt;text x="605" y="90" font-size="15" font-weight="700">Test, 15%&lt;/text>
+&lt;text x="605" y="112" font-size="13">score once, then stop&lt;/text>
+&lt;text x="360" y="180" font-size="13">A random cut can put analogues on both sides. Cluster by similarity instead.&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 3.&lt;/strong> The arrow into the test box is one way. Going back to change a descriptor because the test score was disappointing is a second look.&lt;/figcaption>
+&lt;/figure>
+&lt;p>On a small table, a 15% test set may be a handful of compounds. The webinar&amp;rsquo;s alternative is $k$-fold cross-validation, 5-fold or 10-fold, and a consensus of models rather than one fit [1]. Consensus matters because a single fold can flatter a method. The
+is the next layer: the $R^2$, $Q^2$, and concordance cuts used when a paper or a filing has to defend the model. Those cuts assume the split was honest. They do not create the honesty.&lt;/p>
+&lt;p>Class balance is part of the split. A screen that is mostly inactive will reward a model that predicts inactive. The remedies named in the webinar are oversampling the rare class, or a loss that weights it, and then a metric that does not ignore the imbalance [1].&lt;/p>
+&lt;h3 id="is-not-the-plot">$R^2$ is not the plot&lt;/h3>
+&lt;p>Anscombe built four tiny datasets with the same means, the same variances, the same correlation, and the same straight-line fit, $R^2$ about 0.67 [5]. One is a noisy line. One is a curve. One is a line plus an outlier. One is a vertical stack whose entire slope comes from a single point. The regression summary cannot tell them apart. The scatter plot can. Mansley uses that quartet so a QSAR report does not stop at $R^2$ [1].&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 230" role="img" aria-labelledby="qsarw-ans-title qsarw-ans-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="qsarw-ans-title">Four different plots that share one R-squared&lt;/title>
+&lt;desc id="qsarw-ans-desc">Sketches of Anscombe's four patterns: a noisy straight line, a curve, a line with one outlier, and a stack of points whose slope is created by a single distant point. The sketches are the lesson, not his eleven-point table.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="16" y="36" width="165" height="150" rx="12" stroke="currentColor" stroke-opacity="0.35"/>
+&lt;rect x="191" y="36" width="165" height="150" rx="12" stroke="currentColor" stroke-opacity="0.35"/>
+&lt;rect x="366" y="36" width="165" height="150" rx="12" stroke="currentColor" stroke-opacity="0.35"/>
+&lt;rect x="541" y="36" width="163" height="150" rx="12" stroke="currentColor" stroke-opacity="0.35"/>
+&lt;path d="M36 150 L160 60" stroke="#2f80ed"/>
+&lt;circle cx="60" cy="140" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;circle cx="80" cy="118" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;circle cx="100" cy="108" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;circle cx="120" cy="90" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;circle cx="140" cy="78" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;path d="M211 140 Q273 40 336 130" stroke="#2f80ed"/>
+&lt;circle cx="230" cy="120" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;circle cx="255" cy="78" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;circle cx="275" cy="62" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;circle cx="300" cy="78" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;circle cx="320" cy="112" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;path d="M386 150 L510 64" stroke="#2f80ed"/>
+&lt;circle cx="410" cy="136" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;circle cx="435" cy="118" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;circle cx="460" cy="102" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;circle cx="485" cy="86" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;circle cx="500" cy="130" r="5" fill="#9b51e0" stroke="none"/>
+&lt;path d="M561 150 L684 70" stroke="#2f80ed"/>
+&lt;circle cx="590" cy="100" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;circle cx="590" cy="116" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;circle cx="590" cy="132" r="3.5" fill="#f2994a" stroke="none"/>
+&lt;circle cx="668" cy="78" r="5" fill="#9b51e0" stroke="none"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="98" y="206" font-size="13" font-weight="700">Noisy line&lt;/text>
+&lt;text x="273" y="206" font-size="13" font-weight="700">A curve&lt;/text>
+&lt;text x="448" y="206" font-size="13" font-weight="700">One outlier&lt;/text>
+&lt;text x="622" y="206" font-size="13" font-weight="700">Slope from one point&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 4.&lt;/strong> Sketches of Anscombe's quartet, not his table [5]. All four share a linear $R^2$ near 0.67. RMSE and MAE will move when the errors move. They still do not show the curve. The plot does.&lt;/figcaption>
+&lt;/figure>
+&lt;p>For regression, report RMSE and MAE next to the plot. RMSE is in the units of the modeled number, so an RMSE of 0.5 on a $\mathrm{p}K_i$ is half a log unit, about threefold in $K_i$, and it is readable. $R^2$ has no units and no picture. The
+separates the loss the model minimizes from the metric you use to keep it. This is that distinction on an assay table.&lt;/p>
+&lt;p>For classification, accuracy is the metric that flatters the majority class. Balanced accuracy is the average of the true-positive rate and the true-negative rate:&lt;/p>
+$$
+\mathrm{BA} = \frac{\mathrm{TPR} + \mathrm{TNR}}{2}.
+$$&lt;p>Cohen&amp;rsquo;s $\kappa$ subtracts the agreement you would get from the class frequencies alone:&lt;/p>
+$$
+\kappa = \frac{p_o - p_e}{1 - p_e}.
+$$&lt;p>$p_o$ is the observed agreement. $p_e$ is the agreement expected by chance. A model that calls everything inactive can have a high accuracy and a $\kappa$ near zero. The webinar names both metrics for that reason [1].&lt;/p>
+&lt;h2 id="the-m5-demonstration">The M5 demonstration&lt;/h2>
+&lt;p>The live session uses Optibrium&amp;rsquo;s public muscarinic acetylcholine receptor $M_5$ example: 129 compounds with ChEMBL $K_i$ values [1], [6]. The raw $K_i$ distribution is skewed. In that worked example the column is micromolar, and the modeled number is&lt;/p>
+$$
+\mathrm{p}K_i = 6 - \log_{10}(K_i / \mu\mathrm{M}),
+$$&lt;p>which is $-\log_{10}(K_i)$ with $K_i$ in molar. The $\mathrm{p}K_i$ values sit in a roughly bell-shaped range that a continuous model can fit. The same transform is the one a P450 inhibition table usually needs. An $\mathrm{IC}_{50}$ in micromolar becomes a $\mathrm{pIC}_{50}$ by the same shift of 6. Leaving the column in micromolar asks the model to treat a change from 0.01 to 0.1 as a different kind of error from a change from 10 to 100.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 220" role="img" aria-labelledby="qsarw-pki-title qsarw-pki-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="qsarw-pki-title">A skewed Ki column, and the pKi column a model can fit&lt;/title>
+&lt;desc id="qsarw-pki-desc">Schematic histograms. Micromolar Ki values pile up at the potent end and tail off. Subtracting the log from 6 spreads that column into a bell. The bars are not the ChEMBL counts.&lt;/desc>
+&lt;g fill="#2f80ed" fill-opacity="0.75">
+&lt;rect x="48" y="70" width="28" height="100"/>
+&lt;rect x="80" y="100" width="28" height="70"/>
+&lt;rect x="112" y="130" width="28" height="40"/>
+&lt;rect x="144" y="148" width="28" height="22"/>
+&lt;rect x="176" y="158" width="28" height="12"/>
+&lt;rect x="208" y="164" width="28" height="6"/>
+&lt;/g>
+&lt;g fill="#27ae60" fill-opacity="0.75">
+&lt;rect x="400" y="150" width="28" height="20"/>
+&lt;rect x="432" y="120" width="28" height="50"/>
+&lt;rect x="464" y="80" width="28" height="90"/>
+&lt;rect x="496" y="70" width="28" height="100"/>
+&lt;rect x="528" y="100" width="28" height="70"/>
+&lt;rect x="560" y="140" width="28" height="30"/>
+&lt;/g>
+&lt;g fill="none" stroke="currentColor" stroke-width="1.5">
+&lt;path d="M40 170 H250"/>
+&lt;path d="M392 170 H620"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="150" y="36" font-size="15" font-weight="700">Ki, micromolar&lt;/text>
+&lt;text x="150" y="198" font-size="13">piled at the potent end&lt;/text>
+&lt;text x="500" y="36" font-size="15" font-weight="700">pKi = 6 − log10(Ki)&lt;/text>
+&lt;text x="500" y="198" font-size="13">a column with a middle&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 5.&lt;/strong> Schematic, not the 129-row histogram. The shape is the reason to model $\mathrm{p}K_i$. A threefold error at 0.01 µM and a threefold error at 10 µM are the same distance on the right, and very different distances on the left.&lt;/figcaption>
+&lt;/figure>
+&lt;p>Auto-Modeller then splits the set. In the demonstration the split is a Tanimoto clustering, so near analogues are not free to land in both training and test by chance [1]. Correlated and redundant descriptors are dropped before the fit. On this set a random forest was the method the validation score preferred [1]. That is a result about these 129 compounds. It is not a standing recommendation to reach for a forest.&lt;/p>
+&lt;p>The Glowing Molecule view is how StarDrop draws the model back onto the structure. Red marks a region that raises the predicted number. Blue marks a region that lowers it [7]. On a $\mathrm{p}K_i$ model, red is higher predicted affinity. On a clearance model, red is higher predicted clearance, which is often the liability you are trying to remove. The color is about the direction of the number, not about whether the change is good.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 200" role="img" aria-labelledby="qsarw-glow-title qsarw-glow-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="qsarw-glow-title">Red raises the predicted number. Blue lowers it.&lt;/title>
+&lt;desc id="qsarw-glow-desc">A schematic molecule with one region marked red and one marked blue. For a pKi model, red means higher predicted affinity. For a clearance model, the same red means higher predicted clearance.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;circle cx="250" cy="90" r="36" fill="#e85a5a" fill-opacity="0.35" stroke="#e85a5a"/>
+&lt;circle cx="330" cy="90" r="36" fill="currentColor" fill-opacity="0.06" stroke="currentColor"/>
+&lt;circle cx="410" cy="90" r="36" fill="#3d7fd6" fill-opacity="0.35" stroke="#3d7fd6"/>
+&lt;path d="M286 90 H294" stroke="currentColor"/>
+&lt;path d="M366 90 H374" stroke="currentColor"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="250" y="150" font-size="13" font-weight="700">Red: number up&lt;/text>
+&lt;text x="410" y="150" font-size="13" font-weight="700">Blue: number down&lt;/text>
+&lt;text x="470" y="78" font-size="13" text-anchor="start">pKi: red, higher affinity&lt;/text>
+&lt;text x="470" y="102" font-size="13" text-anchor="start">Clearance: red, higher value&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 6.&lt;/strong> A scheme of the color rule, not a glowing $M_5$ ligand [7]. Read the color against the column that was modeled. The same red pixel is a design idea on one property and a warning on another.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="what-to-take-back-to-a-p450-table">What to take back to a P450 table&lt;/h2>
+&lt;p>Start from the assay identity. One isoform and one endpoint, a $K_i$ or a categorical call, can be a QSAR. A clearance number that several enzymes can produce is a weaker thing to ask of a fingerprint, and the webinar says so directly [1]. If the column is a concentration, model its negative log, and write the unit shift down. Split so that close analogues are not the hidden contents of the test set, tune only on the validation portion, and score the test portion once. Publish the plot, RMSE or MAE, and for a classifier the balanced accuracy or $\kappa$, not accuracy and not $R^2$ alone. Then ask whether the next compound is inside the chemistry the model saw. If it is not, the pillars were followed and the prediction is still outside their reach.&lt;/p>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ol>
+&lt;li>Mansley T, Öeren M. How to build a better QSAR model. Optibrium webinar, 18 February 2025.
+. Recording:
+.&lt;/li>
+&lt;li>Optibrium. How do I know if Optibrium&amp;rsquo;s predictive models work? The four pillars named there are clean data, an appropriate method, validation with appropriate metrics, and the domain of applicability.
+.&lt;/li>
+&lt;li>Optibrium. ADME QSAR models in StarDrop, including CYP2C9 and CYP2D6 affinities and a human-liver-microsome intrinsic-clearance category.
+.&lt;/li>
+&lt;li>Optibrium. StarDrop Auto-Modeller. Methods listed include Gaussian processes, random forests, radial basis functions, partial least squares, and decision trees.
+.&lt;/li>
+&lt;li>Anscombe FJ. Graphs in statistical analysis. &lt;em>Am Stat&lt;/em> 1973;27:17–21. doi:
+. The four datasets share a linear $R^2$ of about 0.67.&lt;/li>
+&lt;li>Optibrium. Automatic QSAR model building and validation in StarDrop. Worked example: 129 ChEMBL compounds, muscarinic acetylcholine receptor $M_5$, $K_i$ in micromolar converted to $\mathrm{p}K_i$.
+.&lt;/li>
+&lt;li>Optibrium. Glowing Molecule in StarDrop. Regions that increase the predicted value are shown in red. Regions that decrease it are shown in blue.
+. The color rule is also stated in StarDrop&amp;rsquo;s worked example on guided multi-parameter optimization.&lt;/li>
+&lt;/ol></description></item><item><title>Making AI Work in Discovery Chemistry: Precision, Trust, and Practical Value</title><link>https://yboulaamane.github.io/blog/making-ai-work-in-discovery-chemistry-optibrium-webinar/</link><pubDate>Fri, 28 Aug 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/making-ai-work-in-discovery-chemistry-optibrium-webinar/</guid><description>&lt;p>Artificial intelligence has transitioned from an emerging computational experiment to a central topic in pharmaceutical research and development. However, deploying machine learning models effectively requires moving beyond statistical performance benchmarks and addressing practical integration challenges.&lt;/p>
+&lt;p>This article summarizes key insights from the Optibrium panel webinar, &lt;strong>&amp;ldquo;Making AI Work in Discovery Chemistry: Precision, Trust, and the Cost of Getting It Wrong.&amp;rdquo;&lt;/strong> Hosted by &lt;strong>Nathan Brown&lt;/strong> (Director of Science, Optibrium), the panel brought together leading experts across academia, biotechnology, and consultancy:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Charlotte Deane&lt;/strong> (Oxford University / Executive Chair, EPSRC / OpenBind)&lt;/li>
+&lt;li>&lt;strong>Pat Walters&lt;/strong> (Chief Data Officer, Open AdMet)&lt;/li>
+&lt;li>&lt;strong>Chris Swain&lt;/strong> (Cambridge MedChem Consulting)&lt;/li>
+&lt;li>&lt;strong>Paul Czodrowski&lt;/strong> (Professor of Physical Chemistry, TU Dortmund)&lt;/li>
+&lt;/ul>
+&lt;p>The full webinar recording is available on YouTube:&lt;/p>
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/VbijXde4RDY?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video">&lt;/iframe>
+&lt;/div>
+&lt;hr>
+&lt;h2 id="strategic-framework-for-ai-in-chemistry">Strategic Framework for AI in Chemistry&lt;/h2>
+&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 260" width="100%" height="100%">
+&lt;defs>
+&lt;linearGradient id="p1Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#0284C7" />
+&lt;stop offset="100%" stop-color="#0369A1" />
+&lt;/linearGradient>
+&lt;linearGradient id="p2Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#0D9488" />
+&lt;stop offset="100%" stop-color="#0F766E" />
+&lt;/linearGradient>
+&lt;linearGradient id="p3Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#D97706" />
+&lt;stop offset="100%" stop-color="#B45309" />
+&lt;/linearGradient>
+&lt;linearGradient id="p4Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+&lt;stop offset="0%" stop-color="#6D28D9" />
+&lt;stop offset="100%" stop-color="#5B21B6" />
+&lt;/linearGradient>
+&lt;filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+&lt;feDropShadow dx="1" dy="3" stdDeviation="3" flood-opacity="0.1" />
+&lt;/filter>
+&lt;/defs>
+&lt;style>
+.header-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: 18px; fill: #111827; }
+.card-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 13px; fill: #FFFFFF; }
+.card-desc { font-family: 'Inter', system-ui, sans-serif; font-size: 11px; fill: #F3F4F6; }
+.card-num { font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: 14px; fill: rgba(255, 255, 255, 0.3); }
+&lt;/style>
+&lt;rect width="850" height="260" fill="#F9FAFB" rx="12" />
+&lt;text x="25" y="35" class="header-title">Four Pillars of Practical AI in Discovery Chemistry&lt;/text>
+&lt;!-- Pillar 1 -->
+&lt;g transform="translate(25, 60)" filter="url(#shadow)">
+&lt;rect width="170" height="150" rx="8" fill="url(#p1Grad)" />
+&lt;text x="15" y="25" class="card-num">PILLAR 01&lt;/text>
+&lt;text x="15" y="55" class="card-title">Value Over Accuracy&lt;/text>
+&lt;text x="15" y="80" class="card-desc">Target bottlenecks&lt;/text>
+&lt;text x="15" y="98" class="card-desc">Rapid iterations&lt;/text>
+&lt;text x="15" y="116" class="card-desc">Decision-support role&lt;/text>
+&lt;/g>
+&lt;!-- Pillar 2 -->
+&lt;g transform="translate(230, 60)" filter="url(#shadow)">
+&lt;rect width="170" height="150" rx="8" fill="url(#p2Grad)" />
+&lt;text x="15" y="25" class="card-num">PILLAR 02&lt;/text>
+&lt;text x="15" y="55" class="card-title">Data Integrity&lt;/text>
+&lt;text x="15" y="80" class="card-desc">Prevent data leakage&lt;/text>
+&lt;text x="15" y="98" class="card-desc">Standardized assays&lt;/text>
+&lt;text x="15" y="116" class="card-desc">Blind prospective tests&lt;/text>
+&lt;/g>
+&lt;!-- Pillar 3 -->
+&lt;g transform="translate(435, 60)" filter="url(#shadow)">
+&lt;rect width="170" height="150" rx="8" fill="url(#p3Grad)" />
+&lt;text x="15" y="25" class="card-num">PILLAR 03&lt;/text>
+&lt;text x="15" y="55" class="card-title">Generative Guardrails&lt;/text>
+&lt;text x="15" y="80" class="card-desc">Catch plausible errors&lt;/text>
+&lt;text x="15" y="98" class="card-desc">Expand chemist scope&lt;/text>
+&lt;text x="15" y="116" class="card-desc">Robust MPO scoring&lt;/text>
+&lt;/g>
+&lt;!-- Pillar 4 -->
+&lt;g transform="translate(640, 60)" filter="url(#shadow)">
+&lt;rect width="170" height="150" rx="8" fill="url(#p4Grad)" />
+&lt;text x="15" y="25" class="card-num">PILLAR 04&lt;/text>
+&lt;text x="15" y="55" class="card-title">Workforce Evolution&lt;/text>
+&lt;text x="15" y="80" class="card-desc">Democratized tools&lt;/text>
+&lt;text x="15" y="98" class="card-desc">Bench chemistry intuition&lt;/text>
+&lt;text x="15" y="116" class="card-desc">Elevated CADD roles&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;hr>
+&lt;h2 id="1-defining-ai-strategy-value-over-marginal-accuracy">1. Defining AI Strategy: Value Over Marginal Accuracy&lt;/h2>
+&lt;p>Organizations frequently attempt to deploy machine learning across every stage of the pipeline or chase statistical metrics without evaluating bench utility.&lt;/p>
+&lt;h3 id="rate-determining-steps">Rate-Determining Steps&lt;/h3>
+&lt;p>Successful deployment requires identifying specific workflow bottlenecks where computational models accelerate decisions or eliminate unnecessary wet-lab synthesis cycles.&lt;/p>
+&lt;h3 id="speed-vs-precision">Speed vs. Precision&lt;/h3>
+&lt;p>High cross-validation scores ($R^2$ or AUC) on retrospective datasets do not guarantee real-world value. A lower-complexity model delivering rapid, actionable predictions or failing quickly is often more valuable than a computationally intensive model yielding marginal statistical gains.&lt;/p>
+&lt;h3 id="managing-expectations">Managing Expectations&lt;/h3>
+&lt;p>Internal skepticism often stems from treating models as absolute oracles. When an algorithm fails to predict a complex property, teams may reject the technology entirely. Framing AI as an iterative decision-support system establishes realistic expectations and improves adoption.&lt;/p>
+&lt;hr>
+&lt;h2 id="2-data-integrity-leakage-and-open-benchmarks">2. Data Integrity, Leakage, and Open Benchmarks&lt;/h2>
+&lt;p>Data quality and validation methodology remain primary technical bottlenecks in molecular property prediction and de novo design.&lt;/p>
+&lt;h3 id="data-leakage-and-memorization">Data Leakage and Memorization&lt;/h3>
+&lt;p>Deep learning architectures frequently achieve inflated benchmark scores by memorizing training distributions or exploiting structural scaffold overlaps between training and evaluation splits.&lt;/p>
+&lt;h3 id="public-dataset-limitations">Public Dataset Limitations&lt;/h3>
+&lt;p>Data aggregated from public repositories carries inherent assay noise, variable experimental conditions, and inter-laboratory bias. Training models on uncurated literature data limits downstream generalization.&lt;/p>
+&lt;h3 id="pre-competitive-standardized-data">Pre-Competitive Standardized Data&lt;/h3>
+&lt;p>Industry initiatives are creating prospective, standardized benchmarks to evaluate predictive models:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Open AdMet:&lt;/strong> Generating standardized ADMET data for open modeling challenges.&lt;/li>
+&lt;li>&lt;strong>OpenBind:&lt;/strong> Constructing open, large-scale small molecule to protein interaction databases.&lt;/li>
+&lt;/ul>
+&lt;p>These pre-competitive collaborations provide the foundation needed for rigorous evaluation.&lt;/p>
+&lt;hr>
+&lt;h2 id="3-generative-chemistry-and-human-biases">3. Generative Chemistry and Human Biases&lt;/h2>
+&lt;p>Generative AI and de novo design algorithms offer value in expanding chemical hypothesis generation, but require objective functions and guardrails.&lt;/p>
+&lt;h3 id="distinguishing-error-types">Distinguishing Error Types&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: left">Error Classification&lt;/th>
+&lt;th style="text-align: left">Characteristics&lt;/th>
+&lt;th style="text-align: left">Risk Profile&lt;/th>
+&lt;th style="text-align: left">Mitigation Strategy&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>Silly Errors&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">Chemically unstable, non-synthesizable, or structurally invalid molecules.&lt;/td>
+&lt;td style="text-align: left">Low risk&lt;/td>
+&lt;td style="text-align: left">Filtered out automatically using rule-based chemical filters.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>Plausible Errors&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">Aesthetically pleasing structures that fit binding pockets but contain unmodeled liabilities.&lt;/td>
+&lt;td style="text-align: left">High risk&lt;/td>
+&lt;td style="text-align: left">Requires rigorous multi-parameter evaluation and experimental validation.&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="countering-cognitive-bias">Countering Cognitive Bias&lt;/h3>
+&lt;p>Medicinal chemists naturally favor familiar chemical series, established reactions, and known building blocks. Generative algorithms assist by proposing unexpected starting points that push design teams outside traditional chemical space.&lt;/p>
+&lt;h3 id="multi-parameter-optimization-mpo">Multi-Parameter Optimization (MPO)&lt;/h3>
+&lt;p>Multi-objective optimization remains challenging because algorithms frequently exploit mathematical loopholes in scoring functions rather than identifying true balanced leads. Robust objective functions must penalize extreme parameter trade-offs.&lt;/p>
+&lt;hr>
+&lt;h2 id="4-llms-democratization-and-the-future-workforce">4. LLMs, Democratization, and the Future Workforce&lt;/h2>
+&lt;p>Large Language Models (LLMs) and code-generation tools are altering how medicinal chemists interact with computational tools.&lt;/p>
+&lt;h3 id="democratization-at-the-bench">Democratization at the Bench&lt;/h3>
+&lt;p>Synthetic and medicinal chemists without formal programming backgrounds are utilizing LLMs to write Python scripts, build custom data visualizations, and analyze structure-activity relationships directly.&lt;/p>
+&lt;h3 id="the-necessity-of-domain-expertise">The Necessity of Domain Expertise&lt;/h3>
+&lt;p>Democratization increases rather than decreases the demand for deep domain knowledge. Because language models generate plausible responses regardless of factual accuracy, scientists must apply domain intuition to verify outputs and identify hallucinations.&lt;/p>
+&lt;h3 id="the-evolving-role-of-cadd-specialists">The Evolving Role of CADD Specialists&lt;/h3>
+&lt;p>As routine visualization and basic property calculations become self-serve for bench chemists, Computer-Aided Drug Design (CADD) specialists can shift focus toward complex methodological development, structural modeling, and applicability domain assessment.&lt;/p>
+&lt;hr>
+&lt;h2 id="key-takeaways">Key Takeaways&lt;/h2>
+&lt;ol>
+&lt;li>&lt;strong>Focus on Workflow Bottlenecks:&lt;/strong> Prioritize AI integration where computation directly reduces synthesis cycles rather than optimizing global accuracy metrics.&lt;/li>
+&lt;li>&lt;strong>Standardize Evaluation Data:&lt;/strong> Support open, prospective benchmarks to eliminate data leakage and memorization artifacts.&lt;/li>
+&lt;li>&lt;strong>Guard Against Plausible Errors:&lt;/strong> Implement strict physical and chemical filters to detect generated compounds with subtle liabilities.&lt;/li>
+&lt;li>&lt;strong>Combine LLMs with Chemical Intuition:&lt;/strong> Leverage language models to automate computational tasks while maintaining rigorous manual verification of results.&lt;/li>
+&lt;/ol></description></item></channel></rss>

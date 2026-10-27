@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Structural Biology | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/structural-biology/</link><atom:link href="https://yboulaamane.github.io/tags/structural-biology/index.xml" rel="self" type="application/rss+xml"/><description>Structural Biology</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Mon, 26 Oct 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Structural Biology</title><link>https://yboulaamane.github.io/tags/structural-biology/</link></image><item><title>A Protein Model Is a Sequence, a Fold, and a Surface</title><link>https://yboulaamane.github.io/blog/a-protein-model-is-a-sequence-a-fold-and-a-surface/</link><pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/a-protein-model-is-a-sequence-a-fold-and-a-surface/</guid><description>&lt;p>A protein in a calculation is three objects, and they are not interchangeable. The sequence is which residues are present, including the isoform and the protonation. The fold is the ensemble of shapes that sequence occupies. The surface is the patch a partner actually touches. What enters the coordinate file, what the force field is allowed to do to it, and which observable the trajectory is asked to produce are three different questions.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 268" role="img" aria-labelledby="prot-obj-title prot-obj-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="prot-obj-title">Sequence, ensemble, and surface&lt;/title>
+&lt;desc id="prot-obj-desc">Four residues in a chain, with histidine marked H+ and aspartate marked negative. Two helix shapes stand for two folds of one sequence. A ligand sits on a colored patch of a protein surface.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-prot-obj" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle" font-size="15" font-weight="700">
+&lt;text x="112" y="28">Sequence&lt;/text>
+&lt;text x="352" y="28">Ensemble&lt;/text>
+&lt;text x="604" y="28">Surface&lt;/text>
+&lt;/g>
+&lt;path d="M210 118 H244" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrow-prot-obj)"/>
+&lt;path d="M478 130 H508" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrow-prot-obj)"/>
+&lt;path d="M48 124 H176" stroke="currentColor" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+&lt;g font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle" fill="currentColor" font-size="13" font-weight="700">
+&lt;circle cx="48" cy="124" r="16" fill="#2f80ed" fill-opacity="0.22" stroke="#2f80ed" stroke-width="2"/>
+&lt;circle cx="90" cy="124" r="16" fill="#27ae60" fill-opacity="0.22" stroke="#27ae60" stroke-width="2"/>
+&lt;circle cx="132" cy="124" r="16" fill="#f2994a" fill-opacity="0.28" stroke="#f2994a" stroke-width="2"/>
+&lt;circle cx="176" cy="124" r="16" fill="#9b51e0" fill-opacity="0.22" stroke="#9b51e0" stroke-width="2"/>
+&lt;text x="48" y="129">M&lt;/text>
+&lt;text x="90" y="129">A&lt;/text>
+&lt;text x="132" y="129">H&lt;/text>
+&lt;text x="176" y="129">D&lt;/text>
+&lt;/g>
+&lt;text x="132" y="96" fill="#f2994a" font-size="11" font-weight="700" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">H+&lt;/text>
+&lt;text x="176" y="98" fill="#9b51e0" font-size="14" font-weight="700" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">−&lt;/text>
+&lt;text x="112" y="176" fill="currentColor" font-size="13" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">isoform, protonation&lt;/text>
+&lt;path d="M292 58 C326 70 326 86 292 98 C258 110 258 126 292 138 C326 150 326 166 292 178" fill="none" stroke="#27ae60" stroke-width="7" stroke-linecap="round"/>
+&lt;path d="M392 70 C426 84 426 100 392 112 C358 124 358 140 392 152 C426 164 426 180 392 192" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="6 4"/>
+&lt;text x="352" y="248" fill="currentColor" font-size="13" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">one fold, and another&lt;/text>
+&lt;path d="M560 156 C534 96 614 58 670 80 C726 102 698 180 650 208 C602 236 546 206 534 168 C526 144 540 128 560 156 Z" fill="#f2994a" fill-opacity="0.14" stroke="#f2994a" stroke-width="2"/>
+&lt;path d="M548 136 C576 114 618 112 634 134 C650 156 622 176 590 166 C562 156 532 150 548 136 Z" fill="#9b51e0" fill-opacity="0.34" stroke="#9b51e0" stroke-width="1.5"/>
+&lt;path d="M568 112 L582 102 L598 110 L600 126 L584 136 L568 126 Z" fill="#2f80ed" fill-opacity="0.3" stroke="#2f80ed" stroke-width="2"/>
+&lt;text x="604" y="250" fill="currentColor" font-size="13" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">the patch a partner touches&lt;/text>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> A coordinate file is one of the two folds in the middle. An affinity, a clearance, or a pathway flux is a question about the patch on the right, usually with partners the file does not contain.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="twenty-residues-are-free-and-one-is-not">Twenty residues are free, and one is not&lt;/h2>
+&lt;p>The standard genetic code builds proteins from twenty amino acids. Selenocysteine is inserted during translation where a UGA codon is recoded, not as a free choice at every position. Humans make it in a small set of selenoproteins, on the order of twenty-five. Pyrrolysine is not part of the human code. A rotamer library and a force field that offer selenocysteine at every site are describing a protein the cell does not make.&lt;/p>
+&lt;p>Length is a separate choice. Fifty residues is a peptide or a small domain. A chain of a few hundred residues is an ordinary globular protein. The reviewed human titin entry UniProt Q8WZ42 is 34,350 residues, and other isoforms differ, so one gene is not one chain to drop into a box [1]. What can actually be solvated is a domain, or a few domains. Titin is hundreds of those, a spring in muscle, not a single globular fold.&lt;/p>
+&lt;p>The sequence space of even one ordinary chain is already past any screen. For 375 positions and 20 residues at each position,&lt;/p>
+$$
+20^{375} \approx 7.7 \times 10^{487}.
+$$&lt;p>That sits hundreds of orders of magnitude above the roughly $10^{80}$ atoms estimated for the observable universe. Almost every sequence is chemically writable and biologically unused. The gene is the filter. A docking screen or a generative model that samples protein-like strings without that filter is sampling chains no cell makes.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 300" role="img" aria-labelledby="prot-alph-title prot-alph-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="prot-alph-title">DNA codons and the chain they encode&lt;/title>
+&lt;desc id="prot-alph-desc">A short DNA helix carries the codons AUG, CAC, GAC, and UGA. Those become methionine, histidine, and aspartate, and the chain stops. A dashed path shows selenocysteine only if UGA is recoded.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-prot-sec" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;marker id="arrow-prot-uga" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">&lt;path d="M0,0 L6,3 L0,6 Z" fill="#9b51e0"/>&lt;/marker>
+&lt;/defs>
+&lt;text x="108" y="30" fill="currentColor" font-size="15" font-weight="700" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">DNA&lt;/text>
+&lt;text x="430" y="30" fill="currentColor" font-size="15" font-weight="700" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">Chain&lt;/text>
+&lt;path d="M 142.0 58.0 L 141.6 60.4 L 140.5 62.9 L 138.7 65.3 L 136.3 67.8 L 133.2 70.2 L 129.6 72.6 L 125.5 75.1 L 121.0 77.5 L 116.3 79.9 L 111.3 82.4 L 106.3 84.8 L 101.4 87.2 L 96.5 89.7 L 92.0 92.1 L 87.7 94.6 L 84.0 97.0 L 80.7 99.4 L 78.0 101.9 L 76.0 104.3 L 74.7 106.8 L 74.0 109.2 L 74.2 111.6 L 75.0 114.1 L 76.6 116.5 L 78.8 118.9 L 81.7 121.4 L 85.2 123.8 L 89.1 126.2 L 93.5 128.7 L 98.1 131.1 L 103.0 133.6 L 108.0 136.0 L 113.0 138.4 L 117.9 140.9 L 122.5 143.3 L 126.9 145.8 L 130.8 148.2 L 134.3 150.6 L 137.2 153.1 L 139.4 155.5 L 141.0 157.9 L 141.8 160.4 L 142.0 162.8 L 141.3 165.2 L 140.0 167.7 L 138.0 170.1 L 135.3 172.6 L 132.0 175.0 L 128.3 177.4 L 124.0 179.9 L 119.5 182.3 L 114.6 184.8 L 109.7 187.2 L 104.7 189.6 L 99.7 192.1 L 95.0 194.5 L 90.5 196.9 L 86.4 199.4 L 82.8 201.8 L 79.7 204.2 L 77.3 206.7 L 75.5 209.1 L 74.4 211.6 L 74.0 214.0" fill="none" stroke="#2f80ed" stroke-width="3" stroke-linecap="round"/>
+&lt;path d="M 74.0 58.0 L 74.4 60.4 L 75.5 62.9 L 77.3 65.3 L 79.7 67.8 L 82.8 70.2 L 86.4 72.6 L 90.5 75.1 L 95.0 77.5 L 99.7 79.9 L 104.7 82.4 L 109.7 84.8 L 114.6 87.2 L 119.5 89.7 L 124.0 92.1 L 128.3 94.6 L 132.0 97.0 L 135.3 99.4 L 138.0 101.9 L 140.0 104.3 L 141.3 106.8 L 142.0 109.2 L 141.8 111.6 L 141.0 114.1 L 139.4 116.5 L 137.2 118.9 L 134.3 121.4 L 130.8 123.8 L 126.9 126.2 L 122.5 128.7 L 117.9 131.1 L 113.0 133.6 L 108.0 136.0 L 103.0 138.4 L 98.1 140.9 L 93.5 143.3 L 89.1 145.8 L 85.2 148.2 L 81.7 150.6 L 78.8 153.1 L 76.6 155.5 L 75.0 157.9 L 74.2 160.4 L 74.0 162.8 L 74.7 165.2 L 76.0 167.7 L 78.0 170.1 L 80.7 172.6 L 84.0 175.0 L 87.7 177.4 L 92.0 179.9 L 96.5 182.3 L 101.4 184.8 L 106.3 187.2 L 111.3 189.6 L 116.3 192.1 L 121.0 194.5 L 125.5 196.9 L 129.6 199.4 L 133.2 201.8 L 136.3 204.2 L 138.7 206.7 L 140.5 209.1 L 141.6 211.6 L 142.0 214.0" fill="none" stroke="#27ae60" stroke-width="3" stroke-linecap="round"/>
+&lt;line x1="74.0" y1="58.0" x2="142.0" y2="58.0" stroke="currentColor" stroke-opacity="0.45" stroke-width="2"/>
+&lt;line x1="74.0" y1="110.0" x2="142.0" y2="110.0" stroke="currentColor" stroke-opacity="0.45" stroke-width="2"/>
+&lt;line x1="74.0" y1="162.0" x2="142.0" y2="162.0" stroke="currentColor" stroke-opacity="0.45" stroke-width="2"/>
+&lt;line x1="74.0" y1="214.0" x2="142.0" y2="214.0" stroke="currentColor" stroke-opacity="0.45" stroke-width="2"/>
+&lt;g font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="13" font-weight="700">
+&lt;text x="160" y="62" fill="currentColor">AUG&lt;/text>
+&lt;text x="160" y="121" fill="currentColor">CAC&lt;/text>
+&lt;text x="160" y="180" fill="currentColor">GAC&lt;/text>
+&lt;text x="160" y="232" fill="#9b51e0">UGA&lt;/text>
+&lt;/g>
+&lt;path d="M210 128 H246" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrow-prot-sec)"/>
+&lt;path d="M300 112 H332 M370 112 H402 M440 112 H468" stroke="currentColor" stroke-opacity="0.4" stroke-width="2"/>
+&lt;g font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle" fill="currentColor" font-size="14" font-weight="700">
+&lt;circle cx="286" cy="112" r="22" fill="#2f80ed" fill-opacity="0.2" stroke="#2f80ed" stroke-width="2"/>
+&lt;circle cx="356" cy="112" r="22" fill="#f2994a" fill-opacity="0.24" stroke="#f2994a" stroke-width="2"/>
+&lt;circle cx="426" cy="112" r="22" fill="#9b51e0" fill-opacity="0.2" stroke="#9b51e0" stroke-width="2"/>
+&lt;text x="286" y="117">M&lt;/text>
+&lt;text x="356" y="117">H&lt;/text>
+&lt;text x="426" y="117">D&lt;/text>
+&lt;/g>
+&lt;text x="374" y="78" fill="#f2994a" font-size="11" font-weight="700" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">H+&lt;/text>
+&lt;text x="446" y="82" fill="#9b51e0" font-size="15" font-weight="700" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">−&lt;/text>
+&lt;line x1="468" y1="90" x2="468" y2="134" stroke="currentColor" stroke-width="2"/>
+&lt;g font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12" text-anchor="middle" fill="currentColor">
+&lt;text x="286" y="154">Met&lt;/text>
+&lt;text x="356" y="154">His&lt;/text>
+&lt;text x="426" y="154">Asp&lt;/text>
+&lt;text x="468" y="154">stop&lt;/text>
+&lt;/g>
+&lt;path d="M188 236 C 280 268, 520 250, 600 168" fill="none" stroke="#9b51e0" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#arrow-prot-uga)"/>
+&lt;circle cx="624" cy="150" r="22" fill="none" stroke="#9b51e0" stroke-width="2" stroke-dasharray="4 3"/>
+&lt;text x="624" y="155" fill="#9b51e0" font-size="12" font-weight="700" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">Sec&lt;/text>
+&lt;text x="624" y="188" fill="#9b51e0" font-size="12" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">if recoded&lt;/text>
+&lt;text x="360" y="286" fill="currentColor" font-size="13" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">AUG, CAC, and GAC are ordinary residues. UGA is selenocysteine only when recoded.&lt;/text>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> AUG, CAC, and GAC are ordinary residues. The dashed residue is the exception: UGA is selenocysteine only where that codon is recoded.&lt;/figcaption>
+&lt;/figure>
+&lt;p>The cytoplasm those chains fold in is crowded. Diffusion there is not the diffusion of one protein in a large box of water. A periodic cell with one protein and a bath answers a different physical question.&lt;/p>
+&lt;p>About 20,000 protein-coding genes is the right order for the human set. It is not 20,000 structures. Alternative splicing and post-translational modification produce many chains from one gene. An AlphaFold model, or a PDB entry, is one sequence in one conformation. The
+is about whether that conformation is even a plausible fold, which comes before the question of whether it is the conformation that binds.&lt;/p>
+&lt;h2 id="charge-is-four-terms-in-a-force-field">Charge is four terms in a force field&lt;/h2>
+&lt;p>Amino acids differ in charge and polarity. The chain is synthesized as a line, and that line collapses into a fold. A force field does not carry this as one interaction called charge.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 360" role="img" aria-labelledby="prot-ff-title prot-ff-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="prot-ff-title">Four terms a force field keeps apart&lt;/title>
+&lt;desc id="prot-ff-desc">Bonded terms are a chain of atoms and a torsion arrow. Electrostatics are a positive site and a negative site. Van der Waals contact is two spheres touching. The hydrophobic effect is two greasy groups with water around them, not between them.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-prot-ff" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">&lt;path d="M0,0 L6,3 L0,6 Z" fill="#f2994a"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="1.5" stroke="currentColor" stroke-opacity="0.28">
+&lt;rect x="16" y="16" width="336" height="160" rx="14"/>
+&lt;rect x="368" y="16" width="336" height="160" rx="14"/>
+&lt;rect x="16" y="188" width="336" height="160" rx="14"/>
+&lt;rect x="368" y="188" width="336" height="160" rx="14"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="15" font-weight="700">
+&lt;text x="32" y="42">Bonded&lt;/text>
+&lt;text x="384" y="42">Electrostatics&lt;/text>
+&lt;text x="32" y="214">Van der Waals&lt;/text>
+&lt;text x="384" y="214">Hydrophobic effect&lt;/text>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="12">
+&lt;text x="32" y="158">bonds, angles, dihedrals&lt;/text>
+&lt;text x="384" y="158">partial charges, long range&lt;/text>
+&lt;text x="32" y="332">contact, close in&lt;/text>
+&lt;text x="384" y="332">solvent entropy, not a charge&lt;/text>
+&lt;/g>
+&lt;g fill="none" stroke="#2f80ed" stroke-width="2.4" stroke-linecap="round">
+&lt;line x1="78" y1="108" x2="126" y2="80"/>
+&lt;line x1="150" y1="80" x2="188" y2="108"/>
+&lt;line x1="214" y1="108" x2="262" y2="84"/>
+&lt;/g>
+&lt;path d="M154 112 Q166 136 178 116" fill="none" stroke="#f2994a" stroke-width="1.6" marker-end="url(#arrow-prot-ff)"/>
+&lt;g font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle" fill="currentColor" font-size="12" font-weight="700">
+&lt;circle cx="68" cy="112" r="14" fill="#2f80ed" fill-opacity="0.2" stroke="#2f80ed" stroke-width="2"/>
+&lt;circle cx="138" cy="74" r="14" fill="#2f80ed" fill-opacity="0.2" stroke="#2f80ed" stroke-width="2"/>
+&lt;circle cx="202" cy="116" r="14" fill="#2f80ed" fill-opacity="0.2" stroke="#2f80ed" stroke-width="2"/>
+&lt;circle cx="274" cy="78" r="14" fill="#2f80ed" fill-opacity="0.2" stroke="#2f80ed" stroke-width="2"/>
+&lt;text x="68" y="116">C&lt;/text>
+&lt;text x="138" y="78">C&lt;/text>
+&lt;text x="202" y="120">C&lt;/text>
+&lt;text x="274" y="82">C&lt;/text>
+&lt;/g>
+&lt;path d="M470 76 Q536 54 602 76" fill="none" stroke="#2f80ed" stroke-width="1.5" stroke-dasharray="3 3"/>
+&lt;path d="M478 132 Q536 156 594 132" fill="none" stroke="#f2994a" stroke-width="1.5" stroke-dasharray="3 3"/>
+&lt;g font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle" font-size="16" font-weight="700">
+&lt;circle cx="454" cy="104" r="18" fill="#2f80ed" fill-opacity="0.18" stroke="#2f80ed" stroke-width="2"/>
+&lt;circle cx="618" cy="104" r="18" fill="#f2994a" fill-opacity="0.22" stroke="#f2994a" stroke-width="2"/>
+&lt;text x="454" y="110" fill="#2f80ed">+&lt;/text>
+&lt;text x="618" y="110" fill="#f2994a">−&lt;/text>
+&lt;/g>
+&lt;circle cx="112" cy="262" r="26" fill="#f2994a" fill-opacity="0.16" stroke="#f2994a" stroke-width="2"/>
+&lt;circle cx="166" cy="262" r="26" fill="#27ae60" fill-opacity="0.14" stroke="#27ae60" stroke-width="2"/>
+&lt;path d="M86 304 H192" stroke="currentColor" stroke-width="1.4" fill="none"/>
+&lt;path d="M86 298 V310 M192 298 V310" stroke="currentColor" stroke-width="1.4" fill="none"/>
+&lt;circle cx="500" cy="268" r="16" fill="#f2994a" fill-opacity="0.45" stroke="#f2994a" stroke-width="2"/>
+&lt;circle cx="534" cy="268" r="16" fill="#f2994a" fill-opacity="0.45" stroke="#f2994a" stroke-width="2"/>
+&lt;g fill="none" stroke="#2f80ed" stroke-width="1.6">
+&lt;circle cx="456" cy="248" r="7"/>&lt;circle cx="468" cy="294" r="7"/>&lt;circle cx="492" cy="232" r="7"/>&lt;circle cx="568" cy="234" r="7"/>&lt;circle cx="596" cy="258" r="7"/>&lt;circle cx="578" cy="298" r="7"/>&lt;circle cx="520" cy="306" r="7"/>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 3.&lt;/strong> The bottom-right panel is the term a charge does not cover. Greasy side chains pack because water would rather not organize around them. A vacuum minimization will not reproduce that.&lt;/figcaption>
+&lt;/figure>
+&lt;p>Partial charges are a model of the electrostatic box, assigned before the dynamics, and they depend on the protonation you chose. Histidine, aspartate, glutamate, and the termini are the usual decisions. The
+is about how much that assignment moves a docking score. It does not make the score a free energy. A quantum calculation on the ligand, as in the
+, reports the electrons of that molecule. It does not fold the protein and it does not prove the complex.&lt;/p>
+&lt;p>The hydrophobic effect is why an implicit-solvent or vacuum model can fold the wrong core. The chain is not clicking together by electrostatics alone. If the simulation has no water, or a solvent model that ignores that term, the compact structure it finds is answering a different physical question.&lt;/p>
+&lt;h2 id="allostery-is-a-shift-in-how-often-each-shape-appears">Allostery is a shift in how often each shape appears&lt;/h2>
+&lt;p>A folded chain presents a surface. A partner binds, the local charge distribution changes, and the shape changes with it. A site that was hidden can open, the protein can join a larger assembly, or the new surface can pass a signal on. The error is to treat the protein as one shape that snaps to a second shape.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 260" role="img" aria-labelledby="prot-allo-title prot-allo-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="prot-allo-title">Binding shifts which conformer is common&lt;/title>
+&lt;desc id="prot-allo-desc">Without ligand, a closed shape is common and an open shape is rare, and the site is buried. With ligand, the open shape is common and the ligand sits between the two lobes.&lt;/desc>
+&lt;g fill="none" stroke="currentColor" stroke-opacity="0.3" stroke-width="1.5">
+&lt;rect x="16" y="16" width="330" height="228" rx="14"/>
+&lt;rect x="360" y="16" width="344" height="228" rx="14"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle" font-size="14" font-weight="700">
+&lt;text x="120" y="44">No ligand&lt;/text>
+&lt;text x="500" y="44">Ligand bound&lt;/text>
+&lt;/g>
+&lt;path d="M70 124 C70 78 176 76 178 122 C180 168 72 174 70 124 Z" fill="#2f80ed" fill-opacity="0.16" stroke="#2f80ed" stroke-width="2"/>
+&lt;circle cx="124" cy="124" r="6" fill="#9b51e0"/>
+&lt;text x="124" y="106" fill="currentColor" font-size="11" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">buried&lt;/text>
+&lt;rect x="214" y="78" width="22" height="78" rx="4" fill="#2f80ed" fill-opacity="0.55"/>
+&lt;rect x="286" y="128" width="22" height="28" rx="4" fill="#2f80ed" fill-opacity="0.25"/>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle" font-size="11">
+&lt;text x="225" y="176">Closed&lt;/text>
+&lt;text x="225" y="190">common&lt;/text>
+&lt;text x="297" y="176">Open&lt;/text>
+&lt;text x="297" y="190">rare&lt;/text>
+&lt;/g>
+&lt;ellipse cx="424" cy="108" rx="38" ry="28" fill="#27ae60" fill-opacity="0.18" stroke="#27ae60" stroke-width="2"/>
+&lt;ellipse cx="512" cy="146" rx="38" ry="28" fill="#27ae60" fill-opacity="0.1" stroke="#27ae60" stroke-width="2"/>
+&lt;path d="M468 118 L482 108 L498 120 L496 136 L480 146 L466 132 Z" fill="#f2994a" fill-opacity="0.4" stroke="#f2994a" stroke-width="2"/>
+&lt;rect x="596" y="122" width="22" height="28" rx="4" fill="#27ae60" fill-opacity="0.25"/>
+&lt;rect x="664" y="72" width="22" height="78" rx="4" fill="#27ae60" fill-opacity="0.55"/>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle" font-size="11">
+&lt;text x="607" y="174">Closed&lt;/text>
+&lt;text x="607" y="188">rare&lt;/text>
+&lt;text x="675" y="174">Open&lt;/text>
+&lt;text x="675" y="188">common&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 4.&lt;/strong> The bars are how often each shape is occupied. Induced fit and conformational selection are arguments about which population moves. One minimized structure cannot tell them apart.&lt;/figcaption>
+&lt;/figure>
+&lt;p>One crystal structure, or one minimized frame, is a sample. The
+is the argument for watching the chain move, and for not reading a short trajectory as the ensemble. Protonation belongs in the same sentence as allostery. A change in the charge of a buried histidine can shift the same populations without any ligand at all.&lt;/p>
+&lt;h2 id="a-pathway-is-a-queue-of-surfaces">A pathway is a queue of surfaces&lt;/h2>
+&lt;p>A pathway is many proteins doing one job: taking up a nutrient, running glycolysis, answering a xenobiotic. Each step is a surface finding the next surface. There is no controller in the middle. Binding and rates are the whole mechanism.&lt;/p>
+&lt;p>The version a cytochrome P450 project actually computes is narrower. A ligand of the aryl hydrocarbon receptor binds the cytosolic receptor. The receptor changes partners and moves to the nucleus, binds DNA with ARNT, and one of the genes that comes on is CYP1A1. The enzyme can make the incoming molecule easier to clear. It can also make it more reactive. Which of those happens is a property of the substrate and of the reaction on that isoform, not a property of the gene having turned on. A model of the sensor, a model of the enzyme, and a model of clearance are three calculations. The
+is the same warning from the data side: a clearance number mixes mechanisms, and a $K_i$ on one isoform does not.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 250" role="img" aria-labelledby="prot-path-title prot-path-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="prot-path-title">From a sensor protein to DNA to an enzyme&lt;/title>
+&lt;desc id="prot-path-desc">A ligand sits in a sensor protein. The sensor binds a partner. That pair sits on a DNA helix. A separate enzyme pocket can clear the molecule or make it more reactive. The drawings are schematic.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-prot-path" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle" font-size="13" font-weight="700">
+&lt;text x="86" y="26">Sensor&lt;/text>
+&lt;text x="246" y="26">Partners&lt;/text>
+&lt;text x="456" y="26">DNA&lt;/text>
+&lt;text x="632" y="26">Enzyme&lt;/text>
+&lt;/g>
+&lt;path d="M150 116 H178" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrow-prot-path)"/>
+&lt;path d="M326 116 H360" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrow-prot-path)"/>
+&lt;path d="M546 116 H576" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#arrow-prot-path)"/>
+&lt;ellipse cx="86" cy="122" rx="52" ry="40" fill="#2f80ed" fill-opacity="0.14" stroke="#2f80ed" stroke-width="2"/>
+&lt;path d="M66 104 L80 92 L96 102 L98 118 L82 128 L66 118 Z" fill="#f2994a" fill-opacity="0.45" stroke="#f2994a" stroke-width="2"/>
+&lt;text x="86" y="186" fill="currentColor" font-size="12" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">ligand in AhR&lt;/text>
+&lt;ellipse cx="214" cy="132" rx="34" ry="26" fill="#2f80ed" fill-opacity="0.18" stroke="#2f80ed" stroke-width="2"/>
+&lt;ellipse cx="262" cy="104" rx="30" ry="22" fill="#27ae60" fill-opacity="0.22" stroke="#27ae60" stroke-width="2"/>
+&lt;text x="238" y="186" fill="currentColor" font-size="12" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">AhR with ARNT&lt;/text>
+&lt;path d="M 392.0 136.0 L 393.9 135.7 L 395.8 134.7 L 397.7 133.1 L 399.6 131.0 L 401.4 128.5 L 403.3 125.6 L 405.2 122.6 L 407.1 119.6 L 409.0 116.6 L 410.9 114.0 L 412.8 111.7 L 414.7 109.9 L 416.6 108.6 L 418.4 108.1 L 420.3 108.1 L 422.2 108.8 L 424.1 110.2 L 426.0 112.1 L 427.9 114.5 L 429.8 117.2 L 431.7 120.2 L 433.6 123.2 L 435.4 126.2 L 437.3 129.0 L 439.2 131.5 L 441.1 133.5 L 443.0 134.9 L 444.9 135.8 L 446.8 136.0 L 448.7 135.5 L 450.6 134.4 L 452.4 132.7 L 454.3 130.5 L 456.2 127.9 L 458.1 125.0 L 460.0 122.0 L 461.9 119.0 L 463.8 116.1 L 465.7 113.5 L 467.6 111.3 L 469.4 109.6 L 471.3 108.5 L 473.2 108.0 L 475.1 108.2 L 477.0 109.1 L 478.9 110.5 L 480.8 112.5 L 482.7 115.0 L 484.6 117.8 L 486.4 120.8 L 488.3 123.8 L 490.2 126.8 L 492.1 129.5 L 494.0 131.9 L 495.9 133.8 L 497.8 135.2 L 499.7 135.9 L 501.6 135.9 L 503.4 135.4 L 505.3 134.1 L 507.2 132.3 L 509.1 130.0 L 511.0 127.4 L 512.9 124.4 L 514.8 121.4 L 516.7 118.4 L 518.6 115.5 L 520.4 113.0 L 522.3 110.9 L 524.2 109.3 L 526.1 108.3 L 528.0 108.0" fill="none" stroke="#2f80ed" stroke-width="2.6" stroke-linecap="round"/>
+&lt;path d="M 392.0 108.0 L 393.9 108.3 L 395.8 109.3 L 397.7 110.9 L 399.6 113.0 L 401.4 115.5 L 403.3 118.4 L 405.2 121.4 L 407.1 124.4 L 409.0 127.4 L 410.9 130.0 L 412.8 132.3 L 414.7 134.1 L 416.6 135.4 L 418.4 135.9 L 420.3 135.9 L 422.2 135.2 L 424.1 133.8 L 426.0 131.9 L 427.9 129.5 L 429.8 126.8 L 431.7 123.8 L 433.6 120.8 L 435.4 117.8 L 437.3 115.0 L 439.2 112.5 L 441.1 110.5 L 443.0 109.1 L 444.9 108.2 L 446.8 108.0 L 448.7 108.5 L 450.6 109.6 L 452.4 111.3 L 454.3 113.5 L 456.2 116.1 L 458.1 119.0 L 460.0 122.0 L 461.9 125.0 L 463.8 127.9 L 465.7 130.5 L 467.6 132.7 L 469.4 134.4 L 471.3 135.5 L 473.2 136.0 L 475.1 135.8 L 477.0 134.9 L 478.9 133.5 L 480.8 131.5 L 482.7 129.0 L 484.6 126.2 L 486.4 123.2 L 488.3 120.2 L 490.2 117.2 L 492.1 114.5 L 494.0 112.1 L 495.9 110.2 L 497.8 108.8 L 499.7 108.1 L 501.6 108.1 L 503.4 108.6 L 505.3 109.9 L 507.2 111.7 L 509.1 114.0 L 511.0 116.6 L 512.9 119.6 L 514.8 122.6 L 516.7 125.6 L 518.6 128.5 L 520.4 131.0 L 522.3 133.1 L 524.2 134.7 L 526.1 135.7 L 528.0 136.0" fill="none" stroke="#27ae60" stroke-width="2.6" stroke-linecap="round"/>
+&lt;line x1="392.0" y1="108.0" x2="392.0" y2="136.0" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.6"/>
+&lt;line x1="419.2" y1="108.0" x2="419.2" y2="136.0" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.6"/>
+&lt;line x1="446.4" y1="108.0" x2="446.4" y2="136.0" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.6"/>
+&lt;line x1="473.6" y1="108.0" x2="473.6" y2="136.0" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.6"/>
+&lt;line x1="500.8" y1="108.0" x2="500.8" y2="136.0" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.6"/>
+&lt;line x1="528.0" y1="108.0" x2="528.0" y2="136.0" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.6"/>
+&lt;ellipse cx="436" cy="96" rx="18" ry="13" fill="#2f80ed" fill-opacity="0.28" stroke="#2f80ed" stroke-width="1.6"/>
+&lt;ellipse cx="468" cy="94" rx="16" ry="12" fill="#27ae60" fill-opacity="0.3" stroke="#27ae60" stroke-width="1.6"/>
+&lt;text x="456" y="186" fill="currentColor" font-size="12" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">on the DNA&lt;/text>
+&lt;path d="M600 146 C582 84 700 72 706 126 C712 178 650 196 614 162" fill="#9b51e0" fill-opacity="0.12" stroke="#9b51e0" stroke-width="3" stroke-linecap="round"/>
+&lt;ellipse cx="650" cy="126" rx="20" ry="11" fill="none" stroke="#f2994a" stroke-width="2"/>
+&lt;circle cx="650" cy="126" r="3.5" fill="#f2994a"/>
+&lt;path d="M638 102 L650 94 L662 102 L662 114 L650 122 L638 114 Z" fill="#2f80ed" fill-opacity="0.28" stroke="#2f80ed" stroke-width="1.6"/>
+&lt;text x="632" y="186" fill="currentColor" font-size="12" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">CYP1A1 pocket&lt;/text>
+&lt;text x="632" y="204" fill="currentColor" font-size="12" text-anchor="middle" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">clears or activates&lt;/text>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 5.&lt;/strong> The drawings are schematic. Each one can be its own calculation. Turning the gene on does not decide whether CYP1A1 clears the molecule or makes it more reactive.&lt;/figcaption>
+&lt;/figure>
+&lt;p>Protein-coding exons are on the order of one percent of the human genome. The rest includes introns, regulatory sequence, and a great deal of repetitive DNA. A simulation never sees that rest. It sees the chain you chose, in the protonation you chose, in the box you built.&lt;/p>
+&lt;p>The calculation ends at whichever object in Figure 1 the question actually named.&lt;/p>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ol>
+&lt;li>UniProt Consortium. Titin, Homo sapiens, accession Q8WZ42. Reviewed entry, 34,350 residues.
+. Other isoforms of the same gene differ in length.&lt;/li>
+&lt;/ol></description></item><item><title>Ten Critical Pitfalls in Molecular Dynamics Simulations and Strategies for Mitigation</title><link>https://yboulaamane.github.io/blog/ten-critical-pitfalls-in-molecular-dynamics-simulations-and-strategies-for-mitigation/</link><pubDate>Sat, 30 Mar 2024 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/ten-critical-pitfalls-in-molecular-dynamics-simulations-and-strategies-for-mitigation/</guid><description>&lt;p>The dangerous MD error is the one that finishes. A missing atom, a mixed force field, or a broken periodic image will still give you a plot. The ten items below are the ones that show up as a plausible trajectory rather than as a crash.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 360" role="img" aria-labelledby="mdpit-title mdpit-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="mdpit-title">Checks before production and checks before a claim&lt;/title>
+&lt;desc id="mdpit-desc">Before production: structure, a matched force field and water model, ligand parameters, minimization and equilibration, and a 2 fs step with constraints. Before a claim: fix periodic images, run 3 to 5 replicates, do not stop at RMSD, and compare with experiment.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="64" width="280" height="260" rx="16" fill="#2f80ed" fill-opacity="0.08" stroke="#2f80ed"/>
+&lt;rect x="332" y="64" width="280" height="260" rx="16" fill="#f2994a" fill-opacity="0.08" stroke="#f2994a"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="36" font-size="22" font-weight="700" text-anchor="middle">A finished run is not a checked run&lt;/text>
+&lt;text x="48" y="96" font-size="18" font-weight="700">Before production&lt;/text>
+&lt;text x="48" y="132" font-size="16">Structure and protonation&lt;/text>
+&lt;text x="48" y="164" font-size="16">Force field matches the water&lt;/text>
+&lt;text x="48" y="196" font-size="16">Ligand topology is a draft&lt;/text>
+&lt;text x="48" y="228" font-size="16">Minimize, then equilibrate&lt;/text>
+&lt;text x="48" y="260" font-size="16">2 fs, hydrogens constrained&lt;/text>
+&lt;text x="48" y="292" font-size="16">4 fs only with HMR&lt;/text>
+&lt;text x="352" y="96" font-size="18" font-weight="700">Before a claim&lt;/text>
+&lt;text x="352" y="140" font-size="16">Unwrap periodic images&lt;/text>
+&lt;text x="352" y="180" font-size="16">3 to 5 replicates&lt;/text>
+&lt;text x="352" y="220" font-size="16">RMSD plus RMSF, Rg, SASA&lt;/text>
+&lt;text x="352" y="260" font-size="16">Compare with experiment&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The left column is how the trajectory goes wrong quietly. The right column is how a single smooth RMSD gets over-read. The force threshold cited for minimization is 1000 kJ/mol/nm. The replicate count is 3 to 5, with different initial velocities.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="1-the-pdb-is-not-a-starting-model">1. The PDB is not a starting model&lt;/h2>
+&lt;p>A downloaded structure can miss atoms, leave residues unresolved, or include crystal contacts that are not present in solution. Build missing loops, clear steric clashes, and set protonation for the pH you are simulating. Histidine tautomers are the usual example of a default that is wrong. pdbfixer, H++, and PropKa are the tools named for that cleanup.&lt;/p>
+&lt;h2 id="2-the-force-field-has-to-match-the-molecule">2. The force field has to match the molecule&lt;/h2>
+&lt;p>Popularity is a weak reason. A protein force field is not automatically a membrane force field. Mixing parameter sets is worse: CHARMM protein parameters with OPLS ligand parameters do not share one potential. If you do combine sets, they need compatible functional forms and Lennard-Jones combination rules, and the combination needs to have been validated for that class of molecule.&lt;/p>
+&lt;h2 id="3-the-water-model-was-part-of-the-parameterization">3. The water model was part of the parameterization&lt;/h2>
+&lt;p>TIP3P and a 4-point model such as OPC are not interchangeable add-ons. The force field paper says which water was used. A mismatch moves density, protein–solvent interaction, and diffusion, which is enough to make a thermodynamic property meaningless.&lt;/p>
+&lt;h2 id="4-automated-ligand-parameters-are-a-draft">4. Automated ligand parameters are a draft&lt;/h2>
+&lt;p>CGenFF, PRODRG, and MCPB will write a topology. They also approximate charges and bonded terms, and they say so in penalty scores or warnings. Read the log. For a result you will defend, check partial charges against a QM calculation and bonded terms against experiment or a higher level of theory.&lt;/p>
+&lt;h2 id="5-production-starts-after-the-system-has-settled">5. Production starts after the system has settled&lt;/h2>
+&lt;p>Minimize until the maximum force is below a tight threshold. The example given is 1000 kJ/mol/nm. Then watch NVT and NPT. Density and potential energy need a plateau before you collect data. Starting earlier is a common source of a trajectory that looks unstable for a boring reason.&lt;/p>
+&lt;h2 id="6-the-time-step">6. The time step&lt;/h2>
+&lt;p>2 fs is the standard biological step when bonds to hydrogen are constrained with LINCS or SHAKE. A larger step, such as 4 fs, belongs with hydrogen mass repartitioning. A step that is too long integrates badly. A step that is too short mostly wastes time.&lt;/p>
+&lt;h2 id="7-periodic-images">7. Periodic images&lt;/h2>
+&lt;p>The box is required. It also splits molecules across the boundary. Radius of gyration ($R_g$) and RMSD on a broken molecule are the wrong numbers. Recenter and unwrap first. &lt;code>gmx trjconv&lt;/code> and &lt;code>cpptraj&lt;/code> are the usual tools.&lt;/p>
+&lt;h2 id="8-one-trajectory-is-an-anecdote">8. One trajectory is an anecdote&lt;/h2>
+&lt;p>The integrator is stochastic once the initial velocities are. Run the same system 3 to 5 times with different seeds. A rare event in one run is not a property of the system until the other runs agree.&lt;/p>
+&lt;h2 id="9-a-flat-rmsd-is-a-weak-stability-claim">9. A flat RMSD is a weak stability claim&lt;/h2>
+&lt;p>RMSD says the structure has stopped drifting from the reference you chose. It does not certify local packing, hydrogen bonds, or the energy. Read it with RMSF, $R_g$, SASA, and a clustering of the trajectory.&lt;/p>
+&lt;h2 id="10-compare-with-something-measured">10. Compare with something measured&lt;/h2>
+&lt;p>A simulation that does not crash can still be the wrong physical system. Crystallographic B-factors, chemical shifts, and NOEs are the experimental contacts named here. Use the observable you actually have. The comparison is what licenses the interpretation.&lt;/p></description></item><item><title>How to Validate AlphaFold Structures</title><link>https://yboulaamane.github.io/blog/how-to-validate-alphafold-structures/</link><pubDate>Mon, 19 Jun 2023 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/how-to-validate-alphafold-structures/</guid><description>&lt;p>A high pLDDT is not a finished structure. AlphaFold is accurate on many folds (1), and a predicted model still needs the same kinds of checks as an experimental one: confidence, geometry, a comparison when a structure exists, and a functional test.&lt;/p>
+&lt;p>Read pLDDT and PAE first. Then stereochemistry and residue environment. Then TM-align, if you have a reference. Only then ask whether a pocket, a docked ligand, or a short simulation is usable. Low-confidence regions are the ones to exclude or to treat as a hypothesis.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 460" role="img" aria-labelledby="af-flow-title af-flow-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="af-flow-title">Order of checks for an AlphaFold model&lt;/title>
+&lt;desc id="af-flow-desc">Four checks in order. pLDDT and PAE, then geometry tools, then a comparison to a known structure, then a functional test by pocket, docking, or a short simulation.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-af-flow" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="48" y="64" width="544" height="72" rx="14" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="48" y="160" width="544" height="72" rx="14" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="48" y="256" width="544" height="72" rx="14" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="48" y="352" width="544" height="72" rx="14" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M320 136 L320 152" marker-end="url(#arrow-af-flow)" stroke="currentColor"/>
+&lt;path d="M320 232 L320 248" marker-end="url(#arrow-af-flow)" stroke="currentColor"/>
+&lt;path d="M320 328 L320 344" marker-end="url(#arrow-af-flow)" stroke="currentColor"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="40" font-size="22" font-weight="700" text-anchor="middle">Validate in this order&lt;/text>
+&lt;text x="72" y="96" font-size="18" font-weight="700">1. pLDDT and PAE&lt;/text>
+&lt;text x="72" y="120" font-size="15">Local confidence, and whether domains are packed&lt;/text>
+&lt;text x="72" y="192" font-size="18" font-weight="700">2. Geometry and environment&lt;/text>
+&lt;text x="72" y="216" font-size="15">MolProbity, PROCHECK, Verify3D, ERRAT, QMEAN&lt;/text>
+&lt;text x="72" y="288" font-size="18" font-weight="700">3. A known structure, if you have one&lt;/text>
+&lt;text x="72" y="312" font-size="15">TM-score and RMSD against that reference&lt;/text>
+&lt;text x="72" y="384" font-size="18" font-weight="700">4. Function&lt;/text>
+&lt;text x="72" y="408" font-size="15">Pocket, docking, or a short MD&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> The four checks answer different questions. A low-pLDDT loop can sit inside a model whose TM-score against experiment is still high. Skipping the confidence step and docking the whole chain treats the uncertain parts as coordinates.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="alphafold-confidence-metrics-plddt-and-pae">AlphaFold Confidence Metrics: pLDDT and PAE&lt;/h2>
+&lt;p>AlphaFold provides intrinsic confidence measures that are the first step in validation. &lt;strong>pLDDT (predicted Local Distance Difference Test)&lt;/strong> is a per-residue confidence score ranging from 0 to 100. Higher pLDDT means the model is more confident that the local structure around that residue is accurate​ (2). This metric is based on the lDDT-Cα score, which assesses local structural accuracy without requiring a global superposition​ (3). In practice, AlphaFold classifies residues into confidence bands:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>pLDDT ≥ 90&lt;/strong>: Very high confidence (high accuracy for backbone and side chains)​.&lt;/li>
+&lt;li>&lt;strong>70 ≤ pLDDT &amp;lt; 90&lt;/strong>: Confident; backbone likely correct, though side chains may have some error​.&lt;/li>
+&lt;li>&lt;strong>50 ≤ pLDDT &amp;lt; 70&lt;/strong>: Low confidence; the region is less reliable, possibly mis-modeled.&lt;/li>
+&lt;li>&lt;strong>pLDDT &amp;lt; 50&lt;/strong>: Very low confidence; often indicates disordered or flexible regions​, which AlphaFold expects might not adopt a single stable structure in reality.&lt;/li>
+&lt;/ul>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 440" role="img" aria-labelledby="af-band-title af-band-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="af-band-title">pLDDT bands and a two-domain PAE pattern&lt;/title>
+&lt;desc id="af-band-desc">Four pLDDT bands: 90 and above, 70 to 90, 50 to 70, and below 50. Beside them, a PAE matrix with two dark diagonal blocks and light off-diagonal blocks.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="68" width="280" height="64" rx="12" fill="#2f80ed" fill-opacity="0.18" stroke="#2f80ed"/>
+&lt;rect x="28" y="144" width="280" height="64" rx="12" fill="#27ae60" fill-opacity="0.16" stroke="#27ae60"/>
+&lt;rect x="28" y="220" width="280" height="64" rx="12" fill="#f2994a" fill-opacity="0.18" stroke="#f2994a"/>
+&lt;rect x="28" y="296" width="280" height="64" rx="12" fill="#9b51e0" fill-opacity="0.16" stroke="#9b51e0"/>
+&lt;rect x="360" y="88" width="112" height="112" fill="#2f80ed" fill-opacity="0.45" stroke="currentColor"/>
+&lt;rect x="472" y="88" width="112" height="112" fill="#f2994a" fill-opacity="0.16" stroke="currentColor"/>
+&lt;rect x="360" y="200" width="112" height="112" fill="#f2994a" fill-opacity="0.16" stroke="currentColor"/>
+&lt;rect x="472" y="200" width="112" height="112" fill="#2f80ed" fill-opacity="0.45" stroke="currentColor"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="36" font-size="22" font-weight="700" text-anchor="middle">pLDDT is local. PAE is relative.&lt;/text>
+&lt;text x="44" y="96" font-size="18" font-weight="700">pLDDT ≥ 90&lt;/text>
+&lt;text x="44" y="118" font-size="15">Very high&lt;/text>
+&lt;text x="44" y="172" font-size="18" font-weight="700">70 to 90&lt;/text>
+&lt;text x="44" y="194" font-size="15">Confident backbone&lt;/text>
+&lt;text x="44" y="248" font-size="18" font-weight="700">50 to 70&lt;/text>
+&lt;text x="44" y="270" font-size="15">Low&lt;/text>
+&lt;text x="44" y="324" font-size="18" font-weight="700">pLDDT below 50&lt;/text>
+&lt;text x="44" y="346" font-size="15">Very low, often flexible&lt;/text>
+&lt;text x="416" y="150" font-size="16" font-weight="700" text-anchor="middle">Domain A&lt;/text>
+&lt;text x="528" y="262" font-size="16" font-weight="700" text-anchor="middle">Domain B&lt;/text>
+&lt;text x="472" y="352" font-size="16" text-anchor="middle">Off-diagonal: high PAE&lt;/text>
+&lt;text x="472" y="376" font-size="15" text-anchor="middle">Packing is not settled&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> The bands are AlphaFold’s: 90, 70, and 50. Colors in this drawing are labels, not the database palette. The matrix is the usual two-domain pattern: each domain is internally confident, and the relative orientation is not. pLDDT is stored in the B-factor column, so the PyMOL spectrum below paints that field.&lt;/figcaption>
+&lt;/figure>
+&lt;p>AlphaFold typically &lt;strong>encodes pLDDT in the B-factor field&lt;/strong> of the output PDB/mmCIF file​ (4). This means visualization programs can color the structure by B-factor to see confidence per residue. For example, in PyMOL you can load the model and run a command to color by B-factor (pLDDT):&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl"># In PyMOL, after loading the AlphaFold model:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">spectrum b, red_white_blue, minimum=0, maximum=100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># This colors residues from red (low pLDDT) to blue (high pLDDT).
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>AlphaFold’s second key metric is the &lt;strong>PAE (Predicted Aligned Error)&lt;/strong>. PAE is a measure of the model’s confidence in the relative positions of two residues​ (5). More formally, &lt;em>PAE(x, y)&lt;/em> is the expected error (in Å) at residue &lt;em>x&lt;/em>’s position &lt;strong>if&lt;/strong> the predicted structure were aligned to the (unknown) true structure on residue _y_​ (6). In simpler terms, &lt;strong>PAE tells us how well the model thinks region &lt;em>x&lt;/em> and region &lt;em>y&lt;/em> are positioned relative to each other&lt;/strong>. A low PAE between two residues (or domains) implies the model is confident about their relative arrangement, whereas a high PAE means the relative placement is uncertain​ (7). For example, if two domains have consistently high PAE with each other, the model is essentially saying &lt;em>“these domains might move relative to each other, so don’t trust the exact orientation.”&lt;/em> By contrast, low PAE between two domains suggests a well-defined domain packing​ (8).&lt;/p>
+&lt;p>PAE is often visualized as a heatmap (matrix) where each axis is residue index. AlphaFold’s structure database provides an interactive PAE plot alongside each model​ (9,10). In a PAE heatmap, the diagonal is always dark (zero error when a residue is aligned on itself) and can be ignored​ (10). Off-diagonal blocks indicate inter-residue or inter-domain confidence: &lt;strong>dark green/blue regions = low error (high confidence)&lt;/strong>, and **light colors = high error (low confidence)**​. For instance, a multi-domain protein often shows clear dark blocks along the diagonal (each domain internally high confidence) separated by lighter regions (uncertain relative domain orientation). &lt;strong>Interpreting PAE&lt;/strong> in validation is crucial: even if each domain has high pLDDT, a high PAE between domains means you should not assume the domain arrangement is correct​ (10). In such cases, additional validation (or experimental data) is needed to confirm domain orientations.&lt;/p>
+&lt;p>&lt;strong>Check pLDDT and PAE first.&lt;/strong> These metrics identify which parts of the model are reliably predicted and whether the overall fold, especially multi-domain architecture, is predicted with confidence. Regions with low pLDDT or high PAE may be disordered in reality or modeled inaccurately. These regions require further analysis or may be excluded if only the stable core is needed.&lt;/p>
+&lt;h2 id="visual-inspection-of-the-model">Visual Inspection of the Model&lt;/h2>
+&lt;p>After reviewing AlphaFold’s confidence metrics, the next validation step is a &lt;strong>careful visual inspection&lt;/strong> of the model. This is a straightforward but powerful way to catch obvious issues. Tools such as &lt;strong>PyMOL&lt;/strong>, &lt;strong>UCSF ChimeraX&lt;/strong>, and &lt;strong>Mol*&lt;/strong> (MolStar) are invaluable for this task:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>PyMOL&lt;/strong> – A widely-used molecular graphics tool. Load the AlphaFold PDB, and visualize secondary structure (cartoon view) to see if helices and strands look well-formed. Color the model by pLDDT (as described above) to highlight low-confidence segments. Pay attention to any steric clashes or oddly twisted geometries. For example, check if any side chains deeply penetrate other parts of the protein (which might indicate a clash or error). PyMOL’s distance measurement can help verify if supposed disulfide bonds or salt bridges are geometrically plausible. If you have a known motif (e.g., a catalytic triad), inspect whether those residues align in the expected geometry.&lt;/li>
+&lt;li>&lt;strong>UCSF ChimeraX&lt;/strong> – A modern visualization tool that can directly fetch AlphaFold models from the AlphaFold DB by UniProt ID, and it has built-in presets for AlphaFold confidence coloring. In ChimeraX, the command &lt;code>color bfactor palette alphafold&lt;/code> applies the standard pLDDT color scheme (blue = high confidence, orange/red = low). Use ChimeraX’s structure analysis features to examine hydrogen bonds, contacts, and clashes. Chimera(X) also allows viewing the PAE map if you have it, or you can segment the model by domains to see how they interact. If the model has flexible termini (often glowing red/orange from low pLDDT), you might visualize those separately – they could be flopping around and not relevant to the stable core.&lt;/li>
+&lt;li>&lt;strong>Mol&lt;/strong>* – This is the web-based 3D viewer used by the AlphaFold Protein Structure Database​ (11). If you obtained your model from AlphaFold DB, you can use the online Mol* viewer to instantly see the structure colored by confidence and the PAE plot side-by-side. Mol* is great for a quick look without installing software. Through Mol*, you can rotate the model, identify secondary structure elements, and even select a region on the PAE plot to highlight which parts of the 3D structure are uncertain​ (12). While not as feature-rich as desktop tools, it’s convenient for an initial overview.&lt;/li>
+&lt;/ul>
+&lt;p>During visual inspection, &lt;strong>look for red flags&lt;/strong> such as:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Unphysical bond lengths or angles&lt;/strong>: AlphaFold generally produces chemically sensible structures, but extremely distorted geometries (e.g., a peptide bond angle that looks abnormal) could appear in low-confidence regions. These are rare, but if present, they’ll likely be flagged by subsequent validation tools as well.&lt;/li>
+&lt;li>&lt;strong>Clashes&lt;/strong>: Overlapping atoms or very tightly packed regions. Our eyes might miss slight clashes, so after visual review you’ll use tools like MolProbity to quantify this. But obvious clashes (like two side chains on top of each other) can sometimes be spotted visually.&lt;/li>
+&lt;li>&lt;strong>Chain breaks or gaps&lt;/strong>: Check if the protein backbone is continuous. If AlphaFold was unsure in a region, it might produce an unphysical loop. Usually AlphaFold does not literally break the chain (except maybe at extreme low confidence segments, it still gives a continuous but perhaps highly extended or tangled loop). If you do see a gap (missing residues), it could be because the input sequence had a region AlphaFold couldn’t model confidently or was omitted, though in normal operation AlphaFold predicts all residues provided.&lt;/li>
+&lt;li>&lt;strong>Secondary structure mismatches&lt;/strong>: Does the model’s secondary structure make sense given the sequence? If you have prior knowledge (say from sequence analysis, you expect three transmembrane helices or a beta-sheet in a certain region), see if the model matches that. If AlphaFold predicts a region to be helical (and with high confidence), it likely is. But if you see something like a beta-strand contorted oddly, or a helix with a kink, note those for further scrutiny.&lt;/li>
+&lt;li>&lt;strong>Active site or binding site conformation&lt;/strong>: If the protein’s function is known and certain residues are critical (e.g., enzyme active site), inspect that region. Are the catalytic residues oriented in a plausible way? Is there a cavity where a substrate could bind? Sometimes AlphaFold might predict a side chain orientation that blocks a known binding cleft (especially if no ligand was present during prediction). Visualizing this early can hint if the model is consistent with function or if something might be off.&lt;/li>
+&lt;/ul>
+&lt;p>Visual inspection is qualitative, but it directs later steps. An unexpected cavity or unusual domain orientation identified here should prompt targeted follow-up: ligand docking into the cavity, or checking domain orientation against experimental data. It is also the point to decide whether low-confidence segments should be excluded from downstream analysis.&lt;/p>
+&lt;h2 id="using-structural-validation-tools">Using Structural Validation Tools&lt;/h2>
+&lt;p>Automated structure-validation tools provide quantitative checks on your model’s stereochemistry and overall quality. Many of these tools were originally developed for validating experimentally determined structures, but they are equally applicable to predicted models. Here are some key validation tools and what they offer:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>MolProbity&lt;/strong> – A comprehensive &lt;strong>all-atom structure validation&lt;/strong> server (13).
+checks for steric clashes by adding hydrogens to the structure and finding all-atom overlaps. It also evaluates bond angles and dihedrals, highlighting &lt;strong>Ramachandran outliers&lt;/strong> (phi/psi angles that fall in disallowed regions of the Ramachandran plot) and &lt;strong>rotamer outliers&lt;/strong> (unusual side chain conformations). MolProbity provides an overall score (the “MolProbity score”) and specific metrics like &lt;strong>clashscore&lt;/strong> (number of serious clashes per 1000 atoms), percentage of Ramachandran favored/allowed/outlier residues, and more ​(14,15). A good AlphaFold model should have low clashscore and few (if any) Ramachandran outliers. However, it’s not uncommon for some &lt;strong>low-pLDDT loops&lt;/strong> in AlphaFold models to show outliers or clashes, since the model wasn’t physics-refined. MolProbity can guide you to those problematic spots; you can then consider refining them (e.g., via energy minimization or rebuilding). &lt;strong>Tip:&lt;/strong> If MolProbity reports many clashes or poor geometry in a high-pLDDT region, that’s a red flag – the model might be locally strained, and further investigation is needed.&lt;/li>
+&lt;li>&lt;strong>PROCHECK&lt;/strong> – A classic tool (from 1993) that checks the &lt;strong>stereochemical quality&lt;/strong> of a protein structure​ (16).
+generates a number of outputs, the most famous being the Ramachandran plot. It will tell you what fraction of residues lie in favored, allowed, and disallowed regions of Ramachandran space. It also checks other parameters: peptide bond planarity, bond length deviations, Cβ deviations, and backbone torsion angle quality. In essence, PROCHECK ensures your model’s geometry is within typical bounds seen in crystallographic structures. For an AlphaFold model, you’d like to see the vast majority of residues in the favored regions of the Ramachandran plot (ideally &amp;gt;90% favored, &amp;lt;1% outliers, similar to high-resolution crystal structures). AlphaFold models generally fare well here, especially in well-defined regions, but if you have an outlier, PROCHECK will pinpoint it. You can run PROCHECK via the command-line (it’s part of the CCP4 suite) or conveniently through web servers like PDBsum (which can generate PROCHECK analysis for any uploaded structure)​.&lt;/li>
+&lt;li>&lt;strong>WHAT_CHECK&lt;/strong> – Part of the &lt;strong>WHAT IF&lt;/strong> software suite,
+is an extensive consistency check for protein structures. It examines a wide range of criteria: geometry, van der Waals contacts, environment of residues, and more. For example, it will check if buried polar groups have hydrogen-bonding partners, if side chain torsions are consistent with electron density (for experimental structures), etc. With a predicted model, some checks (like comparison to electron density) don’t apply, but WHAT_CHECK’s geometrical and empirical rules can still flag issues. It’s quite thorough – sometimes producing a long report. If you have access to the WHAT IF web interface or servers, running WHAT_CHECK can complement PROCHECK/MolProbity by catching subtle issues. However, if you’re already using MolProbity and PROCHECK, you may get sufficient info; use WHAT_CHECK if you want an extra layer of scrutiny.&lt;/li>
+&lt;li>&lt;strong>Verify3D&lt;/strong> – A &lt;strong>3D-1D profile&lt;/strong> method that checks &lt;strong>residue environment compatibility&lt;/strong>​ (17). Essentially,
+evaluates each residue in the model to see if its environment (surface vs buried, secondary structure context, etc.) is consistent with what one would expect for that amino acid. It returns a score for each residue and an overall percentage of residues that pass a threshold. Typically, you want a Verify3D result where &amp;gt;80% of residues have a score above the cutoff (0.2 in the original scoring scheme)​ (18). If Verify3D flags certain residues, it means those amino acids are in an environment that is unusual (e.g., a polar residue buried without contacts, or a hydrophobic residue exposed to solvent) – potentially indicating a modeling error or an unusual but real feature. When validating an AlphaFold model, a &lt;strong>low Verify3D percentage (significantly below 80%) is a warning&lt;/strong>. It could be due to a genuine peculiarity of the protein, but often it suggests some regions of the model are not structurally sound. Verify3D is available via the
+server (which bundles several validation tools).&lt;/li>
+&lt;li>&lt;strong>ERRAT&lt;/strong> – A program that analyzes &lt;strong>non-bonded atom-atom interactions&lt;/strong> in the model and identifies regions that deviate from expected patterns​ (19).
+essentially plots a quality score across the protein and gives an overall quality factor (as a percentage). High-quality structures tend to have an ERRAT overall quality score in the high 80s or 90s (out of 100), whereas a significantly lower score might indicate problems. For example, an ERRAT score of ~79% (as seen in some homology models) is marginal, and one would try to improve the model (20). ERRAT is also available via the UCLA SAVES server. If ERRAT flags a specific region (say residues 50–60) as problematic, that region likely has odd interatomic distances (perhaps a mis-packed helix or something). Cross-check such regions with what pLDDT said – often they coincide with low pLDDT stretches.&lt;/li>
+&lt;li>&lt;strong>SwissModel Structure Assessment (QMEAN)&lt;/strong> – The
+server provides a &lt;strong>model quality assessment&lt;/strong> tool that includes the QMEAN scoring function. &lt;strong>QMEAN&lt;/strong> (Qualitative Model Energy ANalysis) is a composite score evaluating various geometrical aspects (e.g., torsion angles, solvation, secondary structure packing) to estimate how “protein-like” a model is​ (21). When you submit a model to SwissModel’s Assessment, you receive a QMEAN score and a &lt;strong>QMEAN Z-score&lt;/strong> which compares your model to a baseline of experimental structures of similar size. A QMEAN Z-score around 0 is good (meaning your model is in the range of normal structures); a score significantly below -4.0 indicates a model of low quality (likely incorrect)​ (22). QMEAN also provides per-residue scores, so you can see which regions contribute to lowering the score. For AlphaFold models, QMEAN often yields scores consistent with high accuracy for high-pLDDT regions, but may penalize the low-confidence regions. Use this as an overall “sanity check” – if even QMEAN (which is trained on typical protein statistics) finds your entire model to be an outlier, you should be cautious. SwissModel will also report other descriptors like predicted secondary structure vs model secondary structure agreement, and possible buriedness mismatches.&lt;/li>
+&lt;/ul>
+&lt;p>All these tools provide &lt;strong>complementary views of model quality&lt;/strong>. In practice, you don’t have to use every single one for every model; but it’s wise to use at least one geometry-focused tool (MolProbity/PROCHECK) and one environment-focused tool (Verify3D/ERRAT/QMEAN). Many of these can be run easily via web servers. For instance, the &lt;strong>UCLA SAVES&lt;/strong> web server allows you to upload a PDB and get results from PROCHECK, Verify3D, and ERRAT together. MolProbity has its own web server (as part of Phenix or standalone). SwissModel’s assessment is another one-stop option for QMEAN and additional analyses.&lt;/p>
+&lt;p>When you get the results, pay attention to consistent signals: e.g., if &lt;strong>MolProbity and PROCHECK both say the same residue is an outlier&lt;/strong> (bad geometry) and &lt;strong>Verify3D also flags that region&lt;/strong>, that part of the model is definitely suspect. You might then decide to remodel that segment or simply note that it’s unreliable. On the other hand, if all tools give you largely clean reports (few clashes, good Ramachandran stats, high Verify3D percentage, high ERRAT score), you can be more confident the model is reasonable.&lt;/p>
+&lt;h2 id="comparison-with-experimental-structures">Comparison with Experimental Structures&lt;/h2>
+&lt;p>If a related experimental structure is available, comparing your AlphaFold model to it is one of the most telling validations. Such comparisons can &lt;strong>quantify the accuracy&lt;/strong> of the prediction and highlight any differences that might be important.&lt;/p>
+&lt;p>&lt;strong>Finding a reference structure:&lt;/strong> First, determine if the same protein (or a homolog with significant sequence identity) has a known structure in the Protein Data Bank (PDB). You might have done this prior to running AlphaFold, but it’s worth doing a BLAST or HHPred search of your sequence against PDB. Even if an exact match isn’t found, perhaps a homologous domain or a partial structure exists. Any high-resolution structure (X-ray, cryo-EM, NMR) of a similar sequence can serve as a reference to validate fold correctness.&lt;/p>
+&lt;p>&lt;strong>Structural alignment tools:&lt;/strong> To compare the 3D structures, you can use alignment programs like &lt;strong>TM-align&lt;/strong> or built-in tools in PyMOL/Chimera.&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>TM-align&lt;/strong> – A command-line tool that superimposes two protein structures and calculates the TM-score and RMSD. The &lt;strong>TM-score&lt;/strong> is particularly useful; it ranges from 0 to 1, where 1 indicates an identical structure. Importantly, TM-score is designed to be length-independent and sensitive to overall fold​ (23,24). A TM-score &amp;gt; 0.5 generally indicates the two structures share the same fold​ (25) (and &amp;gt;0.9 would mean almost identical). Scores &amp;lt; 0.2 indicate essentially unrelated structures (random similarity) (26). RMSD (root-mean-square deviation) in Å is also output, but RMSD can be misleading for large proteins or ones with flexible termini, so TM-score is the better metric for global accuracy. To use TM-align, download it from the Zhang Lab website and run it on your model and the reference PDB:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl"># Example usage of TM-align
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">TMalign model.pdb reference.pdb &amp;gt; tmalign_output.txt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The output will list aligned length, RMSD, and TM-scores. Check the TM-score first. For instance, if you get TM-score = 0.65, that’s a strong confirmation the fold is correct (assuming the reference covers the full length). You might also get a per-residue alignment which can identify where differences occur (e.g., a loop in the model that deviates from the crystal structure).&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>PyMOL or Chimera(X) alignment&lt;/strong> – In PyMOL, you can use the align or cealign commands to superimpose two structures (if sequences are identical or very similar, a straightforward align model, reference works; for more distantly related, PyMOL’s built-in alignment might struggle, so TM-align is better). UCSF Chimera has a tool called MatchMaker which can align structures based on sequences and secondary structure. After superposition, you can visually inspect differences and also measure RMSD over aligned regions. Look at the &lt;strong>alpha carbon trace&lt;/strong>: do the helices and strands overlap well? Are there specific regions where the model deviates? Often, you’ll find that high-pLDDT regions of the AlphaFold model align closely with the experimental structure (perhaps within 1–2 Å RMSD), whereas low-confidence loops might be displaced or completely different (AlphaFold might have modeled a loop arbitrarily if there was no template or signal for it).&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Interpreting differences:&lt;/strong> If your model aligns well (high TM-score, low RMSD) with an experimental structure, that’s great validation. Minor differences in side chain conformations are expected and not usually concerning, especially if the experimental structure was determined at moderate resolution or is in a different environment (AlphaFold predictions are effectively in isolation, whereas a crystal structure might have bound ligands or lattice contacts that shift things). Focus on larger deviations:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Domain shifts:&lt;/strong> Perhaps the model predicted a closed conformation whereas the crystal is open (or vice versa). Check the PAE from AlphaFold; it might have indicated uncertainty between domains, and indeed the experimental structure shows a different orientation. This doesn’t mean the model is “wrong” per se, but that the protein might be dynamic or the model chose one plausible state. You might then need to verify which state is relevant biologically (through experiments or further modeling).&lt;/li>
+&lt;li>&lt;strong>Loop conformations:&lt;/strong> A common scenario is that AlphaFold modeled a loop one way (especially if low confidence, it might even be a nonsense loop), and the crystal structure shows a different loop conformation. If the loop is functionally important (e.g., part of an active site), you’d want to trust the experimental structure more. If it’s surface-exposed, it might be flexible in reality; AlphaFold’s guess is just one of many conformations it could take. In such cases, don’t over-interpret that part of the model.&lt;/li>
+&lt;li>&lt;strong>Secondary structure errors:&lt;/strong> Rarely, AlphaFold might predict a helix where the actual structure has a strand, or vice versa. This usually happens in lower confidence regions or if the sequence had an unusual pattern. If you find such a discrepancy, that region of the model is likely incorrect. Use the experimental structure’s assignment as the truth. It’s worth noting if the pLDDT was low there (likely yes); AlphaFold was unsure and picked one possibility. Knowing the correct secondary structure, you might rebuild that segment or simply note the model’s limitation.&lt;/li>
+&lt;/ul>
+&lt;p>If no experimental structure is available for the exact protein, you can still do &lt;strong>remote validations&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Align the model to the closest known structure (even if only part of it aligns). For example, maybe one domain matches a known protein family structure. Validate that portion: a good alignment (say TM-score &amp;gt;0.5 for that domain) gives confidence that domain is correct. The other parts of your model that have no benchmark will rely on the internal metrics and other validations we discuss.&lt;/li>
+&lt;li>Use multiple structure prediction approaches and compare (e.g., if there’s an older homology model or a Rosetta model for the protein). Consistency between different models can be somewhat validating, though remember they might all be wrong in the same way if based on the same inputs. Still, if AlphaFold and, say, Rosetta both produce a similar fold for a novel protein, that convergence is encouraging.&lt;/li>
+&lt;/ul>
+&lt;p>Overall, &lt;strong>structural comparison is the gold standard&lt;/strong> when you have an experimental reference. It can confirm that AlphaFold got it right, or pinpoint exactly where it differs. In favorable cases (AlphaFold’s high-accuracy predictions), you might find your model is virtually identical to the crystal structure of a homolog, with perhaps a TM-score ~0.9 and main-chain RMSD ~1 Å​. That level of agreement would give you great confidence moving forward. On the other hand, if the model and experiment differ significantly (low TM-score), you should trust the experiment more and treat the model with skepticism, using it only for qualitative insights in regions that do align well.&lt;/p>
+&lt;h2 id="functional-validation-ligand-binding-and-dynamics">Functional Validation: Ligand Binding and Dynamics&lt;/h2>
+&lt;p>The ultimate purpose of a protein structure is often to investigate function: how it binds to a ligand, catalyzes a reaction, or interacts with other molecules. Thus, validating an AlphaFold model also involves asking: &lt;em>Does this structure make sense functionally?&lt;/em> There are a few approaches to explore this:&lt;/p>
+&lt;p>&lt;strong>1. Checking Binding Sites and Docking Ligands:&lt;/strong> If your protein is known (or suspected) to bind a small-molecule ligand, cofactor, or substrate, examine the predicted structure for the binding site. AlphaFold might not explicitly indicate pockets, but you can use tools or visual cues:&lt;/p>
+&lt;ul>
+&lt;li>Use a pocket detection tool like &lt;strong>CASTp&lt;/strong> or &lt;strong>Fpocket&lt;/strong> to identify cavities on the model. These tools will list pockets by volume and residues lining them. Check if a known active site corresponds to one of the top pockets.&lt;/li>
+&lt;li>If you have a known ligand (say, the substrate of an enzyme or a cofactor like NADH), try &lt;strong>docking&lt;/strong> it into the model. Software like &lt;strong>AutoDock Vina&lt;/strong> (open source) or &lt;strong>SwissDock&lt;/strong>, &lt;strong>Glide&lt;/strong> (commercial) can take your model (treated as the receptor) and the ligand structure and attempt to find plausible binding poses. Before docking, prepare the protein: add hydrogens (especially if using AutoDock, you’d prepare a PDBQT file with charges), and consider making the protein rigid for the initial docking. A successful dock would show the ligand fitting well into a pocket, with key interactions (hydrogen bonds to the right residues, hydrophobics nestled in hydrophobic patches, etc.) similar to what you’d expect. If docking suggests a reasonable pose and binding energy, it &lt;strong>supports the validity of the binding site conformation&lt;/strong> in the model. If the ligand cannot dock or only docks in a bizarre way (or with a very poor score), that might indicate the binding site in the model is not accurately formed. Perhaps a side chain that should move is blocking the pocket, or a loop is mis-modeled.&lt;/li>
+&lt;li>For enzymes, check the geometry of catalytic residues. Do they form the correct arrangement? For example, a catalytic triad (Ser-His-Asp) should be in the right orientation to form hydrogen bonds. If the model’s active site residues are far apart or oriented incorrectly, the model might represent an inactive conformation, or it might be wrong in that region. Sometimes, energy-minimizing that region or running a short MD (see below) can relax the structure into a more favorable active-site geometry.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>2. Protein-Protein Interactions:&lt;/strong> If your protein’s function involves other macromolecules (another protein, DNA/RNA, etc.), consider validating those interfaces. AlphaFold-Multimer (a version of AlphaFold for complexes) might predict complexes, but if you only have a monomeric model, you can still simulate docking:&lt;/p>
+&lt;ul>
+&lt;li>Use a protein-protein docking server (e.g., &lt;strong>HADDOCK&lt;/strong> or &lt;strong>ClusPro&lt;/strong>) to see if your model can interact with its partner in a way that’s consistent with known data. This is more advanced, but if an interface is known experimentally (like mutagenesis showed certain residues are important), check if those residues are surface-exposed and clustered, as they should be if an interface is there.&lt;/li>
+&lt;li>If the model is of a single chain that normally oligomerizes (dimer, etc.), you might superpose multiple copies or use symmetry to see if a plausible dimer can form. Again, low PAE between chains in an AlphaFold-Multimer prediction would signal a confident multimer interface​ (27), but for a single-chain prediction you have to manually inspect.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>3. Molecular Dynamics (MD) Simulations:&lt;/strong> This is a powerful way to &lt;strong>test the stability&lt;/strong> of the predicted structure and to possibly refine it. In MD, you treat the model with physical force fields and see if it holds up under simulation (e.g., in water at 300 K). MD can reveal if the structure wants to &lt;strong>unfold or change&lt;/strong> and can also relieve any residual strain by nudging the model into a more favorable state.&lt;/p>
+&lt;p>Common MD packages include &lt;strong>GROMACS&lt;/strong> (free, open-source), &lt;strong>AMBER&lt;/strong> (academic, partly free tools), and &lt;strong>NAMD&lt;/strong> (free, optimized for large systems). An example workflow using GROMACS will be covered in another blog post.&lt;/p>
+&lt;p>During the simulation, monitor:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>RMSD over time:&lt;/strong> Does the protein rapidly drift away from the starting structure, or does it stabilize? A stable RMSD (plateauing after some fluctuation) suggests the structure is in a favourable energy well (likely a correct fold). If RMSD keeps increasing or the protein partially unfolds, that indicates the model had instabilities (perhaps that region was incorrect or inherently flexible).&lt;/li>
+&lt;li>&lt;strong>Secondary structure retention:&lt;/strong> You can use tools (like DSSP on each frame) to see if helices and strands remain intact. If a predicted helix quickly unravels in MD, maybe that segment wasn’t truly helical.&lt;/li>
+&lt;li>&lt;strong>Key interactions:&lt;/strong> Check if critical hydrogen bonds or salt bridges persist. For example, if the model suggested a salt bridge that’s important for stability, does MD maintain it or does it break?&lt;/li>
+&lt;li>&lt;strong>Refinement:&lt;/strong> MD often causes side chains to adjust, sometimes resolving minor clashes automatically. You might take an &lt;strong>average or low-energy structure from the simulation&lt;/strong> as a refined model. Many researchers use short MD refinement to improve homology models​ (28); the same can be done for AlphaFold models, especially to relax strained loops. As one approach, you could restrain the well-defined parts of the structure (to prevent them from moving too much) and let a loop of interest move freely; this can relieve local strain​ (28).&lt;/li>
+&lt;/ul>
+&lt;p>MD simulation essentially serves as a &lt;strong>reality check&lt;/strong>: AlphaFold’s neural network prediction isn’t guaranteed to be at an energy minimum. If the model is good, it should withstand simulation in a realistic environment. If it’s not, you might see it start to collapse or drift, which tells you that at least some interactions in the model were not favorable. Of course, MD itself is an approximation (dependent on the force field, etc.), but it’s a well-established method to refine and validate structures.&lt;/p>
+&lt;p>&lt;strong>After MD analysis:&lt;/strong> If the structure proved stable, you gain confidence. You might also use the MD trajectory to estimate the flexibility of different regions (e.g., high B-factor regions in a crystal often correspond to mobile loops in MD). If the structure was unstable, identify what broke down: was it the interface between two domains? Was it a particular loop that kept swinging out? This can pinpoint the weak spots of the model that might need revision or cautious interpretation.&lt;/p>
+&lt;p>Lastly, &lt;strong>tie back to experiments whenever possible&lt;/strong>. If you have biochemical data (e.g., mutation effects, binding assays), see if the model’s features align with them. For example, if a mutation is known to disrupt function and your model places that residue in the core of the active site, that’s consistent and supports the model. If instead the model has that residue on the surface away from any obvious functional site, maybe the model is missing something (like maybe it’s actually part of a protein-protein interface that wasn’t modeled).&lt;/p>
+&lt;p>By this point, you have examined the model from every angle: intrinsic confidence (AlphaFold metrics), overall geometry and quality (validation tools), comparison to known structures, and functional plausibility (docking, pockets, MD). Based on all these, you can form a judgment on how &lt;strong>reliable each part of the model is&lt;/strong>. It’s often useful to summarize this in a &lt;strong>table or checklist&lt;/strong>, as we do below.&lt;/p>
+&lt;h2 id="summary-of-validation-steps">Summary of Validation Steps&lt;/h2>
+&lt;p>The following table summarizes key validation steps for an AlphaFold model and why each step is important:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;strong>Validation Step&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Purpose and Importance&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;strong>AlphaFold Confidence (pLDDT &amp;amp; PAE)&lt;/strong>&lt;/td>
+&lt;td>Identify which regions of the model are predicted with high confidence and which are uncertain. pLDDT highlights local reliability (e.g., core vs. floppy tail) and PAE indicates confidence in domain orientation​ (29). This guides where to focus further validation: low pLDDT or high PAE regions are likely error-prone or flexible.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Visual Inspection (PyMOL/ChimeraX/Mol)&lt;/strong>&lt;/td>
+&lt;td>Catch obvious structural anomalies and get an intuitive feel for the model. By coloring the structure by confidence and examining secondary structure, one can see if the fold makes sense. Visual checks can reveal steric clashes, weird loops, or missing pockets early on. It’s a simple sanity check before delving into metrics.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Geometric Validation (MolProbity, PROCHECK, WHAT_CHECK)&lt;/strong>&lt;/td>
+&lt;td>Ensure the model’s geometry is physically plausible. These tools check bond lengths, angles, dihedral angles (Ramachandran plot) and detect atomic clashes​ (29). Good geometry (few outliers, low clashscore) means the model is stereochemically sound, while many violations indicate errors or regions that may need refinement.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Residue Environment Validation (Verify3D, ERRAT, QMEAN)&lt;/strong>&lt;/td>
+&lt;td>Assess whether each residue is in a realistic environment and the model has protein-like statistical features. Verify3D and ERRAT compare the structure to empirical rules derived from real proteins​ (19). A high Verify3D score or ERRAT quality factor, and a QMEAN Z-score near 0, suggest the model is globally consistent with known protein structures. Poor scores flag unlikely regions (e.g., a hydrophobic residue exposed, or an odd packing) for further scrutiny.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Comparison to Known Structures (TM-align, structural superposition)&lt;/strong>&lt;/td>
+&lt;td>Quantify accuracy by comparing to experimental data. If a PDB structure exists, a high TM-score (≈0.5–1.0) and low RMSD confirm the model’s correctness​. Even partial matches validate domains or motifs. Discrepancies pinpoint specific errors or alternative conformations. This step effectively benchmarks the model against reality.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Functional Site Check (Docking &amp;amp; Pockets)&lt;/strong>&lt;/td>
+&lt;td>Verify that the model supports the protein’s known function. Checking for expected pockets and docking ligands tests if the active or binding site is correctly formed. Successful docking (reasonable poses &amp;amp; scores) means the geometry allows the interaction, while failures could mean the site is modeled incorrectly. This links structure to biochemical function, an essential validation for usability in studies (e.g., drug design).&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Molecular Dynamics Simulation (GROMACS/AMBER/NAMD)&lt;/strong>&lt;/td>
+&lt;td>Test the model’s stability and refine it in a physics-based environment. A stable trajectory (little deviation) indicates the model sits in an energy minimum (likely correct fold), whereas structural unraveling signals problems. MD can also relieve minor clashes and adjust the model to be more realistic. In sum, MD validation ensures the model’s behavior is consistent with a real protein in solvent over time.&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>Each step adds evidence for or against specific parts of the model. After working through the checklist, you should have a clear view of which regions can be trusted, which should be treated as hypotheses, and where experimental data or further modeling is needed. Not every step is required for every use case, but skipping validation entirely risks drawing conclusions from regions that AlphaFold got wrong.&lt;/p>
+&lt;h2 id="references">References&lt;/h2>
+&lt;p>1- Jumper, J., Evans, R., Pritzel, A., et al. (2021). Highly accurate protein structure prediction with AlphaFold. &lt;em>Nature&lt;/em>, 596(7873), 583–589.
+&lt;/p>
+&lt;p>2- European Bioinformatics Institute. (n.d.). &lt;em>pLDDT: Understanding local confidence&lt;/em>.
+&lt;/p>
+&lt;p>3- European Bioinformatics Institute. (n.d.). &lt;em>pLDDT measures confidence in the predicted position of residues&lt;/em>.
+&lt;/p>
+&lt;p>4- Jumper et al., 2021 – (lDDT, pLDDT also reflects local geometry)
+&lt;/p>
+&lt;p>5- European Bioinformatics Institute. (n.d.). &lt;em>Predicted aligned error (PAE) – Explanation&lt;/em>.
+&lt;/p>
+&lt;p>6- European Bioinformatics Institute. (n.d.). &lt;em>Low PAE score implies confident relative positions&lt;/em>.
+&lt;/p>
+&lt;p>7- European Bioinformatics Institute. (n.d.). &lt;em>PAE visualisation explanation&lt;/em>.
+&lt;/p>
+&lt;p>8- EBI (n.d.). &lt;em>Image: Figure 18 – PAE plot&lt;/em>.
+&lt;/p>
+&lt;p>9- EBI (n.d.). &lt;em>Explanation of diagonal PAE plot&lt;/em>.
+&lt;/p>
+&lt;p>10- EBI (n.d.). &lt;em>Comparison of pLDDT and PAE&lt;/em>.
+&lt;/p>
+&lt;p>11- Jumper et al., 2021 – (residue confidence metric pLDDT)
+&lt;/p>
+&lt;p>12- EBI (n.d.). &lt;em>How to view PAE plots in structure viewer&lt;/em>.
+&lt;/p>
+&lt;p>13- Chen, V. B., Arendall, W. B., Headd, J. J., et al. (2010). MolProbity: All-atom structure validation for macromolecular crystallography. &lt;em>Acta Crystallographica Section D: Biological Crystallography&lt;/em>, 66(1), 12–21.
+&lt;/p>
+&lt;p>14- Chen et al., 2010 – (integration with other resources)
+&lt;/p>
+&lt;p>15- Laskowski, R. A., MacArthur, M. W., Moss, D. S., &amp;amp; Thornton, J. M. (1993). PROCHECK: A program to check the stereochemical quality of protein structures. &lt;em>Journal of Applied Crystallography&lt;/em>, 26(2), 283–291.
+&lt;/p>
+&lt;p>16- EBI (n.d.). &lt;em>PROCHECK hand menu image&lt;/em>.
+&lt;/p>
+&lt;p>17- SAVES. (n.d.). &lt;em>VERIFY 3D&lt;/em>.
+&lt;/p>
+&lt;p>18- ResearchGate. (n.d.). &lt;em>Interpreting ERRAT, Verify3D and PROCHECK scores&lt;/em>.
+&lt;/p>
+&lt;p>19- SAVES. (n.d.). &lt;em>ERRAT&lt;/em>.
+&lt;/p>
+&lt;p>20- BioStars. (n.d.). &lt;em>Verify3D result discussion&lt;/em>.
+&lt;/p>
+&lt;p>21- Benkert, P., Tosatto, S. C., &amp;amp; Schwede, T. (2009). QMEAN: A comprehensive scoring function for model quality assessment. &lt;em>Proteins: Structure, Function, and Bioinformatics&lt;/em>, 71(1), 261–277.
+&lt;/p>
+&lt;p>22- Bonvin Lab. (n.d.). &lt;em>QMEAN Z-score&lt;/em>.
+&lt;/p>
+&lt;p>23- Zhang, Y., &amp;amp; Skolnick, J. (2005). TM-align: A protein structure alignment algorithm based on the TM-score. &lt;em>Nucleic Acids Research&lt;/em>, 33(7), 2302–2309.
+&lt;/p>
+&lt;p>24- ZhangGroup. (n.d.). &lt;em>TM-score info&lt;/em>.
+&lt;/p>
+&lt;p>25- Varadi, M., Anyango, S., Deshpande, M., et al. (2022). AlphaFold Protein Structure Database: Massively expanding the structural coverage of protein-sequence space with high-accuracy models. &lt;em>Nucleic Acids Research&lt;/em>, 50(D1), D439–D444.
+&lt;/p>
+&lt;p>26- EBI (n.d.). &lt;em>Residue confidence within structure prediction&lt;/em>.
+&lt;/p>
+&lt;p>27- EBI (n.d.). &lt;em>pLDDT: More accurate structures&lt;/em>.
+&lt;/p>
+&lt;p>28- BioStars. (n.d.). &lt;em>Simulations and MD prep&lt;/em>.
+&lt;/p>
+&lt;p>29- Jumper et al., 2021 – (Predicted Aligned Error detail)
+&lt;/p>
+&lt;p>30- EBI (n.d.). &lt;em>PAE score importance for AlphaFold ID&lt;/em>.
+&lt;/p></description></item></channel></rss>

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Quantum Chemistry | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/quantum-chemistry/</link><atom:link href="https://yboulaamane.github.io/tags/quantum-chemistry/index.xml" rel="self" type="application/rss+xml"/><description>Quantum Chemistry</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 07 Jul 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Quantum Chemistry</title><link>https://yboulaamane.github.io/tags/quantum-chemistry/</link></image><item><title>What Can ORCA Tell Us About a Drug Molecule? A Practical Quantum Chemistry Guide</title><link>https://yboulaamane.github.io/blog/what-can-orca-tell-us-about-a-drug-molecule/</link><pubDate>Tue, 07 Jul 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/what-can-orca-tell-us-about-a-drug-molecule/</guid><description>&lt;p>ORCA reports the electrons of a ligand. A docking pose and a dynamics trajectory do not. The useful step is matching the calculation to the question: geometry, charge distribution, an orbital energy, a redox difference, or a spectrum. A number from the wrong job does not become a binding affinity.&lt;/p>
+&lt;p>
+is the electronic-structure package used for that job. Version 6.0, released in July 2024, is the rewrite described by Neese [1]. The method-choice note on this site,
+, still applies to every input below.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 168" role="img" aria-labelledby="orca-flow-title orca-flow-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="orca-flow-title">From a conformer ensemble to an electronic property&lt;/title>
+&lt;desc id="orca-flow-desc">GOAT builds a conformer ensemble, a DFT calculation optimizes geometry and energy, property jobs produce electrostatic potentials, orbitals and spectra, and the last step reads those numbers against a stated chemical question.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-orca-flow" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="16" y="36" width="150" height="96" rx="14" fill="#2f80ed" fill-opacity="0.12" stroke="#2f80ed"/>
+&lt;path d="M166 84 H186" marker-end="url(#arrow-orca-flow)" stroke="currentColor"/>
+&lt;rect x="196" y="36" width="150" height="96" rx="14" fill="#27ae60" fill-opacity="0.12" stroke="#27ae60"/>
+&lt;path d="M346 84 H366" marker-end="url(#arrow-orca-flow)" stroke="currentColor"/>
+&lt;rect x="376" y="36" width="150" height="96" rx="14" fill="#f2994a" fill-opacity="0.12" stroke="#f2994a"/>
+&lt;path d="M526 84 H546" marker-end="url(#arrow-orca-flow)" stroke="currentColor"/>
+&lt;rect x="556" y="36" width="150" height="96" rx="14" fill="#9b51e0" fill-opacity="0.12" stroke="#9b51e0"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="91" y="78" font-size="16" font-weight="700">GOAT&lt;/text>
+&lt;text x="91" y="102" font-size="13">Conformer ensemble&lt;/text>
+&lt;text x="271" y="78" font-size="16" font-weight="700">DFT&lt;/text>
+&lt;text x="271" y="102" font-size="13">Geometry and energy&lt;/text>
+&lt;text x="451" y="78" font-size="16" font-weight="700">Properties&lt;/text>
+&lt;text x="451" y="102" font-size="13">MEP, orbitals, spectra&lt;/text>
+&lt;text x="631" y="78" font-size="16" font-weight="700">The question&lt;/text>
+&lt;text x="631" y="102" font-size="13">Read the number&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Each box is a different calculation. The ensemble, the energy, and a property are not interchangeable outputs.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="start-with-the-conformers">Start with the conformers&lt;/h2>
+&lt;p>A flexible ligand is a population of structures. Bond rotation and intramolecular hydrogen bonds move both the energy and the electronic properties. A gap or a dipole computed on one arbitrary conformer describes that conformer.&lt;/p>
+&lt;p>ORCA 6 includes GOAT, a global optimization algorithm for molecules and clusters [2]. The manual documents the keyword as &lt;code>! GOAT&lt;/code>, used together with a method. The search runs many geometry optimizations, so the method has to be a fast one [3]. Structures are kept along the way, which means the result is an ensemble with relative energies, not a single optimized geometry [2], [3].&lt;/p>
+&lt;p>At temperature $T$, a Boltzmann weight of conformer $i$ is&lt;/p>
+$$
+p_i=\frac{e^{-\Delta G_i/(RT)}}{\sum_j e^{-\Delta G_j/(RT)}}.
+$$&lt;p>The exponent takes a relative free energy. An electronic energy difference is not that free energy, and a gas-phase ranking is not the population in solution. For a flexible ligand, report the low-energy set and the weights, and say which energy was used to compute them.&lt;/p>
+&lt;h2 id="what-the-method-line-is-doing">What the method line is doing&lt;/h2>
+&lt;p>A label such as B3LYP-D3(BJ)/def2-TZVP is three decisions written as one string.&lt;/p>
+&lt;ul>
+&lt;li>B3LYP is a hybrid functional. It approximates exchange and correlation. It is not a universal choice for barriers, metal complexes, charge-transfer states, or redox potentials.&lt;/li>
+&lt;li>D3(BJ) is Grimme&amp;rsquo;s D3 dispersion correction with Becke–Johnson damping. Without a dispersion correction, noncovalent contacts and some conformer preferences sit on the wrong surface.&lt;/li>
+&lt;li>def2-TZVP is a triple-zeta valence basis with polarization. It gives the orbitals more flexibility than a minimal or double-zeta basis.&lt;/li>
+&lt;/ul>
+&lt;p>A geometry optimization plus a harmonic frequency job, with the charge and multiplicity still to be set, looks like this:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">! B3LYP D3BJ def2-TZVP Opt Freq TightSCF
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">* xyz 0 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ... atomic coordinates ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">*
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The &lt;code>0 1&lt;/code> is charge and multiplicity for a neutral closed-shell example. Both have to match the molecule in the coordinate block, and the coordinate block has to be a real structure. Harmonic frequencies then check the stationary point: a local minimum on that surface has no imaginary mode. Zero imaginary modes do not mean the structure is the global minimum. That is the conformer search.&lt;/p>
+&lt;p>This keyword line is a way to read an input. It is not the production default argued in the
+. That note&amp;rsquo;s objection to the old default is the missing dispersion and the small basis. D3(BJ) and a triple-zeta basis answer those two objections. They do not make B3LYP the right functional for every property. If the experiment was run in solution, the gas-phase number can dominate the error. ORCA 6 documents CPCM and an analytic SMD Hessian for implicit solvent [1]. The same note names SMD and COSMO-RS when the data are solution data.&lt;/p>
+&lt;h2 id="electrostatic-potential-is-a-map-not-an-affinity">Electrostatic potential is a map, not an affinity&lt;/h2>
+&lt;p>A molecular electrostatic potential (MEP) is the potential from the nuclei and the electrons, usually drawn on an electron-density isosurface. Electron-rich regions and electron-poor regions are then visible on one picture, which is a way to talk about electrostatic complementarity with a partner.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 230" role="img" aria-labelledby="orca-mep-title orca-mep-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="orca-mep-title">Illustrative electrostatic-potential coloring&lt;/title>
+&lt;desc id="orca-mep-desc">A schematic molecular surface colored from red, marked as electron-rich and negative, to blue, marked as electron-poor and positive. The drawing is not a computed ORCA surface.&lt;/desc>
+&lt;defs>
+&lt;linearGradient id="orca-mep" x1="0" x2="1">
+&lt;stop offset="0" stop-color="#e85a5a"/>
+&lt;stop offset="0.5" stop-color="#f0dc87"/>
+&lt;stop offset="1" stop-color="#3d7fd6"/>
+&lt;/linearGradient>
+&lt;/defs>
+&lt;path d="M250 118c-24-62 52-98 110-58 45-48 114-10 116 33 78-13 106 74 42 95-51 19-76-10-118-1-64 22-104-8-150-69Z" fill="url(#orca-mep)" stroke="currentColor" stroke-opacity="0.45" stroke-width="1.5"/>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="36" y="78" font-size="15" font-weight="700">Electron-rich&lt;/text>
+&lt;text x="36" y="100" font-size="13">Negative potential&lt;/text>
+&lt;text x="560" y="78" font-size="15" font-weight="700">Electron-poor&lt;/text>
+&lt;text x="560" y="100" font-size="13">Positive potential&lt;/text>
+&lt;/g>
+&lt;g fill="none" stroke="currentColor" stroke-width="1.5">
+&lt;path d="M148 112h78"/>
+&lt;path d="M520 112h-70"/>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> Coloring convention used in this drawing: red is negative potential, blue is positive. The shape is illustrative. It is not an ORCA surface.&lt;/figcaption>
+&lt;/figure>
+&lt;p>An MEP can suggest where a hydrogen-bond donor or a cation would sit if electrostatics dominated. Solvation, desolvation, steric fit, protein motion, and entropy are still outside the picture. The map does not assign a binding affinity.&lt;/p>
+&lt;h2 id="orbital-gaps-are-descriptors">Orbital gaps are descriptors&lt;/h2>
+&lt;p>The highest occupied and lowest unoccupied Kohn–Sham orbitals, HOMO and LUMO, are a compact picture of where the density can donate or accept an electron, and of which regions a low-lying excitation might involve. The gap drawn between them is&lt;/p>
+$$
+\Delta\varepsilon=\varepsilon_{\mathrm{LUMO}}-\varepsilon_{\mathrm{HOMO}}.
+$$&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 720 210" role="img" aria-labelledby="orca-gap-title orca-gap-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="orca-gap-title">Schematic HOMO and LUMO levels&lt;/title>
+&lt;desc id="orca-gap-desc">Two horizontal levels. The lower level is the HOMO and the upper level is the LUMO. A vertical arrow between them is the orbital gap, the LUMO energy minus the HOMO energy. The drawing is not an experimental excitation energy.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-orca-gap" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;path d="M180 150h220" stroke="#27ae60" stroke-width="5" stroke-linecap="round"/>
+&lt;path d="M180 62h220" stroke="#f2994a" stroke-width="5" stroke-linecap="round"/>
+&lt;path d="M430 142V74" marker-end="url(#arrow-orca-gap)" stroke="currentColor" stroke-width="2" fill="none"/>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="48" y="68" font-size="16" font-weight="700">LUMO&lt;/text>
+&lt;text x="48" y="156" font-size="16" font-weight="700">HOMO&lt;/text>
+&lt;text x="460" y="100" font-size="16" font-weight="700">Orbital gap&lt;/text>
+&lt;text x="460" y="124" font-size="14">LUMO energy minus HOMO energy&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 3.&lt;/strong> Schematic Kohn–Sham levels. The gap is an orbital-energy difference, not a measured excitation energy.&lt;/figcaption>
+&lt;/figure>
+&lt;p>A smaller gap is sometimes read as &amp;ldquo;more reactive.&amp;rdquo; That reading skips the reaction. A Kohn–Sham gap is not, in general, an optical excitation energy, a fundamental gap, or a potency. The reaction and the experiment decide what the number means.&lt;/p>
+&lt;p>Conceptual DFT sometimes compresses the same idea into electronegativity $\chi$, hardness $\eta$, and electrophilicity $\omega$, estimated from an ionization energy $I$ and an electron affinity $A$:&lt;/p>
+$$
+\chi\approx\frac{I+A}{2},\qquad
+\eta\approx\frac{I-A}{2},\qquad
+\omega\approx\frac{\chi^{2}}{2\eta}.
+$$&lt;p>For a number you intend to compare, take $I$ and $A$ from total-energy differences of the charge states, a $\Delta$SCF calculation, and state whether the geometry was frozen (vertical) or relaxed (adiabatic). Substituting raw orbital energies for $I$ and $A$ is a further approximation, and it should be labeled as one.&lt;/p>
+&lt;h2 id="redox-is-a-difference-of-states">Redox is a difference of states&lt;/h2>
+&lt;p>Oxidation and reduction matter for metabolism, electron transfer, and some toxicity paths. ORCA can compute the charge states. An oxidation free energy is the free-energy difference between the oxidized species and the reduced species. Turning that difference into a potential also needs a reference electrode and a solvation treatment that are the same for every molecule in the comparison.&lt;/p>
+&lt;p>A structural change can make an oxidation more or less costly. That is a well-posed ORCA question. The site of CYP-mediated metabolism is a different question. Enzyme pose, the catalytic barrier, the spin state, and the reactive oxygen species are not encoded in the ligand HOMO.&lt;/p>
+&lt;h2 id="spectra-are-where-the-calculation-meets-a-measurement">Spectra are where the calculation meets a measurement&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Property&lt;/th>
+&lt;th>Typical ORCA job&lt;/th>
+&lt;th>What the comparison can support&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>IR&lt;/td>
+&lt;td>Harmonic frequencies&lt;/td>
+&lt;td>Functional-group assignments, after the harmonic approximation is remembered&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>UV–Vis&lt;/td>
+&lt;td>TD-DFT excited states&lt;/td>
+&lt;td>Which transitions sit under a band, for that functional and that excited-state character&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>NMR&lt;/td>
+&lt;td>Shielding&lt;/td>
+&lt;td>Shifts, once a reference and, where needed, a conformer average are in place&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Redox&lt;/td>
+&lt;td>Charge-state energies plus solvation&lt;/td>
+&lt;td>Relative ease of oxidation or reduction under the chosen reference&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>Harmonic IR frequencies are commonly scaled. TD-DFT moves with the functional and fails more readily for charge-transfer and double excitations. An NMR shielding is not a chemical shift until it is referenced. None of these jobs replaces the spectrum. They give a candidate assignment.&lt;/p>
+&lt;h2 id="a-fluorine-atom-is-not-a-gap-argument">A fluorine atom is not a gap argument&lt;/h2>
+&lt;p>Take a matched pair in which adding fluorine changes the assay. A smaller HOMO–LUMO gap on the fluoro analogue is not an explanation of the potency. The questions that can actually be calculated are narrower.&lt;/p>
+&lt;ol>
+&lt;li>Did the fluorine change the conformer weights, or the intramolecular hydrogen bond?&lt;/li>
+&lt;li>Did the electrostatic potential move at the contact that is supposed to matter?&lt;/li>
+&lt;li>Did the dipole, the acidity, the solvation free energy, or the oxidation energy move?&lt;/li>
+&lt;li>Do the docked poses and the dynamics trajectories show a different contact, and does a measurement test that contact?&lt;/li>
+&lt;/ol>
+&lt;p>Quantum chemistry describes the ligand. A stronger-binding claim needs the structure, the thermodynamics, and the experiment pointing the same way. The calculation to run is the one that distinguishes those four questions, not the full menu of descriptors followed by a search for a correlation.&lt;/p>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ol>
+&lt;li>Neese F. Software update: the ORCA program system, version 6.0. &lt;em>WIREs Comput Mol Sci&lt;/em> 2025;15:e70019. doi:
+. ORCA 6.0 was released in July 2024.&lt;/li>
+&lt;li>de Souza B. GOAT: a global optimization algorithm for molecules and atomic clusters. &lt;em>Angew Chem Int Ed&lt;/em> 2025;64:e202500393. doi:
+&lt;/li>
+&lt;li>ORCA 6.0 manual, section 6.4, GOAT.
+&lt;/li>
+&lt;/ol></description></item><item><title>Stop Using B3LYP/6-31G*: Critical Pitfalls in Modern DFT Calculations and How to Avoid Them</title><link>https://yboulaamane.github.io/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/</link><pubDate>Thu, 25 Apr 2024 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/stop-using-b3lyp6-31g-a-2022-guide-to-best-practice-dft-protocols/</guid><description>&lt;p>B3LYP/6-31G* still finishes, and the number still looks like chemistry. The failure is systematic: no London dispersion, a small basis, and an error cancellation that happens to land near an experiment often enough to be trusted. The eight pitfalls below are the ones in this note. The recommendations are the ones it names, not a new protocol table.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 440" role="img" aria-labelledby="dftpit-title dftpit-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="dftpit-title">What B3LYP/6-31G* leaves out, and what this note uses instead&lt;/title>
+&lt;desc id="dftpit-desc">The legacy default misses dispersion and suffers basis-set error. Replacements named here are r2SCAN-3c, D3(BJ) or D4, a triple-zeta basis or gCP, Fock exchange for barriers, SMD or COSMO-RS, and a Boltzmann average over conformers.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-dftpit" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="36" y="64" width="200" height="88" rx="14" fill="#9b51e0" fill-opacity="0.12" stroke="#9b51e0"/>
+&lt;path d="M236 108 L268 108" marker-end="url(#arrow-dftpit)" stroke="currentColor"/>
+&lt;rect x="276" y="64" width="328" height="56" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="276" y="132" width="328" height="56" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;rect x="36" y="220" width="568" height="52" rx="12" fill="#f2994a" fill-opacity="0.12" stroke="#f2994a"/>
+&lt;rect x="36" y="284" width="568" height="52" rx="12" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="36" y="348" width="568" height="52" rx="12" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="40" font-size="22" font-weight="700" text-anchor="middle">Do not ship the legacy default&lt;/text>
+&lt;text x="136" y="100" font-size="16" font-weight="700" text-anchor="middle">B3LYP/6-31G*&lt;/text>
+&lt;text x="136" y="126" font-size="14" text-anchor="middle">No dispersion&lt;/text>
+&lt;text x="292" y="98" font-size="16" font-weight="700">r²SCAN-3c&lt;/text>
+&lt;text x="292" y="166" font-size="16" font-weight="700">D3(BJ) or D4, triple-zeta&lt;/text>
+&lt;text x="52" y="252" font-size="16" font-weight="700">Barriers need Fock exchange&lt;/text>
+&lt;text x="52" y="316" font-size="16" font-weight="700">SMD or COSMO-RS when the data are in solution&lt;/text>
+&lt;text x="52" y="380" font-size="16" font-weight="700">Boltzmann-weight the conformers&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> r²SCAN-3c is the composite alternative named for getting off B3LYP/6-31G*. Dispersion is D3(BJ) or D4, or a functional that already has nonlocal correlation. Energetics want a triple-zeta basis, or gCP if the basis has to stay small. Nothing in this drawing is a new numerical recipe.&lt;/figcaption>
+&lt;/figure>
+&lt;p>The argument is from Bursch, Mewes, Hansen, and Grimme, 2022, cited at the end. What follows is the reading in this post.&lt;/p>
+&lt;h2 id="1-b3lyp6-31g-is-not-a-safe-default">1. B3LYP/6-31G* is not a safe default&lt;/h2>
+&lt;p>It was a compromise. It has no explicit London dispersion, and the basis is severe. Those two errors cancel often enough that a reaction energy, a conformer gap, or an intermolecular interaction can look acceptable while sitting outside chemical accuracy.&lt;/p>
+&lt;p>For production work, do not use it. The alternatives named here are r²SCAN-3c, or a dispersion-corrected functional with a basis that fits the property.&lt;/p>
+&lt;h2 id="2-dispersion-is-not-optional">2. Dispersion is not optional&lt;/h2>
+&lt;p>A standard functional has no long-range correlation, so the surface is too repulsive. Noncovalent contacts, conformer equilibria, and binding energies move. Add D3(BJ) or D4, or use a functional with built-in nonlocal correlation. The extra cost is small next to the change in the surface.&lt;/p>
+&lt;h2 id="3-a-small-basis-invents-binding">3. A small basis invents binding&lt;/h2>
+&lt;p>6-31G* has basis set superposition error. Fragments borrow functions from each other and look more stable than they are. That artifact is one way an old protocol agrees with experiment.&lt;/p>
+&lt;p>Use a triple-zeta basis or larger for energies when you can. If you cannot, add a geometric counterpoise correction (gCP), or use a composite method that corrects BSSE by construction.&lt;/p>
+&lt;h2 id="4-one-level-of-theory-is-not-every-property">4. One level of theory is not every property&lt;/h2>
+&lt;p>A method that optimizes geometries can still be bad for a barrier. Use an efficient composite method for the geometry. Use a higher-rung functional and a larger basis for reaction energies and barrier heights.&lt;/p>
+&lt;h2 id="5-barrier-heights-and-self-interaction">5. Barrier heights and self-interaction&lt;/h2>
+&lt;p>Many (meta-)GGA functionals underestimate activation barriers because of self-interaction error. The kinetics and the mechanism both move. Put Fock exchange in the barrier calculation. Range-separated hybrids are the form this note singles out for cutting that error without throwing the rest of the energetics away.&lt;/p>
+&lt;h2 id="6-gas-phase-is-not-the-experiment">6. Gas phase is not the experiment&lt;/h2>
+&lt;p>Polar and charged systems feel this most. If the measurement was in solution, a gas-phase number can dominate the error. SMD and COSMO-RS are the implicit models named here. They are there to go past a pure electrostatic cavity.&lt;/p>
+&lt;h2 id="7-one-conformer-is-not-the-ensemble">7. One conformer is not the ensemble&lt;/h2>
+&lt;p>At room temperature a flexible molecule occupies more than the structure you optimized. Thermodynamics and kinetics computed on that single well are the wrong average. Sample the conformers and Boltzmann-weight the property. Automated tools make that practical for moderately large systems. This note does not name a specific tool.&lt;/p>
+&lt;h2 id="8-matching-one-experiment-is-not-a-validation">8. Matching one experiment is not a validation&lt;/h2>
+&lt;p>Compensating errors, especially from the legacy protocol, produce agreement. Prefer a method that is stable across chemical problems over a method that hit one number.&lt;/p>
+&lt;h2 id="what-changes-in-practice">What changes in practice&lt;/h2>
+&lt;p>The cost does not have to go up for the default to improve. Familiarity is why B3LYP/6-31G* is still the input file. A smooth SCF is not evidence that the functional saw dispersion, that the basis was large enough, or that the conformer you optimized is the one the solution contains.&lt;/p>
+&lt;h2 id="reference">Reference&lt;/h2>
+&lt;p>Bursch, M., Mewes, J.-M., Hansen, A., &amp;amp; Grimme, S. (2022). Best-Practice DFT Protocols for Basic Molecular Computational Chemistry. &lt;em>Angewandte Chemie International Edition&lt;/em>, 61, e202205735.&lt;/p></description></item></channel></rss>

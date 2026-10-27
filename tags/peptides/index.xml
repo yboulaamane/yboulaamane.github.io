@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Peptides | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/peptides/</link><atom:link href="https://yboulaamane.github.io/tags/peptides/index.xml" rel="self" type="application/rss+xml"/><description>Peptides</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Thu, 11 Jun 2026 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Peptides</title><link>https://yboulaamane.github.io/tags/peptides/</link></image><item><title>Peptides, Hype, and Biophysical Reality: A Computational Chemist’s Perspective</title><link>https://yboulaamane.github.io/blog/peptides-hype-and-biophysical-reality-a-computational-chemists-perspective/</link><pubDate>Thu, 11 Jun 2026 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/peptides-hype-and-biophysical-reality-a-computational-chemists-perspective/</guid><description>&lt;p>Scroll through social media or a fitness forum and &lt;strong>peptide&lt;/strong> can sound like a therapeutic category with one shared promise: fat loss, faster recovery, better sleep, or slower aging.&lt;/p>
+&lt;p>Chemically, that makes little sense. A peptide is a molecular format, not an evidence class. Peptides can differ in target, conformation, stability, exposure, formulation, and clinical validation.&lt;/p>
+&lt;p>Yet an approved receptor agonist with a large clinical program is often discussed beside an unapproved 15-mer with uncertain human pharmacokinetics, as if the peptide bond were the most important thing they shared.&lt;/p>
+&lt;p>For a computational medicinal chemist, the useful question is:&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>Can we connect chemical identity to target engagement, exposure, mechanism, and a meaningful human outcome?&lt;/strong>&lt;/p>&lt;/blockquote>
+&lt;p>Semaglutide, tirzepatide, retatrutide, BPC-157, and Epitalon provide three very different answers.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 1080 500" role="img" aria-labelledby="architecture-title architecture-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="architecture-title">Chemical architectures of three long-acting incretin peptides&lt;/title>
+&lt;desc id="architecture-desc">Semaglutide is a lipidated GLP-1 analogue, tirzepatide is a lipidated dual GIP and GLP-1 receptor agonist, and retatrutide is an investigational lipidated triple GIP, GLP-1, and glucagon receptor agonist.&lt;/desc>
+&lt;defs>&lt;marker id="arrow-arch" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>&lt;/defs>
+&lt;g font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;rect x="35" y="45" width="1010" height="115" rx="18"/>
+&lt;rect x="35" y="193" width="1010" height="115" rx="18"/>
+&lt;rect x="35" y="341" width="1010" height="115" rx="18"/>
+&lt;line x1="275" y1="103" x2="730" y2="103" stroke-width="7" stroke-linecap="round"/>
+&lt;line x1="275" y1="251" x2="730" y2="251" stroke-width="7" stroke-linecap="round"/>
+&lt;line x1="275" y1="399" x2="730" y2="399" stroke-width="7" stroke-linecap="round"/>
+&lt;line x1="520" y1="103" x2="520" y2="72"/>&lt;line x1="520" y1="72" x2="705" y2="72" marker-end="url(#arrow-arch)"/>
+&lt;line x1="565" y1="251" x2="565" y2="220"/>&lt;line x1="565" y1="220" x2="750" y2="220" marker-end="url(#arrow-arch)"/>
+&lt;line x1="590" y1="399" x2="590" y2="368"/>&lt;line x1="590" y1="368" x2="775" y2="368" marker-end="url(#arrow-arch)"/>
+&lt;/g>
+&lt;g fill="currentColor">
+&lt;circle cx="315" cy="103" r="12" fill="#9b51e0"/>&lt;circle cx="520" cy="103" r="12" fill="#2f80ed"/>
+&lt;circle cx="315" cy="251" r="12" fill="#9b51e0"/>&lt;circle cx="565" cy="251" r="12" fill="#2f80ed"/>
+&lt;circle cx="315" cy="399" r="12" fill="#9b51e0"/>&lt;circle cx="590" cy="399" r="12" fill="#2f80ed"/>
+&lt;text x="60" y="88" font-size="21" font-weight="700">Semaglutide&lt;/text>&lt;text x="60" y="119" font-size="15">31-residue GLP-1 analogue&lt;/text>
+&lt;text x="60" y="236" font-size="21" font-weight="700">Tirzepatide&lt;/text>&lt;text x="60" y="267" font-size="15">39-residue GIP-based peptide&lt;/text>
+&lt;text x="60" y="384" font-size="21" font-weight="700">Retatrutide&lt;/text>&lt;text x="60" y="415" font-size="15">39-residue triple agonist&lt;/text>
+&lt;text x="315" y="137" font-size="14" text-anchor="middle">Aib&lt;/text>&lt;text x="520" y="137" font-size="14" text-anchor="middle">Lys–linker&lt;/text>&lt;text x="812" y="78" font-size="15" font-weight="700">C18 fatty diacid&lt;/text>
+&lt;text x="315" y="285" font-size="14" text-anchor="middle">Aib&lt;/text>&lt;text x="565" y="285" font-size="14" text-anchor="middle">Lys–linker&lt;/text>&lt;text x="835" y="226" font-size="15" font-weight="700">C20 fatty diacid&lt;/text>
+&lt;text x="315" y="433" font-size="14" text-anchor="middle">non-native residues&lt;/text>&lt;text x="590" y="433" font-size="14" text-anchor="middle">Lys–linker&lt;/text>&lt;text x="865" y="374" font-size="15" font-weight="700">fatty diacid&lt;/text>
+&lt;text x="895" y="105" font-size="17" font-weight="700" text-anchor="middle">GLP-1R&lt;/text>
+&lt;text x="895" y="247" font-size="17" font-weight="700" text-anchor="middle">GIPR + GLP-1R&lt;/text>
+&lt;text x="895" y="395" font-size="17" font-weight="700" text-anchor="middle">GIPR + GLP-1R&lt;/text>&lt;text x="895" y="419" font-size="17" font-weight="700" text-anchor="middle">+ GCGR&lt;/text>
+&lt;/g>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> Schematic architectures, not atom-by-atom drawings. For long peptides, sequence origin, non-native residues, conjugation site, linker, lipid, and receptor profile are more readable than a full 2D structure.&lt;/figcaption>
+&lt;/figure>
+&lt;hr>
+&lt;h2 id="incretin-agonists-what-successful-peptide-engineering-looks-like">Incretin agonists: what successful peptide engineering looks like&lt;/h2>
+&lt;p>The incretin field shows what peptide engineering can achieve when chemistry, structural biology, pharmacology, and clinical development are connected.&lt;/p>
+&lt;p>&lt;strong>Semaglutide&lt;/strong> is a modified GLP-1 analogue. An Aib substitution reduces cleavage by dipeptidyl peptidase-4, while a linked C18 fatty diacid promotes albumin association and supports once-weekly dosing.&lt;/p>
+&lt;p>&lt;strong>Tirzepatide&lt;/strong> is a 39-residue, GIP-based peptide designed to activate both GIPR and GLP-1R. Its C20 fatty diacid also contributes to prolonged exposure. The key achievement is the balance of receptor activity, pharmacokinetics, efficacy, and tolerability.&lt;/p>
+&lt;p>&lt;strong>Retatrutide&lt;/strong> adds glucagon receptor activity. Published phase-2 data showed mean weight reduction of up to 24.2% at 48 weeks. Lilly later reported 28.3% at 80 weeks in phase 3 at the 12-mg dose. Retatrutide remains investigational, so topline results should not be confused with approval.&lt;/p>
+&lt;p>For computational chemists, these molecules combine four difficult problems:&lt;/p>
+&lt;ul>
+&lt;li>flexible peptide ensembles;&lt;/li>
+&lt;li>Class B GPCR recognition and activation;&lt;/li>
+&lt;li>sequence-dependent proteolysis;&lt;/li>
+&lt;li>linker, lipid, albumin-binding, and multi-receptor pharmacology.&lt;/li>
+&lt;/ul>
+&lt;p>Docking alone cannot capture that system. Useful models must connect cryo-EM structures, molecular dynamics, mutagenesis, functional signaling, and PK/PD.&lt;/p>
+&lt;p>The clinical evidence then closes the loop. In STEP 1, semaglutide produced a mean 14.9% weight reduction at 68 weeks. In SURMOUNT-1, tirzepatide produced up to 20.9% at 72 weeks. These results came from large randomized trials, not from molecular models.&lt;/p>
+&lt;h3 id="a-necessary-body-composition-correction">A necessary body-composition correction&lt;/h3>
+&lt;p>Weight loss includes fat and lean mass, but &lt;strong>lean mass is not synonymous with skeletal muscle&lt;/strong>. DXA changes cannot be read directly as loss of contractile tissue or function. Most incretin-associated weight loss is fat, although the lean component varies. Adequate nutrition, resistance exercise, and monitoring remain sensible, especially for vulnerable patients.&lt;/p>
+&lt;hr>
+&lt;h2 id="bpc-157-promising-biology-missing-validation">BPC-157: promising biology, missing validation&lt;/h2>
+&lt;p>&lt;strong>BPC-157&lt;/strong> is a linear pentadecapeptide with the sequence:&lt;/p>
+&lt;p>&lt;strong>Gly–Glu–Pro–Pro–Pro–Gly–Lys–Pro–Ala–Asp–Asp–Ala–Gly–Leu–Val&lt;/strong>&lt;/p>
+&lt;p>Preclinical studies report effects on wound repair, angiogenesis, inflammatory signaling, and musculoskeletal injury models. That breadth is interesting, but it also demands caution. The molecular target has not been established with the confidence expected for a mature therapeutic program.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 1080 560" role="img" aria-labelledby="sequence-title sequence-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="sequence-title">Primary chemical structures of BPC-157 and Epitalon&lt;/title>
+&lt;desc id="sequence-desc">Residue-level structures of the fifteen-amino-acid BPC-157 sequence and the four-amino-acid Epitalon sequence, with acidic, basic, proline, hydrophobic, and neutral residues distinguished by color.&lt;/desc>
+&lt;g font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="40" y="42" fill="currentColor" font-size="23" font-weight="700">BPC-157 · H–GEPPPGKPADDAGLV–OH&lt;/text>
+&lt;g stroke="currentColor" stroke-width="2">
+&lt;line x1="118" y1="125" x2="152" y2="125"/>&lt;line x1="222" y1="125" x2="256" y2="125"/>&lt;line x1="326" y1="125" x2="360" y2="125"/>&lt;line x1="430" y1="125" x2="464" y2="125"/>&lt;line x1="534" y1="125" x2="568" y2="125"/>&lt;line x1="638" y1="125" x2="672" y2="125"/>&lt;line x1="742" y1="125" x2="776" y2="125"/>
+&lt;path d="M846 125 H875 V185 H25 V250 H48" fill="none"/>&lt;line x1="118" y1="250" x2="152" y2="250"/>&lt;line x1="222" y1="250" x2="256" y2="250"/>&lt;line x1="326" y1="250" x2="360" y2="250"/>&lt;line x1="430" y1="250" x2="464" y2="250"/>&lt;line x1="534" y1="250" x2="568" y2="250"/>&lt;line x1="638" y1="250" x2="672" y2="250"/>
+&lt;/g>
+&lt;g text-anchor="middle" font-size="20" font-weight="700">
+&lt;g fill="#6b7280">&lt;rect x="48" y="88" width="70" height="74" rx="14"/>&lt;text x="83" y="133" fill="white">G&lt;/text>&lt;rect x="568" y="88" width="70" height="74" rx="14"/>&lt;text x="603" y="133" fill="white">G&lt;/text>&lt;rect x="48" y="213" width="70" height="74" rx="14"/>&lt;text x="83" y="258" fill="white">A&lt;/text>&lt;rect x="360" y="213" width="70" height="74" rx="14"/>&lt;text x="395" y="258" fill="white">A&lt;/text>&lt;rect x="464" y="213" width="70" height="74" rx="14"/>&lt;text x="499" y="258" fill="white">G&lt;/text>&lt;/g>
+&lt;g fill="#eb5757">&lt;rect x="152" y="88" width="70" height="74" rx="14"/>&lt;text x="187" y="133" fill="white">E&lt;/text>&lt;rect x="152" y="213" width="70" height="74" rx="14"/>&lt;text x="187" y="258" fill="white">D&lt;/text>&lt;rect x="256" y="213" width="70" height="74" rx="14"/>&lt;text x="291" y="258" fill="white">D&lt;/text>&lt;/g>
+&lt;g fill="#9b51e0">&lt;rect x="256" y="88" width="70" height="74" rx="14"/>&lt;text x="291" y="133" fill="white">P&lt;/text>&lt;rect x="360" y="88" width="70" height="74" rx="14"/>&lt;text x="395" y="133" fill="white">P&lt;/text>&lt;rect x="464" y="88" width="70" height="74" rx="14"/>&lt;text x="499" y="133" fill="white">P&lt;/text>&lt;rect x="776" y="88" width="70" height="74" rx="14"/>&lt;text x="811" y="133" fill="white">P&lt;/text>&lt;/g>
+&lt;g fill="#2f80ed">&lt;rect x="672" y="88" width="70" height="74" rx="14"/>&lt;text x="707" y="133" fill="white">K&lt;/text>&lt;/g>
+&lt;g fill="#27ae60">&lt;rect x="568" y="213" width="70" height="74" rx="14"/>&lt;text x="603" y="258" fill="white">L&lt;/text>&lt;rect x="672" y="213" width="70" height="74" rx="14"/>&lt;text x="707" y="258" fill="white">V&lt;/text>&lt;/g>
+&lt;/g>
+&lt;text x="40" y="355" fill="currentColor" font-size="23" font-weight="700">Epitalon · H–AEDG–OH&lt;/text>
+&lt;g stroke="currentColor" stroke-width="2">&lt;line x1="275" y1="435" x2="325" y2="435"/>&lt;line x1="455" y1="435" x2="505" y2="435"/>&lt;line x1="635" y1="435" x2="685" y2="435"/>&lt;/g>
+&lt;g text-anchor="middle" font-size="22" font-weight="700">
+&lt;rect x="155" y="390" width="120" height="90" rx="16" fill="#6b7280"/>&lt;text x="215" y="429" fill="white">A&lt;/text>&lt;text x="215" y="458" fill="white" font-size="14">CH₃&lt;/text>
+&lt;rect x="325" y="390" width="130" height="90" rx="16" fill="#eb5757"/>&lt;text x="390" y="429" fill="white">E&lt;/text>&lt;text x="390" y="458" fill="white" font-size="14">(CH₂)₂COO⁻&lt;/text>
+&lt;rect x="505" y="390" width="130" height="90" rx="16" fill="#eb5757"/>&lt;text x="570" y="429" fill="white">D&lt;/text>&lt;text x="570" y="458" fill="white" font-size="14">CH₂COO⁻&lt;/text>
+&lt;rect x="685" y="390" width="120" height="90" rx="16" fill="#6b7280"/>&lt;text x="745" y="429" fill="white">G&lt;/text>&lt;text x="745" y="458" fill="white" font-size="14">H&lt;/text>
+&lt;/g>
+&lt;g fill="currentColor" font-size="14">&lt;text x="48" y="315">acidic&lt;/text>&lt;circle cx="30" cy="310" r="8" fill="#eb5757"/>&lt;text x="143" y="315">basic&lt;/text>&lt;circle cx="126" cy="310" r="8" fill="#2f80ed"/>&lt;text x="225" y="315">proline&lt;/text>&lt;circle cx="207" cy="310" r="8" fill="#9b51e0"/>&lt;text x="335" y="315">hydrophobic&lt;/text>&lt;circle cx="317" cy="310" r="8" fill="#27ae60"/>&lt;text x="455" y="315">neutral / small&lt;/text>&lt;circle cx="437" cy="310" r="8" fill="#6b7280"/>&lt;/g>
+&lt;text x="540" y="525" fill="currentColor" font-size="15" text-anchor="middle">Residue-level primary structures shown with free termini; protonation, counterions, and formulation depend on pH and product form.&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> Primary structures of BPC-157 and Epitalon. Sequence identity is chemically informative, but it does not specify solution ensemble, aggregation state, degradation products, formulation, or biological target.&lt;/figcaption>
+&lt;/figure>
+&lt;p>If the target is unknown, docking BPC-157 into a convenient protein does not discover its mechanism. It only creates a hypothesis. A stable MD pose is also not proof of binding, particularly for a flexible peptide that can form plausible contacts in many pockets.&lt;/p>
+&lt;p>Human evidence remains limited to very small pilot or retrospective reports. In 2026, the FDA found insufficient information to characterize clinical safety and highlighted possible immunogenicity, aggregation, peptide-related impurities, and incomplete physicochemical characterization.&lt;/p>
+&lt;p>This matters for gray-market products. “99% purity” says little about sterility, endotoxin, aggregation, counterions, degradation products, or dose accuracy. For an injectable peptide, product quality is part of the pharmacology.&lt;/p>
+&lt;hr>
+&lt;h2 id="epitalon-an-elegant-hypothesis-with-limited-evidence">Epitalon: an elegant hypothesis with limited evidence&lt;/h2>
+&lt;p>&lt;strong>Epitalon&lt;/strong>, also written Epithalon, is the tetrapeptide &lt;strong>Ala–Glu–Asp–Gly&lt;/strong>, or &lt;strong>AEDG&lt;/strong>. Cell studies have reported increased hTERT expression, telomerase activity, or telomere length. This creates an appealing chain of inference:&lt;/p>
+&lt;p>&lt;strong>telomere attrition → cellular senescence → telomerase activation → longer healthy life&lt;/strong>&lt;/p>
+&lt;p>Each arrow hides a translational problem. A cell effect does not establish exposure, tissue distribution, in vivo target engagement, durable telomere changes, or improved healthspan. This small, polar peptide also raises basic questions about proteolysis, transport, and clearance.&lt;/p>
+&lt;p>Telomerase reactivation is common in cancer, although that does not prove Epitalon causes cancer. It means systemic activation cannot simply be assumed to be beneficial.&lt;/p>
+&lt;p>The defensible conclusion is modest: &lt;strong>Epitalon has an interesting cell-biology hypothesis, not validated human longevity efficacy&lt;/strong>. A biomarker change is not a clinical outcome.&lt;/p>
+&lt;hr>
+&lt;h2 id="what-computation-can-and-cannot-contribute">What computation can and cannot contribute&lt;/h2>
+&lt;p>For peptide programs, computational chemistry is most valuable when it reduces a defined uncertainty.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Question&lt;/th>
+&lt;th>Useful tools&lt;/th>
+&lt;th>Experimental requirement&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Which conformations are populated?&lt;/td>
+&lt;td>MD, enhanced sampling, NMR-informed ensembles&lt;/td>
+&lt;td>Solution-state validation&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>How does it activate a receptor?&lt;/td>
+&lt;td>Cryo-EM-guided modeling and MD&lt;/td>
+&lt;td>Binding and functional assays&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Will a modification improve stability or exposure?&lt;/td>
+&lt;td>Protease, linker, albumin-binding, and PK models&lt;/td>
+&lt;td>Stability, clearance, and distribution studies&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Is the proposed mechanism real?&lt;/td>
+&lt;td>Target prioritization and structural hypotheses&lt;/td>
+&lt;td>Direct binding and in vivo target engagement&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>The recurring trap is to skip levels. A predicted complex becomes a “mechanism,” then a therapeutic claim, and finally a clinical promise.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 1080 390" role="img" aria-labelledby="evidence-title evidence-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="evidence-title">Evidence chain for a peptide therapeutic&lt;/title>
+&lt;desc id="evidence-desc">Chemical identity supports target engagement, which must connect to exposure, pharmacodynamic effect, and ultimately a controlled clinical outcome.&lt;/desc>
+&lt;defs>&lt;marker id="arrow-evidence" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>&lt;/defs>
+&lt;g font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;rect x="35" y="95" width="170" height="105" rx="17"/>&lt;rect x="245" y="95" width="170" height="105" rx="17"/>&lt;rect x="455" y="95" width="170" height="105" rx="17"/>&lt;rect x="665" y="95" width="170" height="105" rx="17"/>&lt;rect x="875" y="95" width="170" height="105" rx="17"/>
+&lt;line x1="205" y1="148" x2="237" y2="148" marker-end="url(#arrow-evidence)"/>&lt;line x1="415" y1="148" x2="447" y2="148" marker-end="url(#arrow-evidence)"/>&lt;line x1="625" y1="148" x2="657" y2="148" marker-end="url(#arrow-evidence)"/>&lt;line x1="835" y1="148" x2="867" y2="148" marker-end="url(#arrow-evidence)"/>
+&lt;/g>
+&lt;g fill="currentColor">&lt;text x="120" y="136" font-size="18" font-weight="700">Identity&lt;/text>&lt;text x="120" y="164" font-size="14">purity · form&lt;/text>&lt;text x="330" y="136" font-size="18" font-weight="700">Target&lt;/text>&lt;text x="330" y="164" font-size="14">binding · function&lt;/text>&lt;text x="540" y="136" font-size="18" font-weight="700">Exposure&lt;/text>&lt;text x="540" y="164" font-size="14">PK · distribution&lt;/text>&lt;text x="750" y="136" font-size="18" font-weight="700">Engagement&lt;/text>&lt;text x="750" y="164" font-size="14">in vivo PD&lt;/text>&lt;text x="960" y="136" font-size="18" font-weight="700">Outcome&lt;/text>&lt;text x="960" y="164" font-size="14">benefit · safety&lt;/text>&lt;text x="540" y="48" font-size="23" font-weight="700">A peptide claim is only as strong as its weakest link&lt;/text>&lt;text x="540" y="290" font-size="17" font-weight="700">Computation is powerful across the chain. It cannot replace the chain.&lt;/text>&lt;text x="540" y="327" font-size="15">A beautiful model can prioritize an experiment. It cannot turn an untested product into a medicine.&lt;/text>&lt;/g>
+&lt;g fill="none" stroke="#eb5757" stroke-width="3" stroke-dasharray="8 7">&lt;path d="M330 215 C430 275,650 275,750 215"/>&lt;/g>
+&lt;text x="540" y="370" fill="#eb5757" font-size="15" font-weight="700">Skipping exposure and target engagement creates the most seductive translational failures.&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 3.&lt;/strong> The translational chain. Molecular modeling can support every stage, but later claims require new evidence rather than greater confidence in an earlier model.&lt;/figcaption>
+&lt;/figure>
+&lt;hr>
+&lt;h2 id="a-practical-evidence-filter-for-peptide-claims">A practical evidence filter for peptide claims&lt;/h2>
+&lt;p>Before accepting a peptide claim, I would ask four questions:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>What is the chemical entity?&lt;/strong> Sequence, termini, conjugates, salt form, purity, and formulation matter.&lt;/li>
+&lt;li>&lt;strong>Is the target directly validated?&lt;/strong> A pathway story is weaker than binding and functional evidence.&lt;/li>
+&lt;li>&lt;strong>Does intact peptide reach the relevant tissue?&lt;/strong> Potency is irrelevant without exposure.&lt;/li>
+&lt;li>&lt;strong>What is the best human evidence?&lt;/strong> Cell culture, animals, retrospective reports, randomized trials, and approval are different levels of evidence.&lt;/li>
+&lt;/ol>
+&lt;p>Applied to the examples here, the contrast is stark:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Peptide program&lt;/th>
+&lt;th>Molecular proposition&lt;/th>
+&lt;th>Human evidence&lt;/th>
+&lt;th>Drug-discovery reading&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;strong>Semaglutide&lt;/strong>&lt;/td>
+&lt;td>Long-acting GLP-1R agonist&lt;/td>
+&lt;td>Extensive randomized and outcomes data&lt;/td>
+&lt;td>Validated peptide engineering and pharmacology&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Tirzepatide&lt;/strong>&lt;/td>
+&lt;td>Long-acting GIPR/GLP-1R agonist&lt;/td>
+&lt;td>Extensive randomized phase-3 data&lt;/td>
+&lt;td>Successful designed polypharmacology&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Retatrutide&lt;/strong>&lt;/td>
+&lt;td>GIPR/GLP-1R/GCGR triple agonist&lt;/td>
+&lt;td>Positive published phase 2 and reported phase-3 topline results; investigational&lt;/td>
+&lt;td>Highly promising, but still an evolving evidence package&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>BPC-157&lt;/strong>&lt;/td>
+&lt;td>Proposed pleiotropic repair signaling&lt;/td>
+&lt;td>Very small, low-quality human literature&lt;/td>
+&lt;td>Preclinical hypothesis with unresolved target, PK, safety, and efficacy&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Epitalon&lt;/strong>&lt;/td>
+&lt;td>Proposed telomerase/telomere modulation&lt;/td>
+&lt;td>Limited mechanistic and small human studies; no demonstrated longevity outcome&lt;/td>
+&lt;td>Interesting cell biology, unvalidated clinical claim&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;h2 id="final-perspective">Final perspective&lt;/h2>
+&lt;p>Peptides can recognize extended protein surfaces, and chemical modification can tune stability, exposure, selectivity, and dosing interval. The incretin story shows what happens when this engineering is connected to structural biology, pharmacology, formulation, manufacturing, and large clinical trials.&lt;/p>
+&lt;p>BPC-157 and Epitalon show the opposite risk. A molecular narrative can become popular before the translational chain is complete.&lt;/p>
+&lt;p>For computational medicinal chemists, the lesson is simple. A simulation can propose a binding mode, a cell assay can reveal a response, and an animal model can test a physiological hypothesis. Only a controlled human program can establish a useful medicine.&lt;/p>
+&lt;p>&lt;strong>“Peptide” tells us what kind of molecule we are looking at. It does not tell us how much evidence we have.&lt;/strong>&lt;/p>
+&lt;hr>
+&lt;h2 id="selected-references">Selected references&lt;/h2>
+&lt;ol>
+&lt;li>Knudsen, L. B.; Lau, J. “The Discovery and Development of Liraglutide and Semaglutide.” &lt;em>Frontiers in Endocrinology&lt;/em> &lt;strong>2019&lt;/strong>, 10, 155.
+.&lt;/li>
+&lt;li>Wilding, J. P. H.; et al. “Once-Weekly Semaglutide in Adults with Overweight or Obesity.” &lt;em>New England Journal of Medicine&lt;/em> &lt;strong>2021&lt;/strong>, 384, 989–1002.
+.&lt;/li>
+&lt;li>Jastreboff, A. M.; et al. “Tirzepatide Once Weekly for the Treatment of Obesity.” &lt;em>New England Journal of Medicine&lt;/em> &lt;strong>2022&lt;/strong>, 387, 205–216.
+.&lt;/li>
+&lt;li>Jastreboff, A. M.; et al. “Triple–Hormone-Receptor Agonist Retatrutide for Obesity: A Phase 2 Trial.” &lt;em>New England Journal of Medicine&lt;/em> &lt;strong>2023&lt;/strong>, 389, 514–526.
+.&lt;/li>
+&lt;li>Eli Lilly and Company. “Lilly’s Triple Agonist, Retatrutide, Delivered Powerful Weight Loss in Pivotal Phase 3 Obesity Trial.” May 21, 2026.
+.&lt;/li>
+&lt;li>Vasireddi, N.; et al. “Emerging Use of BPC-157 in Orthopaedic Sports Medicine: A Systematic Review.” &lt;em>Journal of Cartilage &amp;amp; Joint Preservation&lt;/em> &lt;strong>2025&lt;/strong>.
+.&lt;/li>
+&lt;li>U.S. Food and Drug Administration. “Certain Bulk Drug Substances for Use in Compounding That May Present Significant Safety Risks.”
+.&lt;/li>
+&lt;li>Khavinson, V. K.; Bondarev, I. E.; Butyugov, A. A. “Epithalon Peptide Induces Telomerase Activity and Telomere Elongation in Human Somatic Cells.” &lt;em>Bulletin of Experimental Biology and Medicine&lt;/em> &lt;strong>2003&lt;/strong>, 135, 590–592.
+.&lt;/li>
+&lt;li>Al-dulaimi, S.; et al. “Epitalon Increases Telomere Length in Human Cell Lines through Telomerase Upregulation or ALT Activity.” &lt;em>Biogerontology&lt;/em> &lt;strong>2025&lt;/strong>.
+.&lt;/li>
+&lt;/ol></description></item></channel></rss>

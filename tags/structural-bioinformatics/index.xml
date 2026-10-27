@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Structural Bioinformatics | Yassir Boulaamane</title><link>https://yboulaamane.github.io/tags/structural-bioinformatics/</link><atom:link href="https://yboulaamane.github.io/tags/structural-bioinformatics/index.xml" rel="self" type="application/rss+xml"/><description>Structural Bioinformatics</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 20 Dec 2022 00:00:00 +0000</lastBuildDate><image><url>https://yboulaamane.github.io/media/icon_hu_4d696a8ace2a642b.png</url><title>Structural Bioinformatics</title><link>https://yboulaamane.github.io/tags/structural-bioinformatics/</link></image><item><title>Understanding Molecular Dynamics Simulations</title><link>https://yboulaamane.github.io/blog/understanding-molecular-dynamics-simulations/</link><pubDate>Tue, 20 Dec 2022 00:00:00 +0000</pubDate><guid>https://yboulaamane.github.io/blog/understanding-molecular-dynamics-simulations/</guid><description>&lt;p>Molecular dynamics does not search for a single best structure. It takes the structure you give it and asks what that structure does next.&lt;/p>
+&lt;p>You start with positions, velocities, and masses. A force field turns the current arrangement of atoms into forces. A short step, a few femtoseconds, uses those forces to update the positions and velocities. Then you do it again. The record of those updates is the trajectory.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 520" role="img" aria-labelledby="md-step-title md-step-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="md-step-title">One molecular dynamics step&lt;/title>
+&lt;desc id="md-step-desc">Positions and velocities go in. The force field computes forces from neighboring atoms. A femtosecond update writes new positions and velocities. Repeating that update builds the trajectory.&lt;/desc>
+&lt;defs>
+&lt;marker id="arrow-md-step" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">&lt;path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/>&lt;/marker>
+&lt;/defs>
+&lt;g fill="none" stroke="currentColor" stroke-width="2">
+&lt;rect x="70" y="24" width="500" height="84" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="70" y="148" width="500" height="84" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="70" y="272" width="500" height="84" rx="16" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="70" y="396" width="500" height="84" rx="16" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;path d="M320 108 L320 140" marker-end="url(#arrow-md-step)"/>
+&lt;path d="M320 232 L320 264" marker-end="url(#arrow-md-step)"/>
+&lt;path d="M320 356 L320 388" marker-end="url(#arrow-md-step)"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+&lt;text x="320" y="56" font-size="20" font-weight="700">Configuration&lt;/text>
+&lt;text x="320" y="84" font-size="16">Positions, velocities, masses&lt;/text>
+&lt;text x="320" y="180" font-size="20" font-weight="700">Forces&lt;/text>
+&lt;text x="320" y="208" font-size="16">From neighbors, through the force field&lt;/text>
+&lt;text x="320" y="304" font-size="20" font-weight="700">Update&lt;/text>
+&lt;text x="320" y="332" font-size="16">Move a few femtoseconds, then repeat&lt;/text>
+&lt;text x="320" y="428" font-size="20" font-weight="700">Trajectory&lt;/text>
+&lt;text x="320" y="456" font-size="16">The history of those configurations&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 1.&lt;/strong> A trajectory is not a separate analysis. It is the stack of configurations produced by repeating the force evaluation and the short update. The force field decides which interactions exist. The time step decides how finely that motion is chopped up.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="what-the-step-is-doing">What the step is doing&lt;/h2>
+&lt;p>The force on an atom depends on the other atoms within range of the model: bonded terms for the bonds, angles, and dihedrals it belongs to, and nonbonded terms for electrostatics and van der Waals contacts. The force field is that model. It is an approximation with parameters, not a direct evaluation of the electronic Schrödinger equation.&lt;/p>
+&lt;p>The step has to be short because the forces are recomputed from the new geometry. A few femtoseconds is the usual scale, so that the fastest vibrations are not skipped. A nanosecond of simulation is therefore on the order of a million such updates. Nothing in the method jumps the system to a preferred pose. If a ligand moves, it moves because the accumulated steps carried it there.&lt;/p>
+&lt;h2 id="what-people-use-it-for">What people use it for&lt;/h2>
+&lt;p>In structural biology the interesting objects are already moving: side chains, loops, domains, and ligands. A crystal or cryo-EM structure is one configuration. The trajectory is a sample of configurations around and away from that start. Binding, conformational change, and contacts between molecules are read from that sample, which is why a single pretty frame from the run is a weak result.&lt;/p>
+&lt;p>The same loop is used in materials work. Polymers, ceramics, and metals are sets of particles with a force field appropriate to that material. Mechanical response, stability, and the effect of changing the conditions are again questions about the trajectory.&lt;/p>
+&lt;p>Two practical strengths follow from the setup. The system can contain many particles, so a protein of thousands of atoms is a normal target rather than a special case. The conditions are inputs. Temperature, pressure, and composition can be changed, and the comparison between two trajectories is often the actual experiment.&lt;/p>
+&lt;h2 id="what-comes-out">What comes out&lt;/h2>
+&lt;p>The raw output is the trajectory: positions, and usually velocities and energies, along the time axis. Almost every figure in a paper is a reduction of that record.&lt;/p>
+&lt;figure style="margin:2rem 0;">
+&lt;svg viewBox="0 0 640 300" role="img" aria-labelledby="md-out-title md-out-desc" style="width:100%;height:auto;display:block;">
+&lt;title id="md-out-title">Common reductions of a trajectory&lt;/title>
+&lt;desc id="md-out-desc">From the trajectory, typical plots report energy, a radial distribution function, and a density profile. Each one discards most of the atomic detail in exchange for one question.&lt;/desc>
+&lt;g fill="none" stroke-width="2">
+&lt;rect x="28" y="70" width="286" height="90" rx="16" fill="#2f80ed" fill-opacity="0.10" stroke="#2f80ed"/>
+&lt;rect x="326" y="70" width="286" height="90" rx="16" fill="#9b51e0" fill-opacity="0.10" stroke="#9b51e0"/>
+&lt;rect x="28" y="176" width="286" height="90" rx="16" fill="#f2994a" fill-opacity="0.10" stroke="#f2994a"/>
+&lt;rect x="326" y="176" width="286" height="90" rx="16" fill="#27ae60" fill-opacity="0.10" stroke="#27ae60"/>
+&lt;/g>
+&lt;g fill="currentColor" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+&lt;text x="320" y="40" font-size="22" font-weight="700" text-anchor="middle">The trajectory is the result. Plots are views of it.&lt;/text>
+&lt;text x="48" y="108" font-size="18" font-weight="700">Trajectory&lt;/text>
+&lt;text x="48" y="136" font-size="15">Where each atom went&lt;/text>
+&lt;text x="346" y="108" font-size="18" font-weight="700">Energy&lt;/text>
+&lt;text x="346" y="136" font-size="15">Did the run stay well behaved?&lt;/text>
+&lt;text x="48" y="214" font-size="18" font-weight="700">Radial distribution&lt;/text>
+&lt;text x="48" y="242" font-size="15">What sits at this distance?&lt;/text>
+&lt;text x="346" y="214" font-size="18" font-weight="700">Density profile&lt;/text>
+&lt;text x="346" y="242" font-size="15">Where does the material pack?&lt;/text>
+&lt;/g>
+&lt;/svg>
+&lt;figcaption>&lt;strong>Figure 2.&lt;/strong> Energy traces are a sanity check on the integration. Radial distribution functions and density profiles collapse the coordinates into a distance or a position, which is what you want for solvation and for layered materials. They do not, by themselves, show a binding pose.&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="where-the-method-stops">Where the method stops&lt;/h2>
+&lt;p>Two limits dominate.&lt;/p>
+&lt;p>The forces are only as faithful as the force field. A missing interaction, or a bad parameter, is integrated with the same confidence as a good one. The trajectory will not announce that the potential was wrong.&lt;/p>
+&lt;p>The other limit is cost. Each step looks at a large number of pairs, and interesting motions can require an enormous number of steps. Hardware and better algorithms have made routine protein–ligand runs accessible. They have not removed the gap between a femtosecond step and a slow biological event. How long a given question actually needs is a separate decision. The
+are the companion to this note.&lt;/p>
+&lt;h2 id="bottom-line">Bottom line&lt;/h2>
+&lt;p>An MD simulation is a loop. Configuration, forces, a femtosecond update, and a growing trajectory. Structural biology and materials work use that loop because the experiment they want is about motion under stated conditions. The interpretation lives in the reductions of the trajectory, and it inherits both the force field and the length of the run.&lt;/p></description></item></channel></rss>
