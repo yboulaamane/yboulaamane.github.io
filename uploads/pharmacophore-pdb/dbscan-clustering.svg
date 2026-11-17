@@ -1,0 +1,67 @@
+<svg viewBox="0 0 820 420" width="820" height="420" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="820" height="420" fill="#f8fafc"/>
+  <text x="410" y="34" text-anchor="middle" font-size="19" font-weight="800" fill="#0f172a">DBSCAN separates binding sites after alignment</text>
+
+  <!-- left panel: before -->
+  <g>
+    <rect x="40" y="64" width="340" height="320" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="210" y="90" text-anchor="middle" font-size="13.5" font-weight="700" fill="#475569">Overlaid ligand atoms (unlabelled)</text>
+    <!-- orthosteric blob -->
+    <g fill="#94a3b8">
+      <circle cx="150" cy="180" r="5"/><circle cx="165" cy="170" r="5"/><circle cx="140" cy="195" r="5"/>
+      <circle cx="158" cy="200" r="5"/><circle cx="172" cy="188" r="5"/><circle cx="135" cy="175" r="5"/>
+      <circle cx="160" cy="160" r="5"/><circle cx="148" cy="210" r="5"/><circle cx="178" cy="175" r="5"/>
+      <circle cx="130" cy="190" r="5"/><circle cx="168" cy="205" r="5"/><circle cx="155" cy="188" r="5"/>
+    </g>
+    <!-- allosteric blob -->
+    <g fill="#94a3b8">
+      <circle cx="280" cy="290" r="5"/><circle cx="295" cy="280" r="5"/><circle cx="270" cy="300" r="5"/>
+      <circle cx="288" cy="305" r="5"/><circle cx="302" cy="293" r="5"/><circle cx="265" cy="285" r="5"/>
+      <circle cx="290" cy="270" r="5"/>
+    </g>
+    <!-- noise -->
+    <g fill="#cbd5e1">
+      <circle cx="90" cy="110" r="5"/><circle cx="330" cy="130" r="5"/><circle cx="320" cy="350" r="5"/>
+      <circle cx="80" cy="320" r="5"/>
+    </g>
+  </g>
+
+  <!-- arrow -->
+  <path d="M392,224 L438,224" stroke="#64748b" stroke-width="2.5" fill="none" marker-end="url(#a2)"/>
+  <defs>
+    <marker id="a2" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- right panel: after -->
+  <g>
+    <rect x="450" y="64" width="340" height="320" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="620" y="90" text-anchor="middle" font-size="13.5" font-weight="700" fill="#475569">DBSCAN labels (target cluster kept)</text>
+    <!-- orthosteric cluster (kept) -->
+    <ellipse cx="568" cy="188" rx="42" ry="38" fill="#2563eb" opacity="0.10"/>
+    <g fill="#2563eb">
+      <circle cx="560" cy="180" r="5"/><circle cx="575" cy="170" r="5"/><circle cx="550" cy="195" r="5"/>
+      <circle cx="568" cy="200" r="5"/><circle cx="582" cy="188" r="5"/><circle cx="545" cy="175" r="5"/>
+      <circle cx="570" cy="160" r="5"/><circle cx="558" cy="210" r="5"/><circle cx="588" cy="175" r="5"/>
+      <circle cx="540" cy="190" r="5"/><circle cx="578" cy="205" r="5"/><circle cx="565" cy="188" r="5"/>
+    </g>
+    <text x="568" y="245" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1d4ed8">cluster 0 ✓ target pocket</text>
+
+    <!-- allosteric cluster -->
+    <ellipse cx="688" cy="290" rx="32" ry="26" fill="#db2777" opacity="0.10"/>
+    <g fill="#db2777">
+      <circle cx="680" cy="290" r="5"/><circle cx="695" cy="280" r="5"/><circle cx="670" cy="300" r="5"/>
+      <circle cx="688" cy="305" r="5"/><circle cx="702" cy="293" r="5"/><circle cx="665" cy="285" r="5"/>
+      <circle cx="690" cy="270" r="5"/>
+    </g>
+    <text x="688" y="332" text-anchor="middle" font-size="11.5" font-weight="700" fill="#be185d">cluster 1 · allosteric</text>
+
+    <!-- noise -->
+    <g fill="#cbd5e1">
+      <circle cx="500" cy="110" r="5"/><circle cx="740" cy="130" r="5"/><circle cx="730" cy="350" r="5"/>
+      <circle cx="490" cy="320" r="5"/>
+    </g>
+    <text x="500" y="100" text-anchor="middle" font-size="10.5" fill="#94a3b8">noise (-1)</text>
+  </g>
+</svg>
